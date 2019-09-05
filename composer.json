@@ -1,7 +1,7 @@
 {
     "name": "ballstatecber/vore-arts-fund",
     "description": "Vore Arts Fund",
-    "homepage": "",
+    "homepage": "https://github.com/BallStateCBER/vore-arts-fund",
     "type": "project",
     "license": "MIT",
     "require": {
