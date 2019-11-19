@@ -26,7 +26,7 @@ use Cake\View\Exception\MissingTemplateException;
  *
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
-class PagesController extends AppController
+class UsersController extends AppController
 {
 
     /**
@@ -44,6 +44,26 @@ class PagesController extends AppController
     }
 
     public function register(...$path) {
+        return null;
+    }
+
+    public function logout(...$path) {
+        return null;
+    }
+
+    public function forgotPassword(...$path) {
+        return null;
+    }
+
+    public function verify(...$path) {
+        return null;
+    }
+
+    public function verifyResend(...$path) {
+        return null;
+    }
+
+    public function myAccount(...$path) {
         return null;
     }
 
