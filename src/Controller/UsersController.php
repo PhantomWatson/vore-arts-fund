@@ -38,20 +38,13 @@ class PagesController extends AppController
      * @throws \Cake\Http\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
-    public function about(...$path)
+    public function login(...$path)
     {
         return null;
     }
 
-    public function contact(...$path) {
+    public function register(...$path) {
         return null;
     }
 
-    public function terms(...$path) {
-        return null;
-    }
-
-    public function privacy(...$path) {
-        return null;
-    }
 }
