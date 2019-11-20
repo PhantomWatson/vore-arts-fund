@@ -38,17 +38,51 @@ class UsersController extends AppController
      * @throws \Cake\Http\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
-    public function login(...$path)
+
+    public function beforeFilter($event)
     {
-        return null;
+      parent::beforeFilter($event);
+      $this->Auth->allow('register', 'logout');
     }
 
-    public function register(...$path) {
-        return null;
+    public function index()
+    {
+      $this->set('users', $this->Users->find('all'));
     }
 
-    public function logout(...$path) {
-        return null;
+    public function view($id)
+    {
+      $user = $this->Users->get($id);
+      $this->set(compact('user'));
+    }
+
+    public function login()
+    {
+      if ($this->request->is('post')) {
+          $user = $this->Auth->identify();
+          if ($user) {
+              $this->Auth->setUser($user);
+              return $this->redirect($this->Auth->redirectUrl());
+          }
+          $this->Flash->error(__('Invalid username or password, try again'));
+      }
+    }
+
+    public function register() {
+      $user = $this->Users->newEntity();
+        if ($this->request->is('post')) {
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('The user has been saved.'));
+                return $this->redirect(['action' => 'register']);
+            }
+            $this->Flash->error(__('Unable to register the user.'));
+        }
+        $this->set('user', $user);
+    }
+
+    public function logout() {
+        return $this->redirect($this->Auth->logout());
     }
 
     public function forgotPassword(...$path) {

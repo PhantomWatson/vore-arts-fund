@@ -1,4 +1,4 @@
-<?php
+  <?php
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -41,6 +41,19 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 <body class="home">
 
     <h1>Login</h1>
+
+    <div class="users form">
+    <?= $this->Flash->render() ?>
+    <?= $this->Form->create() ?>
+        <fieldset>
+            <legend><?= __('Please enter your email and password') ?></legend>
+            <?= $this->Form->control('email') ?>
+            <?= $this->Form->control('password') ?>
+        </fieldset>
+    <?= $this->Form->button(__('Login')); ?>
+    <?= $this->Form->end() ?>
+    </div>
+
 
 </body>
 </html>

@@ -42,5 +42,18 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 
     <h1>Register</h1>
 
+    <div class="users form">
+    <?= $this->Form->create($user) ?>
+        <fieldset>
+            <legend><?= __('Register User') ?></legend>
+            <?= $this->Form->control('email') ?>
+            <?= $this->Form->control('password') ?>
+            <?= $this->Form->control('name') ?>
+            <?= $this->Form->control('phone') ?>
+       </fieldset>
+    <?= $this->Form->button(__('Submit')); ?>
+    <?= $this->Form->end() ?>
+    </div>
+
 </body>
 </html>
