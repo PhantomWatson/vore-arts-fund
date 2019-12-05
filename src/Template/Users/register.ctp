@@ -27,6 +27,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 <html>
 <head>
     <?= $this->Html->charset() ?>
+    <?= $this->Flash->render() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         <?= $cakeDescription ?>
@@ -50,6 +51,9 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             <?= $this->Form->control('password') ?>
             <?= $this->Form->control('name') ?>
             <?= $this->Form->control('phone') ?>
+            <?= $this->Form->control('verification_code') ?>
+            <?= $this->Form->control('is_admin') ?>
+            <?= $this->Form->control('is_verified') ?>
        </fieldset>
     <?= $this->Form->button(__('Submit')); ?>
     <?= $this->Form->end() ?>
