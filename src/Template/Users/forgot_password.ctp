@@ -42,5 +42,18 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 
     <h1>Forgot Password</h1>
 
+<div class="users form">
+<?= $this->Flash->render() ?>
+<?= $this->Form->create() ?>
+    <fieldset>
+        <legend><?= __('Please enter the email for the account you wish to rest the password for.') ?></legend>
+        <?= $this->Form->control('email') ?>
+    </fieldset>
+<?= $this->Form->button(__('Submit')); ?>
+<?= $this->Form->end() ?>
+
+</div>
+
+
 </body>
 </html>
