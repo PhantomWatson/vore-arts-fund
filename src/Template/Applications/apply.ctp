@@ -42,5 +42,23 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 
     <h1>Apply</h1>
 
+    <div>
+    <?= $this->Form->create() ?>
+        <fieldset>
+        <legend><?= __('Please enter the following information') ?></legend>
+            <?= $this->Form->control('title', ['required' => true]) ?>
+            <?= $this->Form->control('description', ['type' => 'textarea', 'required' => true]) ?>
+            <?= $this->Form->label('Category') ?>
+            <?= $this->Form->select('category', ['Art', 'Music', 'Theatre', 'Other'], ['empty' => true], ['required' => true]) ?>
+            <?= $this->Form->control('amount_requested', ['type' => 'number', 'required' => true]) ?>
+            <?= $this->Form->label('Accept Partial Payout') ?>
+            <?= $this->Form->radio('accept_partial_payout', ['Yes', 'No'], ['required' => true]) ?>
+        </fieldset>
+    <?= $this->Form->button(__('Save')); ?>
+    <?= $this->Form->button(__('Submit')); ?>
+    <?= $this->Form->end() ?>
+
+    </div>
+
 </body>
 </html>

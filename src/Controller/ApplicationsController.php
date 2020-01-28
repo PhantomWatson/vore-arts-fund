@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -12,12 +13,14 @@
  * @since     0.2.9
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
 use Cake\Core\Configure;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
+use Cake\ORM\TableRegistry;
 
 /**
  * Static content controller
@@ -40,6 +43,20 @@ class ApplicationsController extends AppController
      */
     public function apply(...$path)
     {
+        if ($this->request->is('post')) {
+            $applicationsTable = TableRegistry::getTableLocator()->get('applications');
+            $application = $applicationsTable->newEntity($this->request->data());
+            $application->category_id = 1;
+            $application->user_id = 1;
+            $application->funding_cycle_id = 1;
+            $application->status_id = 1;
+            debug($application);
+            if ($applicationsTable->save($application)) {
+                debug($application->id);
+            } else {
+                debug($application);
+            }
+        }
         return null;
     }
 }

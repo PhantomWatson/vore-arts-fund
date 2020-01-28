@@ -42,5 +42,10 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 
     <h1>My Account</h1>
 
+    <?= $this->Html->link('Home', '/', array('class' => 'button'));?>
+    <?= $this->Html->link('Make a New Application', '/apply', array('class' => 'button')); ?>
+    <?= $this->Html->link('My Account', '/my-account', array('class' => 'button')); ?>
+    <?= $this->Html->link('Logout', '/logout', array('class' => 'button')); ?>
+
 </body>
 </html>
