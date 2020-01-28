@@ -44,7 +44,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 
     <div class="users form">
     <?= $this->Flash->render() ?>
-    <?= $this->Form->create() ?>
+    <?= $this->Form->create('User') ?>
         <fieldset>
             <legend><?= __('Please enter your email and password') ?></legend>
             <?= $this->Form->control('email') ?>

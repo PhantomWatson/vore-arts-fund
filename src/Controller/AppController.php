@@ -46,6 +46,7 @@ class AppController extends Controller
         ]);
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
+            'userModel' => 'Users',
             'loginRedirect' => [
                 'controller' => 'Users',
                 'action' => 'my_account'
@@ -53,6 +54,14 @@ class AppController extends Controller
             'logoutRedirect' => [
                 'controller' => 'Pages',
                 'action' => 'home'
+            ],
+            'authenticate' => [
+                'Form' => [
+                    'fields' => [
+                        'username' => 'email',
+                        'password' => 'password'
+                    ]
+                ]
             ]
         ]);
 
