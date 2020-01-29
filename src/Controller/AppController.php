@@ -62,8 +62,8 @@ class AppController extends Controller
                         'password' => 'password'
                     ]
                 ]
-
-            ]
+            ],
+            'storage' => 'Session'
         ]);
 
         /*
