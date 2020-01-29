@@ -42,5 +42,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 
     <h1>Vote</h1>
 
+    <?= $this->element('navbar'); ?>
+
 </body>
 </html>
