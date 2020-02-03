@@ -16,6 +16,12 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Cache\Cache;
+use Cake\Core\Configure;
+use Cake\Core\Plugin;
+use Cake\Datasource\ConnectionManager;
+use Cake\Error\Debugger;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Application Controller
@@ -79,6 +85,23 @@ class AppController extends Controller
      */
     public function beforeFilter(Event $event)
     {
-        $this->Auth->allow(['index', 'view', 'display', 'apply','forgotpassword','myAccount','logout']);
+        $this->Auth->allow(['index', 'view', 'display','forgotpassword','logout','register']);
+        $UserId = $this->Auth->user('id');
+
+        if (isset($UserId)){
+        $connection = ConnectionManager::get('default');
+        $results = $connection
+        ->execute('SELECT is_admin FROM users WHERE id = :id', ['id' => $UserId])
+        ->fetchAll('assoc');
+        $admin = $results[0]["is_admin"];
+            if($admin == 1)
+            {
+                $this->set('is_admin', true);
+            }
+            else
+            {
+                $this->set('is_admin', false);
+            }
+        }
     }
 }

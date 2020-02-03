@@ -101,4 +101,8 @@ class UsersController extends AppController
         return null;
     }
 
+    public function adminPage(...$path) {
+        return null;
+    }
+
 }
