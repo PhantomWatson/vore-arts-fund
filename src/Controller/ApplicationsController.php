@@ -44,17 +44,23 @@ class ApplicationsController extends AppController
     public function apply(...$path)
     {
         if ($this->request->is('post')) {
+            $data = $this->request->getData();
             $applicationsTable = TableRegistry::getTableLocator()->get('applications');
-            $application = $applicationsTable->newEntity($this->request->data());
-            $application->category_id = 1;
-            $application->user_id = 1;
-            $application->funding_cycle_id = 1;
-            $application->status_id = 1;
-            debug($application);
-            if ($applicationsTable->save($application)) {
-                debug($application->id);
+            $fundingCyclesTable = TableRegistry::getTableLocator()->get('funding_cycles');
+            $fundingCycle = $fundingCyclesTable->find('all', ['conditions' => ['funding_cycles.application_begin <=' => date('Y-m-d H:i:s'), 'funding_cycles.application_end >=' => date('Y-m-d H:i:s')], 'fields' => ['funding_cycles.id']])->first();
+            if (!is_null($fundingCycle)) {
+                $application = $applicationsTable->newEntity($data);
+                $application->category_id = $data['category'];
+                $application->user_id = $this->Auth->user('id');
+                $application->funding_cycle_id = $fundingCycle->id;
+                $application->status_id = 1;
+                if ($applicationsTable->save($application)) {
+                    $this->Flash->success(__('The application has been submitted.'));
+                } else {
+                    $this->Flash->error(__('The application could not be submitted.'));
+                }
             } else {
-                debug($application);
+                $this->Flash->error(__('No valid funding cycle.'));
             }
         }
         return null;
