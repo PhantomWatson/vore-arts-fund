@@ -56,20 +56,20 @@ class UsersController extends AppController
       $this->set(compact('user'));
     }
 
-    public function login()
-    {
-      if ($this->request->is('post')) {
-          $user = $this->Auth->identify();
-          if ($user) {
-              $this->Auth->setUser($user);
-              return $this->redirect($this->Auth->redirectUrl());
-          }
-          $this->Flash->error(__('Invalid username or password, try again'));
-      }
+    public function login() {
+        if ($this->request->is('post')) {
+            $user = $this->Auth->identify();
+            if ($user) {
+                $this->Auth->setUser($user);
+                return $this->redirect($this->Auth->redirectUrl());
+            } else {
+                $this->Flash->error(__('Invalid username or password, try again'));
+            }
+        }
     }
 
     public function register() {
-      $user = $this->Users->newEntity();
+        $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
@@ -98,6 +98,10 @@ class UsersController extends AppController
     }
 
     public function myAccount(...$path) {
+        return null;
+    }
+
+    public function adminPage(...$path) {
         return null;
     }
 

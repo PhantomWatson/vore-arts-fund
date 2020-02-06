@@ -43,6 +43,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <h1>Apply</h1>
 
     <div>
+    <?= $this->Flash->render() ?>
     <?= $this->Form->create() ?>
         <fieldset>
         <legend><?= __('Please enter the following information') ?></legend>

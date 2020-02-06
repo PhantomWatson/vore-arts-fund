@@ -46,12 +46,9 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 </head>
 <body class="home">
 
-<h1> Vore Arts Fund (AKA home page)</h1>
-
-    <?= $this->Html->link('Home', '/', array('class' => 'button'));?>
-    <?= $this->Html->link('Make a New Application', '/apply', array('class' => 'button')); ?>
-    <?= $this->Html->link('My Account', '/my-account', array('class' => 'button')); ?>
-    <?= $this->Html->link('Logout', '/logout', array('class' => 'button')); ?>
+    <h1> Vore Arts Fund (AKA home page)</h1>
+    
+    <?= $this->element('navbar'); ?>
     
 </body>
 </html>
