@@ -22,6 +22,7 @@ use Cake\Http\Exception\NotFoundException;
 $this->layout = false;
 
 $cakeDescription = 'CakePHP: the rapid development PHP framework';
+$user = $this->request->getSession()->read('Auth.User');
 ?>
 <!DOCTYPE html>
 <html>
@@ -41,11 +42,23 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 <body class="home">
 
 <center>
-<?= $this->Html->link('Home', '/', array('class' => 'button'));?>
-    <?= $this->Html->link('Apply', '/apply', array('class' => 'button')); ?>
-    <?= $this->Html->link('My Account', '/my-account', array('class' => 'button')); ?>
-    <?= $this->Html->link('Vote', '/vote', array('class' => 'button')); ?>
-
+    <?php
+    $isAdmin = $user['is_admin'];
+    if ( $isAdmin == 1){
+        echo $this->Html->link('Admin Page', '/admin-page', array('class' => 'button'));
+    }
+    echo $this->Html->link('Home', '/', array('class' => 'button'));
+    echo $this->Html->link('Vote', '/vote', array('class' => 'button'));
+    $userID = $user['id'];
+    if ($userID == null){
+        echo $this->Html->link('Register', '/register', array('class' => 'button'));
+        echo $this->Html->link('Login', '/login', array('class' => 'button'));
+    }else{
+        echo $this->Html->link('My Account', '/my-account', array('class' => 'button'));
+        echo $this->Html->link('Apply', '/apply', array('class' => 'button'));
+        echo $this->Html->link('Login Out', '/logout', array('class' => 'button'));
+    }
+    ?>
 </center>
 </body>
 </html>

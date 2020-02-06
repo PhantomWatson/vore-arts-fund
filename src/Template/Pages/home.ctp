@@ -46,9 +46,10 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 </head>
 <body class="home">
 
+    <?= $this->element('navbar'); ?>
+
     <h1> Vore Arts Fund (AKA home page)</h1>
     
-    <?= $this->element('navbar'); ?>
     
 </body>
 </html>
