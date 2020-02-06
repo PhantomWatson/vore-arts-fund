@@ -40,6 +40,9 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 </head>
 <body class="home">
 
+    <?= $this->element('navbar'); ?>
+
+
     <h1>Apply</h1>
 
     <div>
