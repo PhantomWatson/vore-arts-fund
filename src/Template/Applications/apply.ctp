@@ -58,7 +58,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             <?= $this->Form->label('Accept Partial Payout') ?>
             <?= $this->Form->radio('accept_partial_payout', ['Yes', 'No'], ['required' => true]) ?>
         </fieldset>
-    <?= $this->Form->button(__('Save')); ?>
+    <?= $this->Form->button(__('Save'), array('name' => 'save')); ?>
     <?= $this->Form->submit(__('Submit')); ?>
     <?= $this->Form->end() ?>
 

@@ -53,11 +53,11 @@ class ApplicationsController extends AppController
                 $application->category_id = $data['category'];
                 $application->user_id = $this->Auth->user('id');
                 $application->funding_cycle_id = $fundingCycle->id;
-                $application->status_id = 1;
+                $application->status_id = isset($data['save']) ? 1 : 0;
                 if ($applicationsTable->save($application)) {
-                    $this->Flash->success(__('The application has been submitted.'));
+                    $this->Flash->success(__('The application has been ' . (isset($data['save']) ? 'saved.' : 'submitted.')));
                 } else {
-                    $this->Flash->error(__('The application could not be submitted.'));
+                    $this->Flash->error(__('The application could not be ' . (isset($data['save']) ? 'saved.' : 'submitted.')));
                 }
             } else {
                 $this->Flash->error(__('No valid funding cycle.'));
