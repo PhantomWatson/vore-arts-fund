@@ -72,6 +72,10 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+            // admins should only be assignable from the database itself, new accounts always default to 0
+            $user->is_admin = 0;
+            // is_verified will later be assigned based on text verification API
+            $user->is_verified = 1;
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
                 return $this->redirect(['action' => 'register']);

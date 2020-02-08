@@ -52,8 +52,6 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             <?= $this->Form->control('name') ?>
             <?= $this->Form->control('phone') ?>
             <?= $this->Form->control('verification_code') ?>
-            <?= $this->Form->control('is_admin') ?>
-            <?= $this->Form->control('is_verified') ?>
        </fieldset>
     <?= $this->Form->button(__('Submit')); ?>
     <?= $this->Form->end() ?>
