@@ -22,10 +22,12 @@ use Cake\Http\Exception\NotFoundException;
 $this->layout = false;
 
 $cakeDescription = 'CakePHP: the rapid development PHP framework';
+$user = $this->request->getSession()->read('Auth.User');
 ?>
 <!DOCTYPE html>
 <html>
 <head>
+    <?= $this->Flash->render() ?>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
@@ -39,10 +41,27 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
 </head>
 <body class="home">
-    <?= $this->element('navbar'); ?>
+    <h1>Change Account Information</h1>
+    <?php
+    $isAdmin = $user['is_admin'];
+    ?>
+       <div class="users form">
+    <?= $this->Form->create('User') ?>
+    <?= $this->Flash->render() ?>
+        <fieldset>
+            <legend><?= __('Enter information you are wanting to change, leave boxes empty if you do not wish to change information:') ?></legend>
+           <h3>*Old Password can not be empty</h3>
+            <?= $this->Form->control('email') ?>
+            <?= $this->Form->control('name') ?>
+            <?= $this->Form->control('phone') ?>
+            <?= $this->Form->control('current password') ?>
+            <?= $this->Form->control('new password') ?>
 
-    <h1>My Account</h1>
-    <?=$this->Html->link('Change Account Info', '/change-account-info', array('class' => 'button')); ?>
+        </fieldset>
+    <?= $this->Form->button(__('Submit')); ?>
+    <?= $this->Form->end() ?>
+
+
 
 </body>
 </html>

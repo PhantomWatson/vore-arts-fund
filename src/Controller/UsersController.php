@@ -18,6 +18,8 @@ use Cake\Core\Configure;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
+use Cake\Datasource\ConnectionManager;
+use Cake\Auth\DefaultPasswordHasher;
 
 /**
  * Static content controller
@@ -107,6 +109,42 @@ class UsersController extends AppController
 
     public function adminPage(...$path) {
         return null;
+    }
+
+    public function changeAccountInfo() {
+        $user = $this->request->getSession()->read('Auth.User');
+        if ($this->request->is('post')){
+            $userID = $user['id'];
+            $connection = ConnectionManager::get('default');
+            $results = $connection->execute('SELECT password FROM users WHERE id = :id', ['id' => $userID])->fetchAll('assoc');
+            $password = $results[0]['password'];
+            $data = $this->request->data;
+            $currentPassword = $data['current_password'];
+
+            $newEmail = $data['email'];
+            $newName = $data['name'];
+            $newPhone = $data['phone'];
+            $newPassword = $data['new_password'];
+
+            if ((new DefaultPasswordHasher)->check($currentPassword, $password)){
+                if((!($newEmail=== "" or $newEmail === " "))){
+                    $connection->execute("UPDATE users set email = '$newEmail' where id = '$userID'");
+                }
+                if((!($newName=== "" or $newName === " "))){
+                    $connection->execute("UPDATE users set name = '$newName' where id = '$userID'");
+                }
+                if((!($newPhone=== "" or $newPhone === " "))){
+                    $connection->execute("UPDATE users set phone = '$newPhone' where id = '$userID'");
+                }
+                if((!($newPassword=== "" or $newPassword === " "))){
+                    $newHashedPassword = (new DefaultPasswordHasher)->hash($newPassword);
+                    $connection->execute("UPDATE users set password = '$newHashedPassword' where id = '$userID'");
+                }
+                return $this->redirect($this->Auth->redirectUrl());
+            }else{
+                $this->Flash->error(__('Unable to update account information, please make sure to enter old password'));
+            }
+        }
     }
 
 }

@@ -81,6 +81,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/verify', ['controller' => 'Users', 'action' => 'verify']);
     $routes->connect('/verify/resend', ['controller' => 'Users', 'action' => 'verifyResend']);
     $routes->connect('/admin-page', ['controller' => 'Users', 'action' => 'adminPage']);
+    $routes->connect('/change-account-info', ['controller' => 'Users', 'action' => 'changeAccountInfo']);
 
 
 
