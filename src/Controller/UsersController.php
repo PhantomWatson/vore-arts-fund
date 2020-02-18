@@ -20,6 +20,10 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 use Cake\Datasource\ConnectionManager;
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\DataSource\EntityInterface;
+use Cake\ORM\TableRegistry;
+use Cake\Mailer\Email;
+
 
 /**
  * Static content controller
@@ -40,6 +44,13 @@ class UsersController extends AppController
      * @throws \Cake\Http\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
+
+     var $name = 'Users';
+     var $helpers = array('Html', 'Form', 'Time');
+     var $uses = array('User');
+     var $allowCookie = true;
+     var $cookieTerm = '0';
+
 
     public function beforeFilter($event)
     {
@@ -92,8 +103,124 @@ class UsersController extends AppController
     }
 
     public function forgotPassword(...$path) {
-        return null;
+       if($this->request->is('post')){
+           $user = $this->Users->findByEmail($this->request->getData()['User']['email'])->first();
+           if(empty($user)){
+               $this->Flash->error('Sorry, the username entered was not found.');
+               $this->redirect('/Users/forgot_password');
+           } else {
+               $user = $this->__generatePasswordToken($user);
+               debug($user);
+               if($this->Users->save($user) && $this->__sendForgotPasswordEmail($user)){
+                   $this->Flash->success('Password reset instructions have been sent to your email address. You have 24 hours to complete the request.');
+                   $this->redirect('/Users/login');
+               }
+           }
+       }
     }
+
+    public function reset_password_token($reset_password_token = null){
+        if(empty($this->data)){
+            $this->data = $this->Users->findByResetPasswordToken($reset_password_token);
+            if(!empty($this->data['User']['reset_password_token']) && !empty($this->data['User']['token_created_at']) && $this->__validToken($this->data['User']['token_created_at'])){
+                $this->data['User']['id'] = null;
+                $_SESSION['token'] = $reset_password_token;
+            } else {
+                $this->Flash->error('The password reset request has either expired or is invalid');
+                $this->redirect('/Users/login');
+            }
+        } else {
+            if($this->data['User']['reset_password_token'] != $_SESSION['token']){
+                $this->Flash->error('The password reset request has either expired or is invalid');
+                $this->redirect('/Users/login');
+            }
+
+            $user = $this->Users->findByResetPasswordToken($this->data['User']['reset_password_token']);
+            $this->Users->id = $user['User']['id'];
+
+            if($this->Users->save($this->data, array('validate' => 'only'))){
+                // $this->data['User']['reset_password_token'] = $this->data['User']['token_created_at'] = null;
+                if($this->Users->save($this->data) && $this->__sendPasswordChangedEmail($user['User']['id'])){
+                    unset($_SESSION['token']);
+                    $this->Session->setflash('Your password was changed successfully. Please login to continue');
+                    $this->redirect('/Users/login');
+                }
+            }
+        }
+    }
+
+    function __generatePasswordToken($user) {
+        if (empty($user)) {
+            return null;
+        }
+
+        // Generate a random string 100 chars in length.
+        // $token = "";
+        // for ($i = 0; $i < 6; $i++) {
+        //     $d = rand(1, 100000) % 2;
+        //     $d ? $token .= chr(rand(33,79)) : $token .= chr(rand(80,126));
+        // }
+
+        // (rand(1, 100000) % 2) ? $token = strrev($token) : $token = $token;
+
+        // Generate hash of random string
+        // $hash = (new DefaultPasswordHasher)->hash($token);
+
+
+
+        $user['reset_password_token'] = 1234;
+        // $user['User']['token_created_at']     = date('Y-m-d H:i:s');
+
+        return $user;
+    }
+
+    function __validToken($token_created_at) {
+        $expired = strtotime($token_created_at) + 86400;
+        $time = strtotime("now");
+        if ($time < $expired) {
+            return true;
+        }
+        return false;
+    }
+
+
+    function __sendForgotPasswordEmail($user = null) {
+        if (!empty($user)) {
+            $email = new Email();
+
+            $email->to($user['email']);
+            $email->subject('Password Reset Request - DO NOT REPLY');
+            $email->replyTo('noreply@voreartsfund.org');
+            $email->from('noreply@voreartsfund.org');
+            $email->template('reset_password_request');
+            $email->emailFormat('html');
+            $this->set('User', $user);
+            $email->send();
+
+            return true;
+        }
+        return false;
+    }
+
+    function __sendPasswordChangedEmail($id = null) {
+        if (!empty($id)) {
+            $this->User->id = $id;
+            $User = $this->User->read();
+
+            $this->Email->to 		= $User['User']['email'];
+            $this->Email->subject 	= 'Password Changed - DO NOT REPLY';
+            $this->Email->replyTo 	= 'noreply@voreartsfund.org';
+            $this->Email->from 		= 'Do Not Reply <noreply@voreartsfund.org>';
+            $this->Email->template 	= 'password_reset_success';
+            $this->Email->sendAs 	= 'both';
+            $this->set('User', $User);
+            $this->Email->send();
+
+            return true;
+        }
+        return false;
+    }
+
 
     public function verify(...$path) {
         return null;

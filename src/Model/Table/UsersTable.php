@@ -87,7 +87,6 @@ class UsersTable extends Table
             ->notEmptyString('password');
 
         $validator
-            ->integer('phone')
             ->requirePresence('phone', 'create')
             ->notEmptyString('phone');
 
@@ -105,6 +104,10 @@ class UsersTable extends Table
             ->boolean('is_verified')
             ->requirePresence('is_verified', 'create')
             ->notEmptyString('is_verified');
+
+        $validator
+            ->integer('reset_password_token')
+            ->allowEmptyString('reset_password_token');
 
         return $validator;
     }

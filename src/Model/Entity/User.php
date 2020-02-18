@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\Entity;
 
-use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Entity;
 
 /**
@@ -15,6 +14,7 @@ use Cake\ORM\Entity;
  * @property bool $is_admin
  * @property int $verification_code
  * @property bool $is_verified
+ * @property int|null $reset_password_token
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -42,6 +42,7 @@ class User extends Entity
         'is_admin' => true,
         'verification_code' => true,
         'is_verified' => true,
+        'reset_password_token' => true,
         'created' => true,
         'modified' => true,
         'applications' => true,
@@ -49,14 +50,6 @@ class User extends Entity
         'notes' => true,
         'votes' => true
     ];
-
-    protected function _setPassword($password)
-    {
-        if (strlen($password) > 0) {
-            return (new DefaultPasswordHasher)->hash($password);
-        }
-    }
-
 
     /**
      * Fields that are excluded from JSON versions of the entity.

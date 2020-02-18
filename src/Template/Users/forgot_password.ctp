@@ -46,8 +46,14 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 <?= $this->Flash->render() ?>
 <?= $this->Form->create() ?>
     <fieldset>
-        <legend><?= __('Please enter the email for the account you wish to rest the password for.') ?></legend>
-        <?= $this->Form->control('email') ?>
+        <h1>Enter Your Username</h1>
+        <?php echo $this->Form->create(null, array('action' => 'forgot_password', 'id' => 'web-form')); ?>
+        <?php echo $this->Form->input('User.email', array('label' => 'Email', 'between'=>'<br />', 'type'=>'text')); ?>
+        <?php echo $this->Form->submit('Send Password Reset Instructions', array('class' => 'submit', 'id' => 'submit')); ?>
+        <?php echo $this->Form->end(); ?>
+<!-- 
+        <?= __('Please enter the email for the account you wish to rest the password for.') ?></legend>
+        <?= $this->Form->control('email') ?>  -->
     </fieldset>
 <?= $this->Form->button(__('Submit')); ?>
 <?= $this->Form->end() ?>
