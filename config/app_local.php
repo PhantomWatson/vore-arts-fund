@@ -5,7 +5,9 @@
  * are made available through https://github.com/cakephp/app, it can be easily overwritten.
  */
 
-return [
+use Cake\Core\Configure;
+
+$config = [
     /**
      * Apply timestamps with the last modified time to static assets (js, css, images).
      * Will append a querystring parameter containing the time the file was modified.
@@ -100,4 +102,26 @@ return [
             'encoding' => 'utf8mb4'
         ],
     ],
+
+    'Log' => [
+        'email' => [
+            'className' => 'Cake\Log\Engine\FileLog',
+            'path' => LOGS,
+            'file' => 'email',
+            'levels' => ['info'],
+        ],
+    ]
 ];
+
+if (Configure::read('debug')) {
+    // Use the DebugTransport class to emulate sending an email without actually sending it
+    $config['EmailTransport']['default']['className'] = 'Debug';
+
+    // Log emails to /logs/email.log
+    $config['Email']['default']['log'] = [
+        'level' => 'info',
+        'scope' => 'email',
+    ];
+}
+
+return $config;
