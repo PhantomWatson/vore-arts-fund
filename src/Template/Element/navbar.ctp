@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -12,6 +13,7 @@
  * @since         0.10.0
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
@@ -21,44 +23,53 @@ use Cake\Http\Exception\NotFoundException;
 
 $this->layout = false;
 
-$cakeDescription = 'CakePHP: the rapid development PHP framework';
 $user = $this->request->getSession()->read('Auth.User');
+$isAdmin = $user['is_admin'];
+$userID = $user['id'];
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $cakeDescription ?>
-    </title>
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #BA0C2F">
+    <a class="navbar-brand" href="/">Vore Arts Fund</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <?= $this->Html->link('Home', '/', array('class' => 'nav-link')); ?>
+            </li>
+            <li class="nav-item">
+                <?= $this->Html->link('Vote', '/vote', array('class' => 'nav-link')); ?>
+            </li>
+            <?php
+            if ($userID == null) {
+            ?>
+                <li class="nav-item">
+                    <?= $this->Html->link('Register', '/register', array('class' => 'nav-link')); ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link('Login', '/login', array('class' => 'nav-link')); ?>
+                </li>
+                <?php
+                if ($isAdmin == 1) : ?>
+                    <li class="nav-item">
 
-    <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->css('home.css') ?>
-    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
-</head>
-<body class="home">
+                        <?= $this->Html->link('Admin Page', '/admin-page', array('class' => 'nav-link')) ?>
+                    </li>
+                <?php endif;
+            } else {
+                ?>
+                <li class="nav-item">
+                    <?= $this->Html->link('My Account', '/my-account', array('class' => 'nav-link')); ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link('Apply', '/apply', array('class' => 'nav-link')); ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link('Log Out', '/logout', array('class' => 'nav-link')); ?>
+                </li>
+            <?php
+            } ?>
 
-<center>
-    <?php
-    $isAdmin = $user['is_admin'];
-    if ( $isAdmin == 1){
-        echo $this->Html->link('Admin Page', '/admin-page', array('class' => 'button'));
-    }
-    echo $this->Html->link('Home', '/', array('class' => 'button'));
-    echo $this->Html->link('Vote', '/vote', array('class' => 'button'));
-    $userID = $user['id'];
-    if ($userID == null){
-        echo $this->Html->link('Register', '/register', array('class' => 'button'));
-        echo $this->Html->link('Login', '/login', array('class' => 'button'));
-    }else{
-        echo $this->Html->link('My Account', '/my-account', array('class' => 'button'));
-        echo $this->Html->link('Apply', '/apply', array('class' => 'button'));
-        echo $this->Html->link('Login Out', '/logout', array('class' => 'button'));
-    }
-    ?>
-</center>
-</body>
-</html>
+        </ul>
+    </div>
+</nav>
