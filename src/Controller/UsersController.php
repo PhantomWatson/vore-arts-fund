@@ -35,8 +35,8 @@ use Cake\Mailer\Email;
 class UsersController extends AppController
 {
     protected $name = 'Users';
-    protected $helpers = array('Html', 'Form', 'Time');
-    protected $uses = array('User');
+    protected $helpers = ['Html', 'Form', 'Time'];
+    protected $uses = ['User'];
     protected $allowCookie = true;
     protected $cookieTerm = '0';
 
@@ -133,7 +133,7 @@ class UsersController extends AppController
             $user = $this->Users->findByResetPasswordToken($this->data['User']['reset_password_token']);
             $this->Users->id = $user['User']['id'];
 
-            if($this->Users->save($this->data, array('validate' => 'only'))){
+            if($this->Users->save($this->data, ['validate' => 'only'])){
                 // $this->data['User']['reset_password_token'] = $this->data['User']['token_created_at'] = null;
                 if($this->Users->save($this->data) && $this->__sendPasswordChangedEmail($user['User']['id'])){
                     unset($_SESSION['token']);
