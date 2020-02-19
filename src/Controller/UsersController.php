@@ -30,7 +30,6 @@ use Cake\Mailer\Email;
  */
 class UsersController extends AppController
 {
-    protected $uses = ['User'];
     protected $allowCookie = true;
     protected $cookieTerm = '0';
 
