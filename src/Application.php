@@ -39,6 +39,9 @@ class Application extends BaseApplication
 
         if (PHP_SAPI === 'cli') {
             $this->bootstrapCli();
+            if (Configure::read('debug')) {
+                $this->addPlugin('IdeHelper');
+            }
         }
 
         /*

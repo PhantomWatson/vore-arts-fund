@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "41f3303b08502ce80dab8bc816602136",
+    "content-hash": "399b5add571f2d78142aff9d82a526b2",
     "packages": [
         {
             "name": "aura/intl",
@@ -1153,6 +1153,7 @@
                 "psr",
                 "psr-7"
             ],
+            "abandoned": "laminas/laminas-diactoros",
             "time": "2019-08-06T17:53:53+00:00"
         }
     ],
@@ -1782,6 +1783,75 @@
                 "performance"
             ],
             "time": "2019-05-27T17:52:04+00:00"
+        },
+        {
+            "name": "dereuromark/cakephp-ide-helper",
+            "version": "0.14.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dereuromark/cakephp-ide-helper.git",
+                "reference": "42f4a7c6145cc7a43bf2005a8a6f65e0dc9c82c4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dereuromark/cakephp-ide-helper/zipball/42f4a7c6145cc7a43bf2005a8a6f65e0dc9c82c4",
+                "reference": "42f4a7c6145cc7a43bf2005a8a6f65e0dc9c82c4",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/bake": "^1.8.0",
+                "cakephp/cakephp": "^3.7",
+                "php": ">=5.6",
+                "sebastian/diff": "^1.4 || ^2.0 || ^3.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "require-dev": {
+                "dereuromark/cakephp-shim": "^1.8.3",
+                "dereuromark/cakephp-tools": "^1.9.0",
+                "fig-r/psr2r-sniffer": "dev-master",
+                "phpunit/phpunit": "^5.7.14|^6.0",
+                "squizlabs/php_codesniffer": "^3.5.2"
+            },
+            "type": "cakephp-plugin",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "IdeHelper\\": "src/",
+                    "IdeHelper\\Test\\Fixture\\": "tests/Fixture/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Scherer",
+                    "homepage": "https://www.dereuromark.de",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Other contributors",
+                    "homepage": "https://github.com/dereuromark/cakephp-ide-helper/graphs/contributors",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CakePHP IdeHelper Plugin to improve auto-completion",
+            "homepage": "https://github.com/dereuromark/cakephp-ide-helper/",
+            "keywords": [
+                "annotations",
+                "autocomplete",
+                "cakephp",
+                "ide",
+                "phpdoc",
+                "phpstorm",
+                "plugin"
+            ],
+            "time": "2020-01-11T01:42:11+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -4326,7 +4396,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1"
+        "php": ">=7.2"
     },
     "platform-dev": []
 }
