@@ -15,6 +15,7 @@
 namespace App\Controller;
 
 use App\Model\Entity\User;
+use App\Model\Table\UsersTable;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
@@ -22,10 +23,9 @@ use Cake\Http\Response;
 use Cake\Mailer\Email;
 
 /**
- * Static content controller
+ * UsersController
  *
- * This controller will render views from Template/Pages/
- *
+ * @property UsersTable $Users
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
 class UsersController extends AppController
