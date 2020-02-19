@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -12,6 +13,7 @@
  * @since         0.10.0
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
@@ -25,37 +27,33 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
-    <?= $this->Html->charset() ?>
-    <?= $this->Flash->render() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?= $this->element('head'); ?>
     <title>
         <?= $cakeDescription ?>
     </title>
-
-    <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->css('home.css') ?>
-    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
 </head>
+
 <body class="home">
     <?= $this->element('navbar'); ?>
-    <h1>Register</h1>
+    <div class="container">
+        <h1>Register</h1>
 
-    <div class="users form">
-    <?= $this->Form->create($user) ?>
-        <fieldset>
-            <legend><?= __('Register User') ?></legend>
-            <?= $this->Form->control('email') ?>
-            <?= $this->Form->control('password') ?>
-            <?= $this->Form->control('name') ?>
-            <?= $this->Form->control('phone') ?>
-            <?= $this->Form->control('verification_code') ?>
-       </fieldset>
-    <?= $this->Form->button(__('Submit')); ?>
-    <?= $this->Form->end() ?>
+        <div class="users form">
+            <?= $this->Form->create($user) ?>
+            <fieldset>
+                <legend><?= __('Register User') ?></legend>
+                <?= $this->Form->control('email') ?>
+                <?= $this->Form->control('password') ?>
+                <?= $this->Form->control('name') ?>
+                <?= $this->Form->control('phone') ?>
+                <?= $this->Form->control('verification_code') ?>
+            </fieldset>
+            <?= $this->Form->button(__('Submit')); ?>
+            <?= $this->Form->end() ?>
+        </div>
     </div>
-
 </body>
+
 </html>
