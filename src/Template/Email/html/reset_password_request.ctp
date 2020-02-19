@@ -1,6 +1,7 @@
 <?php
 /**
  * @var array $User
+ * @var \App\View\AppView $this
  */
 use Cake\Routing\Router;
 

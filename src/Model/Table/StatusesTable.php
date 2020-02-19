@@ -19,6 +19,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Status patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Status[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Status findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Status[]|\Cake\Datasource\ResultSetInterface|false saveMany($entities, $options = [])
  */
 class StatusesTable extends Table
 {

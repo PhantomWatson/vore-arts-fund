@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var object $form
+ */
+?>
 <h1>Change Your Password</h1>
 <?php echo $form->create(null, array('action' => 'reset_password_token', 'id' => 'web-form')); ?>
     <?php echo $form->hidden('User.reset_password_token'); ?>

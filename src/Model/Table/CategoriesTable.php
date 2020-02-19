@@ -19,6 +19,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Category patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Category[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Category findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Category[]|\Cake\Datasource\ResultSetInterface|false saveMany($entities, $options = [])
  */
 class CategoriesTable extends Table
 {

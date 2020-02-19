@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var array $User
+ */
+?>
 <p>Dear <?php echo $User['User']['email']; ?>,</p>
 
 <p>Your password has been changed successfully.</p>

@@ -12,7 +12,7 @@ use Cake\Mailer\Email;
 /**
  * UsersController
  *
- * @property UsersTable $Users
+ * @property \App\Model\Table\UsersTable $Users
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
 class UsersController extends AppController

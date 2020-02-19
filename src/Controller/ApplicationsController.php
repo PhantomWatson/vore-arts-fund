@@ -28,6 +28,7 @@ use Cake\ORM\TableRegistry;
  * This controller will render views from Template/Pages/
  *
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
+ * @property \App\Model\Table\ApplicationsTable $Applications
  */
 class ApplicationsController extends AppController
 {

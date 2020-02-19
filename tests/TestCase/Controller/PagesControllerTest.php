@@ -24,6 +24,8 @@ use Cake\View\Exception\MissingTemplateException;
 
 /**
  * PagesControllerTest class
+ *
+ * @uses \App\Controller\PagesController
  */
 class PagesControllerTest extends IntegrationTestCase
 {
