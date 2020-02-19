@@ -31,7 +31,6 @@ use Cake\Mailer\Email;
 class UsersController extends AppController
 {
     protected $name = 'Users';
-    protected $helpers = ['Html', 'Form', 'Time'];
     protected $uses = ['User'];
     protected $allowCookie = true;
     protected $cookieTerm = '0';
