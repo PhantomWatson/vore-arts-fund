@@ -258,16 +258,16 @@ class UsersController extends AppController
             $newPassword = $data['new_password'];
 
             if ((new DefaultPasswordHasher)->check($currentPassword, $password)) {
-                if ((!($newEmail === "" or $newEmail === " "))) {
+                if ((!($newEmail === "" || $newEmail === " "))) {
                     $connection->execute("UPDATE users set email = '$newEmail' where id = '$userID'");
                 }
-                if ((!($newName === "" or $newName === " "))) {
+                if ((!($newName === "" || $newName === " "))) {
                     $connection->execute("UPDATE users set name = '$newName' where id = '$userID'");
                 }
-                if ((!($newPhone === "" or $newPhone === " "))) {
+                if ((!($newPhone === "" || $newPhone === " "))) {
                     $connection->execute("UPDATE users set phone = '$newPhone' where id = '$userID'");
                 }
-                if ((!($newPassword === "" or $newPassword === " "))) {
+                if ((!($newPassword === "" || $newPassword === " "))) {
                     $newHashedPassword = (new DefaultPasswordHasher)->hash($newPassword);
                     $connection->execute("UPDATE users set password = '$newHashedPassword' where id = '$userID'");
                 }
