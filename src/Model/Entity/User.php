@@ -16,6 +16,7 @@ use Cake\ORM\Entity;
  * @property int $verification_code
  * @property bool $is_verified
  * @property int|null $reset_password_token
+ * @property \Cake\I18n\FrozenTime $token_created_date
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -49,7 +50,8 @@ class User extends Entity
         'applications' => true,
         'messages' => true,
         'notes' => true,
-        'votes' => true
+        'votes' => true,
+        'token_created_date' => true,
     ];
 
     /**

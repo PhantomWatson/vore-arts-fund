@@ -112,6 +112,10 @@ class UsersTable extends Table
             ->integer('reset_password_token')
             ->allowEmptyString('reset_password_token');
 
+        $validator
+            ->dateTime('token_created_date')
+            ->allowEmptyDateTime('token_created_date');
+
         return $validator;
     }
 
