@@ -78,13 +78,6 @@ try {
 }
 
 /*
- * Load an environment local configuration file.
- * You can use a file like app_local.php to provide local overrides to your
- * shared configuration.
- */
-//Configure::load('app_local', 'default');
-
-/*
  * When debug = true the metadata cache should only last
  * for a short time.
  */
