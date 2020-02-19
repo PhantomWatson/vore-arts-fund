@@ -14,8 +14,11 @@
  */
 namespace App\Controller;
 
+use App\Model\Entity\User;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Datasource\ConnectionManager;
+use Cake\Event\Event;
+use Cake\Http\Response;
 use Cake\Mailer\Email;
 
 /**
@@ -33,6 +36,12 @@ class UsersController extends AppController
     protected $allowCookie = true;
     protected $cookieTerm = '0';
 
+    /**
+     * beforeFilter callback method
+     *
+     * @param Event $event Event object
+     * @return void
+     */
     public function beforeFilter($event)
     {
         parent::beforeFilter($event);
@@ -46,17 +55,33 @@ class UsersController extends AppController
         ]);
     }
 
+    /**
+     * Users index page
+     *
+     * @return void
+     */
     public function index()
     {
         $this->set('users', $this->Users->find('all'));
     }
 
+    /**
+     * Users view page
+     *
+     * @param int $id User ID
+     * @return void
+     */
     public function view($id)
     {
         $user = $this->Users->get($id);
         $this->set(compact('user'));
     }
 
+    /**
+     * Login page
+     *
+     * @return Response|null
+     */
     public function login()
     {
         if ($this->request->is('post')) {
@@ -71,6 +96,11 @@ class UsersController extends AppController
         }
     }
 
+    /**
+     * User registration page
+     *
+     * @return Response|null
+     */
     public function register()
     {
         $user = $this->Users->newEntity();
@@ -90,11 +120,24 @@ class UsersController extends AppController
         $this->set('user', $user);
     }
 
+    /**
+     * Logout page
+     *
+     * @return Response
+     */
     public function logout()
     {
         return $this->redirect($this->Auth->logout());
     }
 
+    /**
+     * Forgot password page
+     *
+     * This page shows the user a form for having an email sent to them with a means to reset their password
+     *
+     * @param array ...$path Path segments
+     * @return \Cake\Http\Response|null
+     */
     public function forgotPassword(...$path)
     {
         if ($this->request->is('post')) {
@@ -113,6 +156,14 @@ class UsersController extends AppController
         }
     }
 
+    /**
+     * Password reset page
+     *
+     * This is the page that is linked to in the password-reset emails sent to users
+     *
+     * @param string $reset_password_token User-specific password reset token
+     * @return \Cake\Http\Response|null
+     */
     public function reset_password_token($reset_password_token = null)
     {
         if (empty($this->data)) {
@@ -144,6 +195,12 @@ class UsersController extends AppController
         }
     }
 
+    /**
+     * Generates a password token for the specified user and then returns the modified user entity
+     *
+     * @param User $user User entity
+     * @return User|null
+     */
     private function __generatePasswordToken($user)
     {
         if (empty($user)) {
@@ -168,9 +225,15 @@ class UsersController extends AppController
         return $user;
     }
 
+    /**
+     * Returns TRUE if the time passed to it was within the last day
+     *
+     * @param string $token_created_at A string representing the time that a token was generated
+     * @return bool
+     */
     private function __validToken($token_created_at)
     {
-        $expired = strtotime($token_created_at) + 86400;
+        $expired = strtotime($token_created_at) + 86400; // 24 hours
         $time = strtotime("now");
         if ($time < $expired) {
             return true;
@@ -179,7 +242,12 @@ class UsersController extends AppController
         return false;
     }
 
-
+    /**
+     * Sends an email with a link for resetting a password to the provided user
+     *
+     * @param User|null $user User entity
+     * @return bool
+     */
     private function __sendForgotPasswordEmail($user = null)
     {
         if (!empty($user)) {
@@ -200,6 +268,12 @@ class UsersController extends AppController
         return false;
     }
 
+    /**
+     * Sends an email confirming that the specified user's password has been changed
+     *
+     * @param int $id User ID
+     * @return bool
+     */
     private function __sendPasswordChangedEmail($id = null)
     {
         if (!empty($id)) {
@@ -221,26 +295,55 @@ class UsersController extends AppController
         return false;
     }
 
+    /**
+     * User account verification page
+     *
+     * @param array ...$path Path segments
+     * @return null
+     */
     public function verify(...$path)
     {
         return null;
     }
 
+    /**
+     * Page for resending a verification email
+     *
+     * @param array ...$path Path segments
+     * @return null
+     */
     public function verifyResend(...$path)
     {
         return null;
     }
 
+    /**
+     * "My Account" page
+     *
+     * @param array ...$path Path segments
+     * @return null
+     */
     public function myAccount(...$path)
     {
         return null;
     }
 
+    /**
+     * User administration page
+     *
+     * @param array ...$path Path segments
+     * @return null
+     */
     public function adminPage(...$path)
     {
         return null;
     }
 
+    /**
+     * This page allows users to change their own account information
+     *
+     * @return Response|null
+     */
     public function changeAccountInfo()
     {
         $user = $this->request->getSession()->read('Auth.User');
