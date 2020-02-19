@@ -156,7 +156,7 @@ class UsersController extends AppController
         }
     }
 
-    function __generatePasswordToken($user) {
+    private function __generatePasswordToken($user) {
         if (empty($user)) {
             return null;
         }
@@ -181,7 +181,7 @@ class UsersController extends AppController
         return $user;
     }
 
-    function __validToken($token_created_at) {
+    private function __validToken($token_created_at) {
         $expired = strtotime($token_created_at) + 86400;
         $time = strtotime("now");
         if ($time < $expired) {
@@ -191,7 +191,7 @@ class UsersController extends AppController
     }
 
 
-    function __sendForgotPasswordEmail($user = null) {
+    private function __sendForgotPasswordEmail($user = null) {
         if (!empty($user)) {
             $email = new Email();
             $email
@@ -209,7 +209,7 @@ class UsersController extends AppController
         return false;
     }
 
-    function __sendPasswordChangedEmail($id = null) {
+    private function __sendPasswordChangedEmail($id = null) {
         if (!empty($id)) {
             $this->User->id = $id;
             $User = $this->User->read();
