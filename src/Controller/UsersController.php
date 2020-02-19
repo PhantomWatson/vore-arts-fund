@@ -216,7 +216,7 @@ class UsersController extends AppController
         // Generate hash of random string
         // $hash = (new DefaultPasswordHasher)->hash($token);
 
-        $user['reset_password_token'] = 1234;
+        $user = $this->Users->patchEntity($user, ['reset_password_token' => 1234]);
         // $user['User']['token_created_at']     = date('Y-m-d H:i:s');
 
         return $user;
@@ -250,7 +250,7 @@ class UsersController extends AppController
         if (!empty($user)) {
             $email = new Email();
             $email
-                ->setTo($user['email'])
+                ->setTo($user->email)
                 ->setSubject('Password Reset Request - DO NOT REPLY')
                 ->setReplyTo('noreply@voreartsfund.org')
                 ->setFrom('noreply@voreartsfund.org')
@@ -274,10 +274,9 @@ class UsersController extends AppController
     private function __sendPasswordChangedEmail($id = null)
     {
         if (!empty($id)) {
-            $this->User->id = $id;
-            $User = $this->User->read();
+            $User = $this->Users->get($id);
 
-            $this->Email->to = $User['User']['email'];
+            $this->Email->to = $User->email;
             $this->Email->subject = 'Password Changed - DO NOT REPLY';
             $this->Email->replyTo = 'noreply@voreartsfund.org';
             $this->Email->from = 'Do Not Reply <noreply@voreartsfund.org>';
