@@ -107,13 +107,13 @@ class UsersController extends AppController
            $user = $this->Users->findByEmail($this->request->getData()['User']['email'])->first();
            if(empty($user)){
                $this->Flash->error('Sorry, the username entered was not found.');
-               $this->redirect('/Users/forgot_password');
+               $this->redirect(['action' => 'forgotPassword']);
            } else {
                $user = $this->__generatePasswordToken($user);
                debug($user);
                if($this->Users->save($user) && $this->__sendForgotPasswordEmail($user)){
                    $this->Flash->success('Password reset instructions have been sent to your email address. You have 24 hours to complete the request.');
-                   $this->redirect('/Users/login');
+                   $this->redirect(['action' => 'login']);
                }
            }
        }
@@ -127,12 +127,12 @@ class UsersController extends AppController
                 $_SESSION['token'] = $reset_password_token;
             } else {
                 $this->Flash->error('The password reset request has either expired or is invalid');
-                $this->redirect('/Users/login');
+                $this->redirect(['action' => 'login']);
             }
         } else {
             if($this->data['User']['reset_password_token'] != $_SESSION['token']){
                 $this->Flash->error('The password reset request has either expired or is invalid');
-                $this->redirect('/Users/login');
+                $this->redirect(['action' => 'login']);
             }
 
             $user = $this->Users->findByResetPasswordToken($this->data['User']['reset_password_token']);
@@ -143,7 +143,7 @@ class UsersController extends AppController
                 if($this->Users->save($this->data) && $this->__sendPasswordChangedEmail($user['User']['id'])){
                     unset($_SESSION['token']);
                     $this->Session->setflash('Your password was changed successfully. Please login to continue');
-                    $this->redirect('/Users/login');
+                    $this->redirect(['action' => 'login']);
                 }
             }
         }
