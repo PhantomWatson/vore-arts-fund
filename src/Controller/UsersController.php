@@ -54,26 +54,26 @@ class UsersController extends AppController
 
     public function beforeFilter($event)
     {
-      parent::beforeFilter($event);
-      $this->Auth->allow([
-          'forgotPassword',
-          'login',
-          'logout',
-          'register',
-          'reset_password_token',
-          'verify'
-      ]);
+        parent::beforeFilter($event);
+        $this->Auth->allow([
+            'forgotPassword',
+            'login',
+            'logout',
+            'register',
+            'reset_password_token',
+            'verify'
+        ]);
     }
 
     public function index()
     {
-      $this->set('users', $this->Users->find('all'));
+        $this->set('users', $this->Users->find('all'));
     }
 
     public function view($id)
     {
-      $user = $this->Users->get($id);
-      $this->set(compact('user'));
+        $user = $this->Users->get($id);
+        $this->set(compact('user'));
     }
 
     public function login() {
@@ -110,20 +110,20 @@ class UsersController extends AppController
     }
 
     public function forgotPassword(...$path) {
-       if($this->request->is('post')){
-           $user = $this->Users->findByEmail($this->request->getData()['User']['email'])->first();
-           if(empty($user)){
-               $this->Flash->error('Sorry, the email address entered was not found.');
-               $this->redirect(['action' => 'forgotPassword']);
-           } else {
-               $user = $this->__generatePasswordToken($user);
-               debug($user);
-               if($this->Users->save($user) && $this->__sendForgotPasswordEmail($user)){
-                   $this->Flash->success('Password reset instructions have been sent to your email address. You have 24 hours to complete the request.');
-                   $this->redirect(['action' => 'login']);
+        if($this->request->is('post')){
+        $user = $this->Users->findByEmail($this->request->getData()['User']['email'])->first();
+            if(empty($user)){
+                $this->Flash->error('Sorry, the email address entered was not found.');
+                $this->redirect(['action' => 'forgotPassword']);
+            } else {
+                $user = $this->__generatePasswordToken($user);
+                debug($user);
+                if($this->Users->save($user) && $this->__sendForgotPasswordEmail($user)){
+                    $this->Flash->success('Password reset instructions have been sent to your email address. You have 24 hours to complete the request.');
+                    $this->redirect(['action' => 'login']);
                }
-           }
-       }
+            }
+        }
     }
 
     public function reset_password_token($reset_password_token = null){
