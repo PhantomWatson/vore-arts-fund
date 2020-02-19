@@ -14,16 +14,9 @@
  */
 namespace App\Controller;
 
-use Cake\Core\Configure;
-use Cake\Http\Exception\ForbiddenException;
-use Cake\Http\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
-use Cake\Datasource\ConnectionManager;
 use Cake\Auth\DefaultPasswordHasher;
-use Cake\DataSource\EntityInterface;
-use Cake\ORM\TableRegistry;
+use Cake\Datasource\ConnectionManager;
 use Cake\Mailer\Email;
-
 
 /**
  * Static content controller
