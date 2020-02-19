@@ -113,7 +113,7 @@ class UsersController extends AppController
        if($this->request->is('post')){
            $user = $this->Users->findByEmail($this->request->getData()['User']['email'])->first();
            if(empty($user)){
-               $this->Flash->error('Sorry, the username entered was not found.');
+               $this->Flash->error('Sorry, the email address entered was not found.');
                $this->redirect(['action' => 'forgotPassword']);
            } else {
                $user = $this->__generatePasswordToken($user);
