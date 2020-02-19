@@ -275,15 +275,16 @@ class UsersController extends AppController
     {
         if (!empty($id)) {
             $User = $this->Users->get($id);
-
-            $this->Email->to = $User->email;
-            $this->Email->subject = 'Password Changed - DO NOT REPLY';
-            $this->Email->replyTo = 'noreply@voreartsfund.org';
-            $this->Email->from = 'Do Not Reply <noreply@voreartsfund.org>';
-            $this->Email->template = 'password_reset_success';
-            $this->Email->sendAs = 'both';
-            $this->set('User', $User);
-            $this->Email->send();
+            $email = new Email();
+            $email
+                ->setTo($User->email)
+                ->setSubject('Password Changed - DO NOT REPLY')
+                ->setReplyTo('noreply@voreartsfund.org')
+                ->setFrom('Do Not Reply <noreply@voreartsfund.org>')
+                ->setTemplate('password_reset_success')
+                ->setEmailFormat('both')
+                ->setViewVars(['User' => $User]);
+            $email->send();
 
             return true;
         }
