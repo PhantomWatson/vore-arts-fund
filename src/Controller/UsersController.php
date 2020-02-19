@@ -94,6 +94,8 @@ class UsersController extends AppController
                 $this->Flash->error(__('Invalid username or password, try again'));
             }
         }
+
+        return null;
     }
 
     /**
@@ -118,6 +120,8 @@ class UsersController extends AppController
             $this->Flash->error(__('Unable to register the user.'));
         }
         $this->set('user', $user);
+
+        return null;
     }
 
     /**
@@ -141,19 +145,23 @@ class UsersController extends AppController
     public function forgotPassword(...$path)
     {
         if ($this->request->is('post')) {
-        $user = $this->Users->findByEmail($this->request->getData()['User']['email'])->first();
+            $user = $this->Users->findByEmail($this->request->getData()['User']['email'])->first();
             if (empty($user)) {
                 $this->Flash->error('Sorry, the email address entered was not found.');
-                $this->redirect(['action' => 'forgotPassword']);
+
+                return $this->redirect(['action' => 'forgotPassword']);
             } else {
                 $user = $this->__generatePasswordToken($user);
                 debug($user);
                 if ($this->Users->save($user) && $this->__sendForgotPasswordEmail($user)) {
                     $this->Flash->success('Password reset instructions have been sent to your email address. You have 24 hours to complete the request.');
-                    $this->redirect(['action' => 'login']);
+
+                    return $this->redirect(['action' => 'login']);
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -173,12 +181,14 @@ class UsersController extends AppController
                 $_SESSION['token'] = $reset_password_token;
             } else {
                 $this->Flash->error('The password reset request has either expired or is invalid');
-                $this->redirect(['action' => 'login']);
+
+                return $this->redirect(['action' => 'login']);
             }
         } else {
             if ($this->data['User']['reset_password_token'] != $_SESSION['token']) {
                 $this->Flash->error('The password reset request has either expired or is invalid');
-                $this->redirect(['action' => 'login']);
+
+                return $this->redirect(['action' => 'login']);
             }
 
             $user = $this->Users->findByResetPasswordToken($this->data['User']['reset_password_token']);
@@ -189,10 +199,13 @@ class UsersController extends AppController
                 if ($this->Users->save($this->data) && $this->__sendPasswordChangedEmail($user['User']['id'])) {
                     unset($_SESSION['token']);
                     $this->Session->setflash('Your password was changed successfully. Please login to continue');
-                    $this->redirect(['action' => 'login']);
+
+                    return $this->redirect(['action' => 'login']);
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -380,5 +393,7 @@ class UsersController extends AppController
                 $this->Flash->error(__('Unable to update account information, please make sure to enter old password'));
             }
         }
+
+        return null;
     }
 }
