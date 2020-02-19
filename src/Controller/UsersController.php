@@ -194,15 +194,15 @@ class UsersController extends AppController
     function __sendForgotPasswordEmail($user = null) {
         if (!empty($user)) {
             $email = new Email();
-
-            $email->to($user['email']);
-            $email->subject('Password Reset Request - DO NOT REPLY');
-            $email->replyTo('noreply@voreartsfund.org');
-            $email->from('noreply@voreartsfund.org');
-            $email->template('reset_password_request');
-            $email->emailFormat('html');
-            $this->set('User', $user);
-            $email->send();
+            $email
+                ->setTo($user['email'])
+                ->setSubject('Password Reset Request - DO NOT REPLY')
+                ->setReplyTo('noreply@voreartsfund.org')
+                ->setFrom('noreply@voreartsfund.org')
+                ->setTemplate('reset_password_request')
+                ->setEmailFormat('html')
+                ->setViewVars(['User' => $user])
+                ->send();
 
             return true;
         }
