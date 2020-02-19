@@ -249,7 +249,7 @@ class UsersController extends AppController
             $connection = ConnectionManager::get('default');
             $results = $connection->execute('SELECT password FROM users WHERE id = :id', ['id' => $userID])->fetchAll('assoc');
             $password = $results[0]['password'];
-            $data = $this->request->data;
+            $data = $this->request->getData();
             $currentPassword = $data['current_password'];
 
             $newEmail = $data['email'];
