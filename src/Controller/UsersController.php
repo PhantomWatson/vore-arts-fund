@@ -57,11 +57,13 @@ class UsersController extends AppController
         $this->set(compact('user'));
     }
 
-    public function login() {
+    public function login()
+    {
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
             if ($user) {
                 $this->Auth->setUser($user);
+
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
                 $this->Flash->error(__('Invalid username or password, try again'));
@@ -69,7 +71,8 @@ class UsersController extends AppController
         }
     }
 
-    public function register() {
+    public function register()
+    {
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
@@ -79,6 +82,7 @@ class UsersController extends AppController
             $user->is_verified = 1;
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
+
                 return $this->redirect(['action' => 'register']);
             }
             $this->Flash->error(__('Unable to register the user.'));
@@ -86,31 +90,34 @@ class UsersController extends AppController
         $this->set('user', $user);
     }
 
-    public function logout() {
+    public function logout()
+    {
         return $this->redirect($this->Auth->logout());
     }
 
-    public function forgotPassword(...$path) {
-        if($this->request->is('post')){
+    public function forgotPassword(...$path)
+    {
+        if ($this->request->is('post')) {
         $user = $this->Users->findByEmail($this->request->getData()['User']['email'])->first();
-            if(empty($user)){
+            if (empty($user)) {
                 $this->Flash->error('Sorry, the email address entered was not found.');
                 $this->redirect(['action' => 'forgotPassword']);
             } else {
                 $user = $this->__generatePasswordToken($user);
                 debug($user);
-                if($this->Users->save($user) && $this->__sendForgotPasswordEmail($user)){
+                if ($this->Users->save($user) && $this->__sendForgotPasswordEmail($user)) {
                     $this->Flash->success('Password reset instructions have been sent to your email address. You have 24 hours to complete the request.');
                     $this->redirect(['action' => 'login']);
-               }
+                }
             }
         }
     }
 
-    public function reset_password_token($reset_password_token = null){
-        if(empty($this->data)){
+    public function reset_password_token($reset_password_token = null)
+    {
+        if (empty($this->data)) {
             $this->data = $this->Users->findByResetPasswordToken($reset_password_token);
-            if(!empty($this->data['User']['reset_password_token']) && !empty($this->data['User']['token_created_at']) && $this->__validToken($this->data['User']['token_created_at'])){
+            if (!empty($this->data['User']['reset_password_token']) && !empty($this->data['User']['token_created_at']) && $this->__validToken($this->data['User']['token_created_at'])) {
                 $this->data['User']['id'] = null;
                 $_SESSION['token'] = $reset_password_token;
             } else {
@@ -118,7 +125,7 @@ class UsersController extends AppController
                 $this->redirect(['action' => 'login']);
             }
         } else {
-            if($this->data['User']['reset_password_token'] != $_SESSION['token']){
+            if ($this->data['User']['reset_password_token'] != $_SESSION['token']) {
                 $this->Flash->error('The password reset request has either expired or is invalid');
                 $this->redirect(['action' => 'login']);
             }
@@ -126,9 +133,9 @@ class UsersController extends AppController
             $user = $this->Users->findByResetPasswordToken($this->data['User']['reset_password_token']);
             $this->Users->id = $user['User']['id'];
 
-            if($this->Users->save($this->data, ['validate' => 'only'])){
+            if ($this->Users->save($this->data, ['validate' => 'only'])) {
                 // $this->data['User']['reset_password_token'] = $this->data['User']['token_created_at'] = null;
-                if($this->Users->save($this->data) && $this->__sendPasswordChangedEmail($user['User']['id'])){
+                if ($this->Users->save($this->data) && $this->__sendPasswordChangedEmail($user['User']['id'])) {
                     unset($_SESSION['token']);
                     $this->Session->setflash('Your password was changed successfully. Please login to continue');
                     $this->redirect(['action' => 'login']);
@@ -137,7 +144,8 @@ class UsersController extends AppController
         }
     }
 
-    private function __generatePasswordToken($user) {
+    private function __generatePasswordToken($user)
+    {
         if (empty($user)) {
             return null;
         }
@@ -154,25 +162,26 @@ class UsersController extends AppController
         // Generate hash of random string
         // $hash = (new DefaultPasswordHasher)->hash($token);
 
-
-
         $user['reset_password_token'] = 1234;
         // $user['User']['token_created_at']     = date('Y-m-d H:i:s');
 
         return $user;
     }
 
-    private function __validToken($token_created_at) {
+    private function __validToken($token_created_at)
+    {
         $expired = strtotime($token_created_at) + 86400;
         $time = strtotime("now");
         if ($time < $expired) {
             return true;
         }
+
         return false;
     }
 
 
-    private function __sendForgotPasswordEmail($user = null) {
+    private function __sendForgotPasswordEmail($user = null)
+    {
         if (!empty($user)) {
             $email = new Email();
             $email
@@ -187,48 +196,55 @@ class UsersController extends AppController
 
             return true;
         }
+
         return false;
     }
 
-    private function __sendPasswordChangedEmail($id = null) {
+    private function __sendPasswordChangedEmail($id = null)
+    {
         if (!empty($id)) {
             $this->User->id = $id;
             $User = $this->User->read();
 
-            $this->Email->to 		= $User['User']['email'];
-            $this->Email->subject 	= 'Password Changed - DO NOT REPLY';
-            $this->Email->replyTo 	= 'noreply@voreartsfund.org';
-            $this->Email->from 		= 'Do Not Reply <noreply@voreartsfund.org>';
-            $this->Email->template 	= 'password_reset_success';
-            $this->Email->sendAs 	= 'both';
+            $this->Email->to = $User['User']['email'];
+            $this->Email->subject = 'Password Changed - DO NOT REPLY';
+            $this->Email->replyTo = 'noreply@voreartsfund.org';
+            $this->Email->from = 'Do Not Reply <noreply@voreartsfund.org>';
+            $this->Email->template = 'password_reset_success';
+            $this->Email->sendAs = 'both';
             $this->set('User', $User);
             $this->Email->send();
 
             return true;
         }
+
         return false;
     }
 
-
-    public function verify(...$path) {
+    public function verify(...$path)
+    {
         return null;
     }
 
-    public function verifyResend(...$path) {
+    public function verifyResend(...$path)
+    {
         return null;
     }
 
-    public function myAccount(...$path) {
+    public function myAccount(...$path)
+    {
         return null;
     }
 
-    public function adminPage(...$path) {
+    public function adminPage(...$path)
+    {
         return null;
     }
 
-    public function changeAccountInfo() {
+    public function changeAccountInfo()
+    {
         $user = $this->request->getSession()->read('Auth.User');
-        if ($this->request->is('post')){
+        if ($this->request->is('post')) {
             $userID = $user['id'];
             $connection = ConnectionManager::get('default');
             $results = $connection->execute('SELECT password FROM users WHERE id = :id', ['id' => $userID])->fetchAll('assoc');
@@ -241,25 +257,25 @@ class UsersController extends AppController
             $newPhone = $data['phone'];
             $newPassword = $data['new_password'];
 
-            if ((new DefaultPasswordHasher)->check($currentPassword, $password)){
-                if((!($newEmail=== "" or $newEmail === " "))){
+            if ((new DefaultPasswordHasher)->check($currentPassword, $password)) {
+                if ((!($newEmail === "" or $newEmail === " "))) {
                     $connection->execute("UPDATE users set email = '$newEmail' where id = '$userID'");
                 }
-                if((!($newName=== "" or $newName === " "))){
+                if ((!($newName === "" or $newName === " "))) {
                     $connection->execute("UPDATE users set name = '$newName' where id = '$userID'");
                 }
-                if((!($newPhone=== "" or $newPhone === " "))){
+                if ((!($newPhone === "" or $newPhone === " "))) {
                     $connection->execute("UPDATE users set phone = '$newPhone' where id = '$userID'");
                 }
-                if((!($newPassword=== "" or $newPassword === " "))){
+                if ((!($newPassword === "" or $newPassword === " "))) {
                     $newHashedPassword = (new DefaultPasswordHasher)->hash($newPassword);
                     $connection->execute("UPDATE users set password = '$newHashedPassword' where id = '$userID'");
                 }
+
                 return $this->redirect($this->Auth->redirectUrl());
-            }else{
+            } else {
                 $this->Flash->error(__('Unable to update account information, please make sure to enter old password'));
             }
         }
     }
-
 }
