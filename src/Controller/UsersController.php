@@ -45,12 +45,11 @@ class UsersController extends AppController
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
 
-     var $name = 'Users';
-     var $helpers = array('Html', 'Form', 'Time');
-     var $uses = array('User');
-     var $allowCookie = true;
-     var $cookieTerm = '0';
-
+    protected $name = 'Users';
+    protected $helpers = array('Html', 'Form', 'Time');
+    protected $uses = array('User');
+    protected $allowCookie = true;
+    protected $cookieTerm = '0';
 
     public function beforeFilter($event)
     {
