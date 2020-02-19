@@ -140,7 +140,7 @@ class UsersController extends AppController
      * This page shows the user a form for having an email sent to them with a means to reset their password
      *
      * @param array ...$path Path segments
-     * @return \Cake\Http\Response|null
+     * @return Response|null
      */
     public function forgotPassword(...$path)
     {
@@ -170,7 +170,7 @@ class UsersController extends AppController
      * This is the page that is linked to in the password-reset emails sent to users
      *
      * @param string $reset_password_token User-specific password reset token
-     * @return \Cake\Http\Response|null
+     * @return Response|null
      */
     public function reset_password_token($reset_password_token = null)
     {
