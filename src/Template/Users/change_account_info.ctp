@@ -51,11 +51,11 @@ $user = $this->request->getSession()->read('Auth.User');
     <?= $this->Flash->render() ?>
         <fieldset>
             <legend><?= __('Enter information you are wanting to change, leave boxes empty if you do not wish to change information:') ?></legend>
-           <h3>*Old Password can not be empty</h3>
+           <h3>*Current password can not be empty</h3>
             <?= $this->Form->control('email') ?>
             <?= $this->Form->control('name') ?>
             <?= $this->Form->control('phone') ?>
-            <?= $this->Form->control('current password') ?>
+            <?= $this->Form->control('current password', ['required' => true]) ?>
             <?= $this->Form->control('new password') ?>
 
         </fieldset>
