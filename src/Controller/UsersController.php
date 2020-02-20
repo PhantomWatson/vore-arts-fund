@@ -4,7 +4,6 @@ namespace App\Controller;
 use App\Model\Entity\User;
 use App\Model\Table\UsersTable;
 use Cake\Auth\DefaultPasswordHasher;
-use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
@@ -335,38 +334,38 @@ class UsersController extends AppController
      */
     public function changeAccountInfo()
     {
-        $user = $this->request->getSession()->read('Auth.User');
+        $user = $this->Users->get($this->Auth->user('id'));
         if ($this->request->is('post')) {
-            $userID = $user['id'];
-            $connection = ConnectionManager::get('default');
-            $results = $connection->execute('SELECT password FROM users WHERE id = :id', ['id' => $userID])->fetchAll('assoc');
-            $password = $results[0]['password'];
-            $data = $this->request->getData();
-            $currentPassword = $data['current_password'];
+            $currentPassword = $this->request->getData('current_password');
+            $passwordIsCorrect = (new DefaultPasswordHasher)->check($currentPassword, $user->password);
+            if (!$passwordIsCorrect) {
+                $this->Flash->error(
+                    'Unable to update account information. ' .
+                    'Please make sure that your current password has been entered and is correct'
+                );
 
-            $newEmail = $data['email'];
-            $newName = $data['name'];
-            $newPhone = $data['phone'];
-            $newPassword = $data['new_password'];
+                return null;
+            }
 
-            if ((new DefaultPasswordHasher)->check($currentPassword, $password)) {
-                if ((!($newEmail === "" || $newEmail === " "))) {
-                    $connection->execute("UPDATE users set email = '$newEmail' where id = '$userID'");
+            // Update user entity
+            $fields = ['email', 'name', 'phone'];
+            foreach ($fields as $field) {
+                if ($this->request->getData($field)) {
+                    $user = $this->Users->patchEntity($user, [$field => $this->request->getData($field)]);
                 }
-                if ((!($newName === "" || $newName === " "))) {
-                    $connection->execute("UPDATE users set name = '$newName' where id = '$userID'");
-                }
-                if ((!($newPhone === "" || $newPhone === " "))) {
-                    $connection->execute("UPDATE users set phone = '$newPhone' where id = '$userID'");
-                }
-                if ((!($newPassword === "" || $newPassword === " "))) {
-                    $newHashedPassword = (new DefaultPasswordHasher)->hash($newPassword);
-                    $connection->execute("UPDATE users set password = '$newHashedPassword' where id = '$userID'");
-                }
+            }
+            if ($this->request->getData('new_password')) {
+                $user = $this->Users->patchEntity($user, ['password' => $this->request->getData('new_password')]);
+            }
 
-                return $this->redirect($this->Auth->redirectUrl());
+            // Save changes
+            if ($this->Users->save($user)) {
+                $this->Flash->success('Changes saved');
             } else {
-                $this->Flash->error(__('Unable to update account information, please make sure to enter old password'));
+                $this->Flash->success(
+                    'There was an error saving those changes. ' .
+                    'Please check for any error messages, and contact an administrator if you need assistance.'
+                );
             }
         }
 
