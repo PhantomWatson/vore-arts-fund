@@ -9,7 +9,7 @@ use Cake\Routing\Router;
 
 $url = Router::url([
     'controller' => 'Users',
-    'action' => 'reset_password_token',
+    'action' => 'resetPasswordToken',
     $User->reset_password_token
 ], true);
 ?>

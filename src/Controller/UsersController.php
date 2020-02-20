@@ -7,6 +7,7 @@ use Cake\Auth\DefaultPasswordHasher;
 use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
 use Cake\Http\Response;
+use Cake\I18n\FrozenTime;
 use Cake\Mailer\Email;
 
 /**
@@ -34,7 +35,7 @@ class UsersController extends AppController
             'login',
             'logout',
             'register',
-            'reset_password_token',
+            'resetPasswordToken',
             'verify'
         ]);
     }
@@ -156,38 +157,35 @@ class UsersController extends AppController
      * @param string $reset_password_token User-specific password reset token
      * @return Response|null
      */
-    public function reset_password_token($reset_password_token = null)
+    public function resetPasswordToken($reset_password_token = null)
     {
-        if (empty($this->data)) {
-            $this->data = $this->Users->findByResetPasswordToken($reset_password_token);
-            if (!empty($this->data['User']['reset_password_token']) && !empty($this->data['User']['token_created_at']) && $this->__validToken($this->data['User']['token_created_at'])) {
-                $this->data['User']['id'] = null;
-                $_SESSION['token'] = $reset_password_token;
-            } else {
-                $this->Flash->error('The password reset request has either expired or is invalid');
+        /** @var User $user */
+        $user = $this->Users->findByResetPasswordToken($reset_password_token)->first();
+        if (!$user || !$this->__validToken($user->token_created_date)) {
+            $this->Flash->error('The password reset request has either expired or is invalid');
 
-                return $this->redirect(['action' => 'login']);
-            }
-        } else {
-            if ($this->data['User']['reset_password_token'] != $_SESSION['token']) {
-                $this->Flash->error('The password reset request has either expired or is invalid');
-
-                return $this->redirect(['action' => 'login']);
-            }
-
-            $user = $this->Users->findByResetPasswordToken($this->data['User']['reset_password_token']);
-            $this->Users->id = $user['User']['id'];
-
-            if ($this->Users->save($this->data, ['validate' => 'only'])) {
-                // $this->data['User']['reset_password_token'] = $this->data['User']['token_created_at'] = null;
-                if ($this->Users->save($this->data) && $this->__sendPasswordChangedEmail($user['User']['id'])) {
-                    unset($_SESSION['token']);
-                    $this->Session->setflash('Your password was changed successfully. Please login to continue');
-
-                    return $this->redirect(['action' => 'login']);
-                }
-            }
+            return $this->redirect(['action' => 'login']);
         }
+
+        if ($this->request->is('put')) {
+            $data = $this->request->getData() + [
+                'reset_password_token' => null,
+                'token_created_date' => null,
+            ];
+            $user = $this->Users->patchEntity($user, $data);
+            if ($this->Users->save($user)) {
+                $this->__sendPasswordChangedEmail($user->id);
+                $this->Flash->success('Your password was changed successfully. Please log in to continue');
+
+                return $this->redirect(['action' => 'login']);
+            }
+            $this->Flash->error(
+                'There was an error updating your password. ' .
+                'Please check for error messages, and contact an administrator if you need assistance.'
+            );
+        }
+
+        $this->set(['user' => $user]);
 
         return null;
     }
@@ -217,7 +215,7 @@ class UsersController extends AppController
         // $hash = (new DefaultPasswordHasher)->hash($token);
 
         $user = $this->Users->patchEntity($user, ['reset_password_token' => 1234]);
-        // $user['User']['token_created_at']     = date('Y-m-d H:i:s');
+        // $user['User']['token_created_date']     = date('Y-m-d H:i:s');
 
         return $user;
     }
@@ -225,18 +223,12 @@ class UsersController extends AppController
     /**
      * Returns TRUE if the time passed to it was within the last day
      *
-     * @param string $token_created_at A string representing the time that a token was generated
+     * @param FrozenTime $tokenCreatedDate The time that a token was generated
      * @return bool
      */
-    private function __validToken($token_created_at)
+    private function __validToken($tokenCreatedDate)
     {
-        $expired = strtotime($token_created_at) + 86400; // 24 hours
-        $time = strtotime("now");
-        if ($time < $expired) {
-            return true;
-        }
-
-        return false;
+        return $tokenCreatedDate->wasWithinLast('24 hours');
     }
 
     /**
@@ -280,7 +272,7 @@ class UsersController extends AppController
                 ->setTo($User->email)
                 ->setSubject('Password Changed - DO NOT REPLY')
                 ->setReplyTo('noreply@voreartsfund.org')
-                ->setFrom('Do Not Reply <noreply@voreartsfund.org>')
+                ->setFrom('noreply@voreartsfund.org', 'Do Not Reply')
                 ->setTemplate('password_reset_success')
                 ->setEmailFormat('both')
                 ->setViewVars(['User' => $User]);
