@@ -1,10 +1,10 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var array $User
+ * @var \App\Model\Entity\User $User
  */
 ?>
-<p>Dear <?php echo $User['User']['email']; ?>,</p>
+<p>Dear <?= $User->name ?>,</p>
 
 <p>Your password has been changed successfully.</p>
 <p>If you did not change your password, please contact us immediately.</p>
