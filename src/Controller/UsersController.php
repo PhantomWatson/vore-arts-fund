@@ -98,8 +98,8 @@ class UsersController extends AppController
             $user->is_verified = 1;
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
-
-                return $this->redirect(['action' => 'register']);
+                $this->Auth->setUser($user);
+                return $this->redirect($this->Auth->redirectUrl());
             }
             $this->Flash->error(__('Unable to register the user.'));
         }
