@@ -8,6 +8,7 @@ use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
 use Cake\Mailer\Email;
+use Cake\Mailer\TransportFactory;
 
 /**
  * UsersController
@@ -334,8 +335,9 @@ class UsersController extends AppController
      */
     public function changeAccountInfo()
     {
-        $user = $this->Users->get($this->Auth->user('id'));
         if ($this->request->is('post')) {
+            $user = $this->Users->get($this->Auth->user('id'));
+
             $currentPassword = $this->request->getData('current_password');
             $passwordIsCorrect = (new DefaultPasswordHasher)->check($currentPassword, $user->password);
             if (!$passwordIsCorrect) {

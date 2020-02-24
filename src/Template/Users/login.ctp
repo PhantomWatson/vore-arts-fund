@@ -42,13 +42,14 @@
   <body class="home">
       <?= $this->element('navbar'); ?>
       <div class="container">
-          <h1>Login</h1>
+          <div class='pb-2 mt-4 mb-2 border-bottom'>
+              <h1>Login</h1>
+          </div>
 
           <div class="users form">
               <?= $this->Flash->render() ?>
               <?= $this->Form->create('User') ?>
               <fieldset>
-                  <legend><?= __('Please enter your email and password') ?></legend>
                   <?= $this->Form->control('email') ?>
                   <?= $this->Form->control('password') ?>
               </fieldset>

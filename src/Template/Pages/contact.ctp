@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -13,6 +14,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
  */
+
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
@@ -26,22 +28,20 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?= $this->element('head'); ?>
     <title>
         <?= $cakeDescription ?>
     </title>
-
-    <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->css('home.css') ?>
-    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
 </head>
-<body class="home">
 
-    <h1>Contact</h1>
+<body class="home">
+    <?= $this->element('navbar'); ?>
+    <div class='pb-2 mt-4 mb-2 border-bottom'>
+        <h1>Contact</h1>
+    </div>
 
 </body>
+
 </html>

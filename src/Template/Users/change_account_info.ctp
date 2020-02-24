@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -13,6 +14,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
  */
+
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
@@ -24,45 +26,38 @@ $this->layout = false;
 
 $cakeDescription = 'CakePHP: the rapid development PHP framework';
 $user = $this->request->getSession()->read('Auth.User');
+$isAdmin = $user['is_admin'];
+
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
-    <?= $this->Flash->render() ?>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?= $this->element('head'); ?>
     <title>
         <?= $cakeDescription ?>
     </title>
-
-    <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->css('home.css') ?>
-    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
 </head>
 <body class="home">
-    <h1>Change Account Information</h1>
-    <?php
-    $isAdmin = $user['is_admin'];
-    ?>
-       <div class="users form">
-    <?= $this->Form->create('User') ?>
-    <?= $this->Flash->render() ?>
-        <fieldset>
-            <legend><?= __('Enter information you are wanting to change, leave boxes empty if you do not wish to change information:') ?></legend>
-           <h3>*Current password can not be empty</h3>
-            <?= $this->Form->control('email') ?>
-            <?= $this->Form->control('name') ?>
-            <?= $this->Form->control('phone') ?>
-            <?= $this->Form->control('current password', ['required' => true]) ?>
-            <?= $this->Form->control('new password') ?>
+    <?= $this->element('navbar'); ?>
+    <div class="container">
+        <div class='pb-2 mt-4 mb-2 border-bottom'>
+            <h1>Change Account Information</h1>
+        </div>
 
-        </fieldset>
-    <?= $this->Form->button(__('Submit')); ?>
-    <?= $this->Form->end() ?>
+        <div class="users form">
+            <?= $this->Form->create('User') ?>
+            <?= $this->Flash->render() ?>
+            <fieldset>
+                <?= $this->Form->control('email') ?>
+                <?= $this->Form->control('name') ?>
+                <?= $this->Form->control('phone') ?>
+                <?= $this->Form->control('current password') ?>
+                <?= $this->Form->control('new password') ?>
 
-
-
+            </fieldset>
+            <?= $this->Form->button(__('Submit')); ?>
+            <?= $this->Form->end() ?>
+        </div>
 </body>
 </html>

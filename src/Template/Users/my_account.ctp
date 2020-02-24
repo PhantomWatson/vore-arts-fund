@@ -42,7 +42,9 @@ $applications = TableRegistry::getTableLocator()->get('Applications')->find()->w
 <body class="home">
     <?= $this->element('navbar'); ?>
     <div class="container">
-        <h1>My Account</h1>
+        <div class='pb-2 mt-4 mb-2 border-bottom'>
+            <h1>My Account</h1>
+        </div>
         <?= $this->Html->link('Change Account Info', '/change-account-info', array('class' => 'button')); ?>
 
         <h2>Applications</h2>

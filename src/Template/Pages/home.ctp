@@ -42,11 +42,13 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     </title>
 </head>
 
-<body class="home">
+<body class='home'>
 
     <?= $this->element('navbar'); ?>
-    <div class="container">
-        <h1>Home</h1>
+    <div class='container'>
+        <div class='pb-2 mt-4 mb-2 border-bottom'>
+            <h1>Home</h1>
+        </div>
     </div>
 
 

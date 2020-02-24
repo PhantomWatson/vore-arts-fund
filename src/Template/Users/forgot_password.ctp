@@ -38,24 +38,23 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 
 <body class="home">
     <?= $this->element('navbar'); ?>
+    <div class="container">
+        <div class='pb-2 mt-4 mb-2 border-bottom'>
+            <h1>Forgot Password</h1>
+        </div>
 
-    <h1>Forgot Password</h1>
-
-    <div class="users form">
-        <?= $this->Flash->render() ?>
-        <?= $this->Form->create() ?>
-        <fieldset>
-            <h1>Enter Your Username</h1>
-            <?php echo $this->Form->create(null, array('action' => 'forgot_password', 'id' => 'web-form')); ?>
-            <?php echo $this->Form->input('User.email', array('label' => 'Email', 'between' => '<br />', 'type' => 'email', 'required' => true)); ?>
-            <?php echo $this->Form->submit('Send Password Reset Instructions', array('class' => 'submit', 'id' => 'submit')); ?>
-            <?php echo $this->Form->end(); ?>
-        </fieldset>
-        <?= $this->Form->end() ?>
-
+        <div class="users form">
+            <?= $this->Flash->render() ?>
+            <?= $this->Form->create() ?>
+            <fieldset>
+                <?php echo $this->Form->create(null, array('action' => 'forgot_password', 'id' => 'web-form')); ?>
+                <?php echo $this->Form->input('User.email', array('label' => 'Email', 'between' => '<br />', 'type' => 'email', 'required' => true)); ?>
+                <?php echo $this->Form->submit('Send Password Reset Instructions', array('class' => 'submit', 'id' => 'submit')); ?>
+                <?php echo $this->Form->end(); ?>
+            </fieldset>
+            <?= $this->Form->end() ?>
+        </div>
     </div>
-
-
 </body>
 
 </html>

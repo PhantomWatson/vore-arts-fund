@@ -40,12 +40,13 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 <body class="home">
     <?= $this->element('navbar'); ?>
     <div class="container">
-        <h1>Register</h1>
+        <div class='pb-2 mt-4 mb-2 border-bottom'>
+            <h1>Register</h1>
+        </div>
 
         <div class="users form">
             <?= $this->Form->create($user) ?>
             <fieldset>
-                <legend><?= __('Register User') ?></legend>
                 <?= $this->Form->control('email') ?>
                 <?= $this->Form->control('password') ?>
                 <?= $this->Form->control('name') ?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -13,6 +14,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
  */
+
 use Cake\Cache\Cache;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
@@ -26,17 +28,21 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <?= $this->element('head'); ?>
     <title>
         <?= $cakeDescription ?>
     </title>
 </head>
-<body class="home">
 
-    <h1>Admin Page</h1>
+<body class="home">
     <?= $this->element('navbar'); ?>
 
+    <div class='pb-2 mt-4 mb-2 border-bottom'>
+        <h1>Admin</h1>
+    </div>
 
 </body>
+
 </html>
