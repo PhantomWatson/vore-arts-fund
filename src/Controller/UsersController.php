@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Model\Entity\User;
@@ -9,7 +10,7 @@ use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
 use Cake\Mailer\Email;
 use Cake\Mailer\TransportFactory;
-
+use Twilio\Rest\Client;
 /**
  * UsersController
  *
@@ -38,6 +39,7 @@ class UsersController extends AppController
             'resetPasswordToken',
             'verify'
         ]);
+        $this->Twilio = new Client("AC7071ff27f0d70c68765b39274aeb8d4f", "0f4578fa97bb7d0b70c748eea3c30590");
     }
 
     /**
@@ -98,6 +100,7 @@ class UsersController extends AppController
             // is_verified will later be assigned based on text verification API
             $user->is_verified = 1;
             if ($this->Users->save($user)) {
+                $this->send($user->phone);
                 $this->Flash->success(__('The user has been saved.'));
                 $this->Auth->setUser($user);
                 return $this->redirect($this->Auth->redirectUrl());
@@ -107,6 +110,17 @@ class UsersController extends AppController
         $this->set('user', $user);
 
         return null;
+    }
+
+
+    public function send($phone)
+    {
+        $this->Twilio->verify->v2->services("VA16df66578471689bf67c4d8be406386c")->verifications->create("+1" . $phone, "sms");
+    }
+
+    public function validate($phone, $code)
+    {
+         $this->Twilio->verify->v2->services("VA16df66578471689bf67c4d8be406386c")->verificationChecks->create($code, ["to" => "+1" . $phone]);
     }
 
     /**
@@ -181,7 +195,7 @@ class UsersController extends AppController
             }
             $this->Flash->error(
                 'There was an error updating your password. ' .
-                'Please check for error messages, and contact an administrator if you need assistance.'
+                    'Please check for error messages, and contact an administrator if you need assistance.'
             );
         }
 
@@ -343,7 +357,7 @@ class UsersController extends AppController
             if (!$passwordIsCorrect) {
                 $this->Flash->error(
                     'Unable to update account information. ' .
-                    'Please make sure that your current password has been entered and is correct'
+                        'Please make sure that your current password has been entered and is correct'
                 );
 
                 return null;
@@ -366,7 +380,7 @@ class UsersController extends AppController
             } else {
                 $this->Flash->success(
                     'There was an error saving those changes. ' .
-                    'Please check for any error messages, and contact an administrator if you need assistance.'
+                        'Please check for any error messages, and contact an administrator if you need assistance.'
                 );
             }
         }
