@@ -39,7 +39,7 @@ class UsersController extends AppController
             'resetPasswordToken',
             'verify'
         ]);
-        $this->Twilio = new Client("AC7071ff27f0d70c68765b39274aeb8d4f", "0f4578fa97bb7d0b70c748eea3c30590");
+        $this->Twilio = new Client(env('TWILIO_ACCOUNT_SID'), env('TWILIO_AUTH_TOKEN'));
     }
 
     /**
@@ -115,12 +115,12 @@ class UsersController extends AppController
 
     public function send($phone)
     {
-        $this->Twilio->verify->v2->services("VA16df66578471689bf67c4d8be406386c")->verifications->create("+1" . $phone, "sms");
+        $this->Twilio->verify->v2->services(env('TWILIO_SERVICE_SID'))->verifications->create("+1" . $phone, "sms");
     }
 
     public function validate($phone, $code)
     {
-         $this->Twilio->verify->v2->services("VA16df66578471689bf67c4d8be406386c")->verificationChecks->create($code, ["to" => "+1" . $phone]);
+         $this->Twilio->verify->v2->services(env('TWILIO_SERVICE_SID'))->verificationChecks->create($code, ["to" => "+1" . $phone]);
     }
 
     /**
