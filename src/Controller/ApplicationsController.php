@@ -66,4 +66,17 @@ class ApplicationsController extends AppController
         }
         return null;
     }
+
+    public function view(){
+        $id = $this->request->getParam('id');
+
+        if($this->request->is('get')) {
+            $data = $this->request->getData();
+            $applicationsTable = TableRegistry::getTableLocator()->get('applications');
+            $application = $applicationsTable->find()->where(['id' => $id])->first()->toArray();
+        }
+
+
+    }
+
 }

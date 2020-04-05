@@ -21,9 +21,12 @@ use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
 use Cake\Error\Debugger;
 use Cake\Http\Exception\NotFoundException;
+use Cake\ORM\TableRegistry;
+
 
 $this->layout = false;
 
+$applications = TableRegistry::getTableLocator()->get('Applications')->find()->where(['status_id' => 5 ])->all()->toArray();
 $cakeDescription = 'CakePHP: the rapid development PHP framework';
 ?>
 <!DOCTYPE html>
@@ -42,6 +45,21 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <div class="container">
         <div class='pb-2 mt-4 mb-2 border-bottom'>
             <h1>Vote</h1>
+        </div>
+
+        <div>
+        <?php foreach ($applications as $application) { ?>
+            <div>
+                <h3><?php echo $application['title'] ?></h3>
+                <?php echo $this->Html->link("View",
+                [
+                    'controller' => 'Applications',
+                    'action' => 'view',
+                    'id' => $application['id'],
+                    'slug' => '/view-application//'
+                ]);?>
+            </div>
+        <?php } ?>
         </div>
     </div>
 
