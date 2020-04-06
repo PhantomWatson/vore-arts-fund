@@ -51,7 +51,7 @@ class ApplicationsController extends AppController
             $fundingCycle = $fundingCyclesTable->find('all', ['conditions' => ['funding_cycles.application_begin <=' => date('Y-m-d H:i:s'), 'funding_cycles.application_end >=' => date('Y-m-d H:i:s')], 'fields' => ['funding_cycles.id']])->first();
             if (!is_null($fundingCycle)) {
                 $application = $applicationsTable->newEntity($data);
-                $application->category_id = $data['category'];
+                $application->category_id = $data['category']+1;
                 $application->user_id = $this->Auth->user('id');
                 $application->funding_cycle_id = $fundingCycle->id;
                 $application->status_id = isset($data['save']) ? 1 : 0;
