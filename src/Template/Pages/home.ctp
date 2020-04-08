@@ -47,11 +47,12 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <?= $this->element('navbar'); ?>
     <div class='container'>
         <div class='pb-2 mt-4 mb-2 border-bottom'>
-            <h1>Home</h1>
+            <h1>Welcome to the Vore Arts Fund! </h1>
         </div>
+        <p>The Vore Arts Fund is a non-profit project funding profitable artistic projects 
+        in the Muncie community through no-contract, no-interest loans.</p>
+        <p>Register and apply now! </p>
     </div>
-
-
 </body>
 
 </html>
