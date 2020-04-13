@@ -80,7 +80,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/my-account', ['controller' => 'Users', 'action' => 'myAccount']);
     $routes->connect('/verify', ['controller' => 'Users', 'action' => 'verify']);
     $routes->connect('/verify/resend', ['controller' => 'Users', 'action' => 'verifyResend']);
-    $routes->connect('/admin-page', ['controller' => 'Users', 'action' => 'adminPage']);
+    $routes->connect('/admin', ['controller' => 'Users', 'action' => 'adminPage']);
     $routes->connect('/change-account-info', ['controller' => 'Users', 'action' => 'changeAccountInfo']);
     $routes->connect('/view-application/:id', ['controller' => 'Applications', 'action' => 'view']);
 
