@@ -40,3 +40,5 @@ nbproject/*
 .vscode
 # Sass preprocessor
 .sass-cache/
+config/.env.default
+bin/cake
