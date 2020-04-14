@@ -47,6 +47,7 @@ class ApplicationsController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $applicationsTable = TableRegistry::getTableLocator()->get('applications');
+            $imagesTable = TableRegistry::getTableLocator()->get('images');
             $fundingCyclesTable = TableRegistry::getTableLocator()->get('funding_cycles');
             $fundingCycle = $fundingCyclesTable->find('all', ['conditions' => ['funding_cycles.application_begin <=' => date('Y-m-d H:i:s'), 'funding_cycles.application_end >=' => date('Y-m-d H:i:s')], 'fields' => ['funding_cycles.id']])->first();
             if (!is_null($fundingCycle)) {
@@ -55,10 +56,24 @@ class ApplicationsController extends AppController
                 $application->user_id = $this->Auth->user('id');
                 $application->funding_cycle_id = $fundingCycle->id;
                 $application->status_id = isset($data['save']) ? 1 : 0;
-                if ($applicationsTable->save($application)) {
+                $result = $applicationsTable->save($application);
+                if ($result) {
                     $this->Flash->success(__('The application has been ' . (isset($data['save']) ? 'saved.' : 'submitted.')));
                 } else {
                     $this->Flash->error(__('The application could not be ' . (isset($data['save']) ? 'saved.' : 'submitted.')));
+                }
+                $rawImage = $this->request->data['image'];
+                if(!empty($data['image'])) {
+                    $image = $imagesTable->newEntity();
+                    $image->application_id = $result->id;
+                    $path = WWW_ROOT . 'img' . DS . $rawImage['name'];
+                    $image->path = $path;
+                    $image->caption = $data['imageCaption'];
+                    if ($imagesTable->save($image) && move_uploaded_file($rawImage['tmp_name'], $path)) {
+                        $this->Flash->success(__('The image has been saved.'));
+                    } else {
+                        $this->Flash->error(__('The image could not be saved.'));
+                    }
                 }
             } else {
                 $this->Flash->error(__('No valid funding cycle.'));
