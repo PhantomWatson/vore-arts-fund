@@ -29,6 +29,9 @@ $this->layout = false;
 
 $cakeDescription = 'CakePHP: the rapid development PHP framework';
 
+$application =TableRegistry::getTableLocator()->get('Applications')->get($this->request->getParam('id'))
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -44,8 +47,9 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <?= $this->element('navbar'); ?>
     <div class="container">
 
+        
         <div class='pb-2 mt-4 mb-2 border-bottom'>
-            <h1>View Application</h1>
+            <h1><?php $application['title'] ?></h1>
         </div>
     </div>
 
