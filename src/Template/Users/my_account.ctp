@@ -51,7 +51,12 @@ $applications = TableRegistry::getTableLocator()->get('Applications')->find()->w
         <?php foreach ($applications as $application) { ?>
             <div>
                 <h3><?php echo $application['title'] ?></h3>
-                <?php echo $this->Html->link("View", '/applications//' . $application['id'], array('class' => 'button')); ?>
+                <?php echo $this->Html->link("View", 
+                [    'controller' => 'Applications',
+                    'action' => 'view',
+                    'id' => $application['id'],
+                    'slug' => '/view-application//'
+                ], array('class' => 'button')); ?>
             </div>
         <?php } ?>
     </div>

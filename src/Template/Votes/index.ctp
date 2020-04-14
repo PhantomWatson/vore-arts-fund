@@ -57,7 +57,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                     'action' => 'view',
                     'id' => $application['id'],
                     'slug' => '/view-application//'
-                ]);?>
+                ], array('class' => 'button'));?>
             </div>
         <?php } ?>
         </div>
