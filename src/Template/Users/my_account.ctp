@@ -52,7 +52,8 @@ $applications = TableRegistry::getTableLocator()->get('Applications')->find()->w
             <div>
                 <h3><?php echo $application['title'] ?></h3>
                 <?php echo $this->Html->link("View", 
-                [    'controller' => 'Applications',
+                [ 
+                    'controller' => 'Applications',
                     'action' => 'view',
                     'id' => $application['id'],
                     'slug' => '/view-application//'
