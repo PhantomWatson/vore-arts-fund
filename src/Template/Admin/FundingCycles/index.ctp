@@ -27,9 +27,7 @@ use Cake\ORM\TableRegistry;
 $this->layout = false;
 
 $cakeDescription = 'CakePHP: the rapid development PHP framework';
-$applications = TableRegistry::getTableLocator()->get('Applications')->find()->all()->toArray();
-$statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->toArray();
-
+$fundingCycles = TableRegistry::getTableLocator()->get('FundingCycles')->find()->all()->toArray();
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,24 +44,26 @@ $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->to
     <div class="container">
 
         <div class='pb-2 mt-4 mb-2 border-bottom'>
-            <h1>Admin</h1>
+            <h1>Applications</h1>
         </div>
 
         <!-- list applications by status with filters -->
         <table>
             <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Status</th>
-                    <th>View</th>
+                    <th>Application Dates</th>
+                    <th>Voting Dates</th>
+                    <th>Funding Available</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($applications as $application) { ?>
+                <?php foreach ($fundingCycles as $fundingCycle) { ?>
                     <tr>
-                        <td><?php echo $application['title'] ?></td>
-                        <td><?php echo $statuses[$application['status_id']]['name'] ?></td>
-                        <td><?php echo $this->Html->link("View", '/view-application//' . $application['id'], array('class' => 'button')); ?></td>
+                        <td><?php echo $fundingCycle['application_begin']->i18nFormat('MM/dd/yyyy H:mm') . ' to ' . $fundingCycle['application_end']->i18nFormat('MM/dd/yyyy H:mm'); ?></td>
+                        <td><?php echo $fundingCycle['vote_begin']->i18nFormat('MM/dd/yyyy H:mm') . ' to ' . $fundingCycle['vote_end']->i18nFormat('MM/dd/yyyy H:mm'); ?></td>
+                        <td>$<?php echo $fundingCycle['funding_available']; ?></td>
+                        <td><?php echo $this->Html->link("Edit", '/admin/funding-cycles/edit//' . $fundingCycle['id'], array('class' => 'button')); ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
