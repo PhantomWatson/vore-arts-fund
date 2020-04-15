@@ -63,11 +63,7 @@ $image = TableRegistry::getTableLocator()->get('Images')->find()->where(['applic
         <div>
             <?php   
                 if (isset($image) && !empty($image)) {
-                    echo '<img src="' . $image->path . '"';
-                    if (isset($image->caption) && !empty($image->caption)) {
-                        echo 'alt="'.$image->caption.'"';
-                    }
-                    echo '>';
+                    echo $this->Html->image($image->path, ['alt' => $image->caption, 'height' => '200px', 'width' => '200px']);
                 }   
             ?>
         </div>

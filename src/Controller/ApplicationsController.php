@@ -66,13 +66,11 @@ class ApplicationsController extends AppController
                 if(!empty($rawImage)) {
                     $image = $imagesTable->newEntity();
                     $image->application_id = $result->id;
-                    $path = WWW_ROOT . 'img' . DS . $rawImage['name'];
-                    debug($path);
+                    $path = DS . 'img' . DS . $rawImage['name'];
                     $path = str_replace(' ', '', $path);
-                    debug($path);
                     $image->path = $path;
                     $image->caption = $data['imageCaption'];
-                    if (move_uploaded_file($rawImage['tmp_name'], $path) && $imagesTable->save($image)) {
+                    if (move_uploaded_file($rawImage['tmp_name'], WWW_ROOT . $path) && $imagesTable->save($image)) {
                         $this->Flash->success(__('The image has been saved.'));
                     } else {
                         $this->Flash->error(__('The image could not be saved.'));
