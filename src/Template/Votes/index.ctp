@@ -60,6 +60,12 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                 ]);?>
             </div>
         <?php } ?>
+        <?php echo $this->Html->link("Vote",
+                [
+                    'controller' => 'Votes',
+                    'action' => 'submit',
+                ]);?>
+
         </div>
     </div>
 

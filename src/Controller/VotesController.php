@@ -41,6 +41,11 @@ class VotesController extends AppController
      */
     public function index(...$path)
     {
-        return null;
+        
+    }
+
+    public function vote()
+    {
+
     }
 }

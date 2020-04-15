@@ -37,19 +37,22 @@ $application =TableRegistry::getTableLocator()->get('Applications')->get($this->
 <html>
 
 <head>
-    <?= $this->element('head'); ?>
+    <?= $this->element('head') ?>
     <title>
         <?= $cakeDescription ?>
     </title>
 </head>
 
 <body class="home">
-    <?= $this->element('navbar'); ?>
+    <?= $this->element('navbar') ?>
     <div class="container">
 
         
         <div class='pb-2 mt-4 mb-2 border-bottom'>
-            <h1><?php $application['title'] ?></h1>
+            <h1><?= $application['title'] ?></h1>
+        </div>
+        <div>
+            <p><?= $application['description'] ?></p>
         </div>
     </div>
 
