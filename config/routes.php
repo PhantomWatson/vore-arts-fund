@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Routes configuration
  *
@@ -17,6 +18,7 @@
  * @link          https://cakephp.org CakePHP(tm) Project
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
@@ -80,9 +82,24 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/my-account', ['controller' => 'Users', 'action' => 'myAccount']);
     $routes->connect('/verify', ['controller' => 'Users', 'action' => 'verify']);
     $routes->connect('/verify/resend', ['controller' => 'Users', 'action' => 'verifyResend']);
-    $routes->connect('/admin', ['controller' => 'Users', 'action' => 'adminPage']);
     $routes->connect('/change-account-info', ['controller' => 'Users', 'action' => 'changeAccountInfo']);
     $routes->connect('/view-application/:id', ['controller' => 'Applications', 'action' => 'view']);
+
+    // Admin Routes
+    Router::prefix('admin', function (RouteBuilder $routes) {
+        // Because you are in the admin scope,
+        // you do not need to include the  prefix
+        // or the admin route element.
+        $routes->connect('/', ['controller' => 'Users', 'action' => 'adminPage']);
+        $routes->connect('/funding-cycles', ['controller' => 'FundingCycles', 'action' => 'index']);
+        $routes->connect('/funding-cycles/add', ['controller' => 'FundingCycles', 'action' => 'add']);
+        $routes->connect('/funding-cycles/edit/:id', ['controller' => 'FundingCycles', 'action' => 'edit']);
+        $routes->connect('/applications', ['controller' => 'Applications', 'action' => 'index']);
+        $routes->connect('/applications/review/:id', ['controller' => 'Applications', 'action' => 'review']);
+        $routes->connect('/applications/set-status/:id', ['controller' => 'Applications', 'action' => 'setStatus']);
+        $routes->fallbacks(DashedRoute::class);
+    });
+
 
 
 
