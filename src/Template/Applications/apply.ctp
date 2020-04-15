@@ -45,7 +45,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         </div>
         <div>
             <?= $this->Flash->render() ?>
-            <?= $this->Form->create() ?>
+            <?= $this->Form->create(null, ['enctype' =>  'multipart/form-data']) ?>
             <fieldset>
                 <legend><?= __('Please enter the following information') ?></legend>
                 <?= $this->Form->control('title', ['required' => true]) ?>

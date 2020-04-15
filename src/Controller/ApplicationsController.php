@@ -63,13 +63,16 @@ class ApplicationsController extends AppController
                     $this->Flash->error(__('The application could not be ' . (isset($data['save']) ? 'saved.' : 'submitted.')));
                 }
                 $rawImage = $this->request->data['image'];
-                if(!empty($data['image'])) {
+                if(!empty($rawImage)) {
                     $image = $imagesTable->newEntity();
                     $image->application_id = $result->id;
                     $path = WWW_ROOT . 'img' . DS . $rawImage['name'];
+                    debug($path);
+                    $path = str_replace(' ', '', $path);
+                    debug($path);
                     $image->path = $path;
                     $image->caption = $data['imageCaption'];
-                    if ($imagesTable->save($image) && move_uploaded_file($rawImage['tmp_name'], $path)) {
+                    if (move_uploaded_file($rawImage['tmp_name'], $path) && $imagesTable->save($image)) {
                         $this->Flash->success(__('The image has been saved.'));
                     } else {
                         $this->Flash->error(__('The image could not be saved.'));

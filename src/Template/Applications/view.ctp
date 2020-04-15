@@ -29,8 +29,11 @@ $this->layout = false;
 
 $cakeDescription = 'CakePHP: the rapid development PHP framework';
 
-$application =TableRegistry::getTableLocator()->get('Applications')->get($this->request->getParam('id'))
+$application = TableRegistry::getTableLocator()->get('Applications')->get($this->request->getParam('id'));
 
+$category = TableRegistry::getTableLocator()->get('Categories')->find()->all()->toArray();
+
+$image = TableRegistry::getTableLocator()->get('Images')->find()->where(['application_id' => $application['id']])->first();
 
 ?>
 <!DOCTYPE html>
@@ -53,6 +56,20 @@ $application =TableRegistry::getTableLocator()->get('Applications')->get($this->
         </div>
         <div>
             <p><?= $application['description'] ?></p>
+        </div>
+        <div>
+            <h2><?= $category[($application['category_id'] - 1)]['name']; ?></h2>
+        </div>
+        <div>
+            <?php   
+                if (isset($image) && !empty($image)) {
+                    echo '<img src="' . $image->path . '"';
+                    if (isset($image->caption) && !empty($image->caption)) {
+                        echo 'alt="'.$image->caption.'"';
+                    }
+                    echo '>';
+                }   
+            ?>
         </div>
     </div>
 
