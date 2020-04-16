@@ -55,7 +55,7 @@ $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->to
                 <tr>
                     <th>Title</th>
                     <th>Status</th>
-                    <th>View</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -63,7 +63,7 @@ $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->to
                     <tr>
                         <td><?php echo $application['title'] ?></td>
                         <td><?php echo $statuses[$application['status_id']]['name'] ?></td>
-                        <td><?php echo $this->Html->link("View", '/view-application//' . $application['id'], array('class' => 'button')); ?></td>
+                        <td><?php echo $this->Html->link("View", '/admin/applications/review//' . $application['id'], array('class' => 'button')); ?></td>
                     </tr>
                 <?php } ?>
             </tbody>

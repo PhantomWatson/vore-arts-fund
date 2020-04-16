@@ -18,26 +18,11 @@ namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 
-class FundingCyclesController extends AppController
+class AdminController extends AppController
 {
 
-    public function index()
-    {
+    public function index() {
         return null;
     }
 
-    public function add()
-    {
-        return null;
-    }
-
-    public function edit()
-    {
-        if ($this->request->is('post')) {
-            if($this->FundingCycle->save($this->request->getData())){
-                debug("test");
-            }
-        }
-        return null;
-    }
 }

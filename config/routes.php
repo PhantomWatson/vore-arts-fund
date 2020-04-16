@@ -90,7 +90,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         // Because you are in the admin scope,
         // you do not need to include the  prefix
         // or the admin route element.
-        $routes->connect('/', ['controller' => 'Users', 'action' => 'adminPage']);
+        $routes->connect('/', ['controller' => 'Admin', 'action' => 'index']);
         $routes->connect('/funding-cycles', ['controller' => 'FundingCycles', 'action' => 'index']);
         $routes->connect('/funding-cycles/add', ['controller' => 'FundingCycles', 'action' => 'add']);
         $routes->connect('/funding-cycles/edit/:id', ['controller' => 'FundingCycles', 'action' => 'edit']);

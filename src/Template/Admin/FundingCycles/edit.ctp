@@ -1,9 +1,10 @@
 <?php
+
 use Cake\ORM\TableRegistry;
 
 $cakeDescription = 'CakePHP: the rapid development PHP framework';
-$fundingCycle = TableRegistry::getTableLocator()->get('FundingCycles')->find()->where(['id'=>$this->request->getParam('id')])->all()->toArray();
-
+$fundingCycle = TableRegistry::getTableLocator()->get('FundingCycles')->find()->where(['id'=>$this->request->getParam('id')])->first();
+debug($fundingCycle);
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,7 +24,16 @@ $fundingCycle = TableRegistry::getTableLocator()->get('FundingCycles')->find()->
             <h1>Edit Funding Cycle</h1>
         </div>
         <form>
-            
+        <?= $this->Form->create($fundingCycle) ?>
+            <fieldset>
+                <?= $this->Form->control('application_begin') ?>
+                <?= $this->Form->control('application_end') ?>
+                <?= $this->Form->control('vote_begin') ?>
+                <?= $this->Form->control('vote_end') ?>
+                <?= $this->Form->control('funding_available') ?>
+            </fieldset>
+            <?= $this->Form->button(__('Submit')); ?>
+            <?= $this->Form->end() ?>
         </form>
     </div>
 
