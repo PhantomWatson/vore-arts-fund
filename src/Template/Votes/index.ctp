@@ -47,26 +47,26 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             <h1>Vote</h1>
         </div>
 
-        <div>
-        <?php foreach ($applications as $application) { ?>
+    <div>
+        <?php foreach ($applications as $application): ?>
             <div>
-                <h3><?php echo $application['title'] ?></h3>
-                <?php echo $this->Html->link("View",
-                [
-                    'controller' => 'Applications',
-                    'action' => 'view',
-                    'id' => $application['id'],
-                    'slug' => '/view-application//'
-                ], array('class' => 'button'));?>
+                <h3><?= $application['title'] ?></h3>
+                <?= $this->Html->link('View',
+                    [
+                        'controller' => 'Applications',
+                        'action' => 'view',
+                        'id' => $application['id'],
+                        'slug' => '/view-application//'
+                    ], ['class' => 'button']
+                ) ?>
             </div>
-        <?php } ?>
-        <?php echo $this->Html->link("Vote",
-                [
-                    'controller' => 'Votes',
-                    'action' => 'submit',
-                ]);?>
-
-        </div>
+        <?php endforeach; ?>
+        <?= $this->Html->link('Vote',
+            [
+                'controller' => 'Votes',
+                'action' => 'submit',
+            ]
+        ) ?>
     </div>
 
 </body>

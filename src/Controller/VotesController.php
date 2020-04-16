@@ -13,6 +13,7 @@
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
 namespace App\Controller;
+use Cake\Event\Event;
 
 use Cake\Core\Configure;
 use Cake\Http\Exception\ForbiddenException;
@@ -39,13 +40,24 @@ class VotesController extends AppController
      * @throws \Cake\Http\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
-    public function index(...$path)
+
+
+    public function beforeFilter(Event $event)
     {
-        
+        $this->Auth->allow(['index', 'view']);
     }
 
-    public function vote()
+    public function index(...$path)
     {
+        $applications = TableRegistry::getTableLocator()->get('Applications')->find()->where(['status_id' => 5 ])->all()->toArray();
+        $this->set($applications);
+    }
 
+    public function submit()
+    {
+        if ($this->request->is('post')) {
+            $this->request->data();
+
+        }
     }
 }
