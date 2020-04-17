@@ -19,6 +19,8 @@ use Cake\Core\Configure;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
+use Cake\ORM\TableRegistry;
+
 
 /**
  * Static content controller
@@ -50,13 +52,29 @@ class VotesController extends AppController
     public function index(...$path)
     {
         $applications = TableRegistry::getTableLocator()->get('Applications')->find()->where(['status_id' => 5 ])->all()->toArray();
-        $this->set($applications);
+        $this->set(['applications' => $applications]);
     }
 
     public function submit()
     {
+        $fundingCyclesTable = TableRegistry::getTableLocator()->get('funding_cycles');
+        $fundingCycle = $fundingCyclesTable->find('all', ['conditions' => ['funding_cycles.application_begin <=' => date('Y-m-d H:i:s'), 'funding_cycles.application_end >=' => date('Y-m-d H:i:s')], 'fields' => ['funding_cycles.id']])->first();
+        $voteTable = TableRegistry::getTableLocator()->get('votes');
+
         if ($this->request->is('post')) {
-            $this->request->data();
+            $data = $this->request->getData();
+            pr($data);
+
+            foreach($data as $d){
+                pr($d);
+
+                $voteEntry = $voteTable->newEntity($data);
+                $voteEntry->user_id = $this->Auth->user('id');
+                $voteEntry->application_id = 2;
+                $voteEntry->funding_cycle_id = $fundingCycle->id;
+                $voteEntry->weight = $d['vote'];
+                $result = $voteTable->save($voteEntry);
+            }
 
         }
     }

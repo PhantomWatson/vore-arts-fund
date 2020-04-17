@@ -26,7 +26,6 @@ use Cake\ORM\TableRegistry;
 
 $this->layout = false;
 
-$applications = TableRegistry::getTableLocator()->get('Applications')->find()->where(['status_id' => 5 ])->all()->toArray();
 $cakeDescription = 'CakePHP: the rapid development PHP framework';
 ?>
 <!DOCTYPE html>
@@ -44,7 +43,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <?= $this->element('navbar'); ?>
     <div class="container">
         <div class='pb-2 mt-4 mb-2 border-bottom'>
-            <h1>Vote</h1>
+            <h1>Applications</h1>
         </div>
 
     <div>
@@ -64,8 +63,8 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <?= $this->Html->link('Vote',
             [
                 'controller' => 'Votes',
-                'action' => 'submit',
-            ]
+                'action' => 'submit'
+            ], ['class' => 'button']
         ) ?>
     </div>
 
