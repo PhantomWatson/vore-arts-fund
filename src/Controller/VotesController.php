@@ -64,15 +64,14 @@ class VotesController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             pr($data);
+            $keys = array_keys($data);
 
-            foreach($data as $d){
-                pr($d);
-
-                $voteEntry = $voteTable->newEntity($data);
+            foreach($keys as $key){
+                $voteEntry = $voteTable->newEntity();
                 $voteEntry->user_id = $this->Auth->user('id');
-                $voteEntry->application_id = 2;
+                $voteEntry->application_id = $key;
                 $voteEntry->funding_cycle_id = $fundingCycle->id;
-                $voteEntry->weight = $d['vote'];
+                $voteEntry->weight = 1;
                 $result = $voteTable->save($voteEntry);
             }
 
