@@ -5,3 +5,21 @@
 .fieldset {
     display: flex;
 }
+
+.apply{
+    margin-bottom: 40px !important;
+}
+
+.homepage {
+margin-bottom: 90px;
+}
+
+.info {
+    max-width: 1000px;
+    margin-bottom: 20px;
+}
+
+.images {
+    margin-left: 20px;
+}
+

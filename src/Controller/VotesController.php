@@ -63,7 +63,6 @@ class VotesController extends AppController
 
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-            pr($data);
             $keys = array_keys($data);
 
             foreach($keys as $key){

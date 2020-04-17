@@ -23,6 +23,8 @@ use Cake\Error\Debugger;
 use Cake\Http\Exception\NotFoundException;
 
 $this->layout = false;
+echo $this->Html->css('styles');
+
 
 $cakeDescription = 'CakePHP: the rapid development PHP framework';
 ?>
@@ -43,7 +45,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <div class='pb-2 mt-4 mb-2 border-bottom'>
             <h1>Apply</h1>
         </div>
-        <div>
+        <div class = "apply">
             <?= $this->Flash->render() ?>
             <?= $this->Form->create(null, ['enctype' =>  'multipart/form-data']) ?>
             <fieldset>
@@ -59,7 +61,8 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
                 <?= $this->Form->control('imageCaption') ?>
             </fieldset>
             <?= $this->Form->button(__('Save'), array('name' => 'save')); ?>
-            <?= $this->Form->submit(__('Submit')); ?>
+            <?= $this->Form->button('Submit', ['type' => 'submit']); ?>
+            <!-- <?= $this->Form->submit(__('Submit')); ?> -->
             <?= $this->Form->end() ?>
         </div>
     </div>
