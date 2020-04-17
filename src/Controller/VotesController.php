@@ -55,6 +55,10 @@ class VotesController extends AppController
         $this->set(['applications' => $applications]);
     }
 
+    public function thank(){
+        return null;
+    }
+
     public function submit()
     {
         $fundingCyclesTable = TableRegistry::getTableLocator()->get('funding_cycles');
@@ -72,6 +76,13 @@ class VotesController extends AppController
                 $voteEntry->funding_cycle_id = $fundingCycle->id;
                 $voteEntry->weight = 1;
                 $result = $voteTable->save($voteEntry);
+            }
+            if ($result) {
+                $this->Flash->success(__('Your votes have successfully been submitted.'));
+                return $this->redirect('/');
+            } else {
+                $this->Flash->error(__('Your votes could not be submitted.'));
+                return $this->redirect('/vote');
             }
 
         }

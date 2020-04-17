@@ -84,6 +84,11 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/verify/resend', ['controller' => 'Users', 'action' => 'verifyResend']);
     $routes->connect('/change-account-info', ['controller' => 'Users', 'action' => 'changeAccountInfo']);
     $routes->connect('/view-application/:id', ['controller' => 'Applications', 'action' => 'view']);
+    $routes->connect('/vote', ['controller' => 'Votes', 'action' => 'index']);
+    $routes->connect('/submit', ['controller' => 'Votes', 'action' => 'submit']);
+    
+
+
 
     // Admin Routes
     Router::prefix('admin', function (RouteBuilder $routes) {

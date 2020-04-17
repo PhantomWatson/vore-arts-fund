@@ -34,7 +34,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 <head>
     <?= $this->element('head'); ?>
     <title>
-        <?= $cakeDescription ?>
+        <?= Vote ?>
     </title>
 </head>
 

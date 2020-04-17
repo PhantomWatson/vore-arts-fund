@@ -69,8 +69,13 @@ $image = TableRegistry::getTableLocator()->get('Images')->find()->where(['applic
                     echo $this->Html->image($image->path, ['alt' => $image->caption, 'height' => '200px', 'width' => '200px']);
                 }   
             ?>
-            <p>Caption: <?= $image->caption; ?>
+            <p>Caption: <?= $image->caption; ?></p>
         </div>
+        <?= $this->Html->link(
+                    'Back',
+                    '/vote',
+                    ['class' => 'button']
+            ) ?>
     </div>
 
 </body>

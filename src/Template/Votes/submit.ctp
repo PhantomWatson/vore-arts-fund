@@ -51,7 +51,7 @@ $applications = TableRegistry::getTableLocator()->get('Applications')->find()->w
             <?= $this->Flash->render() ?>
             <?= $this->Form->create("post") ?>
             <fieldset class="fieldset">
-                <legend class="form"><?= __('Please select which applications you would like to vote for.') ?></legend>
+                <legend class="form"><?= __('Please select which applications you would like to vote for. (You may choose more than one)') ?></legend>
                 <?php
                 foreach ($applications as $application) {
                     $image = TableRegistry::getTableLocator()->get('Images')->find()->where(['application_id' => $application['id']])->first();
@@ -65,7 +65,7 @@ $applications = TableRegistry::getTableLocator()->get('Applications')->find()->w
                     <?= $this->Form->checkbox($application['id'], ['hiddenField' => false]) ?>
                 <?php } ?>
             </fieldset>
-            <?= $this->Form->submit(__('Submit')); ?>
+            <?= $this->Form->button(__('Submit', ['type' => 'submit'])); ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

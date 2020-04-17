@@ -47,11 +47,10 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <div class="users form">
             <?= $this->Form->create($user) ?>
             <fieldset>
-                <?= $this->Form->control('email') ?>
+                <?= $this->Form->control('email', ['type' => 'email']) ?>
                 <?= $this->Form->control('password') ?>
                 <?= $this->Form->control('name') ?>
-                <?= $this->Form->control('phone') ?>
-                <?= $this->Form->control('verification_code') ?>
+                <?= $this->Form->control('phone', ['type' => 'number'] ) ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')); ?>
             <?= $this->Form->end() ?>

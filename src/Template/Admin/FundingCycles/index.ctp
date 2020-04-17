@@ -44,7 +44,7 @@ $fundingCycles = TableRegistry::getTableLocator()->get('FundingCycles')->find()-
     <div class="container">
 
         <div class='pb-2 mt-4 mb-2 border-bottom'>
-            <h1>Applications</h1>
+            <h1>Funding Cycles</h1>
         </div>
 
         <!-- list applications by status with filters -->

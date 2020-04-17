@@ -62,7 +62,6 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             </fieldset>
             <?= $this->Form->button(__('Save'), array('name' => 'save')); ?>
             <?= $this->Form->button('Submit', ['type' => 'submit']); ?>
-            <!-- <?= $this->Form->submit(__('Submit')); ?> -->
             <?= $this->Form->end() ?>
         </div>
     </div>
