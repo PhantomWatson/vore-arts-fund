@@ -22,11 +22,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\User[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\User findOrCreate($search, callable $callback = null, $options = [])
- * @method Query findByEmail($email)
- * @method Query findByResetPasswordToken($resetPasswordToken)
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
- * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface|false saveMany($entities, $options = [])
  */
 class UsersTable extends Table
 {
@@ -99,22 +96,9 @@ class UsersTable extends Table
             ->notEmptyString('is_admin');
 
         $validator
-            ->integer('verification_code')
-            ->requirePresence('verification_code', 'create')
-            ->notEmptyString('verification_code');
-
-        $validator
             ->boolean('is_verified')
             ->requirePresence('is_verified', 'create')
             ->notEmptyString('is_verified');
-
-        $validator
-            ->integer('reset_password_token')
-            ->allowEmptyString('reset_password_token');
-
-        $validator
-            ->dateTime('token_created_date')
-            ->allowEmptyDateTime('token_created_date');
 
         return $validator;
     }
@@ -129,7 +113,6 @@ class UsersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['email']));
-        $rules->add($rules->isUnique(['phone']));
 
         return $rules;
     }

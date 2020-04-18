@@ -42,6 +42,13 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <div class='pb-2 mt-4 mb-2 border-bottom'>
             <h1>Verify</h1>
         </div>
+        <?= $this->Form->create('post') ?>
+        <h4>Verification Code</h4>
+        <fieldset>
+            <?= $this->Form->number('code') ?>
+        </fieldset>
+        <?= $this->Form->button(__('Verify')); ?>
+        <?= $this->Form->end() ?>
     </div>
 </body>
 

@@ -67,6 +67,11 @@ $userID = $user['id'];
                     <li class="nav-item">
                         <?= $this->Html->link('Admin', '/admin', array('class' => 'nav-link')) ?>
                     </li>
+                <?php endif;
+                if ($user['is_verified'] == 0) : ?>
+                    <li class="nav-item">
+                        <?= $this->Html->link('Verify', '/verify', array('class' => 'nav-link')) ?>
+                    </li>
             <?php endif;
             } ?>
 
