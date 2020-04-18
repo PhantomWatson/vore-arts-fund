@@ -55,10 +55,6 @@ class VotesController extends AppController
         $this->set(['applications' => $applications]);
     }
 
-    public function thank(){
-        return null;
-    }
-
     public function submit()
     {
         $fundingCyclesTable = TableRegistry::getTableLocator()->get('funding_cycles');

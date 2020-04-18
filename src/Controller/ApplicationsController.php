@@ -91,8 +91,6 @@ class ApplicationsController extends AppController
             $applicationsTable = TableRegistry::getTableLocator()->get('applications');
             $application = $applicationsTable->find()->where(['id' => $id])->first()->toArray();
         }
-
-
     }
 
 }

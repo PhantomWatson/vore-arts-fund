@@ -11,6 +11,8 @@ use Cake\I18n\FrozenTime;
 use Cake\Mailer\Email;
 use Cake\Mailer\TransportFactory;
 use Twilio\Rest\Client;
+use Cake\ORM\TableRegistry;
+
 /**
  * UsersController
  *
@@ -390,5 +392,16 @@ class UsersController extends AppController
         }
 
         return null;
+    }
+
+    public function withdraw(){
+        $id = $this->request->getParam('id');
+        if($this->request->is('post')) {
+            $applicationsTable = TableRegistry::getTableLocator()->get('applications');
+            $application = $applicationsTable->find()->where(['id' => $id])->first();
+            $application->patchEntity($application, ['status_id' => 1]);
+        }
+
+
     }
 }

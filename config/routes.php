@@ -86,7 +86,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/view-application/:id', ['controller' => 'Applications', 'action' => 'view']);
     $routes->connect('/vote', ['controller' => 'Votes', 'action' => 'index']);
     $routes->connect('/submit', ['controller' => 'Votes', 'action' => 'submit']);
-    
+    $routes->connect('/withdraw/:id', ['controller' => 'Users', 'action' => 'withdraw']);
+
 
 
 

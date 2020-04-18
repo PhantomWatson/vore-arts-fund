@@ -58,6 +58,11 @@ $applications = TableRegistry::getTableLocator()->get('Applications')->find()->w
                     'id' => $application['id'],
                     'slug' => '/view-application//'
                 ], array('class' => 'button')); ?>
+                <?= $this->Form->postLink(
+                    'Withdraw',
+                    ['action' => 'withdraw', $application->id],
+                    ['confirm' => 'Are you sure you want to withdraw?'])
+                ?>
             </div>
         <?php } ?>
     </div>
