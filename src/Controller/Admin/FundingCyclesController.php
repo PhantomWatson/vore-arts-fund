@@ -1,22 +1,16 @@
 <?php
 
-/**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link      https://cakephp.org CakePHP(tm) Project
- * @since     0.2.9
- * @license   https://opensource.org/licenses/mit-license.php MIT License
- */
-
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
+use App\Model\Table\FundingCyclesTable;
+
+/**
+ * FundingCyclesController
+ *
+ * @property FundingCyclesTable $FundingCycles
+ * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
+ */
 
 class FundingCyclesController extends AppController
 {
@@ -33,9 +27,14 @@ class FundingCyclesController extends AppController
 
     public function edit()
     {
-        if ($this->request->is('post')) {
-            if($this->FundingCycle->save($this->request->getData())){
-                debug("test");
+        if ($this->request->is('put')) {
+            $updatedFundingCycle = $this->request->getData();
+            $fundingCycle = $this->FundingCycles->get($updatedFundingCycle['id']);
+            $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $updatedFundingCycle);
+            if($this->FundingCycles->save($fundingCycle)){
+                $this->Flash->success(__('Successfully updated funding cycle'));
+            } else {
+                $this->Flash->error(__('Error updating funding cycle'));
             }
         }
         return null;

@@ -50,15 +50,9 @@ $userID = $user['id'];
                 <li class="nav-item">
                     <?= $this->Html->link('Login', '/login', array('class' => 'nav-link')); ?>
                 </li>
-                <?php
-                if ($isAdmin == 1) : ?>
-                    <li class="nav-item">
-
-                        <?= $this->Html->link('Admin Page', '/admin-page', array('class' => 'nav-link')) ?>
-                    </li>
-                <?php endif;
+            <?php
             } else {
-                ?>
+            ?>
                 <li class="nav-item">
                     <?= $this->Html->link('My Account', '/my-account', array('class' => 'nav-link')); ?>
                 </li>
@@ -68,7 +62,12 @@ $userID = $user['id'];
                 <li class="nav-item">
                     <?= $this->Html->link('Log Out', '/logout', array('class' => 'nav-link')); ?>
                 </li>
-            <?php
+                <?php
+                if ($isAdmin) : ?>
+                    <li class="nav-item">
+                        <?= $this->Html->link('Admin', '/admin', array('class' => 'nav-link')) ?>
+                    </li>
+            <?php endif;
             } ?>
 
         </ul>
