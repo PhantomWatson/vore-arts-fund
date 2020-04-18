@@ -35,7 +35,10 @@ $category = TableRegistry::getTableLocator()->get('Categories')->find()->all()->
 
 $image = TableRegistry::getTableLocator()->get('Images')->find()->where(['application_id' => $application['id']])->first();
 $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all();
-
+$statusOptions = [];
+foreach($statuses as $status) {
+    $statusOptions[$status->id] = $status->name;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -57,7 +60,12 @@ $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all();
         </div>
         <div>
             <h4>Status</h4>
-            <?php echo $this->Form->input('inputname', array('type' => 'select', 'options' => $statuses, 'label' => false, 'empty' => 'Category')); ?>
+            <?= $this->Form->create('post') ?>
+            <fieldset>
+                <?= $this->Form->input('status_id', array('type' => 'select', 'options' => $statusOptions, 'label' => false, 'empty' => 'Category', 'default' => $application->status_id)) ?>
+            </fieldset>
+            <?= $this->Form->button(__('Update Status'), ['class'=>'button']); ?>
+            <?= $this->Form->end() ?>
         </div>
         <div>
             <h4>Description:</h4>
@@ -84,7 +92,7 @@ $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all();
             </fieldset>
             <?= $this->Form->button(__('Comment')); ?>
             <?= $this->Form->end() ?>
-            </form>
+        </form>
         <?= $this->Html->link(
             'Back',
             '/admin/applications',
