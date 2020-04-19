@@ -1,14 +1,14 @@
 <?php
-namespace App\Test\TestCase\Controller;
+namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\ApplicationsController;
+use App\Controller\Admin\ApplicationsController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\ApplicationsController Test Case
+ * App\Controller\Admin\ApplicationsController Test Case
  *
- * @uses \App\Controller\ApplicationsController
+ * @uses \App\Controller\Admin\ApplicationsController
  */
 class ApplicationsControllerTest extends TestCase
 {
@@ -32,21 +32,31 @@ class ApplicationsControllerTest extends TestCase
     ];
 
     /**
-     * Test apply method
+     * Test index method
      *
      * @return void
      */
-    public function testApply()
+    public function testIndex()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
-     * Test view method
+     * Test review method
      *
      * @return void
      */
-    public function testView()
+    public function testReview()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test setStatus method
+     *
+     * @return void
+     */
+    public function testSetStatus()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
