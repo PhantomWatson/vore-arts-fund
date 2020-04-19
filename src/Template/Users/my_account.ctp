@@ -51,6 +51,9 @@ $applications = TableRegistry::getTableLocator()->get('Applications')->find()->w
         <?php foreach ($applications as $application) { ?>
             <div>
                 <h3><?php echo $application['title'] ?></h3>
+                <?php if($application['status_id'] === 8) {?>
+                    <p><?= 'Status: Withdrawn'; ?></p>
+                <?php } ?>
                 <?php echo $this->Html->link("View", 
                 [ 
                     'controller' => 'Applications',
@@ -58,11 +61,31 @@ $applications = TableRegistry::getTableLocator()->get('Applications')->find()->w
                     'id' => $application['id'],
                     'slug' => '/view-application//'
                 ], array('class' => 'button')); ?>
-                <?= $this->Form->postLink(
-                    'Withdraw',
-                    ['action' => 'withdraw', $application->id],
-                    ['confirm' => 'Are you sure you want to withdraw?'])
-                ?>
+                <?php if($application['status_id'] !== 8){
+                    echo $this->Html->link("Withdraw", 
+                    [ 
+                        'controller' => 'Applications',
+                        'action' => 'withdraw',
+                        'id' => $application['id'],
+                    ], array('class' => 'button')); 
+                }?>
+                <?php if($application['status_id'] === 8){
+                    echo $this->Html->link("Resubmit", 
+                    [ 
+                        'controller' => 'Applications',
+                        'action' => 'resubmit',
+                        'id' => $application['id'],
+                    ], array('class' => 'button')); 
+                }?>
+
+                <?php if($application['status_id'] === 1 || $application['status_id'] ===4 || $application['status_id'] === 8){
+                    echo $this->Html->link("Delete", 
+                    [ 
+                        'controller' => 'Applications',
+                        'action' => 'delete',
+                        'id' => $application['id'],
+                    ], array('class' => 'button'));
+                } ?>
             </div>
         <?php } ?>
     </div>

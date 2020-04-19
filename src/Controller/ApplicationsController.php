@@ -85,7 +85,6 @@ class ApplicationsController extends AppController
 
     public function view(){
         $id = $this->request->getParam('id');
-
         if($this->request->is('get')) {
             $data = $this->request->getData();
             $applicationsTable = TableRegistry::getTableLocator()->get('applications');
@@ -93,4 +92,37 @@ class ApplicationsController extends AppController
         }
     }
 
+    public function withdraw(){
+        $id = $this->request->getParam('id');
+        $applicationsTable = TableRegistry::getTableLocator()->get('applications');
+        $application = $applicationsTable->find()->where(['id' => $id])->first();
+        if($this->request->is('post')) {
+            $application = $applicationsTable->patchEntity($application, ['status_id' => 8]); 
+            if($applicationsTable->save($application)){
+                $this->Flash->success('Application withdrawn.');
+            }
+        }
+    }
+
+    public function resubmit(){
+        $id = $this->request->getParam('id');
+        $applicationsTable = TableRegistry::getTableLocator()->get('applications');
+        $application = $applicationsTable->find()->where(['id' => $id])->first();
+        if($this->request->is('post')) {
+            $application = $applicationsTable->patchEntity($application, ['status_id' => 0]); 
+            if($applicationsTable->save($application)){
+                $this->Flash->success('Application has been resubmitted.');
+            }
+        }
+    }
+
+    public function delete(){
+        $id = $this->request->getParam('id');
+        $applicationsTable = TableRegistry::getTableLocator()->get('applications');
+        $application = $applicationsTable->find()->where(['id' => $id])->first();
+        if($this->request->is('delete')) {
+            $result = $applicationsTable->delete($application); 
+    }
+
+}
 }

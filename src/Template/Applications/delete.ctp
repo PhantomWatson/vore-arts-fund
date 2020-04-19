@@ -41,7 +41,19 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 </head>
 <body class="home">
 
-    <h1>Withdraw</h1>
+    <h1>Delete</h1>
+    <?= $this->Flash->render() ?>
+    <?= $this->Form->create(null) ?>
+
+    <h4> Are you sure you want to delete your application? </h4>
+    <?= $this->Form->button(__('Yes')); ?>
+    <?= $this->Html->link(
+                    'Back',
+                    '/my-account',
+                    ['class' => 'button']
+            ) ?>
+    <?= $this->Form->end() ?>
+
 
 </body>
 </html>
