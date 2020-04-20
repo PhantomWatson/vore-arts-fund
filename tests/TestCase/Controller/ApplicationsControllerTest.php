@@ -142,7 +142,34 @@ class ApplicationsControllerTest extends TestCase
     public function testResubmit()
     {
         $data = [
+            'id' => 1,
+            'title' => 'Test',
+            'description'=> 'Praesent id massa id nisl venenatis 
+            lacinia. Aenean sit amet justo. Morbi ut odio. 
+            Cras mi pede, malesuada in, imperdiet et, commodo 
+            vulputate, justo.',
+            'amount_requested' => 555555,
+            'accept_partial_payout' => 0,
+            'category_id' => 3,
+            'user_id' => 1,
+            'funding_cycle_id' => 1,
             'status_id' => 8,
+        ];
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1,
+                    'username' => 'testing',
+                    // other keys.
+                ]
+            ]
+        ]);
+        $this->post('/apply', $data);
+        $this->assertResponseSuccess();
+
+
+        $data = [
+            'status_id' => 9,
         ];
         $this->post('/resubmit/1', $data);
         $this->assertResponseSuccess();

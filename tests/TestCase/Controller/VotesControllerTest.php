@@ -4,6 +4,8 @@ namespace App\Test\TestCase\Controller;
 use App\Controller\VotesController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Cake\ORM\TableRegistry;
+
 
 /**
  * App\Controller\VotesController Test Case
@@ -53,6 +55,29 @@ class VotesControllerTest extends TestCase
      */
     public function testSubmit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $data = [
+            'id' => 1,
+            'user_id' => 1,
+            'application_id' => 1,
+            'funding_cycle_id' => 1,
+            'weight' => 1
+        ];
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1,
+                    'username' => 'testing',
+                    // other keys.
+                ]
+            ]
+        ]);
+        $this->post('/submit', $data);
+        $this->assertResponseSuccess();
+        $votesTable = TableRegistry::getTableLocator()->get('votes');
+        $query = $votesTable->find()->where(['id' => 1]);
+        $this->assertEquals(1, $query->count());
+
+
     }
+
 }
