@@ -43,10 +43,32 @@ class UsersFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'name' => 'Lorem ipsum dolor sit amet',
-                'email' => 'Lorem ipsum dolor sit amet',
-                'password' => 'Lorem ipsum dolor sit amet',
-                'phone' => 1,
+                'name' => 'Unverified User',
+                'email' => 'test@test.com',
+                'password' => 'a',
+                'phone' => 1234567890,
+                'is_admin' => 0,
+                'is_verified' => 0,
+                'created' => 1587180608,
+                'modified' => 1587180608
+            ],
+            [
+                'id' => 2,
+                'name' => 'Verified User',
+                'email' => 'test1@test.com',
+                'password' => 'b',
+                'phone' => 1234567890,
+                'is_admin' => 0,
+                'is_verified' => 1,
+                'created' => 1587180608,
+                'modified' => 1587180608
+            ],
+            [
+                'id' => 3,
+                'name' => 'Admin User',
+                'email' => 'test2@test.com',
+                'password' => 'c',
+                'phone' => 1234567890,
                 'is_admin' => 1,
                 'is_verified' => 1,
                 'created' => 1587180608,

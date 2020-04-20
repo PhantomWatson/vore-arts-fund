@@ -35,8 +35,40 @@ class StatusesFixture extends TestFixture
     {
         $this->records = [
             [
+                'id' => 0,
+                'name' => 'Under Review'
+            ],
+            [
                 'id' => 1,
-                'name' => 'Lorem ipsum dolor sit amet'
+                'name' => 'Under Review'
+            ],
+            [
+                'id' => 2,
+                'name' => 'Accepted'
+            ],
+            [
+                'id' => 3,
+                'name' => 'Rejected'
+            ],
+            [
+                'id' => 4,
+                'name' => 'Revision Requested'
+            ],
+            [
+                'id' => 5,
+                'name' => 'Voting'
+            ],
+            [
+                'id' => 6,
+                'name' => 'Awarded'
+            ],
+            [
+                'id' => 7,
+                'name' => 'Not Awarded'
+            ],
+            [
+                'id' => 8,
+                'name' => 'Withdrawn'
             ],
         ];
         parent::init();
