@@ -35,10 +35,6 @@ class StatusesFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 0,
-                'name' => 'Under Review'
-            ],
-            [
                 'id' => 1,
                 'name' => 'Applying'
             ],
@@ -70,6 +66,10 @@ class StatusesFixture extends TestFixture
                 'id' => 8,
                 'name' => 'Withdrawn'
             ],
+            [
+                'id' => 9,
+                'name' => 'Under Review'
+            ]
         ];
         parent::init();
     }

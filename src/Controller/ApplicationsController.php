@@ -109,7 +109,7 @@ class ApplicationsController extends AppController
         $applicationsTable = TableRegistry::getTableLocator()->get('applications');
         $application = $applicationsTable->find()->where(['id' => $id])->first();
         if($this->request->is('post')) {
-            $application = $applicationsTable->patchEntity($application, ['status_id' => 0]); 
+            $application = $applicationsTable->patchEntity($application, ['status_id' => 9]); 
             if($applicationsTable->save($application)){
                 $this->Flash->success('Application has been resubmitted.');
             }
@@ -121,7 +121,9 @@ class ApplicationsController extends AppController
         $applicationsTable = TableRegistry::getTableLocator()->get('applications');
         $application = $applicationsTable->find()->where(['id' => $id])->first();
         if($this->request->is('delete')) {
-            $result = $applicationsTable->delete($application); 
+            if($applicationsTable->delete($application)){
+                $this->Flash->success('Application has been deleted');
+            } 
     }
 
 }
