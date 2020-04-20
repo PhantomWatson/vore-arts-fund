@@ -40,7 +40,7 @@ class StatusesFixture extends TestFixture
             ],
             [
                 'id' => 1,
-                'name' => 'Under Review'
+                'name' => 'Applying'
             ],
             [
                 'id' => 2,
