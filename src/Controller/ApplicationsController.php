@@ -62,8 +62,8 @@ class ApplicationsController extends AppController
                 } else {
                     $this->Flash->error(__('The application could not be ' . (isset($data['save']) ? 'saved.' : 'submitted.')));
                 }
-                $rawImage = $this->request->data['image'];
-                if(!empty($rawImage)) {
+                $rawImage = $data['image'];
+                if($rawImage['size'] !== 0) {
                     $image = $imagesTable->newEntity();
                     $image->application_id = $result->id;
                     $path = DS . 'img' . DS . $rawImage['name'];
