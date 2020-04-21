@@ -48,7 +48,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
             <?= $this->Form->create() ?>
             <fieldset>
                 <?php echo $this->Form->create(null, array('action' => 'forgot_password', 'id' => 'web-form')); ?>
-                <?php echo $this->Form->input('User.email', array('label' => 'Email', 'between' => '<br />', 'type' => 'email', 'required' => true)); ?>
+                <?php echo $this->Form->control('User.email', array('label' => 'Email', 'between' => '<br />', 'type' => 'email', 'required' => true)); ?>
                 <?php echo $this->Form->submit('Send Password Reset Instructions', array('class' => 'submit', 'id' => 'submit')); ?>
                 <?php echo $this->Form->end(); ?>
             </fieldset>

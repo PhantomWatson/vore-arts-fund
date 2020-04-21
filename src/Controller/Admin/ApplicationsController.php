@@ -28,7 +28,7 @@ class ApplicationsController extends AppController
 
         if ($this->request->is('post')) {
             $application = $this->Applications->get($id);
-            $application = $this->FundingCycles->patchEntity($application, $this->request->getData());
+            $application = $this->Applications->patchEntity($application, $this->request->getData());
             if($this->Applications->save($application)){
                 $this->Flash->success(__('Successfully updated application status'));
             } else {

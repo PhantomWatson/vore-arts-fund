@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -35,7 +36,10 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <div class="container">
         <div class='pb-2 mt-4 mb-2 border-bottom'>
             <h1>Add Funding Cycle</h1>
-            <?= $this->Form->create($fundingCycle) ?>
+        </div>
+        <?= $this->Flash->render() ?>
+
+        <?= $this->Form->create($fundingCycle) ?>
         <fieldset>
             <?= $this->Form->control('application_begin') ?>
             <?= $this->Form->control('application_end') ?>
@@ -45,7 +49,6 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         </fieldset>
         <?= $this->Form->button(__('Submit')); ?>
         <?= $this->Form->end() ?>
-        </div>
     </div>
 
 </body>

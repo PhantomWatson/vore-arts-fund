@@ -62,7 +62,7 @@ foreach($statuses as $status) {
             <h4>Status</h4>
             <?= $this->Form->create('post') ?>
             <fieldset>
-                <?= $this->Form->input('status_id', array('type' => 'select', 'options' => $statusOptions, 'label' => false, 'empty' => 'Category', 'default' => $application->status_id)) ?>
+                <?= $this->Form->control('status_id', array('type' => 'select', 'options' => $statusOptions, 'label' => false, 'empty' => 'Category', 'default' => $application->status_id)) ?>
             </fieldset>
             <?= $this->Form->button(__('Update Status'), ['class'=>'button']); ?>
             <?= $this->Form->end() ?>

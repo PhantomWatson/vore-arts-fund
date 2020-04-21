@@ -26,9 +26,9 @@ class FundingCyclesController extends AppController
         if ($this->request->is('post')) {
             $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $this->request->getData());
             if($this->FundingCycles->save($fundingCycle)){
-                $this->Flash->success(__('Successfully updated funding cycle'));
+                $this->redirect("/admin/funding-cycles");
             } else {
-                $this->Flash->error(__('Error updating funding cycle'));
+                $this->Flash->error(__('Error creating funding cycle'));
             }
         }
         $this->set('fundingCycle', $fundingCycle);
