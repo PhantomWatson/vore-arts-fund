@@ -34,7 +34,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 <head>
     <?= $this->element('head'); ?>
     <title>
-        <?= $cakeDescription ?>
+        <?= 'Apply' ?>
     </title>
 </head>
 

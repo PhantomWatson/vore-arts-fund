@@ -42,11 +42,11 @@ class FundingCyclesFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'application_begin' => 1583031542,
-                'application_end' => 1590980342,
-                'vote_begin' => 1585709942,
-                'vote_end' => 1590980342,
-                'funding_available' => 1,
+                'application_begin' => 1580525942,
+                'application_end' => 1588215542,
+                'vote_begin' => 1588215542,
+                'vote_end' => 1590807542,
+                'funding_available' => 1999999,
                 'created' => 1572998643,
                 'modified' => 1572998643
             ],
