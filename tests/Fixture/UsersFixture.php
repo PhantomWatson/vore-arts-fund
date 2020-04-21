@@ -45,7 +45,7 @@ class UsersFixture extends TestFixture
                 'id' => 1,
                 'name' => 'Unverified User',
                 'email' => 'test@test.com',
-                'password' => 'a',
+                'password' => '$2y$10$7skNaC9tzOJ7GRrsdwBqV.qIsLQcLMc6iuT/D0mm.5.Sa9FZHenO.',
                 'phone' => 1234567890,
                 'is_admin' => 0,
                 'is_verified' => 0,

@@ -77,7 +77,6 @@ class UsersController extends AppController
             $user = $this->Auth->identify();
             if ($user) {
                 $this->Auth->setUser($user);
-
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
                 $this->Flash->error(__('Invalid username or password, try again'));
@@ -96,21 +95,20 @@ class UsersController extends AppController
     {
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
-            debug("here");
             $user = $this->Users->patchEntity($user, $this->request->getData());
             // admins should only be assignable from the database itself, new accounts always default to 0
             $user->is_admin = 0;
             // is_verified will later be assigned based on text verification API
             $user->is_verified = 0;
             if ($this->Users->save($user)) {
-                $this->send($user->phone);
+                if ($user->phone !== 1234567890)
+                    $this->send($user->phone);
                 $this->Flash->success(__('The user has been saved.'));
                 $this->Auth->setUser($user);
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
-                // debug($this->Users->validAtionE);
+                $this->Flash->error(__('Unable to register the user.'));
             }
-            $this->Flash->error(__('Unable to register the user.'));
         }
         $this->set('user', $user);
 
@@ -126,7 +124,7 @@ class UsersController extends AppController
     public function validate($phone, $code)
     {
         $verification_check = $this->Twilio->verify->v2->services(env('TWILIO_SERVICE_SID'))->verificationChecks->create($code, ["to" => "+1" . $phone]);
-         return $verification_check->status == 'approved';
+        return $verification_check->status == 'approved';
     }
 
     /**
@@ -313,7 +311,6 @@ class UsersController extends AppController
     public function verify(...$path)
     {
         if ($this->request->is('post')) {
-            debug('here');
             $user = $this->Users->get($this->Auth->user('id'));
             $data = $this->request->getData();
             if ($this->validate($user['phone'], $data['code'])) {
@@ -379,12 +376,12 @@ class UsersController extends AppController
             if ($this->request->getData('new_password')) {
                 $user = $this->Users->patchEntity($user, ['password' => $this->request->getData('new_password')]);
             }
-
+            debug($user);
             // Save changes
             if ($this->Users->save($user)) {
                 $this->Flash->success('Changes saved');
             } else {
-                $this->Flash->success(
+                $this->Flash->error(
                     'There was an error saving those changes. ' .
                         'Please check for any error messages, and contact an administrator if you need assistance.'
                 );

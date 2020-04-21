@@ -63,16 +63,16 @@ class FundingCyclesControllerTest extends TestCase
             ]
         ]);
         $data = [
-            'application_begin' => 1572998643,
-            'application_end' => 1572998644,
-            'vote_begin' => 1572998645,
-            'vote_end' => 1572998646,
+            'application_begin' => "2020-01-01 00:00:00",
+            'application_end' => "2020-01-01 00:00:01",
+            'vote_begin' => "2020-01-01 00:00:02",
+            'vote_end' => "2020-01-01 00:00:03",
             'funding_available' => 100
         ];
         $this->post("/admin/funding-cycles/add", $data);
         $this->assertResponseSuccess();
         $fundingCyclesTable = TableRegistry::getTableLocator()->get('fundingcycles');
-        $query = $fundingCyclesTable->find()->where(['application_begin' => 1572998643]);
+        $query = $fundingCyclesTable->find()->where(['application_begin' => "2020-01-01 00:00:00"]);
         $this->assertEquals(1, $query->count());
     }
 

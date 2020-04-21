@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\UsersController;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Cake\ORM\TableRegistry;
 
 /**
  * App\Controller\UsersController Test Case
@@ -28,43 +30,18 @@ class UsersControllerTest extends TestCase
     ];
 
     /**
-     * Test beforeFilter method
-     *
-     * @return void
-     */
-    public function testBeforeFilter()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test index method
-     *
-     * @return void
-     */
-    public function testIndex()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test view method
-     *
-     * @return void
-     */
-    public function testView()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
      * Test login method
      *
      * @return void
      */
     public function testLogin()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $data = [
+            'email' => 'test@test.com',
+            'password' => 'Password'
+        ];
+        $this->post("/login", $data);
+        $this->assertRedirect();
     }
 
     /**
@@ -74,27 +51,16 @@ class UsersControllerTest extends TestCase
      */
     public function testRegister()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test send method
-     *
-     * @return void
-     */
-    public function testSend()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test validate method
-     *
-     * @return void
-     */
-    public function testValidate()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $data = [
+            'name' => 'Jimmy',
+            'email' => 'test@voreartsfund.org',
+            'password' => 'Password',
+            'phone' => 1234567890
+        ];
+        $this->post("/register", $data);
+        $usersTable = TableRegistry::getTableLocator()->get('users');
+        $query = $usersTable->find()->where(['email' => 'test@voreartsfund.org']);
+        $this->assertEquals(1, $query->count());
     }
 
     /**
@@ -104,47 +70,17 @@ class UsersControllerTest extends TestCase
      */
     public function testLogout()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test forgotPassword method
-     *
-     * @return void
-     */
-    public function testForgotPassword()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test resetPasswordToken method
-     *
-     * @return void
-     */
-    public function testResetPasswordToken()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test verify method
-     *
-     * @return void
-     */
-    public function testVerify()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test verifyResend method
-     *
-     * @return void
-     */
-    public function testVerifyResend()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 3,
+                    'is_admin' => 1,
+                    'is_verified' => 1
+                ]
+            ]
+        ]);
+        $this->get("/logout");
+        $this->assertRedirect();
     }
 
     /**
@@ -154,7 +90,17 @@ class UsersControllerTest extends TestCase
      */
     public function testMyAccount()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1,
+                    'is_admin' => 0,
+                    'is_verified' => 1
+                ]
+            ]
+        ]);
+        $this->get("/my-account");
+        $this->assertResponseSuccess();
     }
 
     /**
@@ -164,16 +110,23 @@ class UsersControllerTest extends TestCase
      */
     public function testChangeAccountInfo()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test withdraw method
-     *
-     * @return void
-     */
-    public function testWithdraw()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    'id' => 1,
+                    'is_admin' => 0,
+                    'is_verified' => 0
+                ]
+            ]
+        ]);
+        $data = [
+            'name' => 'Joe',
+            'current_password' => 'Password'
+        ];
+        $this->post("/change-account-info", $data);
+        $this->assertResponseSuccess();
+        $usersTable = TableRegistry::getTableLocator()->get('users');
+        $query = $usersTable->find()->where(['id' => 1, 'name'=>'Joe']);
+        $this->assertEquals(1, $query->count());
     }
 }
