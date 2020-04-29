@@ -16,7 +16,7 @@ if (!Configure::read('debug')) :
 endif;
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <?= $this->element('head') ?>
