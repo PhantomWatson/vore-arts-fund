@@ -23,7 +23,7 @@ echo $this->Html->css('styles');
             <h1>Welcome to the Vore Arts Fund!</h1>
         </div>
         <div class="homepage">
-            <div class = "info">
+            <div class="info">
                 <h4>The Vore Arts Fund is a non-profit project funding profitable artistic projects
                     in the Muncie community through no-contract, no-interest loans. The importance
                     of art in the community cannot be underestimated. We want to encourage and fund
