@@ -51,8 +51,8 @@ class PagesControllerTest extends IntegrationTestCase
     {
         $this->get('/');
         $this->assertResponseOk();
-        $this->assertResponseContains('CakePHP');
-        $this->assertResponseContains('<html>');
+        $this->assertResponseContains('Vore Arts Fund');
+        $this->assertResponseContains('<html lang="en">');
     }
 
     /**
