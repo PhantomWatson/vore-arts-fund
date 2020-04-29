@@ -19,7 +19,7 @@ endif;
 <html>
 
 <head>
-    <?= $this->element('head'); ?>
+    <?= $this->element('head') ?>
     <title>
         Vore Arts Fund
     </title>
@@ -27,7 +27,7 @@ endif;
 
 <body class='home'>
 
-    <?= $this->element('navbar'); ?>
+    <?= $this->element('navbar') ?>
     <div class='container'>
         <div class='pb-2 mt-4 mb-2 border-bottom'>
             <h1>Welcome to the Vore Arts Fund! </h1>
