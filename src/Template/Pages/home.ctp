@@ -2,18 +2,8 @@
 /**
  * @var \App\View\AppView $this
  */
-use Cake\Core\Configure;
-use Cake\Http\Exception\NotFoundException;
-
 $this->layout = false;
 echo $this->Html->css('styles');
-
-
-if (!Configure::read('debug')) :
-    throw new NotFoundException(
-        'Please replace src/Template/Pages/home.ctp with your own version or re-enable debug mode.'
-    );
-endif;
 ?>
 <!DOCTYPE html>
 <html lang="en">
