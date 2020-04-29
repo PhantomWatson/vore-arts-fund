@@ -15,11 +15,7 @@
  * @var \App\View\AppView $this
  */
 
-use Cake\Cache\Cache;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Datasource\ConnectionManager;
-use Cake\Error\Debugger;
 use Cake\Http\Exception\NotFoundException;
 
 $this->layout = false;
@@ -53,7 +49,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         </div>
         <div class = "homepage">
             <div class = "info">
-                <h4>The Vore Arts Fund is a non-profit project funding profitable artistic projects 
+                <h4>The Vore Arts Fund is a non-profit project funding profitable artistic projects
                     in the Muncie community through no-contract, no-interest loans. The importance
                     of art in the community cannot be underestimated. We want to encourage and fund
                     artisitc projects and foster an environment that stresses the necessity of the arts.</h4>
