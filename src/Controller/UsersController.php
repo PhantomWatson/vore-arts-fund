@@ -209,7 +209,7 @@ class UsersController extends AppController
     }
 
     /**
-     * Generates a password token for the specified user and then returns the modified user entity
+     * Generates a password token for the user, updates token_created_date, and then returns the modified user entity
      *
      * @param User $user User entity
      * @return User|null
@@ -220,22 +220,10 @@ class UsersController extends AppController
             return null;
         }
 
-        // Generate a random string 100 chars in length.
-        // $token = "";
-        // for ($i = 0; $i < 6; $i++) {
-        //     $d = rand(1, 100000) % 2;
-        //     $d ? $token .= chr(rand(33,79)) : $token .= chr(rand(80,126));
-        // }
-
-        // (rand(1, 100000) % 2) ? $token = strrev($token) : $token = $token;
-
-        // Generate hash of random string
-        // $hash = (new DefaultPasswordHasher)->hash($token);
-
-        $user = $this->Users->patchEntity($user, ['reset_password_token' => 1234]);
-        // $user['User']['token_created_date']     = date('Y-m-d H:i:s');
-
-        return $user;
+        return $this->Users->patchEntity($user, [
+            'reset_password_token' => rand(1000000, 9999999),
+            'token_created_date' => new FrozenTime(),
+        ]);
     }
 
     /**
