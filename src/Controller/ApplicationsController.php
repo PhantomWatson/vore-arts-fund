@@ -66,6 +66,7 @@ class ApplicationsController extends AppController
                 if($rawImage['size'] !== 0) {
                     $image = $imagesTable->newEntity();
                     $image->application_id = $result->id;
+                    $image->weight = 0;
                     $path = DS . 'img' . DS . $rawImage['name'];
                     $path = str_replace(' ', '', $path);
                     $image->path = $path;
@@ -97,7 +98,7 @@ class ApplicationsController extends AppController
         $applicationsTable = TableRegistry::getTableLocator()->get('applications');
         $application = $applicationsTable->find()->where(['id' => $id])->first();
         if($this->request->is('post')) {
-            $application = $applicationsTable->patchEntity($application, ['status_id' => 8]); 
+            $application = $applicationsTable->patchEntity($application, ['status_id' => 8]);
             if($applicationsTable->save($application)){
                 $this->Flash->success('Application withdrawn.');
             }
@@ -109,7 +110,7 @@ class ApplicationsController extends AppController
         $applicationsTable = TableRegistry::getTableLocator()->get('applications');
         $application = $applicationsTable->find()->where(['id' => $id])->first();
         if($this->request->is('post')) {
-            $application = $applicationsTable->patchEntity($application, ['status_id' => 9]); 
+            $application = $applicationsTable->patchEntity($application, ['status_id' => 9]);
             if($applicationsTable->save($application)){
                 $this->Flash->success('Application has been resubmitted.');
             }
@@ -123,7 +124,7 @@ class ApplicationsController extends AppController
         if($this->request->is('delete')) {
             if($applicationsTable->delete($application)){
                 $this->Flash->success('Application has been deleted');
-            } 
+            }
     }
 
 }
