@@ -46,6 +46,7 @@ class User extends Entity
         'notes' => true,
         'votes' => true,
         'reset_password_token' => true,
+        'token_created_date' => true,
     ];
 
     /**
