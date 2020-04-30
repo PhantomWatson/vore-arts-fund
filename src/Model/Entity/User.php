@@ -44,7 +44,8 @@ class User extends Entity
         'applications' => true,
         'messages' => true,
         'notes' => true,
-        'votes' => true
+        'votes' => true,
+        'reset_password_token' => true,
     ];
 
     /**
