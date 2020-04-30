@@ -3,6 +3,7 @@
 /config/.env
 /config/.env.development
 /config/.env.production
+/config/.env.staging
 /logs/*
 /tmp/*
 /vendor/*
