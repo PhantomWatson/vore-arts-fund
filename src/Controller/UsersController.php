@@ -30,7 +30,7 @@ class UsersController extends AppController
      * @param Event $event Event object
      * @return void
      */
-    public function beforeFilter($event)
+    public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         parent::beforeFilter($event);
         $this->Auth->allow([
@@ -93,19 +93,19 @@ class UsersController extends AppController
      */
     public function register()
     {
-        $user = $this->Users->newEntity();
+        $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             // admins should only be assignable from the database itself, new accounts always default to 0
             $user->is_admin = 0;
-            // is_verified will later be assigned based on text verification API
+            // is_verified will later be assigned based on text verification API, see verify() below
             $user->is_verified = 0;
             if ($this->Users->save($user)) {
                 if ($user->phone !== 1234567890)
                     $this->send($user->phone);
                 $this->Flash->success(__('The user has been saved.'));
                 $this->Auth->setUser($user);
-                return $this->redirect($this->Auth->redirectUrl());
+                return $this->redirect("/verify");
             } else {
                 $this->Flash->error(__('Unable to register the user.'));
             }
@@ -303,6 +303,10 @@ class UsersController extends AppController
             $data = $this->request->getData();
             if ($this->validate($user['phone'], $data['code'])) {
                 //success
+                $this->Users->patchEntity($user, [
+                    'is_verified' => 1,
+                ]);
+                $this->Users->save($user);
                 $this->redirect("/my-account");
             } else {
                 $this->Flash->error(__('Error verifying phone'));

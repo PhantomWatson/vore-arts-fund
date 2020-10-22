@@ -33,7 +33,7 @@ class PagesController extends AppController
      * @param Event $event Event object
      * @return void
      */
-    public function beforeFilter(Event $event)
+    public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         parent::beforeFilter($event);
         $this->Auth->allow();

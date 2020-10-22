@@ -62,11 +62,11 @@ class ConsoleShell extends Shell
     /**
      * Display help for this console.
      *
+     * @param \Cake\Console\ConsoleOptionParser $parser The parser to update
      * @return \Cake\Console\ConsoleOptionParser
      */
-    public function getOptionParser()
+    public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
-        $parser = new ConsoleOptionParser('console');
         $parser->setDescription(
             'This shell provides a REPL that you can use to interact with ' .
             'your application in a command line designed to run PHP code. ' .

@@ -43,7 +43,7 @@ class AppController extends Controller
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -83,7 +83,7 @@ class AppController extends Controller
      * The folowing function lists the pages accessible to visitors
      * who are not logged into a User account
      */
-    public function beforeFilter(Event $event)
+    public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         $this->Auth->deny();
         // $this->Auth->allow(['index', 'view']);
