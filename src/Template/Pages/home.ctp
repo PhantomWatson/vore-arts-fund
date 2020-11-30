@@ -20,7 +20,7 @@ echo $this->Html->css('styles');
     <?= $this->element('navbar') ?>
     <div class="container">
         <div class="pb-2 mt-4 mb-2 border-bottom">
-            <h1>Welcome to the Vore Arts Fund!</h1>
+            <h1>Welcome to the Vore Arts Fund</h1>
         </div>
         <div class="homepage">
             <div class="info">
