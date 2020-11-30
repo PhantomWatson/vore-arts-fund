@@ -25,8 +25,8 @@ use Cake\Http\Exception\NotFoundException;
 $this->layout = false;
 
 $user = $this->request->getSession()->read('Auth.User');
-$isAdmin = $user['is_admin'];
-$userID = $user['id'];
+$isAdmin = $user['is_admin'] ?? false;
+$userID = $user['id'] ?? null;
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #BA0C2F">
     <a class="navbar-brand" href="/">Vore Arts Fund</a>
