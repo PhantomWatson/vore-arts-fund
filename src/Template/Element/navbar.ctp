@@ -41,18 +41,14 @@ $userID = $user['id'] ?? null;
             <li class="nav-item">
                 <?= $this->Html->link('Vote', '/vote', array('class' => 'nav-link')); ?>
             </li>
-            <?php
-            if ($userID == null) {
-            ?>
+            <?php if ($userID == null): ?>
                 <li class="nav-item">
                     <?= $this->Html->link('Register', '/register', array('class' => 'nav-link')); ?>
                 </li>
                 <li class="nav-item">
                     <?= $this->Html->link('Login', '/login', array('class' => 'nav-link')); ?>
                 </li>
-            <?php
-            } else {
-            ?>
+            <?php else: ?>
                 <li class="nav-item">
                     <?= $this->Html->link('My Account', '/my-account', array('class' => 'nav-link')); ?>
                 </li>
@@ -62,19 +58,17 @@ $userID = $user['id'] ?? null;
                 <li class="nav-item">
                     <?= $this->Html->link('Log Out', '/logout', array('class' => 'nav-link')); ?>
                 </li>
-                <?php
-                if ($isAdmin) : ?>
+                <?php if ($isAdmin): ?>
                     <li class="nav-item">
                         <?= $this->Html->link('Admin', '/admin', array('class' => 'nav-link')) ?>
                     </li>
-                <?php endif;
-                if ($user['is_verified'] == 0) : ?>
+                <?php endif; ?>
+                <?php if ($user['is_verified'] == 0): ?>
                     <li class="nav-item">
                         <?= $this->Html->link('Verify', '/verify', array('class' => 'nav-link')) ?>
                     </li>
-            <?php endif;
-            } ?>
-
+                <?php endif; ?>
+            <?php endif; ?>
         </ul>
     </div>
 </nav>
