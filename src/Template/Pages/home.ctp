@@ -24,16 +24,19 @@ echo $this->Html->css('styles');
         </div>
         <div class="homepage">
             <div class="info">
-                <h4>The Vore Arts Fund is a non-profit project funding profitable artistic projects
-                    in the Muncie community through no-contract, no-interest loans. The importance
-                    of art in the community cannot be underestimated. We want to encourage and fund
-                    artistic projects and foster an environment that stresses the necessity of the arts.</h4>
-                <h4>Register and apply now!</h4>
-            </div>
-            <div class="images">
-                <img src="/img/artmuseum.jpg" height="290" width="290" style=" border-radius: 8px;">
-                <img src="/img/monet.jpg" height="300" width="300" style=" border-radius: 8px;">
-                <img src="/img/love.jpg" height="292" width="292" style=" border-radius: 8px;">
+                <p>
+                    The Vore Arts Fund is a 501(c)(3) not-for-profit program for supporting the Muncie arts community
+                    by distributing no-contract, no-interest loans to cover the up-front costs of producing commercial
+                    art, music, performances, and educational opportunities.
+                </p>
+                <p>
+                    We're currently fundraising and setting up the program's website, and applications for funding are
+                    not yet open to the public. Stay tuned for updates.
+                </p>
+                <p>
+                    Please email <a href="mailto:info@voreartsfund.org">info@voreartsfund.org</a> if you have any
+                    questions.
+                </p>
             </div>
         </div>
     </div>
