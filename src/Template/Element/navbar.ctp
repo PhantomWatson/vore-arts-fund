@@ -26,7 +26,7 @@ $this->layout = false;
 
 $user = $this->request->getSession()->read('Auth.User');
 $isAdmin = $user['is_admin'] ?? false;
-$userID = $user['id'] ?? null;
+$userId = $user['id'] ?? null;
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #BA0C2F">
     <a class="navbar-brand" href="/">Vore Arts Fund</a>
@@ -38,17 +38,12 @@ $userID = $user['id'] ?? null;
             <li class="nav-item">
                 <?= $this->Html->link('Home', '/', array('class' => 'nav-link')); ?>
             </li>
-            <li class="nav-item">
-                <?= $this->Html->link('Vote', '/vote', array('class' => 'nav-link')); ?>
-            </li>
-            <?php if ($userID == null): ?>
+            <?php if (Configure::read('debug')): ?>
                 <li class="nav-item">
-                    <?= $this->Html->link('Register', '/register', array('class' => 'nav-link')); ?>
+                    <?= $this->Html->link('Vote', '/vote', array('class' => 'nav-link')); ?>
                 </li>
-                <li class="nav-item">
-                    <?= $this->Html->link('Login', '/login', array('class' => 'nav-link')); ?>
-                </li>
-            <?php else: ?>
+            <?php endif; ?>
+            <?php if ($userId): ?>
                 <li class="nav-item">
                     <?= $this->Html->link('My Account', '/my-account', array('class' => 'nav-link')); ?>
                 </li>
@@ -68,6 +63,13 @@ $userID = $user['id'] ?? null;
                         <?= $this->Html->link('Verify', '/verify', array('class' => 'nav-link')) ?>
                     </li>
                 <?php endif; ?>
+            <?php elseif (Configure::read('debug')): ?>
+                <li class="nav-item">
+                    <?= $this->Html->link('Register', '/register', array('class' => 'nav-link')); ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link('Login', '/login', array('class' => 'nav-link')); ?>
+                </li>
             <?php endif; ?>
         </ul>
     </div>
