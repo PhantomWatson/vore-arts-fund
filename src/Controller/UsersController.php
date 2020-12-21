@@ -155,7 +155,6 @@ class UsersController extends AppController
                 return $this->redirect(['action' => 'forgotPassword']);
             } else {
                 $user = $this->__generatePasswordToken($user);
-                debug($user);
                 if ($this->Users->save($user) && $this->__sendForgotPasswordEmail($user)) {
                     $this->Flash->success('Password reset instructions have been sent to your email address. You have 24 hours to complete the request.');
 
@@ -368,7 +367,7 @@ class UsersController extends AppController
             if ($this->request->getData('new_password')) {
                 $user = $this->Users->patchEntity($user, ['password' => $this->request->getData('new_password')]);
             }
-            debug($user);
+
             // Save changes
             if ($this->Users->save($user)) {
                 $this->Flash->success('Changes saved');
