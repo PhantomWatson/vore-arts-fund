@@ -2,11 +2,8 @@
 
 namespace App\Controller;
 
-use App\Model\Entity\User;
-use App\Model\Table\UsersTable;
 use Cake\Auth\DefaultPasswordHasher;
-use Cake\Event\Event;
-use Cake\Http\Response;
+use Cake\Event\EventInterface;
 use Cake\I18n\FrozenTime;
 use Cake\Mailer\Mailer;
 use Twilio\Rest\Client;
@@ -14,7 +11,7 @@ use Twilio\Rest\Client;
 /**
  * UsersController
  *
- * @property UsersTable $Users
+ * @property \App\Model\Table\UsersTable $Users
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
 class UsersController extends AppController
@@ -25,10 +22,10 @@ class UsersController extends AppController
     /**
      * beforeFilter callback method
      *
-     * @param Event $event Event object
+     * @param \Cake\Event\EventInterface $event Event object
      * @return void
      */
-    public function beforeFilter(\Cake\Event\EventInterface $event)
+    public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
         $this->Auth->allow([
@@ -67,7 +64,7 @@ class UsersController extends AppController
     /**
      * Login page
      *
-     * @return Response|null
+     * @return \Cake\Http\Response|null
      */
     public function login()
     {
@@ -87,7 +84,7 @@ class UsersController extends AppController
     /**
      * User registration page
      *
-     * @return Response|null
+     * @return \Cake\Http\Response|null
      */
     public function register()
     {
@@ -113,12 +110,24 @@ class UsersController extends AppController
         return null;
     }
 
-
+    /**
+     * Sends a verification text message
+     *
+     * @param string $phone Phone number
+     * @return void
+     */
     public function send($phone)
     {
         $this->Twilio->verify->v2->services(env('TWILIO_SERVICE_SID'))->verifications->create("+1" . $phone, "sms");
     }
 
+    /**
+     * Returns TRUE if the provided phone number has been validated with a specific code, FALSE otherwise
+     *
+     * @param string $phone Phone number
+     * @param string $code The verification string
+     * @return bool
+     */
     public function validate($phone, $code)
     {
         $verification_check = $this->Twilio->verify->v2->services(env('TWILIO_SERVICE_SID'))->verificationChecks->create($code, ["to" => "+1" . $phone]);
@@ -128,7 +137,7 @@ class UsersController extends AppController
     /**
      * Logout page
      *
-     * @return Response
+     * @return \Cake\Http\Response
      */
     public function logout()
     {
@@ -141,7 +150,7 @@ class UsersController extends AppController
      * This page shows the user a form for having an email sent to them with a means to reset their password
      *
      * @param array ...$path Path segments
-     * @return Response|null
+     * @return \Cake\Http\Response|null
      */
     public function forgotPassword(...$path)
     {
@@ -170,11 +179,11 @@ class UsersController extends AppController
      * This is the page that is linked to in the password-reset emails sent to users
      *
      * @param string $reset_password_token User-specific password reset token
-     * @return Response|null
+     * @return \Cake\Http\Response|null
      */
     public function resetPasswordToken($reset_password_token = null)
     {
-        /** @var User $user */
+        /** @var \App\Model\Entity\User $user */
         $user = $this->Users->findByResetPasswordToken($reset_password_token)->first();
         if (!$user || !$this->__validToken($user->token_created_date)) {
             $this->Flash->error('The password reset request has either expired or is invalid');
@@ -208,8 +217,8 @@ class UsersController extends AppController
     /**
      * Generates a password token for the user, updates token_created_date, and then returns the modified user entity
      *
-     * @param User $user User entity
-     * @return User|null
+     * @param \App\Model\Entity\User $user User entity
+     * @return \App\Model\Entity\User|null
      */
     private function __generatePasswordToken($user)
     {
@@ -226,7 +235,7 @@ class UsersController extends AppController
     /**
      * Returns TRUE if the time passed to it was within the last day
      *
-     * @param FrozenTime $tokenCreatedDate The time that a token was generated
+     * @param \Cake\I18n\FrozenTime $tokenCreatedDate The time that a token was generated
      * @return bool
      */
     private function __validToken($tokenCreatedDate)
@@ -237,7 +246,7 @@ class UsersController extends AppController
     /**
      * Sends an email with a link for resetting a password to the provided user
      *
-     * @param User|null $user User entity
+     * @param \App\Model\Entity\User|null $user User entity
      * @return bool
      */
     private function __sendForgotPasswordEmail($user = null)
@@ -341,7 +350,7 @@ class UsersController extends AppController
     /**
      * This page allows users to change their own account information
      *
-     * @return Response|null
+     * @return \Cake\Http\Response|null
      */
     public function changeAccountInfo()
     {
