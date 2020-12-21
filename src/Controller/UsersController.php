@@ -8,10 +8,8 @@ use Cake\Auth\DefaultPasswordHasher;
 use Cake\Event\Event;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
-use Cake\Mailer\Email;
-use Cake\Mailer\TransportFactory;
+use Cake\Mailer\Mailer;
 use Twilio\Rest\Client;
-use Cake\ORM\TableRegistry;
 
 /**
  * UsersController
@@ -245,16 +243,18 @@ class UsersController extends AppController
     private function __sendForgotPasswordEmail($user = null)
     {
         if (!empty($user)) {
-            $email = new Email();
+            $email = new Mailer();
+            $subject = 'Password Reset Request - DO NOT REPLY';
             $email
                 ->setTo($user->email)
-                ->setSubject('Password Reset Request - DO NOT REPLY')
+                ->setSubject($subject)
                 ->setReplyTo('noreply@voreartsfund.org')
                 ->setFrom('noreply@voreartsfund.org')
-                ->setTemplate('reset_password_request')
                 ->setEmailFormat('html')
-                ->setViewVars(['User' => $user])
-                ->send();
+                ->setViewVars(['User' => $user, 'subject' => $subject])
+                ->viewBuilder()
+                ->setTemplate('reset_password_request');
+            $email->send();
 
             return true;
         }
@@ -272,15 +272,17 @@ class UsersController extends AppController
     {
         if (!empty($id)) {
             $User = $this->Users->get($id);
-            $email = new Email();
+            $email = new Mailer();
+            $subject = 'Password Changed - DO NOT REPLY';
             $email
                 ->setTo($User->email)
-                ->setSubject('Password Changed - DO NOT REPLY')
+                ->setSubject($subject)
                 ->setReplyTo('noreply@voreartsfund.org')
                 ->setFrom('noreply@voreartsfund.org', 'Do Not Reply')
-                ->setTemplate('password_reset_success')
                 ->setEmailFormat('both')
-                ->setViewVars(['User' => $User]);
+                ->setViewVars(['User' => $User, 'subject' => $subject])
+                ->viewBuilder()
+                ->setTemplate('password_reset_success');
             $email->send();
 
             return true;
