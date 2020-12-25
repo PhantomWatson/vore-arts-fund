@@ -4,9 +4,11 @@
 /config/.env.development
 /config/.env.production
 /config/.env.staging
+/config/app_local.php
 /logs/*
 /tmp/*
 /vendor/*
+
 
 # OS generated files #
 ######################
