@@ -23,7 +23,6 @@
 
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
-use Cake\Routing\Router;
 
 /*
  * The default class to use for all routes
@@ -58,26 +57,26 @@ $routes->scope('/', function (RouteBuilder $builder) {
      */
     $builder->connect('/pages/*', 'Pages::display');
 
-    $builder->connect('/apply', ['controller' => 'Applications', 'action' => 'apply']);
-    $builder->connect('/vote', ['controller' => 'Votes', 'action' => 'index']);
-    $builder->connect('/about', ['controller' => 'Pages', 'action' => 'about']);
-    $builder->connect('/contact', ['controller' => 'Pages', 'action' => 'contact']);
-    $builder->connect('/terms', ['controller' => 'Pages', 'action' => 'terms']);
-    $builder->connect('/privacy', ['controller' => 'Pages', 'action' => 'privacy']);
-    $builder->connect('/login', ['controller' => 'Users', 'action' => 'login']);
-    $builder->connect('/register', ['controller' => 'Users', 'action' => 'register']);
-    $builder->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
-    $builder->connect('/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword']);
-    $builder->connect('/my-account', ['controller' => 'Users', 'action' => 'myAccount']);
-    $builder->connect('/verify', ['controller' => 'Users', 'action' => 'verify']);
-    $builder->connect('/verify/resend', ['controller' => 'Users', 'action' => 'verifyResend']);
-    $builder->connect('/change-account-info', ['controller' => 'Users', 'action' => 'changeAccountInfo']);
-    $builder->connect('/view-application/:id', ['controller' => 'Applications', 'action' => 'view']);
-    $builder->connect('/vote', ['controller' => 'Votes', 'action' => 'index']);
-    $builder->connect('/submit', ['controller' => 'Votes', 'action' => 'submit']);
-    $builder->connect('/withdraw/:id', ['controller' => 'Applications', 'action' => 'withdraw']);
-    $builder->connect('/delete/:id', ['controller' => 'Applications', 'action' => 'delete']);
-    $builder->connect('/resubmit/:id', ['controller' => 'Applications', 'action' => 'resubmit']);
+    $builder->connect('/apply', 'Applications::apply');
+    $builder->connect('/vote', 'Votes::index');
+    $builder->connect('/about', 'Pages::about');
+    $builder->connect('/contact', 'Pages::contact');
+    $builder->connect('/terms', 'Pages::terms');
+    $builder->connect('/privacy', 'Pages::privacy');
+    $builder->connect('/login', 'Users::login');
+    $builder->connect('/register', 'Users::register');
+    $builder->connect('/logout', 'Users::logout');
+    $builder->connect('/forgot-password', 'Users::forgotPassword');
+    $builder->connect('/my-account', 'Users::myAccount');
+    $builder->connect('/verify', 'Users::verify');
+    $builder->connect('/verify/resend', 'Users::verifyResend');
+    $builder->connect('/change-account-info', 'Users::changeAccountInfo');
+    $builder->connect('/view-application/:id', 'Applications::view');
+    $builder->connect('/vote', 'Votes::index');
+    $builder->connect('/submit', 'Votes::submit');
+    $builder->connect('/withdraw/:id', 'Applications::withdraw');
+    $builder->connect('/delete/:id', 'Applications::delete');
+    $builder->connect('/resubmit/:id', 'Applications::resubmit');
 
     /*
      * Connect catchall routes for all controllers.
@@ -97,13 +96,13 @@ $routes->scope('/', function (RouteBuilder $builder) {
 
 // Admin Routes
 $routes->prefix('admin', function (RouteBuilder $builder) {
-    $builder->connect('/', ['controller' => 'Admin', 'action' => 'index']);
-    $builder->connect('/funding-cycles', ['controller' => 'FundingCycles', 'action' => 'index']);
-    $builder->connect('/funding-cycles/add', ['controller' => 'FundingCycles', 'action' => 'add']);
-    $builder->connect('/funding-cycles/edit/:id', ['controller' => 'FundingCycles', 'action' => 'edit']);
-    $builder->connect('/applications', ['controller' => 'Applications', 'action' => 'index']);
-    $builder->connect('/applications/review/:id', ['controller' => 'Applications', 'action' => 'review']);
-    $builder->connect('/applications/set-status/:id', ['controller' => 'Applications', 'action' => 'setStatus']);
+    $builder->connect('/', 'Admin::index');
+    $builder->connect('/funding-cycles', 'FundingCycles::index');
+    $builder->connect('/funding-cycles/add', 'FundingCycles::add');
+    $builder->connect('/funding-cycles/edit/:id', 'FundingCycles::edit');
+    $builder->connect('/applications', 'Applications::index');
+    $builder->connect('/applications/review/:id', 'Applications::review');
+    $builder->connect('/applications/set-status/:id', 'Applications::setStatus');
     $builder->fallbacks(DashedRoute::class);
 });
 
