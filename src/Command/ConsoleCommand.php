@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -12,46 +14,49 @@
  * @since     3.0.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
-namespace App\Shell;
+namespace App\Command;
 
+use Cake\Command\Command;
+use Cake\Console\Arguments;
+use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
-use Cake\Console\Shell;
 use Cake\Log\Log;
 use Psy\Shell as PsyShell;
 
 /**
  * Simple console wrapper around Psy\Shell.
  */
-class ConsoleShell extends Shell
+class ConsoleCommand extends Command
 {
-
     /**
-     * Start the shell and interactive console.
+     * Start the Command and interactive console.
      *
-     * @return int|null
+     * @param \Cake\Console\Arguments $args The command arguments.
+     * @param \Cake\Console\ConsoleIo $io The console io
+     * @return int|null|void The exit code or null for success
      */
-    public function main()
+    public function execute(Arguments $args, ConsoleIo $io)
     {
         if (!class_exists('Psy\Shell')) {
-            $this->err('<error>Unable to load Psy\Shell.</error>');
-            $this->err('');
-            $this->err('Make sure you have installed psysh as a dependency,');
-            $this->err('and that Psy\Shell is registered in your autoloader.');
-            $this->err('');
-            $this->err('If you are using composer run');
-            $this->err('');
-            $this->err('<info>$ php composer.phar require --dev psy/psysh</info>');
-            $this->err('');
+            $io->err('<error>Unable to load Psy\Shell.</error>');
+            $io->err('');
+            $io->err('Make sure you have installed psysh as a dependency,');
+            $io->err('and that Psy\Shell is registered in your autoloader.');
+            $io->err('');
+            $io->err('If you are using composer run');
+            $io->err('');
+            $io->err('<info>$ php composer.phar require --dev psy/psysh</info>');
+            $io->err('');
 
-            return self::CODE_ERROR;
+            return static::CODE_ERROR;
         }
 
-        $this->out("You can exit with <info>`CTRL-C`</info> or <info>`exit`</info>");
-        $this->out('');
+        $io->out('You can exit with <info>`CTRL-C`</info> or <info>`exit`</info>');
+        $io->out('');
 
         Log::drop('debug');
         Log::drop('error');
-        $this->_io->setLoggers(false);
+        $io->setLoggers(false);
         restore_error_handler();
         restore_exception_handler();
 
