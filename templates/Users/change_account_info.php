@@ -1,5 +1,4 @@
 <?php
-
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -14,50 +13,24 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
  */
-
-use Cake\Cache\Cache;
-use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Datasource\ConnectionManager;
-use Cake\Error\Debugger;
-use Cake\Http\Exception\NotFoundException;
-
-$this->disableAutoLayout();
-
-$cakeDescription = 'CakePHP: the rapid development PHP framework';
 $user = $this->request->getSession()->read('Auth.User');
 $isAdmin = $user['is_admin'];
-
 ?>
-<!DOCTYPE html>
-<html>
 
-<head>
-    <?= $this->element('head'); ?>
-    <title>
-        <?= $cakeDescription ?>
-    </title>
-</head>
-<body class="home">
-    <?= $this->element('navbar'); ?>
-    <div class="container">
-        <div class='pb-2 mt-4 mb-2 border-bottom'>
-            <h1>Change Account Information</h1>
-        </div>
+<div class='pb-2 mt-4 mb-2 border-bottom'>
+    <h1>Change Account Information</h1>
+</div>
 
-        <div class="users form">
-            <?= $this->Form->create() ?>
-            <?= $this->Flash->render() ?>
-            <fieldset>
-                <?= $this->Form->control('email') ?>
-                <?= $this->Form->control('name') ?>
-                <?= $this->Form->control('phone') ?>
-                <?= $this->Form->control('current password') ?>
-                <?= $this->Form->control('new password') ?>
-
-            </fieldset>
-            <?= $this->Form->button(__('Submit')); ?>
-            <?= $this->Form->end() ?>
-        </div>
-</body>
-</html>
+<div class="users form">
+    <?= $this->Form->create() ?>
+    <?= $this->Flash->render() ?>
+    <fieldset>
+        <?= $this->Form->control('email') ?>
+        <?= $this->Form->control('name') ?>
+        <?= $this->Form->control('phone') ?>
+        <?= $this->Form->control('current password') ?>
+        <?= $this->Form->control('new password') ?>
+    </fieldset>
+    <?= $this->Form->button(__('Submit')); ?>
+    <?= $this->Form->end() ?>
+</div>

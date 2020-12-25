@@ -1,10 +1,8 @@
 <?php
 /**
- * @var User $User
- * @var AppView $this
+ * @var \App\Model\Entity\User $User
+ * @var \App\View\AppView $this
  */
-use App\Model\Entity\User;
-use App\View\AppView;
 use Cake\Routing\Router;
 
 $url = Router::url([
