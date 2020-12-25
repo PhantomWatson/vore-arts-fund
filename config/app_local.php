@@ -84,7 +84,7 @@ $config = [
     'Datasources' => [
         'default' => [
             'username' => env('DATABASE_USERNAME', 'root'),
-            'password' => env('DATABASE_PASSWORD', null),
+            'password' => env('DATABASE_PASSWORD'),
             'database' => env('DATABASE_NAME', 'vore_arts_fund'),
             /*
              * You do not need to set this flag to use full utf-8 encoding (internal default since CakePHP 3.6).
@@ -97,9 +97,9 @@ $config = [
          */
         'test' => [
             'username' => env('TESTING_DATABASE_USERNAME', 'root'),
-            'password' => env('TESTING_DATABASE_PASSWORD', null),
+            'password' => env('TESTING_DATABASE_PASSWORD'),
             'database' => env('TESTING_DATABASE_NAME', 'vore_arts_fund_testing'),
-            'encoding' => 'utf8mb4'
+            'encoding' => 'utf8mb4',
         ],
     ],
 
@@ -110,7 +110,7 @@ $config = [
             'file' => 'email',
             'levels' => ['info'],
         ],
-    ]
+    ],
 ];
 
 if (Configure::read('debug')) {
