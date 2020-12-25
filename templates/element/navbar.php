@@ -1,74 +1,58 @@
 <?php
-
 /**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         0.10.0
- * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
  */
 
-use Cake\Cache\Cache;
 use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Datasource\ConnectionManager;
-use Cake\Error\Debugger;
-use Cake\Http\Exception\NotFoundException;
-
-$this->disableAutoLayout();
 
 $user = $this->request->getSession()->read('Auth.User');
 $isAdmin = $user['is_admin'] ?? false;
-$userId = $user['id'] ?? null;
+$loggedIn = (bool)$user;
+$isVerified = (bool)$user['is_verified'];
+$debug = Configure::read('debug');
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #BA0C2F">
     <a class="navbar-brand" href="/">Vore Arts Fund</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <?= $this->Html->link('Home', '/', array('class' => 'nav-link')); ?>
+                <?= $this->Html->link('Home', '/', ['class' => 'nav-link']) ?>
             </li>
-            <?php if (Configure::read('debug')): ?>
+            <?php if ($debug) : ?>
                 <li class="nav-item">
-                    <?= $this->Html->link('Vote', '/vote', array('class' => 'nav-link')); ?>
+                    <?= $this->Html->linkFromPath('Vote', 'Votes::index', [], ['class' => 'nav-link']) ?>
                 </li>
             <?php endif; ?>
-            <?php if ($userId): ?>
+            <?php if ($loggedIn) : ?>
                 <li class="nav-item">
-                    <?= $this->Html->link('My Account', '/my-account', array('class' => 'nav-link')); ?>
+                    <?= $this->Html->linkFromPath('My Account', 'Users::myAccount', [], ['class' => 'nav-link']) ?>
                 </li>
                 <li class="nav-item">
-                    <?= $this->Html->link('Apply', '/apply', array('class' => 'nav-link')); ?>
+                    <?= $this->Html->linkFromPath('Apply', 'Applications::apply', [], ['class' => 'nav-link']) ?>
                 </li>
                 <li class="nav-item">
-                    <?= $this->Html->link('Log Out', '/logout', array('class' => 'nav-link')); ?>
+                    <?= $this->Html->linkFromPath('Log Out', 'Users::logout', [], ['class' => 'nav-link']) ?>
                 </li>
-                <?php if ($isAdmin): ?>
+                <?php if ($isAdmin) : ?>
                     <li class="nav-item">
-                        <?= $this->Html->link('Admin', '/admin', array('class' => 'nav-link')) ?>
+                        <?= $this->Html->linkFromPath('Admin', 'Admin::index', [], ['class' => 'nav-link']) ?>
                     </li>
                 <?php endif; ?>
-                <?php if ($user['is_verified'] == 0): ?>
+                <?php if (!$isVerified) : ?>
                     <li class="nav-item">
-                        <?= $this->Html->link('Verify', '/verify', array('class' => 'nav-link')) ?>
+                        <?= $this->Html->linkFromPath('Verify', 'Users::verify', [], ['class' => 'nav-link']) ?>
                     </li>
                 <?php endif; ?>
-            <?php elseif (Configure::read('debug')): ?>
+            <?php elseif ($debug) : ?>
                 <li class="nav-item">
-                    <?= $this->Html->link('Register', '/register', array('class' => 'nav-link')); ?>
+                    <?= $this->Html->linkFromPath('Register', 'Users::register', [], ['class' => 'nav-link']) ?>
                 </li>
                 <li class="nav-item">
-                    <?= $this->Html->link('Login', '/login', array('class' => 'nav-link')); ?>
+                    <?= $this->Html->linkFromPath('Login', 'Users::login', [], ['class' => 'nav-link']) ?>
                 </li>
             <?php endif; ?>
         </ul>
