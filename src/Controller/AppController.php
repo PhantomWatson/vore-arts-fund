@@ -86,8 +86,6 @@ class AppController extends Controller
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         $this->Auth->deny();
-        // $this->Auth->allow(['index', 'view']);
-        // $this->Auth->deny('submit');
 
     }
 }
