@@ -26,14 +26,19 @@
         <?= $this->Form->control('title', ['required' => true]) ?>
         <?= $this->Form->control('description', ['type' => 'textarea', 'required' => true]) ?>
         <?= $this->Form->label('Category') ?>
-        <?= $this->Form->select('category', ['Film', 'Visual', 'Performance', 'Literature','Music'], ['empty' => false], ['required' => true]) ?>
+        <?= $this->Form->select(
+            'category',
+            ['Film', 'Visual', 'Performance', 'Literature','Music'],
+            ['empty' => false],
+            ['required' => true]
+        ) ?>
         <?= $this->Form->control('amount_requested', ['type' => 'number', 'required' => true]) ?>
         <?= $this->Form->label('Accept Partial Payout') ?>
         <?= $this->Form->radio('accept_partial_payout', ['Yes', 'No'], ['required' => true]) ?>
         <?= $this->Form->file('image') ?>
         <?= $this->Form->control('imageCaption') ?>
     </fieldset>
-    <?= $this->Form->button(__('Save'), array('name' => 'save')); ?>
+    <?= $this->Form->button(__('Save'), ['name' => 'save']); ?>
     <?= $this->Form->button('Submit', ['type' => 'submit']); ?>
     <?= $this->Form->end() ?>
 </div>

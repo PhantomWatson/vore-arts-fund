@@ -22,12 +22,12 @@ $debug = Configure::read('debug');
             <li class="nav-item">
                 <?= $this->Html->link('Home', '/', ['class' => 'nav-link']) ?>
             </li>
-            <?php if ($debug) : ?>
+            <?php if ($debug): ?>
                 <li class="nav-item">
                     <?= $this->Html->linkFromPath('Vote', 'Votes::index', [], ['class' => 'nav-link']) ?>
                 </li>
             <?php endif; ?>
-            <?php if ($loggedIn) : ?>
+            <?php if ($loggedIn): ?>
                 <li class="nav-item">
                     <?= $this->Html->linkFromPath('My Account', 'Users::myAccount', [], ['class' => 'nav-link']) ?>
                 </li>
@@ -37,17 +37,17 @@ $debug = Configure::read('debug');
                 <li class="nav-item">
                     <?= $this->Html->linkFromPath('Log Out', 'Users::logout', [], ['class' => 'nav-link']) ?>
                 </li>
-                <?php if ($isAdmin) : ?>
+                <?php if ($isAdmin): ?>
                     <li class="nav-item">
                         <?= $this->Html->linkFromPath('Admin', 'Admin::index', [], ['class' => 'nav-link']) ?>
                     </li>
                 <?php endif; ?>
-                <?php if (!$isVerified) : ?>
+                <?php if (!$isVerified): ?>
                     <li class="nav-item">
                         <?= $this->Html->linkFromPath('Verify', 'Users::verify', [], ['class' => 'nav-link']) ?>
                     </li>
                 <?php endif; ?>
-            <?php elseif ($debug) : ?>
+            <?php elseif ($debug): ?>
                 <li class="nav-item">
                     <?= $this->Html->linkFromPath('Register', 'Users::register', [], ['class' => 'nav-link']) ?>
                 </li>

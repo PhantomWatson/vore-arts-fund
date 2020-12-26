@@ -26,7 +26,7 @@
         <?= $this->Form->control('email', ['type' => 'email']) ?>
         <?= $this->Form->control('password') ?>
         <?= $this->Form->control('name') ?>
-        <?= $this->Form->control('phone', ['type' => 'number'] ) ?>
+        <?= $this->Form->control('phone', ['type' => 'number']) ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>

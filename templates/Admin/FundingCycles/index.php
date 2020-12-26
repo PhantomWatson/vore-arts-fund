@@ -36,10 +36,22 @@ $fundingCycles = TableRegistry::getTableLocator()->get('FundingCycles')->find()-
     <tbody>
         <?php foreach ($fundingCycles as $fundingCycle) { ?>
             <tr>
-                <td><?php echo $fundingCycle['application_begin']->i18nFormat('MM/dd/yyyy H:mm') . ' to ' . $fundingCycle['application_end']->i18nFormat('MM/dd/yyyy H:mm'); ?></td>
-                <td><?php echo $fundingCycle['vote_begin']->i18nFormat('MM/dd/yyyy H:mm') . ' to ' . $fundingCycle['vote_end']->i18nFormat('MM/dd/yyyy H:mm'); ?></td>
+                <td><?php echo sprintf(
+                    '%s to %s',
+                    $fundingCycle['application_begin']->i18nFormat('MM/dd/yyyy H:mm'),
+                    $fundingCycle['application_end']->i18nFormat('MM/dd/yyyy H:mm')
+                ); ?></td>
+                <td><?php echo sprintf(
+                    '%s to %s',
+                    $fundingCycle['vote_begin']->i18nFormat('MM/dd/yyyy H:mm'),
+                    $fundingCycle['vote_end']->i18nFormat('MM/dd/yyyy H:mm')
+                ); ?></td>
                 <td>$<?php echo $fundingCycle['funding_available']; ?></td>
-                <td><?php echo $this->Html->link("Edit", '/admin/funding-cycles/edit//' . $fundingCycle['id'], array('class' => 'button')); ?></td>
+                <td><?php echo $this->Html->link(
+                    'Edit',
+                    '/admin/funding-cycles/edit//' . $fundingCycle['id'],
+                    ['class' => 'button']
+                ); ?></td>
             </tr>
         <?php } ?>
     </tbody>

@@ -23,20 +23,24 @@
     <?php foreach ($applications as $application): ?>
         <div>
             <h3><?= $application['title'] ?></h3>
-            <?= $this->Html->link('View',
+            <?= $this->Html->link(
+                'View',
                 [
                     'controller' => 'Applications',
                     'action' => 'view',
                     'id' => $application['id'],
-                    'slug' => '/view-application//'
-                ], ['class' => 'button']
+                    'slug' => '/view-application//',
+                ],
+                ['class' => 'button']
             ) ?>
         </div>
     <?php endforeach; ?>
-    <?= $this->Html->link('Vote',
+    <?= $this->Html->link(
+        'Vote',
         [
             'controller' => 'Votes',
-            'action' => 'submit'
-        ], ['class' => 'button']
+            'action' => 'submit',
+        ],
+        ['class' => 'button']
     ) ?>
 </div>

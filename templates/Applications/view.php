@@ -33,11 +33,11 @@ $image = TableRegistry::getTableLocator()->get('Images')->find()->where(['applic
 <div>
     <h4>Images:</h4>
     <?php
-        if (isset($image) && !empty($image)) {
-            echo $this->Html->image($image->path, ['alt' => $image->caption, 'height' => '200px', 'width' => '200px']);
-        }
+    if (isset($image) && !empty($image)) {
+        echo $this->Html->image($image->path, ['alt' => $image->caption, 'height' => '200px', 'width' => '200px']);
+    }
     ?>
-    <p>Caption: <?= $image->caption; ?></p>
+    <p>Caption: <?= $image->caption ?></p>
 </div>
 <?= $this->Html->link(
     'Back',

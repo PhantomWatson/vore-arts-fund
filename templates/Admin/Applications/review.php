@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -22,7 +20,7 @@ $category = TableRegistry::getTableLocator()->get('Categories')->find()->all()->
 $image = TableRegistry::getTableLocator()->get('Images')->find()->where(['application_id' => $application['id']])->first();
 $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all();
 $statusOptions = [];
-foreach($statuses as $status) {
+foreach ($statuses as $status) {
     $statusOptions[$status->id] = $status->name;
 }
 ?>
@@ -33,9 +31,9 @@ foreach($statuses as $status) {
     <h4>Status</h4>
     <?= $this->Form->create() ?>
     <fieldset>
-        <?= $this->Form->control('status_id', array('type' => 'select', 'options' => $statusOptions, 'label' => false, 'empty' => 'Category', 'default' => $application->status_id)) ?>
+        <?= $this->Form->control('status_id', ['type' => 'select', 'options' => $statusOptions, 'label' => false, 'empty' => 'Category', 'default' => $application->status_id]) ?>
     </fieldset>
-    <?= $this->Form->button(__('Update Status'), ['class'=>'button']); ?>
+    <?= $this->Form->button(__('Update Status'), ['class' => 'button']); ?>
     <?= $this->Form->end() ?>
 </div>
 <div>
