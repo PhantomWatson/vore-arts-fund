@@ -19,7 +19,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\NotesTable&\Cake\ORM\Association\HasMany $Notes
  * @property \App\Model\Table\VotesTable&\Cake\ORM\Association\HasMany $Votes
  * @method \App\Model\Entity\Application get($primaryKey, $options = [])
- * @method \App\Model\Entity\Application newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Application newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Application[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Application|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Application saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])

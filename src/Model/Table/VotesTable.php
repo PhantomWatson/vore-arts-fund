@@ -14,7 +14,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\ApplicationsTable&\Cake\ORM\Association\BelongsTo $Applications
  * @property \App\Model\Table\FundingCyclesTable&\Cake\ORM\Association\BelongsTo $FundingCycles
  * @method \App\Model\Entity\Vote get($primaryKey, $options = [])
- * @method \App\Model\Entity\Vote newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Vote newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Vote[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Vote|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Vote saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])

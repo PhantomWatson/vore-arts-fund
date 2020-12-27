@@ -11,7 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\ApplicationsTable&\Cake\ORM\Association\HasMany $Applications
  * @method \App\Model\Entity\Status get($primaryKey, $options = [])
- * @method \App\Model\Entity\Status newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Status newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Status[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Status|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Status saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])

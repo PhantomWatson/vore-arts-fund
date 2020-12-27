@@ -12,7 +12,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\ApplicationsTable&\Cake\ORM\Association\BelongsTo $Applications
  * @method \App\Model\Entity\Image get($primaryKey, $options = [])
- * @method \App\Model\Entity\Image newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Image newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Image[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Image|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Image saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])

@@ -21,7 +21,7 @@ class FundingCyclesController extends AppController
 
     public function add()
     {
-        $fundingCycle = $this->FundingCycles->newEntity();
+        $fundingCycle = $this->FundingCycles->newEmptyEntity();
         if ($this->request->is('post')) {
             $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $this->request->getData());
             if ($this->FundingCycles->save($fundingCycle)) {

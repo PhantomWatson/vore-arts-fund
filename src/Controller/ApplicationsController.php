@@ -61,7 +61,7 @@ class ApplicationsController extends AppController
                 }
                 $rawImage = $data['image'];
                 if ($rawImage['size'] !== 0) {
-                    $image = $imagesTable->newEntity();
+                    $image = $imagesTable->newEmptyEntity();
                     $image->application_id = $result->id;
                     $image->weight = 0;
                     $path = DS . 'img' . DS . $rawImage['name'];

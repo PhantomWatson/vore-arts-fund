@@ -12,7 +12,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\ApplicationsTable&\Cake\ORM\Association\HasMany $Applications
  * @property \App\Model\Table\VotesTable&\Cake\ORM\Association\HasMany $Votes
  * @method \App\Model\Entity\FundingCycle get($primaryKey, $options = [])
- * @method \App\Model\Entity\FundingCycle newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\FundingCycle newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\FundingCycle[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\FundingCycle|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\FundingCycle saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
