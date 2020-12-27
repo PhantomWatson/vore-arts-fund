@@ -16,6 +16,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 
@@ -33,14 +34,14 @@ class VotesController extends AppController
      * Displays a view
      *
      * @param array ...$event Path segments.
-     * @return \Cake\Http\Response|null
+     * @return \Cake\Http\Response|void|null
      * @throws \Cake\Http\Exception\ForbiddenException When a directory traversal attempt.
      * @throws \Cake\Http\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
-
-    public function beforeFilter(\Cake\Event\EventInterface $event)
+    public function beforeFilter(EventInterface $event): ?Response
     {
+        parent::beforeFilter($event);
         $this->Auth->allow(['index', 'view']);
     }
 

@@ -37,9 +37,9 @@ class PagesController extends AppController
      * beforeFilter callback method
      *
      * @param \Cake\Event\EventInterface $event Event object
-     * @return void
+     * @return \Cake\Http\Response|void|null
      */
-    public function beforeFilter(EventInterface $event)
+    public function beforeFilter(EventInterface $event): ?Response
     {
         parent::beforeFilter($event);
         $this->Auth->allow();

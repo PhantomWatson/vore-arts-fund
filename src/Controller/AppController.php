@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Event\EventInterface;
 use Cake\Http\Response;
 
 /**
@@ -37,6 +38,7 @@ class AppController extends Controller
      * e.g. `$this->loadComponent('FormProtection');`
      *
      * @return void
+     * @throws \Exception
      */
     public function initialize(): void
     {
@@ -72,12 +74,16 @@ class AppController extends Controller
         //$this->loadComponent('FormProtection');
     }
 
-    /*
-     * The folowing function lists the pages accessible to visitors
+    /**
+     * The following function lists the pages accessible to visitors
      * who are not logged into a User account
+     *
+     * @param \Cake\Event\EventInterface $event Event object
+     * @return \Cake\Http\Response|void|null
      */
-    public function beforeFilter(\Cake\Event\EventInterface $event): ?Response
+    public function beforeFilter(EventInterface $event): ?Response
     {
+        parent::beforeFilter($event);
         $this->Auth->deny();
     }
 }

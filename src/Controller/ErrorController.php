@@ -30,10 +30,11 @@ class ErrorController extends AppController
      * Initialization hook method.
      *
      * @return void
+     * @throws \Exception
      */
     public function initialize(): void
     {
-        $this->loadComponent('RequestHandler');
+        parent::initialize();
     }
 
     /**
@@ -44,6 +45,7 @@ class ErrorController extends AppController
      */
     public function beforeFilter(EventInterface $event): ?Response
     {
+        parent::beforeFilter($event);
     }
 
     /**
@@ -67,5 +69,6 @@ class ErrorController extends AppController
      */
     public function afterFilter(EventInterface $event): ?Response
     {
+        parent::afterFilter($event);
     }
 }
