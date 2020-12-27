@@ -63,15 +63,19 @@ class VotesController extends AppController
             $data = $this->request->getData();
             $keys = array_keys($data);
 
+            $success = false;
             foreach ($keys as $key) {
                 $voteEntry = $voteTable->newEntity();
                 $voteEntry->user_id = $this->Auth->user('id');
                 $voteEntry->application_id = $key;
                 $voteEntry->funding_cycle_id = $fundingCycle->id;
                 $voteEntry->weight = 1;
-                $result = $voteTable->save($voteEntry);
+                if (!$voteTable->save($voteEntry)) {
+                    break;
+                }
+                $success = true;
             }
-            if ($result) {
+            if ($success) {
                 $this->Flash->success(__('Your votes have successfully been submitted.'));
 
                 return $this->redirect('/');
