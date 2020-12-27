@@ -45,7 +45,15 @@ class ApplicationsController extends AppController
             $applicationsTable = TableRegistry::getTableLocator()->get('applications');
             $imagesTable = TableRegistry::getTableLocator()->get('images');
             $fundingCyclesTable = TableRegistry::getTableLocator()->get('funding_cycles');
-            $fundingCycle = $fundingCyclesTable->find('all', ['conditions' => ['funding_cycles.application_begin <=' => date('Y-m-d H:i:s'), 'funding_cycles.application_end >=' => date('Y-m-d H:i:s')], 'fields' => ['funding_cycles.id']])->first();
+            $now = date('Y-m-d H:i:s');
+            $fundingCycle = $fundingCyclesTable
+                ->find()
+                ->select(['FundingCycles.id'])
+                ->where([
+                    'FundingCycles.application_begin <=' => $now,
+                    'FundingCycles.application_end >=' => $now,
+                ])
+                ->first();
             if (!is_null($fundingCycle)) {
                 $application = $applicationsTable->newEntity($data);
                 $application->category_id = $data['category'] + 1;

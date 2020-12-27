@@ -57,7 +57,15 @@ class VotesController extends AppController
     public function submit(): ?Response
     {
         $fundingCyclesTable = TableRegistry::getTableLocator()->get('funding_cycles');
-        $fundingCycle = $fundingCyclesTable->find('all', ['conditions' => ['funding_cycles.application_begin <=' => date('Y-m-d H:i:s'), 'funding_cycles.application_end >=' => date('Y-m-d H:i:s')], 'fields' => ['funding_cycles.id']])->first();
+        $now = date('Y-m-d H:i:s');
+        $fundingCycle = $fundingCyclesTable
+            ->find()
+            ->where([
+                'FundingCycles.application_begin <=' => $now,
+                'FundingCycles.application_end >=' => $now,
+            ])
+            ->select(['FundingCycles.id'])
+            ->first();
         $voteTable = TableRegistry::getTableLocator()->get('votes');
 
         if (!$this->request->is('post')) {
