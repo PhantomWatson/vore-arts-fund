@@ -50,7 +50,7 @@ class MessagesController extends AppController
             $data['user_id'] = $this->Auth->user('id');
             $message = $this->Messages->patchEntity($message, $data);
             if ($this->Messages->save($message)) {
-                $this->Session->setFlash('Message successfully sent.');
+                $this->Flash->success('Message successfully sent.');
                 $this->redirect(['action' => 'outbox']);
             }
         }
