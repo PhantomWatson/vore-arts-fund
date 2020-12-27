@@ -62,9 +62,13 @@ class ApplicationsController extends AppController
                 $application->status_id = isset($data['save']) ? 1 : 0;
                 $result = $applicationsTable->save($application);
                 if ($result) {
-                    $this->Flash->success(__('The application has been ' . (isset($data['save']) ? 'saved.' : 'submitted.')));
+                    $this->Flash->success(
+                        'The application has been ' . (isset($data['save']) ? 'saved.' : 'submitted.')
+                    );
                 } else {
-                    $this->Flash->error(__('The application could not be ' . (isset($data['save']) ? 'saved.' : 'submitted.')));
+                    $this->Flash->error(
+                        'The application could not be ' . (isset($data['save']) ? 'saved.' : 'submitted.')
+                    );
                 }
                 $rawImage = $data['image'];
                 if ($rawImage['size'] !== 0) {

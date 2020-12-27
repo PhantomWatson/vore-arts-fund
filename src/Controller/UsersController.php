@@ -138,7 +138,12 @@ class UsersController extends AppController
      */
     public function validate($phone, $code): bool
     {
-        $verification_check = $this->Twilio->verify->v2->services(env('TWILIO_SERVICE_SID'))->verificationChecks->create($code, ['to' => '+1' . $phone]);
+        $verification_check = $this->Twilio
+            ->verify
+            ->v2
+            ->services(env('TWILIO_SERVICE_SID'))
+            ->verificationChecks
+            ->create($code, ['to' => '+1' . $phone]);
 
         return $verification_check->status == 'approved';
     }
@@ -171,7 +176,10 @@ class UsersController extends AppController
             } else {
                 $user = $this->__generatePasswordToken($user);
                 if ($this->Users->save($user) && $this->__sendForgotPasswordEmail($user)) {
-                    $this->Flash->success('Password reset instructions have been sent to your email address. You have 24 hours to complete the request.');
+                    $this->Flash->success(
+                        'Password reset instructions have been sent to your email address. ' .
+                        'You have 24 hours to complete the request.'
+                    );
 
                     return $this->redirect(['action' => 'login']);
                 }

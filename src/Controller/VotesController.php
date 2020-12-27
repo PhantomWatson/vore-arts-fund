@@ -52,7 +52,11 @@ class VotesController extends AppController
      */
     public function index()
     {
-        $applications = TableRegistry::getTableLocator()->get('Applications')->find()->where(['status_id' => 5 ])->all()->toArray();
+        $applications = TableRegistry::getTableLocator()->get('Applications')
+            ->find()
+            ->where(['status_id' => 5 ])
+            ->all()
+            ->toArray();
         $this->set(['applications' => $applications]);
     }
 
