@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\UsersController;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use Cake\ORM\TableRegistry;
 
 /**
  * App\Controller\UsersController Test Case
@@ -26,7 +26,7 @@ class UsersControllerTest extends TestCase
         'app.Applications',
         'app.Messages',
         'app.Notes',
-        'app.Votes'
+        'app.Votes',
     ];
 
     /**
@@ -38,9 +38,9 @@ class UsersControllerTest extends TestCase
     {
         $data = [
             'email' => 'test@test.com',
-            'password' => 'Password'
+            'password' => 'Password',
         ];
-        $this->post("/login", $data);
+        $this->post('/login', $data);
         $this->assertRedirect();
     }
 
@@ -55,9 +55,9 @@ class UsersControllerTest extends TestCase
             'name' => 'Jimmy',
             'email' => 'test@voreartsfund.org',
             'password' => 'Password',
-            'phone' => 1234567890
+            'phone' => 1234567890,
         ];
-        $this->post("/register", $data);
+        $this->post('/register', $data);
         $usersTable = TableRegistry::getTableLocator()->get('users');
         $query = $usersTable->find()->where(['email' => 'test@voreartsfund.org']);
         $this->assertEquals(1, $query->count());
@@ -75,11 +75,11 @@ class UsersControllerTest extends TestCase
                 'User' => [
                     'id' => 3,
                     'is_admin' => 1,
-                    'is_verified' => 1
-                ]
-            ]
+                    'is_verified' => 1,
+                ],
+            ],
         ]);
-        $this->get("/logout");
+        $this->get('/logout');
         $this->assertRedirect();
     }
 
@@ -95,11 +95,11 @@ class UsersControllerTest extends TestCase
                 'User' => [
                     'id' => 1,
                     'is_admin' => 0,
-                    'is_verified' => 1
-                ]
-            ]
+                    'is_verified' => 1,
+                ],
+            ],
         ]);
-        $this->get("/my-account");
+        $this->get('/my-account');
         $this->assertResponseSuccess();
     }
 
@@ -115,18 +115,18 @@ class UsersControllerTest extends TestCase
                 'User' => [
                     'id' => 1,
                     'is_admin' => 0,
-                    'is_verified' => 0
-                ]
-            ]
+                    'is_verified' => 0,
+                ],
+            ],
         ]);
         $data = [
             'name' => 'Joe',
-            'current_password' => 'Password'
+            'current_password' => 'Password',
         ];
-        $this->post("/change-account-info", $data);
+        $this->post('/change-account-info', $data);
         $this->assertResponseSuccess();
         $usersTable = TableRegistry::getTableLocator()->get('users');
-        $query = $usersTable->find()->where(['id' => 1, 'name'=>'Joe']);
+        $query = $usersTable->find()->where(['id' => 1, 'name' => 'Joe']);
         $this->assertEquals(1, $query->count());
     }
 }

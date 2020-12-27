@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\FundingCyclesController;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use Cake\ORM\TableRegistry;
 
 /**
  * App\Controller\Admin\FundingCyclesController Test Case
@@ -23,7 +24,7 @@ class FundingCyclesControllerTest extends TestCase
     public $fixtures = [
         'app.FundingCycles',
         'app.Applications',
-        'app.Votes'
+        'app.Votes',
     ];
 
     /**
@@ -38,11 +39,11 @@ class FundingCyclesControllerTest extends TestCase
                 'User' => [
                     'id' => 3,
                     'is_admin' => 1,
-                    'is_verified' => 1
-                ]
-            ]
+                    'is_verified' => 1,
+                ],
+            ],
         ]);
-        $this->get("/admin/funding-cycles");
+        $this->get('/admin/funding-cycles');
         $this->assertResponseSuccess();
     }
 
@@ -58,21 +59,21 @@ class FundingCyclesControllerTest extends TestCase
                 'User' => [
                     'id' => 3,
                     'is_admin' => 1,
-                    'is_verified' => 1
-                ]
-            ]
+                    'is_verified' => 1,
+                ],
+            ],
         ]);
         $data = [
-            'application_begin' => "2020-01-01 00:00:00",
-            'application_end' => "2020-01-01 00:00:01",
-            'vote_begin' => "2020-01-01 00:00:02",
-            'vote_end' => "2020-01-01 00:00:03",
-            'funding_available' => 100
+            'application_begin' => '2020-01-01 00:00:00',
+            'application_end' => '2020-01-01 00:00:01',
+            'vote_begin' => '2020-01-01 00:00:02',
+            'vote_end' => '2020-01-01 00:00:03',
+            'funding_available' => 100,
         ];
-        $this->post("/admin/funding-cycles/add", $data);
+        $this->post('/admin/funding-cycles/add', $data);
         $this->assertResponseSuccess();
         $fundingCyclesTable = TableRegistry::getTableLocator()->get('fundingcycles');
-        $query = $fundingCyclesTable->find()->where(['application_begin' => "2020-01-01 00:00:00"]);
+        $query = $fundingCyclesTable->find()->where(['application_begin' => '2020-01-01 00:00:00']);
         $this->assertEquals(1, $query->count());
     }
 
@@ -88,18 +89,18 @@ class FundingCyclesControllerTest extends TestCase
                 'User' => [
                     'id' => 3,
                     'is_admin' => 1,
-                    'is_verified' => 1
-                ]
-            ]
+                    'is_verified' => 1,
+                ],
+            ],
         ]);
         $data = [
             'id' => 1,
-            'funding_available' => 100
+            'funding_available' => 100,
         ];
-        $this->put("/admin/funding-cycles/edit/1", $data);
+        $this->put('/admin/funding-cycles/edit/1', $data);
         $this->assertResponseSuccess();
         $fundingCyclesTable = TableRegistry::getTableLocator()->get('fundingcycles');
-        $query = $fundingCyclesTable->find()->where(['id'=>1, 'funding_available' => 100]);
+        $query = $fundingCyclesTable->find()->where(['id' => 1, 'funding_available' => 100]);
         $this->assertEquals(1, $query->count());
     }
 }

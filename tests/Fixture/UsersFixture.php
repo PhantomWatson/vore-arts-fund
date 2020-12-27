@@ -50,7 +50,7 @@ class UsersFixture extends TestFixture
                 'is_admin' => 0,
                 'is_verified' => 0,
                 'created' => 1587180608,
-                'modified' => 1587180608
+                'modified' => 1587180608,
             ],
             [
                 'id' => 2,
@@ -61,7 +61,7 @@ class UsersFixture extends TestFixture
                 'is_admin' => 0,
                 'is_verified' => 1,
                 'created' => 1587180608,
-                'modified' => 1587180608
+                'modified' => 1587180608,
             ],
             [
                 'id' => 3,
@@ -72,7 +72,7 @@ class UsersFixture extends TestFixture
                 'is_admin' => 1,
                 'is_verified' => 1,
                 'created' => 1587180608,
-                'modified' => 1587180608
+                'modified' => 1587180608,
             ],
         ];
         parent::init();

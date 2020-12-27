@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\UsersTable;
@@ -27,7 +29,7 @@ class UsersTableTest extends TestCase
         'app.Applications',
         'app.Messages',
         'app.Notes',
-        'app.Votes'
+        'app.Votes',
     ];
 
     /**

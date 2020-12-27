@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -34,6 +36,6 @@ class Message extends Entity
         'is_unread' => true,
         'created' => true,
         'user' => true,
-        'application' => true
+        'application' => true,
     ];
 }

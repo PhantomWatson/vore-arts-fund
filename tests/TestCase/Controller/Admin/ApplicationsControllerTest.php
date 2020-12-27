@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller\Admin;
 
-use App\Controller\Admin\ApplicationsController;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use Cake\ORM\TableRegistry;
 
 /**
  * App\Controller\Admin\ApplicationsController Test Case
@@ -29,7 +30,7 @@ class ApplicationsControllerTest extends TestCase
         'app.Images',
         'app.Messages',
         'app.Notes',
-        'app.Votes'
+        'app.Votes',
     ];
 
     /**
@@ -44,11 +45,11 @@ class ApplicationsControllerTest extends TestCase
                 'User' => [
                     'id' => 3,
                     'is_admin' => 1,
-                    'is_verified' => 1
-                ]
-            ]
+                    'is_verified' => 1,
+                ],
+            ],
         ]);
-        $this->get("/admin/applications");
+        $this->get('/admin/applications');
         $this->assertResponseSuccess();
     }
 
@@ -64,11 +65,11 @@ class ApplicationsControllerTest extends TestCase
                 'User' => [
                     'id' => 3,
                     'is_admin' => 1,
-                    'is_verified' => 1
-                ]
-            ]
+                    'is_verified' => 1,
+                ],
+            ],
         ]);
-        $this->get("/admin/applications/review/1");
+        $this->get('/admin/applications/review/1');
         $this->assertResponseSuccess();
     }
 
@@ -84,14 +85,14 @@ class ApplicationsControllerTest extends TestCase
                 'User' => [
                     'id' => 3,
                     'is_admin' => 1,
-                    'is_verified' => 1
-                ]
-            ]
+                    'is_verified' => 1,
+                ],
+            ],
         ]);
         $data = [
-            'status_id' => 7
+            'status_id' => 7,
         ];
-        $this->post("/admin/applications/set-status/1", $data);
+        $this->post('/admin/applications/set-status/1', $data);
         $applicationsTable = TableRegistry::getTableLocator()->get('applications');
         $query = $applicationsTable->find()->where(['id' => 1, 'status_id' => 7]);
         $this->assertEquals(1, $query->count());

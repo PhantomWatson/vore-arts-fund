@@ -54,7 +54,7 @@ class VotesFixture extends TestFixture
                 'funding_cycle_id' => 1,
                 'weight' => 1,
                 'created' => 1572998687,
-                'modified' => 1572998687
+                'modified' => 1572998687,
             ],
         ];
         parent::init();

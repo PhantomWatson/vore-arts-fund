@@ -1,20 +1,19 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
-use App\Model\Table\FundingCyclesTable;
 
 /**
  * FundingCyclesController
  *
- * @property FundingCyclesTable $FundingCycles
+ * @property \App\Model\Table\FundingCyclesTable $FundingCycles
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
 
 class FundingCyclesController extends AppController
 {
-
     public function index()
     {
         return null;
@@ -25,13 +24,14 @@ class FundingCyclesController extends AppController
         $fundingCycle = $this->FundingCycles->newEntity();
         if ($this->request->is('post')) {
             $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $this->request->getData());
-            if($this->FundingCycles->save($fundingCycle)){
-                $this->redirect("/admin/funding-cycles");
+            if ($this->FundingCycles->save($fundingCycle)) {
+                $this->redirect('/admin/funding-cycles');
             } else {
                 $this->Flash->error(__('Error creating funding cycle'));
             }
         }
         $this->set('fundingCycle', $fundingCycle);
+
         return null;
     }
 
@@ -41,12 +41,13 @@ class FundingCyclesController extends AppController
             $updatedFundingCycle = $this->request->getData();
             $fundingCycle = $this->FundingCycles->get($updatedFundingCycle['id']);
             $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $updatedFundingCycle);
-            if($this->FundingCycles->save($fundingCycle)){
+            if ($this->FundingCycles->save($fundingCycle)) {
                 $this->Flash->success(__('Successfully updated funding cycle'));
             } else {
                 $this->Flash->error(__('Error updating funding cycle'));
             }
         }
+
         return null;
     }
 }

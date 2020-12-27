@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\CategoriesTable;
@@ -24,7 +26,7 @@ class CategoriesTableTest extends TestCase
      */
     public $fixtures = [
         'app.Categories',
-        'app.Applications'
+        'app.Applications',
     ];
 
     /**

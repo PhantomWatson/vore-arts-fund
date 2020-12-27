@@ -62,7 +62,7 @@ class ApplicationsFixture extends TestFixture
                 'funding_cycle_id' => 1,
                 'status_id' => 1,
                 'created' => 1572998608,
-                'modified' => 1572998608
+                'modified' => 1572998608,
             ],
         ];
         parent::init();

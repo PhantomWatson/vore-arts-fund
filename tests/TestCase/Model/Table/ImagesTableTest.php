@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ImagesTable;
@@ -24,7 +26,7 @@ class ImagesTableTest extends TestCase
      */
     public $fixtures = [
         'app.Images',
-        'app.Applications'
+        'app.Applications',
     ];
 
     /**

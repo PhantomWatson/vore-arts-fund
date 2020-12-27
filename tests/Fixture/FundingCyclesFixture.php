@@ -48,7 +48,7 @@ class FundingCyclesFixture extends TestFixture
                 'vote_end' => 1590807542,
                 'funding_available' => 1999999,
                 'created' => 1572998643,
-                'modified' => 1572998643
+                'modified' => 1572998643,
             ],
         ];
         parent::init();

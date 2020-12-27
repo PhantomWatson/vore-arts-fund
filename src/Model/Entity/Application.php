@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -56,6 +58,6 @@ class Application extends Entity
         'images' => true,
         'messages' => true,
         'notes' => true,
-        'votes' => true
+        'votes' => true,
     ];
 }

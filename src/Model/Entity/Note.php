@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -32,6 +34,6 @@ class Note extends Entity
         'body' => true,
         'created' => true,
         'user' => true,
-        'application' => true
+        'application' => true,
     ];
 }

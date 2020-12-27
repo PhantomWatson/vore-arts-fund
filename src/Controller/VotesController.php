@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -13,14 +15,8 @@
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
 namespace App\Controller;
-use Cake\Event\Event;
 
-use Cake\Core\Configure;
-use Cake\Http\Exception\ForbiddenException;
-use Cake\Http\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
 use Cake\ORM\TableRegistry;
-
 
 /**
  * Static content controller
@@ -32,17 +28,15 @@ use Cake\ORM\TableRegistry;
  */
 class VotesController extends AppController
 {
-
     /**
      * Displays a view
      *
-     * @param array ...$path Path segments.
+     * @param array ...$event Path segments.
      * @return \Cake\Http\Response|null
      * @throws \Cake\Http\Exception\ForbiddenException When a directory traversal attempt.
      * @throws \Cake\Http\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
-
 
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
@@ -65,7 +59,7 @@ class VotesController extends AppController
             $data = $this->request->getData();
             $keys = array_keys($data);
 
-            foreach($keys as $key){
+            foreach ($keys as $key) {
                 $voteEntry = $voteTable->newEntity();
                 $voteEntry->user_id = $this->Auth->user('id');
                 $voteEntry->application_id = $key;
@@ -75,12 +69,13 @@ class VotesController extends AppController
             }
             if ($result) {
                 $this->Flash->success(__('Your votes have successfully been submitted.'));
+
                 return $this->redirect('/');
             } else {
                 $this->Flash->error(__('Your votes could not be submitted.'));
+
                 return $this->redirect('/vote');
             }
-
         }
     }
 }

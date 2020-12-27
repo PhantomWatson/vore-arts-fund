@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -30,6 +32,6 @@ class Image extends Entity
         'weight' => true,
         'caption' => true,
         'created' => true,
-        'application' => true
+        'application' => true,
     ];
 }

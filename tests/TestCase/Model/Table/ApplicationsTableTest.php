@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\ApplicationsTable;
@@ -31,7 +33,7 @@ class ApplicationsTableTest extends TestCase
         'app.Images',
         'app.Messages',
         'app.Notes',
-        'app.Votes'
+        'app.Votes',
     ];
 
     /**

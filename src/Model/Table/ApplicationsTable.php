@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -17,7 +18,6 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\MessagesTable&\Cake\ORM\Association\HasMany $Messages
  * @property \App\Model\Table\NotesTable&\Cake\ORM\Association\HasMany $Notes
  * @property \App\Model\Table\VotesTable&\Cake\ORM\Association\HasMany $Votes
- *
  * @method \App\Model\Entity\Application get($primaryKey, $options = [])
  * @method \App\Model\Entity\Application newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Application[] newEntities(array $data, array $options = [])
@@ -26,7 +26,6 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Application patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Application[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Application findOrCreate($search, callable $callback = null, $options = [])
- *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  * @method \App\Model\Entity\Application[]|\Cake\Datasource\ResultSetInterface|false saveMany($entities, $options = [])
  */
@@ -50,31 +49,31 @@ class ApplicationsTable extends Table
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('Categories', [
             'foreignKey' => 'category_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('FundingCycles', [
             'foreignKey' => 'funding_cycle_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->belongsTo('Statuses', [
             'foreignKey' => 'status_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->hasMany('Images', [
-            'foreignKey' => 'application_id'
+            'foreignKey' => 'application_id',
         ]);
         $this->hasMany('Messages', [
-            'foreignKey' => 'application_id'
+            'foreignKey' => 'application_id',
         ]);
         $this->hasMany('Notes', [
-            'foreignKey' => 'application_id'
+            'foreignKey' => 'application_id',
         ]);
         $this->hasMany('Votes', [
-            'foreignKey' => 'application_id'
+            'foreignKey' => 'application_id',
         ]);
     }
 

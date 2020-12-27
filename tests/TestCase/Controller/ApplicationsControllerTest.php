@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\ApplicationsController;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use Cake\ORM\TableRegistry;
-
 
 /**
  * App\Controller\ApplicationsController Test Case
@@ -30,9 +30,8 @@ class ApplicationsControllerTest extends TestCase
         'app.Images',
         'app.Messages',
         'app.Notes',
-        'app.Votes'
+        'app.Votes',
     ];
-
 
     /**
      * Test apply method
@@ -44,7 +43,7 @@ class ApplicationsControllerTest extends TestCase
         $data = [
             'id' => 32,
             'title' => 'Test',
-            'description'=> 'Praesent id massa id nisl venenatis 
+            'description' => 'Praesent id massa id nisl venenatis 
             lacinia. Aenean sit amet justo. Morbi ut odio. 
             Cras mi pede, malesuada in, imperdiet et, commodo 
             vulputate, justo.',
@@ -61,8 +60,8 @@ class ApplicationsControllerTest extends TestCase
                     'id' => 1,
                     'username' => 'testing',
                     // other keys.
-                ]
-            ]
+                ],
+            ],
         ]);
         $this->post('/apply', $data);
         $this->assertResponseSuccess();
@@ -70,6 +69,7 @@ class ApplicationsControllerTest extends TestCase
         $query = $applicationsTable->find()->where(['id' => 1]);
         $this->assertEquals(1, $query->count());
     }
+
     /**
      * Test view method
      *
@@ -83,8 +83,8 @@ class ApplicationsControllerTest extends TestCase
                     'id' => 1,
                     'username' => 'testing',
                     // other keys.
-                ]
-            ]
+                ],
+            ],
         ]);
         $this->get('/view-application/1');
         $this->assertResponseOk();
@@ -100,7 +100,7 @@ class ApplicationsControllerTest extends TestCase
         $data = [
             'id' => 1,
             'title' => 'Test',
-            'description'=> 'Praesent id massa id nisl venenatis 
+            'description' => 'Praesent id massa id nisl venenatis 
             lacinia. Aenean sit amet justo. Morbi ut odio. 
             Cras mi pede, malesuada in, imperdiet et, commodo 
             vulputate, justo.',
@@ -117,8 +117,8 @@ class ApplicationsControllerTest extends TestCase
                     'id' => 1,
                     'username' => 'testing',
                     // other keys.
-                ]
-            ]
+                ],
+            ],
         ]);
         $this->post('/apply', $data);
         $this->assertResponseSuccess();
@@ -131,7 +131,6 @@ class ApplicationsControllerTest extends TestCase
         $applicationsTable = TableRegistry::getTableLocator()->get('applications');
         $query = $applicationsTable->find()->where(['status_id' => 8, 'id' => 1]);
         $this->assertEquals(1, $query->count());
-
     }
 
     /**
@@ -144,7 +143,7 @@ class ApplicationsControllerTest extends TestCase
         $data = [
             'id' => 1,
             'title' => 'Test',
-            'description'=> 'Praesent id massa id nisl venenatis 
+            'description' => 'Praesent id massa id nisl venenatis 
             lacinia. Aenean sit amet justo. Morbi ut odio. 
             Cras mi pede, malesuada in, imperdiet et, commodo 
             vulputate, justo.',
@@ -161,12 +160,11 @@ class ApplicationsControllerTest extends TestCase
                     'id' => 1,
                     'username' => 'testing',
                     // other keys.
-                ]
-            ]
+                ],
+            ],
         ]);
         $this->post('/apply', $data);
         $this->assertResponseSuccess();
-
 
         $data = [
             'status_id' => 9,
@@ -176,7 +174,7 @@ class ApplicationsControllerTest extends TestCase
         $applicationsTable = TableRegistry::getTableLocator()->get('applications');
         $query = $applicationsTable->find()->where(['status_id' => 9, 'id' => 1]);
         $this->assertEquals(1, $query->count());
-        }
+    }
 
     /**
      * Test delete method

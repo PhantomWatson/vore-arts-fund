@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\VotesController;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use Cake\ORM\TableRegistry;
-
 
 /**
  * App\Controller\VotesController Test Case
@@ -25,7 +25,7 @@ class VotesControllerTest extends TestCase
         'app.Votes',
         'app.Users',
         'app.Applications',
-        'app.FundingCycles'
+        'app.FundingCycles',
     ];
 
     /**
@@ -60,7 +60,7 @@ class VotesControllerTest extends TestCase
             'user_id' => 1,
             'application_id' => 1,
             'funding_cycle_id' => 1,
-            'weight' => 1
+            'weight' => 1,
         ];
 
         $this->post('/submit', $data);
@@ -68,8 +68,5 @@ class VotesControllerTest extends TestCase
         $votesTable = TableRegistry::getTableLocator()->get('votes');
         $query = $votesTable->find()->where(['id' => 1]);
         $this->assertEquals(1, $query->count());
-
-
     }
-
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\StatusesTable;
@@ -24,7 +26,7 @@ class StatusesTableTest extends TestCase
      */
     public $fixtures = [
         'app.Statuses',
-        'app.Applications'
+        'app.Applications',
     ];
 
     /**

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -38,6 +40,6 @@ class Vote extends Entity
         'modified' => true,
         'user' => true,
         'application' => true,
-        'funding_cycle' => true
+        'funding_cycle' => true,
     ];
 }

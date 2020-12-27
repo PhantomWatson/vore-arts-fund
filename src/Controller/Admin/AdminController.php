@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
@@ -20,9 +21,8 @@ use App\Controller\AppController;
 
 class AdminController extends AppController
 {
-
-    public function index() {
+    public function index()
+    {
         return null;
     }
-
 }

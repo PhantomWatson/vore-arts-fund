@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -10,7 +11,6 @@ use Cake\Validation\Validator;
  * Images Model
  *
  * @property \App\Model\Table\ApplicationsTable&\Cake\ORM\Association\BelongsTo $Applications
- *
  * @method \App\Model\Entity\Image get($primaryKey, $options = [])
  * @method \App\Model\Entity\Image newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Image[] newEntities(array $data, array $options = [])
@@ -19,7 +19,6 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Image patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Image[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Image findOrCreate($search, callable $callback = null, $options = [])
- *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  * @method \App\Model\Entity\Image[]|\Cake\Datasource\ResultSetInterface|false saveMany($entities, $options = [])
  */
@@ -43,7 +42,7 @@ class ImagesTable extends Table
 
         $this->belongsTo('Applications', [
             'foreignKey' => 'application_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
     }
 

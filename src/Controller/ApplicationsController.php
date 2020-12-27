@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
@@ -16,10 +17,6 @@
 
 namespace App\Controller;
 
-use Cake\Core\Configure;
-use Cake\Http\Exception\ForbiddenException;
-use Cake\Http\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -32,7 +29,6 @@ use Cake\ORM\TableRegistry;
  */
 class ApplicationsController extends AppController
 {
-
     /**
      * Displays a view
      *
@@ -52,7 +48,7 @@ class ApplicationsController extends AppController
             $fundingCycle = $fundingCyclesTable->find('all', ['conditions' => ['funding_cycles.application_begin <=' => date('Y-m-d H:i:s'), 'funding_cycles.application_end >=' => date('Y-m-d H:i:s')], 'fields' => ['funding_cycles.id']])->first();
             if (!is_null($fundingCycle)) {
                 $application = $applicationsTable->newEntity($data);
-                $application->category_id = $data['category']+1;
+                $application->category_id = $data['category'] + 1;
                 $application->user_id = $this->Auth->user('id');
                 $application->funding_cycle_id = $fundingCycle->id;
                 $application->status_id = isset($data['save']) ? 1 : 0;
@@ -63,7 +59,7 @@ class ApplicationsController extends AppController
                     $this->Flash->error(__('The application could not be ' . (isset($data['save']) ? 'saved.' : 'submitted.')));
                 }
                 $rawImage = $data['image'];
-                if($rawImage['size'] !== 0) {
+                if ($rawImage['size'] !== 0) {
                     $image = $imagesTable->newEntity();
                     $image->application_id = $result->id;
                     $image->weight = 0;
@@ -81,51 +77,55 @@ class ApplicationsController extends AppController
                 $this->Flash->error(__('No valid funding cycle.'));
             }
         }
+
         return null;
     }
 
-    public function view(){
+    public function view()
+    {
         $id = $this->request->getParam('id');
-        if($this->request->is('get')) {
+        if ($this->request->is('get')) {
             $data = $this->request->getData();
             $applicationsTable = TableRegistry::getTableLocator()->get('applications');
             $application = $applicationsTable->find()->where(['id' => $id])->first()->toArray();
         }
     }
 
-    public function withdraw(){
+    public function withdraw()
+    {
         $id = $this->request->getParam('id');
         $applicationsTable = TableRegistry::getTableLocator()->get('applications');
         $application = $applicationsTable->find()->where(['id' => $id])->first();
-        if($this->request->is('post')) {
+        if ($this->request->is('post')) {
             $application = $applicationsTable->patchEntity($application, ['status_id' => 8]);
-            if($applicationsTable->save($application)){
+            if ($applicationsTable->save($application)) {
                 $this->Flash->success('Application withdrawn.');
             }
         }
     }
 
-    public function resubmit(){
+    public function resubmit()
+    {
         $id = $this->request->getParam('id');
         $applicationsTable = TableRegistry::getTableLocator()->get('applications');
         $application = $applicationsTable->find()->where(['id' => $id])->first();
-        if($this->request->is('post')) {
+        if ($this->request->is('post')) {
             $application = $applicationsTable->patchEntity($application, ['status_id' => 9]);
-            if($applicationsTable->save($application)){
+            if ($applicationsTable->save($application)) {
                 $this->Flash->success('Application has been resubmitted.');
             }
         }
     }
 
-    public function delete(){
+    public function delete()
+    {
         $id = $this->request->getParam('id');
         $applicationsTable = TableRegistry::getTableLocator()->get('applications');
         $application = $applicationsTable->find()->where(['id' => $id])->first();
-        if($this->request->is('delete')) {
-            if($applicationsTable->delete($application)){
+        if ($this->request->is('delete')) {
+            if ($applicationsTable->delete($application)) {
                 $this->Flash->success('Application has been deleted');
             }
+        }
     }
-
-}
 }

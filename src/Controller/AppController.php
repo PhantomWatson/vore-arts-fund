@@ -47,21 +47,21 @@ class AppController extends Controller
             'userModel' => 'Users',
             'loginRedirect' => [
                 'controller' => 'Users',
-                'action' => 'my_account'
+                'action' => 'my_account',
             ],
             'logoutRedirect' => [
                 'controller' => 'Users',
-                'action' => 'login'
+                'action' => 'login',
             ],
             'authenticate' => [
                 'Form' => [
                     'fields' => [
                         'username' => 'email',
-                        'password' => 'password'
-                    ]
-                ]
+                        'password' => 'password',
+                    ],
+                ],
             ],
-            'storage' => 'Session'
+            'storage' => 'Session',
         ]);
 
         /*

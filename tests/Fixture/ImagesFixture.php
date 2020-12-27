@@ -46,7 +46,7 @@ class ImagesFixture extends TestFixture
                 'application_id' => 1,
                 'weight' => 1,
                 'caption' => 'Lorem ipsum dolor sit amet',
-                'created' => 1572998651
+                'created' => 1572998651,
             ],
         ];
         parent::init();

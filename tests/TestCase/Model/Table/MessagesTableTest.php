@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\MessagesTable;
@@ -25,7 +27,7 @@ class MessagesTableTest extends TestCase
     public $fixtures = [
         'app.Messages',
         'app.Users',
-        'app.Applications'
+        'app.Applications',
     ];
 
     /**

@@ -48,7 +48,7 @@ class NotesFixture extends TestFixture
                 'user_id' => 1,
                 'application_id' => 1,
                 'body' => 'Lorem ipsum dolor sit amet',
-                'created' => 1572998664
+                'created' => 1572998664,
             ],
         ];
         parent::init();

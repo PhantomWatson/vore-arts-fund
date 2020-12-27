@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -10,7 +10,6 @@ use Cake\Validation\Validator;
  * Categories Model
  *
  * @property \App\Model\Table\ApplicationsTable&\Cake\ORM\Association\HasMany $Applications
- *
  * @method \App\Model\Entity\Category get($primaryKey, $options = [])
  * @method \App\Model\Entity\Category newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Category[] newEntities(array $data, array $options = [])
@@ -38,7 +37,7 @@ class CategoriesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->hasMany('Applications', [
-            'foreignKey' => 'category_id'
+            'foreignKey' => 'category_id',
         ]);
     }
 

@@ -50,7 +50,7 @@ class MessagesFixture extends TestFixture
                 'application_id' => 1,
                 'body' => 'Lorem ipsum dolor sit amet',
                 'is_unread' => 1,
-                'created' => 1572998657
+                'created' => 1572998657,
             ],
         ];
         parent::init();

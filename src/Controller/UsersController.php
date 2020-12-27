@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -34,7 +35,7 @@ class UsersController extends AppController
             'logout',
             'register',
             'resetPasswordToken',
-            'verify'
+            'verify',
         ]);
         $this->Twilio = new Client(env('TWILIO_ACCOUNT_SID'), env('TWILIO_AUTH_TOKEN'));
     }
@@ -72,6 +73,7 @@ class UsersController extends AppController
             $user = $this->Auth->identify();
             if ($user) {
                 $this->Auth->setUser($user);
+
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
                 $this->Flash->error(__('Invalid username or password, try again'));
@@ -96,11 +98,13 @@ class UsersController extends AppController
             // is_verified will later be assigned based on text verification API, see verify() below
             $user->is_verified = 0;
             if ($this->Users->save($user)) {
-                if ($user->phone !== 1234567890)
+                if ($user->phone !== 1234567890) {
                     $this->send($user->phone);
+                }
                 $this->Flash->success(__('The user has been saved.'));
                 $this->Auth->setUser($user);
-                return $this->redirect("/verify");
+
+                return $this->redirect('/verify');
             } else {
                 $this->Flash->error(__('Unable to register the user.'));
             }
@@ -118,7 +122,7 @@ class UsersController extends AppController
      */
     public function send($phone)
     {
-        $this->Twilio->verify->v2->services(env('TWILIO_SERVICE_SID'))->verifications->create("+1" . $phone, "sms");
+        $this->Twilio->verify->v2->services(env('TWILIO_SERVICE_SID'))->verifications->create('+1' . $phone, 'sms');
     }
 
     /**
@@ -130,7 +134,8 @@ class UsersController extends AppController
      */
     public function validate($phone, $code)
     {
-        $verification_check = $this->Twilio->verify->v2->services(env('TWILIO_SERVICE_SID'))->verificationChecks->create($code, ["to" => "+1" . $phone]);
+        $verification_check = $this->Twilio->verify->v2->services(env('TWILIO_SERVICE_SID'))->verificationChecks->create($code, ['to' => '+1' . $phone]);
+
         return $verification_check->status == 'approved';
     }
 
@@ -317,11 +322,12 @@ class UsersController extends AppController
                     'is_verified' => 1,
                 ]);
                 $this->Users->save($user);
-                $this->redirect("/my-account");
+                $this->redirect('/my-account');
             } else {
                 $this->Flash->error(__('Error verifying phone'));
             }
         }
+
         return null;
     }
 
@@ -358,7 +364,7 @@ class UsersController extends AppController
             $user = $this->Users->get($this->Auth->user('id'));
 
             $currentPassword = $this->request->getData('current_password');
-            $passwordIsCorrect = (new DefaultPasswordHasher)->check($currentPassword, $user->password);
+            $passwordIsCorrect = (new DefaultPasswordHasher())->check($currentPassword, $user->password);
             if (!$passwordIsCorrect) {
                 $this->Flash->error(
                     'Unable to update account information. ' .
