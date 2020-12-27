@@ -123,6 +123,7 @@ class UsersController extends AppController
      *
      * @param string $phone Phone number
      * @return void
+     * @throws \Twilio\Exceptions\TwilioException
      */
     public function send(string $phone)
     {
@@ -135,6 +136,7 @@ class UsersController extends AppController
      * @param string $phone Phone number
      * @param string $code The verification string
      * @return bool
+     * @throws \Twilio\Exceptions\TwilioException
      */
     public function validate(string $phone, string $code): bool
     {
