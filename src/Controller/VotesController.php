@@ -16,6 +16,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -49,7 +50,10 @@ class VotesController extends AppController
         $this->set(['applications' => $applications]);
     }
 
-    public function submit()
+    /**
+     * @return \Cake\Http\Response|null
+     */
+    public function submit(): ?Response
     {
         $fundingCyclesTable = TableRegistry::getTableLocator()->get('funding_cycles');
         $fundingCycle = $fundingCyclesTable->find('all', ['conditions' => ['funding_cycles.application_begin <=' => date('Y-m-d H:i:s'), 'funding_cycles.application_end >=' => date('Y-m-d H:i:s')], 'fields' => ['funding_cycles.id']])->first();

@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\User;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
 use Cake\Mailer\Mailer;
 use Twilio\Rest\Client;
@@ -67,7 +69,7 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function login()
+    public function login(): ?Response
     {
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
@@ -88,7 +90,7 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function register()
+    public function register(): ?Response
     {
         $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post')) {
@@ -132,7 +134,7 @@ class UsersController extends AppController
      * @param string $code The verification string
      * @return bool
      */
-    public function validate($phone, $code)
+    public function validate($phone, $code): bool
     {
         $verification_check = $this->Twilio->verify->v2->services(env('TWILIO_SERVICE_SID'))->verificationChecks->create($code, ['to' => '+1' . $phone]);
 
@@ -144,7 +146,7 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response
      */
-    public function logout()
+    public function logout(): Response
     {
         return $this->redirect($this->Auth->logout());
     }
@@ -157,7 +159,7 @@ class UsersController extends AppController
      * @param array ...$path Path segments
      * @return \Cake\Http\Response|null
      */
-    public function forgotPassword(...$path)
+    public function forgotPassword(...$path): ?Response
     {
         if ($this->request->is('post')) {
             $user = $this->Users->findByEmail($this->request->getData()['User']['email'])->first();
@@ -186,7 +188,7 @@ class UsersController extends AppController
      * @param string $reset_password_token User-specific password reset token
      * @return \Cake\Http\Response|null
      */
-    public function resetPasswordToken($reset_password_token = null)
+    public function resetPasswordToken($reset_password_token = null): ?Response
     {
         /** @var \App\Model\Entity\User $user */
         $user = $this->Users->findByResetPasswordToken($reset_password_token)->first();
@@ -225,7 +227,7 @@ class UsersController extends AppController
      * @param \App\Model\Entity\User $user User entity
      * @return \App\Model\Entity\User|null
      */
-    private function __generatePasswordToken($user)
+    private function __generatePasswordToken($user): ?User
     {
         if (empty($user)) {
             return null;
@@ -243,7 +245,7 @@ class UsersController extends AppController
      * @param \Cake\I18n\FrozenTime $tokenCreatedDate The time that a token was generated
      * @return bool
      */
-    private function __validToken($tokenCreatedDate)
+    private function __validToken($tokenCreatedDate): bool
     {
         return $tokenCreatedDate->wasWithinLast('24 hours');
     }
@@ -254,7 +256,7 @@ class UsersController extends AppController
      * @param \App\Model\Entity\User|null $user User entity
      * @return bool
      */
-    private function __sendForgotPasswordEmail($user = null)
+    private function __sendForgotPasswordEmail($user = null): bool
     {
         if (!empty($user)) {
             $email = new Mailer();
@@ -282,7 +284,7 @@ class UsersController extends AppController
      * @param int $id User ID
      * @return bool
      */
-    private function __sendPasswordChangedEmail($id = null)
+    private function __sendPasswordChangedEmail($id = null): bool
     {
         if (!empty($id)) {
             $User = $this->Users->get($id);
@@ -358,7 +360,7 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function changeAccountInfo()
+    public function changeAccountInfo(): ?Response
     {
         if ($this->request->is('post')) {
             $user = $this->Users->get($this->Auth->user('id'));

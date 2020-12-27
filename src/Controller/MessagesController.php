@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Response;
+
 /**
  * Class MessagesController
  *
@@ -42,7 +44,7 @@ class MessagesController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function compose()
+    public function compose(): ?Response
     {
         $message = $this->Messages->newEmptyEntity();
         if ($this->request->is('post')) {

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -38,7 +39,7 @@ class ApplicationsController extends AppController
      * @throws \Cake\Http\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
-    public function apply(...$path)
+    public function apply(...$path): ?Response
     {
         if ($this->request->is('post')) {
             $data = $this->request->getData();

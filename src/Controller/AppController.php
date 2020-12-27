@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Http\Response;
 
 /**
  * Application Controller
@@ -75,7 +76,7 @@ class AppController extends Controller
      * The folowing function lists the pages accessible to visitors
      * who are not logged into a User account
      */
-    public function beforeFilter(\Cake\Event\EventInterface $event)
+    public function beforeFilter(\Cake\Event\EventInterface $event): ?Response
     {
         $this->Auth->deny();
     }
