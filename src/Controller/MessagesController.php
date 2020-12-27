@@ -3,8 +3,19 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+/**
+ * Class MessagesController
+ *
+ * @package App\Controller
+ * @property \App\Model\Table\MessagesTable $Messages
+ */
 class MessagesController extends AppController
 {
+    /**
+     * Messages inbox
+     *
+     * @return void
+     */
     public function inbox()
     {
         $messages = $this->Message->find('all', [
@@ -14,6 +25,11 @@ class MessagesController extends AppController
         ]);
     }
 
+    /**
+     * Messages outbox
+     *
+     * @return void
+     */
     public function outbox()
     {
         $messages = $this->Message->find('all', [
@@ -23,6 +39,11 @@ class MessagesController extends AppController
         ]);
     }
 
+    /**
+     * Page for writing a message
+     *
+     * @return void
+     */
     public function compose()
     {
         if ($this->request->is('post')) {
