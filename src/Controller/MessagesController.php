@@ -40,7 +40,7 @@ class MessagesController extends AppController
     /**
      * Page for writing a message
      *
-     * @return void
+     * @return \Cake\Http\Response|null
      */
     public function compose()
     {
@@ -51,9 +51,12 @@ class MessagesController extends AppController
             $message = $this->Messages->patchEntity($message, $data);
             if ($this->Messages->save($message)) {
                 $this->Flash->success('Message successfully sent.');
-                $this->redirect(['action' => 'outbox']);
+
+                return $this->redirect(['action' => 'outbox']);
             }
         }
         $this->set(compact('message'));
+
+        return null;
     }
 }
