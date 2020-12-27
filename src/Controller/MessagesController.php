@@ -18,11 +18,9 @@ class MessagesController extends AppController
      */
     public function inbox()
     {
-        $messages = $this->Message->find('all', [
-            'conditions' => [
-                'user_id' => $this->Auth->user('id'),
-            ],
-        ]);
+        $messages = $this->Messages
+            ->find()
+            ->where(['user_id' => $this->Auth->user('id')]);
     }
 
     /**
@@ -32,11 +30,9 @@ class MessagesController extends AppController
      */
     public function outbox()
     {
-        $messages = $this->Message->find('all', [
-            'conditions' => [
-                'user' => $this->Auth->user('id'),
-            ],
-        ]);
+        $messages = $this->Messages
+            ->find()
+            ->where(['user' => $this->Auth->user('id')]);
     }
 
     /**
@@ -49,7 +45,8 @@ class MessagesController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $data['user_id'] = $this->Auth->user('id');
-            if ($this->Message->save($data)) {
+            $message = $this->Messages->newEntity($data);
+            if ($this->Messages->save($message)) {
                 $this->Session->setFlash('Message successfully sent.');
                 $this->redirect(['action' => 'outbox']);
             }
