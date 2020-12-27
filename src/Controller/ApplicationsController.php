@@ -89,6 +89,11 @@ class ApplicationsController extends AppController
         return null;
     }
 
+    /**
+     * Page for viewing an application
+     *
+     * @return void
+     */
     public function view()
     {
         $id = $this->request->getParam('id');
@@ -100,6 +105,11 @@ class ApplicationsController extends AppController
         $this->set(compact('application'));
     }
 
+    /**
+     * Page for withdrawing an application from consideration
+     *
+     * @return void
+     */
     public function withdraw()
     {
         $id = $this->request->getParam('id');
@@ -113,6 +123,11 @@ class ApplicationsController extends AppController
         }
     }
 
+    /**
+     * Page for resubmitting a returned application
+     *
+     * @return void
+     */
     public function resubmit()
     {
         $id = $this->request->getParam('id');
@@ -126,6 +141,11 @@ class ApplicationsController extends AppController
         }
     }
 
+    /**
+     * Page for removing an application
+     *
+     * @return void
+     */
     public function delete()
     {
         $id = $this->request->getParam('id');

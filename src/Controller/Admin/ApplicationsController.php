@@ -14,16 +14,29 @@ use App\Controller\AppController;
 
 class ApplicationsController extends AppController
 {
+    /**
+     * Applications index page
+     *
+     * @return void
+     */
     public function index()
     {
-        return null;
     }
 
+    /**
+     * Page for reviewing an application
+     *
+     * @return void
+     */
     public function review()
     {
-        return null;
     }
 
+    /**
+     * Page for changing the status of an application
+     *
+     * @return void
+     */
     public function setStatus()
     {
         $id = $this->request->getParam('id');
@@ -37,7 +50,5 @@ class ApplicationsController extends AppController
                 $this->Flash->error(__('Error updating application status'));
             }
         }
-
-        return null;
     }
 }

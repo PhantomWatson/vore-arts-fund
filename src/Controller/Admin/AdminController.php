@@ -21,8 +21,12 @@ use App\Controller\AppController;
 
 class AdminController extends AppController
 {
+    /**
+     * Admin index page
+     *
+     * @return void
+     */
     public function index()
     {
-        return null;
     }
 }

@@ -14,11 +14,20 @@ use App\Controller\AppController;
 
 class FundingCyclesController extends AppController
 {
+    /**
+     * Funding cycles index page
+     *
+     * @return void
+     */
     public function index()
     {
-        return null;
     }
 
+    /**
+     * Page for adding a new funding cycle
+     *
+     * @return void
+     */
     public function add()
     {
         $fundingCycle = $this->FundingCycles->newEmptyEntity();
@@ -31,10 +40,13 @@ class FundingCyclesController extends AppController
             }
         }
         $this->set('fundingCycle', $fundingCycle);
-
-        return null;
     }
 
+    /**
+     * Page for updating a funding cycle
+     *
+     * @return void
+     */
     public function edit()
     {
         if ($this->request->is('put')) {
@@ -47,7 +59,5 @@ class FundingCyclesController extends AppController
                 $this->Flash->error(__('Error updating funding cycle'));
             }
         }
-
-        return null;
     }
 }

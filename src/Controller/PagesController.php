@@ -85,23 +85,39 @@ class PagesController extends AppController
         }
     }
 
+    /**
+     * "About" page
+     *
+     * @return void
+     */
     public function about()
     {
-        return null;
     }
 
+    /**
+     * Contact information page
+     *
+     * @return void
+     */
     public function contact()
     {
-        return null;
     }
 
+    /**
+     * Terms of use page
+     *
+     * @return void
+     */
     public function terms()
     {
-        return null;
     }
 
+    /**
+     * Privacy policy page
+     *
+     * @return void
+     */
     public function privacy()
     {
-        return null;
     }
 }

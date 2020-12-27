@@ -45,6 +45,11 @@ class VotesController extends AppController
         $this->Auth->allow(['index', 'view']);
     }
 
+    /**
+     * Votes index page
+     *
+     * @return void
+     */
     public function index()
     {
         $applications = TableRegistry::getTableLocator()->get('Applications')->find()->where(['status_id' => 5 ])->all()->toArray();
