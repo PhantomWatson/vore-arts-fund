@@ -85,22 +85,22 @@ class PagesController extends AppController
         }
     }
 
-    public function about(...$path)
+    public function about()
     {
         return null;
     }
 
-    public function contact(...$path)
+    public function contact()
     {
         return null;
     }
 
-    public function terms(...$path)
+    public function terms()
     {
         return null;
     }
 
-    public function privacy(...$path)
+    public function privacy()
     {
         return null;
     }

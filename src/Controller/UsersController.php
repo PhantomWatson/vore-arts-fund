@@ -158,10 +158,9 @@ class UsersController extends AppController
      *
      * This page shows the user a form for having an email sent to them with a means to reset their password
      *
-     * @param array ...$path Path segments
      * @return \Cake\Http\Response|null
      */
-    public function forgotPassword(...$path): ?Response
+    public function forgotPassword(): ?Response
     {
         if ($this->request->is('post')) {
             $user = $this->Users->findByEmail($this->request->getData()['User']['email'])->first();
@@ -312,10 +311,9 @@ class UsersController extends AppController
     /**
      * User account verification page
      *
-     * @param array ...$path Path segments
      * @return null
      */
-    public function verify(...$path)
+    public function verify()
     {
         if ($this->request->is('post')) {
             $user = $this->Users->get($this->Auth->user('id'));
@@ -338,10 +336,9 @@ class UsersController extends AppController
     /**
      * Page for resending a verification email
      *
-     * @param array ...$path Path segments
      * @return null
      */
-    public function verifyResend(...$path)
+    public function verifyResend()
     {
         return null;
     }
@@ -349,10 +346,9 @@ class UsersController extends AppController
     /**
      * "My Account" page
      *
-     * @param array ...$path Path segments
      * @return null
      */
-    public function myAccount(...$path)
+    public function myAccount()
     {
         return null;
     }
