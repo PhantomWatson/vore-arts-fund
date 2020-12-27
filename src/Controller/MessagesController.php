@@ -21,6 +21,7 @@ class MessagesController extends AppController
         $messages = $this->Messages
             ->find()
             ->where(['user_id' => $this->Auth->user('id')]);
+        $this->set(compact('messages'));
     }
 
     /**
@@ -33,6 +34,7 @@ class MessagesController extends AppController
         $messages = $this->Messages
             ->find()
             ->where(['user' => $this->Auth->user('id')]);
+        $this->set(compact('messages'));
     }
 
     /**
@@ -42,14 +44,16 @@ class MessagesController extends AppController
      */
     public function compose()
     {
+        $message = $this->Messages->newEmptyEntity();
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $data['user_id'] = $this->Auth->user('id');
-            $message = $this->Messages->newEntity($data);
+            $message = $this->Messages->patchEntity($message, $data);
             if ($this->Messages->save($message)) {
                 $this->Session->setFlash('Message successfully sent.');
                 $this->redirect(['action' => 'outbox']);
             }
         }
+        $this->set(compact('message'));
     }
 }
