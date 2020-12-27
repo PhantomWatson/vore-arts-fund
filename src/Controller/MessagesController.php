@@ -26,8 +26,9 @@ class MessagesController extends AppController
     public function compose()
     {
         if ($this->request->is('post')) {
-            $this->requrest->data['Message']['user_id'] = $this->Auth->user('id');
-            if ($this->Message->save($this->request->data)) {
+            $data = $this->request->getData();
+            $data['user_id'] = $this->Auth->user('id');
+            if ($this->Message->save($data)) {
                 $this->Session->setFlash('Message successfully sent.');
                 $this->redirect(['action' => 'outbox']);
             }
