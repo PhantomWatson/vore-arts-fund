@@ -15,6 +15,7 @@ use Twilio\Rest\Client;
  * UsersController
  *
  * @property \App\Model\Table\UsersTable $Users
+ * @property \Twilio\Rest\Client $Twilio
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
 class UsersController extends AppController
