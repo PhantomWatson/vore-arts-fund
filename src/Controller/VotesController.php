@@ -59,32 +59,34 @@ class VotesController extends AppController
         $fundingCycle = $fundingCyclesTable->find('all', ['conditions' => ['funding_cycles.application_begin <=' => date('Y-m-d H:i:s'), 'funding_cycles.application_end >=' => date('Y-m-d H:i:s')], 'fields' => ['funding_cycles.id']])->first();
         $voteTable = TableRegistry::getTableLocator()->get('votes');
 
-        if ($this->request->is('post')) {
-            $data = $this->request->getData();
-            $keys = array_keys($data);
-
-            $success = false;
-            foreach ($keys as $key) {
-                /** @var \App\Model\Entity\Vote $voteEntry */
-                $voteEntry = $voteTable->newEmptyEntity();
-                $voteEntry->user_id = $this->Auth->user('id');
-                $voteEntry->application_id = $key;
-                $voteEntry->funding_cycle_id = $fundingCycle->id;
-                $voteEntry->weight = 1;
-                if (!$voteTable->save($voteEntry)) {
-                    break;
-                }
-                $success = true;
-            }
-            if ($success) {
-                $this->Flash->success(__('Your votes have successfully been submitted.'));
-
-                return $this->redirect('/');
-            } else {
-                $this->Flash->error(__('Your votes could not be submitted.'));
-
-                return $this->redirect('/vote');
-            }
+        if (!$this->request->is('post')) {
+            return null;
         }
+
+        $data = $this->request->getData();
+        $keys = array_keys($data);
+
+        $success = false;
+        foreach ($keys as $key) {
+            /** @var \App\Model\Entity\Vote $voteEntry */
+            $voteEntry = $voteTable->newEmptyEntity();
+            $voteEntry->user_id = $this->Auth->user('id');
+            $voteEntry->application_id = $key;
+            $voteEntry->funding_cycle_id = $fundingCycle->id;
+            $voteEntry->weight = 1;
+            if (!$voteTable->save($voteEntry)) {
+                break;
+            }
+            $success = true;
+        }
+        if ($success) {
+            $this->Flash->success(__('Your votes have successfully been submitted.'));
+
+            return $this->redirect('/');
+        }
+
+        $this->Flash->error(__('Your votes could not be submitted.'));
+
+        return $this->redirect('/vote');
     }
 }
