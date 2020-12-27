@@ -85,11 +85,12 @@ class ApplicationsController extends AppController
     public function view()
     {
         $id = $this->request->getParam('id');
+        $application = null;
         if ($this->request->is('get')) {
-            $data = $this->request->getData();
             $applicationsTable = TableRegistry::getTableLocator()->get('applications');
             $application = $applicationsTable->find()->where(['id' => $id])->first()->toArray();
         }
+        $this->set(compact('application'));
     }
 
     public function withdraw()
