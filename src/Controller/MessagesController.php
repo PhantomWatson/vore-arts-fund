@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+namespace App\Controller;
+
 class MessagesController extends AppController
 {
     public function inbox()
