@@ -20,8 +20,8 @@ use Twilio\Rest\Client;
  */
 class UsersController extends AppController
 {
-    protected $allowCookie = true;
-    protected $cookieTerm = '0';
+    protected bool $allowCookie = true;
+    protected string $cookieTerm = '0';
 
     /**
      * beforeFilter callback method
@@ -60,7 +60,7 @@ class UsersController extends AppController
      * @param int $id User ID
      * @return void
      */
-    public function view($id)
+    public function view(int $id)
     {
         $user = $this->Users->get($id);
         $this->set(compact('user'));
@@ -103,7 +103,7 @@ class UsersController extends AppController
             $user->is_verified = 0;
             if ($this->Users->save($user)) {
                 if ($user->phone !== 1234567890) {
-                    $this->send($user->phone);
+                    $this->send((string)$user->phone);
                 }
                 $this->Flash->success(__('The user has been saved.'));
                 $this->Auth->setUser($user);
@@ -124,7 +124,7 @@ class UsersController extends AppController
      * @param string $phone Phone number
      * @return void
      */
-    public function send($phone)
+    public function send(string $phone)
     {
         $this->Twilio->verify->v2->services(env('TWILIO_SERVICE_SID'))->verifications->create('+1' . $phone, 'sms');
     }
@@ -136,7 +136,7 @@ class UsersController extends AppController
      * @param string $code The verification string
      * @return bool
      */
-    public function validate($phone, $code): bool
+    public function validate(string $phone, string $code): bool
     {
         $verification_check = $this->Twilio
             ->verify
@@ -168,6 +168,7 @@ class UsersController extends AppController
     public function forgotPassword(): ?Response
     {
         if ($this->request->is('post')) {
+            /** @var \App\Model\Entity\User $user */
             $user = $this->Users->findByEmail($this->request->getData()['User']['email'])->first();
             if (empty($user)) {
                 $this->Flash->error('Sorry, the email address entered was not found.');
@@ -236,7 +237,7 @@ class UsersController extends AppController
      * @param \App\Model\Entity\User $user User entity
      * @return \App\Model\Entity\User|null
      */
-    private function __generatePasswordToken($user): ?User
+    private function __generatePasswordToken(User $user): ?User
     {
         if (empty($user)) {
             return null;
@@ -254,7 +255,7 @@ class UsersController extends AppController
      * @param \Cake\I18n\FrozenTime $tokenCreatedDate The time that a token was generated
      * @return bool
      */
-    private function __validToken($tokenCreatedDate): bool
+    private function __validToken(FrozenTime $tokenCreatedDate): bool
     {
         return $tokenCreatedDate->wasWithinLast('24 hours');
     }

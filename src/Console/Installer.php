@@ -76,7 +76,7 @@ class Installer
      * @param \Composer\IO\IOInterface $io IO interface to write to console.
      * @return void
      */
-    public static function createAppLocalConfig($dir, $io)
+    public static function createAppLocalConfig(string $dir, \Composer\IO\IOInterface $io)
     {
         $appLocalConfig = $dir . '/config/app_local.php';
         $appLocalConfigTemplate = $dir . '/config/app_local.example.php';
@@ -93,7 +93,7 @@ class Installer
      * @param \Composer\IO\IOInterface $io IO interface to write to console.
      * @return void
      */
-    public static function createWritableDirectories($dir, $io)
+    public static function createWritableDirectories(string $dir, \Composer\IO\IOInterface $io)
     {
         foreach (static::WRITABLE_DIRS as $path) {
             $path = $dir . '/' . $path;
@@ -113,7 +113,7 @@ class Installer
      * @param \Composer\IO\IOInterface $io IO interface to write to console.
      * @return void
      */
-    public static function setFolderPermissions($dir, $io)
+    public static function setFolderPermissions(string $dir, \Composer\IO\IOInterface $io)
     {
         // ask if the permissions should be changed
         if ($io->isInteractive()) {
@@ -177,7 +177,7 @@ class Installer
      * @param \Composer\IO\IOInterface $io IO interface to write to console.
      * @return void
      */
-    public static function setSecuritySalt($dir, $io)
+    public static function setSecuritySalt(string $dir, \Composer\IO\IOInterface $io)
     {
         $newKey = hash('sha256', Security::randomBytes(64));
         static::setSecuritySaltInFile($dir, $io, $newKey, 'app_local.php');
@@ -192,7 +192,7 @@ class Installer
      * @param string $file A path to a file relative to the application's root
      * @return void
      */
-    public static function setSecuritySaltInFile($dir, $io, $newKey, $file)
+    public static function setSecuritySaltInFile(string $dir, \Composer\IO\IOInterface $io, string $newKey, string $file)
     {
         $config = $dir . '/config/' . $file;
         $content = file_get_contents($config);
@@ -223,7 +223,7 @@ class Installer
      * @param string $file A path to a file relative to the application's root
      * @return void
      */
-    public static function setAppNameInFile($dir, $io, $appName, $file)
+    public static function setAppNameInFile(string $dir, \Composer\IO\IOInterface $io, string $appName, string $file)
     {
         $config = $dir . '/config/' . $file;
         $content = file_get_contents($config);
