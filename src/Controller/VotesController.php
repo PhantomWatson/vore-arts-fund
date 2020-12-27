@@ -65,7 +65,8 @@ class VotesController extends AppController
 
             $success = false;
             foreach ($keys as $key) {
-                $voteEntry = $voteTable->newEntity();
+                /** @var \App\Model\Entity\Vote $voteEntry */
+                $voteEntry = $voteTable->newEmptyEntity();
                 $voteEntry->user_id = $this->Auth->user('id');
                 $voteEntry->application_id = $key;
                 $voteEntry->funding_cycle_id = $fundingCycle->id;
