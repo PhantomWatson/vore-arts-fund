@@ -25,7 +25,10 @@
 <?= $this->Form->button(__('Yes')) ?>
 <?= $this->Html->link(
     'Back',
-    '/my-account',
+    [
+        'controller' => 'Users',
+        'action' => 'myAccount',
+    ],
     ['class' => 'button']
 ) ?>
 <?= $this->Form->end() ?>

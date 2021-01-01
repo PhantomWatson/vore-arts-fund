@@ -57,7 +57,9 @@ foreach ($statuses as $status) {
 </form>
 <?= $this->Html->link(
     'Back',
-    '/admin/applications',
+    [
+        'controller' => 'Admin',
+        'action' => 'applications',
+    ],
     ['class' => 'button']
 ) ?>
-

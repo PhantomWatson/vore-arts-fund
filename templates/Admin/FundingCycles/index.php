@@ -47,11 +47,18 @@ $fundingCycles = TableRegistry::getTableLocator()->get('FundingCycles')->find()-
                     $fundingCycle['vote_end']->i18nFormat('MM/dd/yyyy H:mm')
                 ); ?></td>
                 <td>$<?php echo $fundingCycle['funding_available']; ?></td>
-                <td><?php echo $this->Html->link(
-                    'Edit',
-                    '/admin/funding-cycles/edit//' . $fundingCycle['id'],
-                    ['class' => 'button']
-                ); ?></td>
+                <td>
+                    <?= $this->Html->link(
+                        'Edit',
+                        [
+                            'prefix' => 'admin',
+                            'controller' => 'FundingCycles',
+                            'action' => 'edit',
+                            'id' => $fundingCycle['id'],
+                        ],
+                        ['class' => 'button']
+                    ) ?>
+                </td>
             </tr>
         <?php } ?>
     </tbody>

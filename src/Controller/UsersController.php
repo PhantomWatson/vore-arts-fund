@@ -108,7 +108,7 @@ class UsersController extends AppController
                 $this->Flash->success(__('The user has been saved.'));
                 $this->Auth->setUser($user);
 
-                return $this->redirect('/verify');
+                return $this->redirect(['action' => 'verify']);
             } else {
                 $this->Flash->error(__('Unable to register the user.'));
             }
@@ -335,7 +335,7 @@ class UsersController extends AppController
                     'is_verified' => 1,
                 ]);
                 $this->Users->save($user);
-                $this->redirect('/my-account');
+                $this->redirect(['action' => 'myAccount']);
             } else {
                 $this->Flash->error(__('Error verifying phone'));
             }

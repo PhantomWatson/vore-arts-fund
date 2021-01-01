@@ -7,5 +7,23 @@ $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->to
 <div class="pb-2 mt-4 mb-2 border-bottom">
     <h1>Admin</h1>
 </div>
-<p><?= $this->Html->link('Applications', '/admin/applications', ['class' => 'button']) ?></p>
-<p><?= $this->Html->link('Funding Cycles', '/admin/funding-cycles', ['class' => 'button']) ?></p>
+<p>
+    <?= $this->Html->link(
+        'Applications',
+        [
+            'controller' => 'Admin',
+            'action' => 'Applications',
+        ],
+        ['class' => 'button']
+    ) ?>
+</p>
+<p>
+    <?= $this->Html->link(
+        'Funding Cycles',
+        [
+            'controller' => 'Admin',
+            'action' => 'fundingCycles',
+        ],
+        ['class' => 'button']
+    ) ?>
+</p>

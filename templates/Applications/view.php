@@ -11,7 +11,7 @@ $application = TableRegistry::getTableLocator()->get('Applications')->get($this-
 $category = TableRegistry::getTableLocator()->get('Categories')->find()->all()->toArray();
 $image = TableRegistry::getTableLocator()->get('Images')->find()->where(['application_id' => $application['id']])->first();
 ?>
-<div class="pb-2 mt-4 mb-2 border-bottom">
+<div class='pb-2 mt-4 mb-2 border-bottom'>
     <h1><?= $application['title'] ?></h1>
 </div>
 <div>
@@ -33,6 +33,9 @@ $image = TableRegistry::getTableLocator()->get('Images')->find()->where(['applic
 </div>
 <?= $this->Html->link(
     'Back',
-    '/vote',
+    [
+        'controller' => 'Votes',
+        'action' => 'index',
+    ],
     ['class' => 'button']
 ) ?>

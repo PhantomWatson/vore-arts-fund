@@ -17,5 +17,12 @@
   </fieldset>
   <?= $this->Form->button(__('Login')) ?>
   <?= $this->Form->end() ?>
-  <?= $this->Html->link('Forgot Password?', '/forgot-password', ['class' => 'button']) ?>
+  <?= $this->Html->link(
+      'Forgot Password?',
+      [
+          'controller' => 'Users',
+          'action' => 'forgotPassword',
+      ],
+      ['class' => 'button']
+  ) ?>
 </div>

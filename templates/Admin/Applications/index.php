@@ -39,7 +39,12 @@ $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->to
                 <td><?php echo $statuses[$application['status_id']]['name'] ?></td>
                 <td><?php echo $this->Html->link(
                     'View',
-                    '/admin/applications/review//' . $application['id'],
+                    [
+                        'prefix' => 'admin',
+                        'controller' => 'Applications',
+                        'action' => 'review',
+                        'id' => $application['id'],
+                    ],
                     ['class' => 'button']
                 ); ?></td>
             </tr>

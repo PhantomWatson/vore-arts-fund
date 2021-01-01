@@ -105,6 +105,6 @@ class VotesController extends AppController
 
         $this->Flash->error(__('Your votes could not be submitted.'));
 
-        return $this->redirect('/vote');
+        return $this->redirect(['action' => 'index']);
     }
 }
