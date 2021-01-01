@@ -19,7 +19,7 @@ use Cake\ORM\TableRegistry;
 $fundingCycles = TableRegistry::getTableLocator()->get('FundingCycles')->find()->all()->toArray();
 ?>
 
-<div class='pb-2 mt-4 mb-2 border-bottom'>
+<div class="pb-2 mt-4 mb-2 border-bottom">
     <h1>Funding Cycles</h1>
 </div>
 

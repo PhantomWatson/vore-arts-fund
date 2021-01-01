@@ -4,7 +4,7 @@ use Cake\ORM\TableRegistry;
 $fundingCycle = TableRegistry::getTableLocator()->get('FundingCycles')->find()->where(['id' => $this->request->getParam('id')])->first();
 ?>
 
-<div class='pb-2 mt-4 mb-2 border-bottom'>
+<div class="pb-2 mt-4 mb-2 border-bottom">
     <h1>Edit Funding Cycle</h1>
 </div>
 <?= $this->Flash->render() ?>

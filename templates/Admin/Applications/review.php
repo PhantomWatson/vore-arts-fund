@@ -17,7 +17,7 @@ foreach ($statuses as $status) {
     $statusOptions[$status->id] = $status->name;
 }
 ?>
-<div class='pb-2 mt-4 mb-2 border-bottom'>
+<div class="pb-2 mt-4 mb-2 border-bottom">
     <h1><?= $application['title'] ?></h1>
 </div>
 <div>

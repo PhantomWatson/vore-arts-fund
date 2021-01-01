@@ -4,7 +4,7 @@
  */
 ?>
 
-<div class='pb-2 mt-4 mb-2 border-bottom'>
+<div class="pb-2 mt-4 mb-2 border-bottom">
   <h1>Login</h1>
 </div>
 

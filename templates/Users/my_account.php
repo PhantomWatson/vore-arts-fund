@@ -19,7 +19,7 @@ $user = $this->request->getSession()->read('Auth.User');
 $applications = TableRegistry::getTableLocator()->get('Applications')->find()->where(['user_id' => $user['id']])->all()->toArray();
 ?>
 
-<div class='pb-2 mt-4 mb-2 border-bottom'>
+<div class="pb-2 mt-4 mb-2 border-bottom">
     <h1>My Account</h1>
 </div>
 <?= $this->Html->link('Change Account Info', '/change-account-info', ['class' => 'button']); ?>

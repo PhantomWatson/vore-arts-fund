@@ -15,7 +15,7 @@
  * @var \App\View\AppView $this
  */
 ?>
-<div class='pb-2 mt-4 mb-2 border-bottom'>
+<div class="pb-2 mt-4 mb-2 border-bottom">
     <h1>Apply</h1>
 </div>
 <div class = "apply">

@@ -19,7 +19,7 @@ $applications = TableRegistry::getTableLocator()->get('Applications')->find()->a
 $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->toArray();
 ?>
 
-<div class='pb-2 mt-4 mb-2 border-bottom'>
+<div class="pb-2 mt-4 mb-2 border-bottom">
     <h1>Applications</h1>
 </div>
 
