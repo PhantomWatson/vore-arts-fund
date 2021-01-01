@@ -33,7 +33,7 @@ class VotesController extends AppController
     /**
      * Displays a view
      *
-     * @param array ...$event Path segments.
+     * @param \Cake\Event\EventInterface $event Event object
      * @return \Cake\Http\Response|void|null
      * @throws \Cake\Http\Exception\ForbiddenException When a directory traversal attempt.
      * @throws \Cake\Http\Exception\NotFoundException When the view file could not
