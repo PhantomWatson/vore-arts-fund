@@ -25,7 +25,7 @@ $applications = TableRegistry::getTableLocator()
             <?= __('Please select which applications you would like to vote for. (You may choose more than one)') ?>
         </legend>
         <?php
-        foreach ($applications as $application) {
+        foreach ($applications as $application):
             /** @var \App\Model\Entity\Image $image */
             $image = TableRegistry::getTableLocator()
                 ->get('Images')
@@ -47,7 +47,7 @@ $applications = TableRegistry::getTableLocator()
             ?>
             <h3><?= $application['title'] ?></h3>
             <?= $this->Form->checkbox($application['id'], ['hiddenField' => false]) ?>
-        <?php } ?>
+        <?php endforeach; ?>
     </fieldset>
     <?= $this->Form->button(__('Submit', ['type' => 'submit'])) ?>
     <?= $this->Form->end() ?>

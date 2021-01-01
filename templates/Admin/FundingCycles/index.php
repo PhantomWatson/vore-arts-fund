@@ -34,7 +34,7 @@ $fundingCycles = TableRegistry::getTableLocator()->get('FundingCycles')->find()-
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($fundingCycles as $fundingCycle) { ?>
+        <?php foreach ($fundingCycles as $fundingCycle): ?>
             <tr>
                 <td><?= sprintf(
                     '%s to %s',
@@ -60,6 +60,6 @@ $fundingCycles = TableRegistry::getTableLocator()->get('FundingCycles')->find()-
                     ) ?>
                 </td>
             </tr>
-        <?php } ?>
+        <?php endforeach; ?>
     </tbody>
 </table>

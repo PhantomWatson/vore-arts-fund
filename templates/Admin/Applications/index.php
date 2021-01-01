@@ -33,7 +33,7 @@ $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->to
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($applications as $application) { ?>
+        <?php foreach ($applications as $application): ?>
             <tr>
                 <td><?= $application['title'] ?></td>
                 <td><?= $statuses[$application['status_id']]['name'] ?></td>
@@ -48,6 +48,6 @@ $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->to
                     ['class' => 'button']
                 ) ?></td>
             </tr>
-        <?php } ?>
+        <?php endforeach; ?>
     </tbody>
 </table>

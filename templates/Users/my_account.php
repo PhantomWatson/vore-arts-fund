@@ -37,12 +37,12 @@ $applications = TableRegistry::getTableLocator()
 ) ?>
 
 <h2>Applications</h2>
-<?php foreach ($applications as $application) { ?>
+<?php foreach ($applications as $application): ?>
     <div>
         <h3><?= $application['title'] ?></h3>
-        <?php if ($application['status_id'] === 8) {?>
+        <?php if ($application['status_id'] === 8): ?>
             <p>Status: Withdrawn</p>
-        <?php } ?>
+        <?php endif; ?>
         <?= $this->Html->link(
             'View',
             [
@@ -63,7 +63,7 @@ $applications = TableRegistry::getTableLocator()
                 ],
                 ['class' => 'button']
             );
-        }?>
+        } ?>
         <?php if ($application['status_id'] === 8) {
             echo $this->Html->link(
                 'Resubmit',
@@ -74,7 +74,7 @@ $applications = TableRegistry::getTableLocator()
                 ],
                 ['class' => 'button']
             );
-        }?>
+        } ?>
 
         <?php if (in_array($application['status_id'], [1, 4, 8])) {
             echo $this->Html->link(
@@ -88,4 +88,4 @@ $applications = TableRegistry::getTableLocator()
             );
         } ?>
     </div>
-<?php } ?>
+<?php endforeach; ?>
