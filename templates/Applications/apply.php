@@ -20,7 +20,7 @@
 </div>
 <div class = "apply">
     <?= $this->Flash->render() ?>
-    <?= $this->Form->create(null, ['enctype' =>  'multipart/form-data']) ?>
+    <?= $this->Form->create(null, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>
         <legend><?= __('Please enter the following information') ?></legend>
         <?= $this->Form->control('title', ['required' => true]) ?>
