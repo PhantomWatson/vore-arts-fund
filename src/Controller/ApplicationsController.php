@@ -55,6 +55,7 @@ class ApplicationsController extends AppController
                 ])
                 ->first();
             if (!is_null($fundingCycle)) {
+                /** @var \App\Model\Entity\Application $application */
                 $application = $applicationsTable->newEntity($data);
                 $application->category_id = $data['category'] + 1;
                 $application->user_id = $this->Auth->user('id');
@@ -72,6 +73,7 @@ class ApplicationsController extends AppController
                 }
                 $rawImage = $data['image'];
                 if ($rawImage['size'] !== 0) {
+                    /** @var \App\Model\Entity\Image $image */
                     $image = $imagesTable->newEmptyEntity();
                     $image->application_id = $result->id;
                     $image->weight = 0;
