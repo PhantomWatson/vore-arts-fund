@@ -29,8 +29,7 @@
         <?= $this->Form->select(
             'category',
             ['Film', 'Visual', 'Performance', 'Literature','Music'],
-            ['empty' => false],
-            ['required' => true]
+            ['empty' => false, 'required' => true]
         ) ?>
         <?= $this->Form->control('amount_requested', ['type' => 'number', 'required' => true]) ?>
         <?= $this->Form->label('Accept Partial Payout') ?>
