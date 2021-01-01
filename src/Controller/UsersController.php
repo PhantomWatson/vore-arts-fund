@@ -91,6 +91,7 @@ class UsersController extends AppController
      * User registration page
      *
      * @return \Cake\Http\Response|null
+     * @throws \Twilio\Exceptions\TwilioException
      */
     public function register(): ?Response
     {
@@ -323,6 +324,7 @@ class UsersController extends AppController
      * User account verification page
      *
      * @return null
+     * @throws \Twilio\Exceptions\TwilioException
      */
     public function verify()
     {
