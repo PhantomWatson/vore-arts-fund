@@ -48,7 +48,7 @@ foreach ($statuses as $status) {
 </div>
 <div>
     <h4>Category:</h4>
-    <p><?= $category[($application['category_id'] - 1)]['name'] ?></p>
+    <p><?= $category[$application['category_id'] - 1]['name'] ?></p>
 </div>
 <div>
     <h4>Images:<h4>
