@@ -12,7 +12,7 @@ $url = Router::url([
 ], true);
 ?>
 
-<p>Dear <?php echo $User->name; ?>,</p>
+<p>Dear <?= $User->name ?>,</p>
 
 <p>You may change your password using the link below.</p>
 <p><a href="<?= $url ?>"><?= $url ?></a></p>

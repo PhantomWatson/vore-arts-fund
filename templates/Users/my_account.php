@@ -34,11 +34,11 @@ $applications = TableRegistry::getTableLocator()->get('Applications')->find()->w
 <h2>Applications</h2>
 <?php foreach ($applications as $application) { ?>
     <div>
-        <h3><?php echo $application['title'] ?></h3>
+        <h3><?= $application['title'] ?></h3>
         <?php if ($application['status_id'] === 8) {?>
-            <p><?= 'Status: Withdrawn'; ?></p>
+            <p>Status: Withdrawn</p>
         <?php } ?>
-        <?php echo $this->Html->link(
+        <?= $this->Html->link(
             'View',
             [
                 'controller' => 'Applications',
@@ -47,7 +47,7 @@ $applications = TableRegistry::getTableLocator()->get('Applications')->find()->w
                 'slug' => '/view-application//',
             ],
             ['class' => 'button']
-        ); ?>
+        ) ?>
         <?php if ($application['status_id'] !== 8) {
             echo $this->Html->link(
                 'Withdraw',

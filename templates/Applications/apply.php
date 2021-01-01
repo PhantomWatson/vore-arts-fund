@@ -37,7 +37,7 @@
         <?= $this->Form->file('image') ?>
         <?= $this->Form->control('imageCaption') ?>
     </fieldset>
-    <?= $this->Form->button(__('Save'), ['name' => 'save']); ?>
-    <?= $this->Form->button('Submit', ['type' => 'submit']); ?>
+    <?= $this->Form->button(__('Save'), ['name' => 'save']) ?>
+    <?= $this->Form->button('Submit', ['type' => 'submit']) ?>
     <?= $this->Form->end() ?>
 </div>

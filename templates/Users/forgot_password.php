@@ -23,8 +23,8 @@
     <?= $this->Flash->render() ?>
     <?= $this->Form->create() ?>
     <fieldset>
-        <?php echo $this->Form->create(null, ['action' => 'forgot_password', 'id' => 'web-form']); ?>
-        <?php echo $this->Form->control(
+        <?= $this->Form->create(null, ['action' => 'forgot_password', 'id' => 'web-form']) ?>
+        <?= $this->Form->control(
             'User.email',
             [
                 'label' => 'Email',
@@ -32,9 +32,9 @@
                 'type' => 'email',
                 'required' => true,
             ]
-        ); ?>
-        <?php echo $this->Form->submit('Send Password Reset Instructions', ['class' => 'submit', 'id' => 'submit']); ?>
-        <?php echo $this->Form->end(); ?>
+        ) ?>
+        <?= $this->Form->submit('Send Password Reset Instructions', ['class' => 'submit', 'id' => 'submit']) ?>
+        <?= $this->Form->end() ?>
     </fieldset>
     <?= $this->Form->end() ?>
 </div>

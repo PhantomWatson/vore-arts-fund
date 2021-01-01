@@ -26,7 +26,7 @@ foreach ($statuses as $status) {
     <fieldset>
         <?= $this->Form->control('status_id', ['type' => 'select', 'options' => $statusOptions, 'label' => false, 'empty' => 'Category', 'default' => $application->status_id]) ?>
     </fieldset>
-    <?= $this->Form->button(__('Update Status'), ['class' => 'button']); ?>
+    <?= $this->Form->button(__('Update Status'), ['class' => 'button']) ?>
     <?= $this->Form->end() ?>
 </div>
 <div>
@@ -35,7 +35,7 @@ foreach ($statuses as $status) {
 </div>
 <div>
     <h4>Category:</h4>
-    <p><?= $category[($application['category_id'] - 1)]['name']; ?></p>
+    <p><?= $category[($application['category_id'] - 1)]['name'] ?></p>
 </div>
 <div>
     <h4>Images:<h4>
@@ -44,7 +44,7 @@ foreach ($statuses as $status) {
                 echo $this->Html->image($image->path, ['alt' => $image->caption, 'height' => '200px', 'width' => '200px']);
             }
             ?>
-            <p>Caption: <?= $image->caption; ?></p>
+            <p>Caption: <?= $image->caption ?></p>
 </div>
 <form>
     <h4>Comment</h4>
@@ -52,7 +52,7 @@ foreach ($statuses as $status) {
     <fieldset>
         <?= $this->Form->textarea('Comment') ?>
     </fieldset>
-    <?= $this->Form->button(__('Comment')); ?>
+    <?= $this->Form->button(__('Comment')) ?>
     <?= $this->Form->end() ?>
 </form>
 <?= $this->Html->link(

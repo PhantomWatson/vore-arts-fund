@@ -21,7 +21,7 @@
 <?= $this->Form->create() ?>
 
 <h4> Are you sure you want to withdraw? </h4>
-<?= $this->Form->button(__('Yes')); ?>
+<?= $this->Form->button(__('Yes')) ?>
 <?= $this->Html->link(
     'Back',
     [

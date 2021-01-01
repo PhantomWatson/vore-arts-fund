@@ -29,5 +29,5 @@
     <?= $this->Form->control('vote_end') ?>
     <?= $this->Form->control('funding_available') ?>
 </fieldset>
-<?= $this->Form->button(__('Submit')); ?>
+<?= $this->Form->button(__('Submit')) ?>
 <?= $this->Form->end() ?>

@@ -35,9 +35,9 @@ $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->to
     <tbody>
         <?php foreach ($applications as $application) { ?>
             <tr>
-                <td><?php echo $application['title'] ?></td>
-                <td><?php echo $statuses[$application['status_id']]['name'] ?></td>
-                <td><?php echo $this->Html->link(
+                <td><?= $application['title'] ?></td>
+                <td><?= $statuses[$application['status_id']]['name'] ?></td>
+                <td><?= $this->Html->link(
                     'View',
                     [
                         'prefix' => 'admin',
@@ -46,7 +46,7 @@ $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->to
                         'id' => $application['id'],
                     ],
                     ['class' => 'button']
-                ); ?></td>
+                ) ?></td>
             </tr>
         <?php } ?>
     </tbody>
