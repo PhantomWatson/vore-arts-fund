@@ -10,7 +10,11 @@ use Cake\ORM\TableRegistry;
 
 $application = TableRegistry::getTableLocator()->get('Applications')->get($this->request->getParam('id'));
 $category = TableRegistry::getTableLocator()->get('Categories')->find()->all()->toArray();
-$image = TableRegistry::getTableLocator()->get('Images')->find()->where(['application_id' => $application['id']])->first();
+$image = TableRegistry::getTableLocator()
+    ->get('Images')
+    ->find()
+    ->where(['application_id' => $application['id']])
+    ->first();
 $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all();
 $statusOptions = [];
 foreach ($statuses as $status) {
@@ -24,7 +28,16 @@ foreach ($statuses as $status) {
     <h4>Status</h4>
     <?= $this->Form->create() ?>
     <fieldset>
-        <?= $this->Form->control('status_id', ['type' => 'select', 'options' => $statusOptions, 'label' => false, 'empty' => 'Category', 'default' => $application->status_id]) ?>
+        <?= $this->Form->control(
+            'status_id',
+            [
+                'type' => 'select',
+                'options' => $statusOptions,
+                'label' => false,
+                'empty' => 'Category',
+                'default' => $application->status_id,
+            ]
+        ) ?>
     </fieldset>
     <?= $this->Form->button(__('Update Status'), ['class' => 'button']) ?>
     <?= $this->Form->end() ?>
@@ -41,7 +54,14 @@ foreach ($statuses as $status) {
     <h4>Images:<h4>
             <?php
             if (isset($image) && !empty($image)) {
-                echo $this->Html->image($image->path, ['alt' => $image->caption, 'height' => '200px', 'width' => '200px']);
+                echo $this->Html->image(
+                    $image->path,
+                    [
+                        'alt' => $image->caption,
+                        'height' => '200px',
+                        'width' => '200px',
+                    ]
+                );
             }
             ?>
             <p>Caption: <?= $image->caption ?></p>

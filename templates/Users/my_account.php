@@ -16,7 +16,12 @@
 use Cake\ORM\TableRegistry;
 
 $user = $this->request->getSession()->read('Auth.User');
-$applications = TableRegistry::getTableLocator()->get('Applications')->find()->where(['user_id' => $user['id']])->all()->toArray();
+$applications = TableRegistry::getTableLocator()
+    ->get('Applications')
+    ->find()
+    ->where(['user_id' => $user['id']])
+    ->all()
+    ->toArray();
 ?>
 
 <div class="pb-2 mt-4 mb-2 border-bottom">
@@ -71,7 +76,7 @@ $applications = TableRegistry::getTableLocator()->get('Applications')->find()->w
             );
         }?>
 
-        <?php if ($application['status_id'] === 1 || $application['status_id'] === 4 || $application['status_id'] === 8) {
+        <?php if (in_array($application['status_id'], [1, 4, 8])) {
             echo $this->Html->link(
                 'Delete',
                 [

@@ -1,7 +1,11 @@
 <?php
 use Cake\ORM\TableRegistry;
 
-$fundingCycle = TableRegistry::getTableLocator()->get('FundingCycles')->find()->where(['id' => $this->request->getParam('id')])->first();
+$fundingCycle = TableRegistry::getTableLocator()
+    ->get('FundingCycles')
+    ->find()
+    ->where(['id' => $this->request->getParam('id')])
+    ->first();
 ?>
 
 <div class="pb-2 mt-4 mb-2 border-bottom">

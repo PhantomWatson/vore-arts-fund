@@ -9,7 +9,11 @@ use Cake\ORM\TableRegistry;
 
 $application = TableRegistry::getTableLocator()->get('Applications')->get($this->request->getParam('id'));
 $category = TableRegistry::getTableLocator()->get('Categories')->find()->all()->toArray();
-$image = TableRegistry::getTableLocator()->get('Images')->find()->where(['application_id' => $application['id']])->first();
+$image = TableRegistry::getTableLocator()
+    ->get('Images')
+    ->find()
+    ->where(['application_id' => $application['id']])
+    ->first();
 ?>
 <div class='pb-2 mt-4 mb-2 border-bottom'>
     <h1><?= $application['title'] ?></h1>
