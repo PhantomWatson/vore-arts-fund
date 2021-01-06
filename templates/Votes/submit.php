@@ -49,6 +49,6 @@ $applications = TableRegistry::getTableLocator()
             <?= $this->Form->checkbox($application['id'], ['hiddenField' => false]) ?>
         <?php endforeach; ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
+    <?= $this->Form->submit(__('Submit'), ['class' => 'btn btn-primary']) ?>
     <?= $this->Form->end() ?>
 </div>

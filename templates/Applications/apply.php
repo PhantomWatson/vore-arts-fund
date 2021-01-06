@@ -37,7 +37,7 @@
         <?= $this->Form->file('image') ?>
         <?= $this->Form->control('imageCaption') ?>
     </fieldset>
-    <?= $this->Form->button(__('Save'), ['name' => 'save', 'class' => 'btn btn-primary']) ?>
-    <?= $this->Form->button('Submit', ['type' => 'submit', 'class' => 'btn btn-primary']) ?>
+    <?= $this->Form->submit(__('Save'), ['name' => 'save', 'class' => 'btn btn-primary']) ?>
+    <?= $this->Form->submit('Submit', ['type' => 'submit', 'class' => 'btn btn-primary']) ?>
     <?= $this->Form->end() ?>
 </div>

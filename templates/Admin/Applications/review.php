@@ -39,7 +39,7 @@ foreach ($statuses as $status) {
             ]
         ) ?>
     </fieldset>
-    <?= $this->Form->button(__('Update Status'), ['class' => 'btn btn-secondary']) ?>
+    <?= $this->Form->submit(__('Update Status'), ['class' => 'btn btn-secondary']) ?>
     <?= $this->Form->end() ?>
 </div>
 <div>
@@ -72,7 +72,7 @@ foreach ($statuses as $status) {
     <fieldset>
         <?= $this->Form->textarea('Comment') ?>
     </fieldset>
-    <?= $this->Form->button(__('Comment'), ['class' => 'btn btn-secondary']) ?>
+    <?= $this->Form->submit(__('Comment'), ['class' => 'btn btn-secondary']) ?>
     <?= $this->Form->end() ?>
 </form>
 <?= $this->Html->link(

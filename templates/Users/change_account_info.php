@@ -31,6 +31,6 @@ $isAdmin = $user['is_admin'];
         <?= $this->Form->control('current password') ?>
         <?= $this->Form->control('new password') ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
+    <?= $this->Form->submit(__('Submit'), ['class' => 'btn btn-primary']) ?>
     <?= $this->Form->end() ?>
 </div>

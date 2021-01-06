@@ -21,5 +21,5 @@ $fundingCycle = TableRegistry::getTableLocator()
     <?= $this->Form->control('funding_available') ?>
     <?= $this->Form->hidden('id') ?>
 </fieldset>
-<?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
+<?= $this->Form->submit(__('Submit'), ['class' => 'btn btn-primary']) ?>
 <?= $this->Form->end() ?>
