@@ -40,8 +40,9 @@
     <div class="container clearfix">
         <?= $this->Flash->render() ?>
         <?= $this->fetch('content') ?>
+        <footer>
+            <?= $this->fetch('footer') ?>
+        </footer>
     </div>
-    <footer>
-    </footer>
 </body>
 </html>
