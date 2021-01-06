@@ -31,7 +31,7 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|void|null
      * @throws \Twilio\Exceptions\ConfigurationException
      */
-    public function beforeFilter(EventInterface $event): ?Response
+    public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
         $this->Auth->allow([
