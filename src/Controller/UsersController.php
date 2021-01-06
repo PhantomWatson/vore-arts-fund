@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Model\Entity\User;
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
@@ -41,7 +42,9 @@ class UsersController extends AppController
             'resetPasswordToken',
             'verify',
         ]);
-        $this->Twilio = new Client(env('TWILIO_ACCOUNT_SID'), env('TWILIO_AUTH_TOKEN'));
+        $accountSid = Configure::read('twilio_account_sid');
+        $authToken = Configure::read('twilio_auth_token');
+        $this->Twilio = new Client($accountSid, $authToken);
     }
 
     /**
@@ -128,7 +131,8 @@ class UsersController extends AppController
      */
     public function send(string $phone)
     {
-        $this->Twilio->verify->v2->services(env('TWILIO_SERVICE_SID'))->verifications->create('+1' . $phone, 'sms');
+        $serviceSid = Configure::read('twilio_service_sid');
+        $this->Twilio->verify->v2->services($serviceSid)->verifications->create('+1' . $phone, 'sms');
     }
 
     /**
@@ -141,10 +145,11 @@ class UsersController extends AppController
      */
     public function validate(string $phone, string $code): bool
     {
+        $serviceSid = Configure::read('twilio_service_sid');
         $verification_check = $this->Twilio
             ->verify
             ->v2
-            ->services(env('TWILIO_SERVICE_SID'))
+            ->services($serviceSid)
             ->verificationChecks
             ->create($code, ['to' => '+1' . $phone]);
 
