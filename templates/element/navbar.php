@@ -8,7 +8,7 @@ use Cake\Core\Configure;
 $user = $this->request->getSession()->read('Auth.User');
 $isAdmin = $user['is_admin'] ?? false;
 $loggedIn = (bool)$user;
-$isVerified = (bool)$user['is_verified'];
+$isVerified = $user['is_verified'] ?? false;
 $debug = Configure::read('debug');
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #BA0C2F">
