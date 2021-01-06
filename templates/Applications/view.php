@@ -41,5 +41,5 @@ $image = TableRegistry::getTableLocator()
         'controller' => 'Votes',
         'action' => 'index',
     ],
-    ['class' => 'button']
+    ['class' => 'btn btn-secondary']
 ) ?>

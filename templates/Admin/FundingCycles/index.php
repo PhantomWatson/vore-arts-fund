@@ -56,7 +56,7 @@ $fundingCycles = TableRegistry::getTableLocator()->get('FundingCycles')->find()-
                             'action' => 'edit',
                             'id' => $fundingCycle['id'],
                         ],
-                        ['class' => 'button']
+                        ['class' => 'btn btn-secondary']
                     ) ?>
                 </td>
             </tr>

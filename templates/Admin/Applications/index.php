@@ -45,7 +45,7 @@ $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->to
                         'action' => 'review',
                         'id' => $application['id'],
                     ],
-                    ['class' => 'button']
+                    ['class' => 'btn btn-secondary']
                 ) ?></td>
             </tr>
         <?php endforeach; ?>

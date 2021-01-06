@@ -21,7 +21,7 @@
                     'id' => $application['id'],
                     'slug' => '/view-application//',
                 ],
-                ['class' => 'button']
+                ['class' => 'btn btn-secondary']
             ) ?>
         </div>
     <?php endforeach; ?>
@@ -31,6 +31,6 @@
             'controller' => 'Votes',
             'action' => 'submit',
         ],
-        ['class' => 'button']
+        ['class' => 'btn btn-primary']
     ) ?>
 </div>

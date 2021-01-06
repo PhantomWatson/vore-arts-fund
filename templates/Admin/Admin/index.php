@@ -14,7 +14,7 @@ $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->to
             'controller' => 'Admin',
             'action' => 'Applications',
         ],
-        ['class' => 'button']
+        ['class' => 'btn btn-secondary']
     ) ?>
 </p>
 <p>
@@ -24,6 +24,6 @@ $statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->to
             'controller' => 'Admin',
             'action' => 'fundingCycles',
         ],
-        ['class' => 'button']
+        ['class' => 'btn btn-secondary']
     ) ?>
 </p>

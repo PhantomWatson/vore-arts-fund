@@ -21,13 +21,13 @@
 <?= $this->Form->create() ?>
 
 <h4> Are you sure you want to withdraw? </h4>
-<?= $this->Form->button(__('Yes')) ?>
+<?= $this->Form->button(__('Yes'), ['class' => 'btn btn-primary']) ?>
 <?= $this->Html->link(
     'Back',
     [
         'controller' => 'Users',
         'action' => 'myAccount',
     ],
-    ['class' => 'button']
+    ['class' => 'btn btn-secondary']
 ) ?>
 <?= $this->Form->end() ?>

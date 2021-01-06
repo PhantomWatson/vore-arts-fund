@@ -33,7 +33,7 @@ $applications = TableRegistry::getTableLocator()
         'controller' => 'Users',
         'action' => 'changeAccountInfo',
     ],
-    ['class' => 'button']
+    ['class' => 'btn btn-secondary']
 ) ?>
 
 <h2>Applications</h2>
@@ -51,7 +51,7 @@ $applications = TableRegistry::getTableLocator()
                 'id' => $application['id'],
                 'slug' => '/view-application//',
             ],
-            ['class' => 'button']
+            ['class' => 'btn btn-secondary']
         ) ?>
         <?php if ($application['status_id'] !== 8) {
             echo $this->Html->link(
@@ -61,7 +61,7 @@ $applications = TableRegistry::getTableLocator()
                     'action' => 'withdraw',
                     'id' => $application['id'],
                 ],
-                ['class' => 'button']
+                ['class' => 'btn btn-secondary']
             );
         } ?>
         <?php if ($application['status_id'] === 8) {
@@ -72,7 +72,7 @@ $applications = TableRegistry::getTableLocator()
                     'action' => 'resubmit',
                     'id' => $application['id'],
                 ],
-                ['class' => 'button']
+                ['class' => 'btn btn-secondary']
             );
         } ?>
 
@@ -84,7 +84,7 @@ $applications = TableRegistry::getTableLocator()
                     'action' => 'delete',
                     'id' => $application['id'],
                 ],
-                ['class' => 'button']
+                ['class' => 'btn btn-secondary']
             );
         } ?>
     </div>

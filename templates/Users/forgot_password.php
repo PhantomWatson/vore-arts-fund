@@ -33,7 +33,10 @@
                 'required' => true,
             ]
         ) ?>
-        <?= $this->Form->submit('Send Password Reset Instructions', ['class' => 'submit', 'id' => 'submit']) ?>
+        <?= $this->Form->submit(
+            'Send Password Reset Instructions',
+            ['class' => 'submit btn btn-primary', 'id' => 'submit']
+        ) ?>
         <?= $this->Form->end() ?>
     </fieldset>
     <?= $this->Form->end() ?>

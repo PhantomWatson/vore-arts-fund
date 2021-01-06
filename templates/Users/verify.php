@@ -23,5 +23,5 @@
 <fieldset>
     <?= $this->Form->number('code') ?>
 </fieldset>
-<?= $this->Form->button(__('Verify')) ?>
+<?= $this->Form->button(__('Verify'), ['class' => 'btn btn-primary']) ?>
 <?= $this->Form->end() ?>

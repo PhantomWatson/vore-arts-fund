@@ -28,6 +28,6 @@
         <?= $this->Form->control('name') ?>
         <?= $this->Form->control('phone', ['type' => 'number']) ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
     <?= $this->Form->end() ?>
 </div>
