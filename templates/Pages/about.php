@@ -15,4 +15,68 @@
  */
 ?>
 
-<h1>About</h1>
+<h1>
+    About
+</h1>
+
+<section class="credits">
+    <h2>
+        Board of Directors
+    </h2>
+    <dl>
+        <div>
+            <dt>
+                President
+            </dt>
+            <dd>
+                Graham Watson
+            </dd>
+        </div>
+        <div>
+            <dt>
+                Secretary
+            </dt>
+            <dd>
+                Natalie Phillips
+            </dd>
+        </div>
+        <div>
+            <dt>
+                Treasurer
+            </dt>
+            <dd>
+                Janet Shindler
+            </dd>
+        </div>
+    </dl>
+</section>
+
+<section class="credits">
+    <h2>
+        Website
+    </h2>
+    <dl>
+        <div>
+            <dt>
+                Lead Web Developer
+            </dt>
+            <dd>
+                Graham Watson
+            </dd>
+        </div>
+        <div>
+            <dt>
+                Web Developers
+            </dt>
+            <dd>
+                Dakota Savage
+                <br />
+                Alec Schimmel
+                <br />
+                Madison Turley
+                <br />
+                Sean Wolfe
+            </dd>
+        </div>
+    </dl>
+</section>
