@@ -42,9 +42,6 @@ class UsersController extends AppController
             'resetPasswordToken',
             'verify',
         ]);
-        $accountSid = Configure::read('twilio_account_sid');
-        $authToken = Configure::read('twilio_auth_token');
-        $this->Twilio = new Client($accountSid, $authToken);
     }
 
     /**
@@ -131,8 +128,11 @@ class UsersController extends AppController
      */
     public function send(string $phone)
     {
+        $accountSid = Configure::read('twilio_account_sid');
+        $authToken = Configure::read('twilio_auth_token');
+        $twilio = new Client($accountSid, $authToken);
         $serviceSid = Configure::read('twilio_service_sid');
-        $this->Twilio->verify->v2->services($serviceSid)->verifications->create('+1' . $phone, 'sms');
+        $twilio->verify->v2->services($serviceSid)->verifications->create('+1' . $phone, 'sms');
     }
 
     /**
@@ -145,8 +145,11 @@ class UsersController extends AppController
      */
     public function validate(string $phone, string $code): bool
     {
+        $accountSid = Configure::read('twilio_account_sid');
+        $authToken = Configure::read('twilio_auth_token');
+        $twilio = new Client($accountSid, $authToken);
         $serviceSid = Configure::read('twilio_service_sid');
-        $verification_check = $this->Twilio
+        $verification_check = $twilio
             ->verify
             ->v2
             ->services($serviceSid)
