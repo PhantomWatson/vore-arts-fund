@@ -1,0 +1,51 @@
+version: "3.1"
+
+services:
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - "8125:8025"
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    volumes:
+      - ../tmp/data/mysql_db:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+    ports:
+      - "8106:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+  apache:
+    build: ./apache
+    container_name: apache
+    extra_hosts:
+      - "vore.test:127.0.0.1"
+    depends_on:
+      - php
+      - mysql
+    hostname: vore.test
+    ports:
+      - "80:80"
+      - "4430:443"
+      # - "9000:9000"
+    volumes:
+      - ../:/var/www/html
+      - ./apache/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+      #- ./apache/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
+      #- ./apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    working_dir: /var/www/html
+
+  php:
+    build: ./php-fpm
+    container_name: php
+    ports:
+      - 9000:9000
+    volumes:
+      - ../:/var/www/html
+      - ./apache/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
