@@ -1,9 +1,17 @@
 FROM httpd:2
 
+ARG WEB_USER
+ARG WEB_GROUP
+ARG APACHE_ROOT_DIR
+
 #RUN apt-get install apache2
 #RUN a2enmod ssl && a2enmod rewrite
-COPY httpd.conf /usr/local/apache2/conf/httpd.conf
-COPY httpd-vhosts.conf /usr/local/apache2/conf/extra/httpd-vhosts.conf
+COPY httpd-vhosts.conf ${APACHE_ROOT_DIR}/conf/extra/httpd-vhosts.conf
+COPY httpd.conf ${APACHE_ROOT_DIR}/conf/httpd.conf
+
+RUN chgrp -R ${WEB_GROUP} ${APACHE_ROOT_DIR}/conf/httpd.conf \
+ && chgrp -R ${WEB_GROUP} ${APACHE_ROOT_DIR}/conf/extra/httpd-vhosts.conf
+
 RUN mkdir -p /etc/apache2/ssl
 COPY ./ssl/cert.pem /etc/apache2/ssl/cert.pem
 COPY ./ssl/cert-key.pem /etc/apache2/ssl/cert-key.pem
@@ -15,7 +23,11 @@ COPY ./ssl/cert-key.pem /etc/apache2/ssl/cert-key.pem
 
 #COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-EXPOSE 80
+#EXPOSE 80
+
+RUN usermod -u 1000 ${WEB_USER} \
+ && groupmod -g 1000 ${WEB_GROUP} \
+ && chgrp -R ${WEB_GROUP} ${APACHE_ROOT_DIR}
 
 # Start Apache
-CMD apachectl -D FOREGROUND
+# CMD apachectl -D FOREGROUND

@@ -1,5 +1,11 @@
 FROM php:7.4-fpm
 
+ARG WEB_USER
+ARG WEB_GROUP
+ARG PHP_ROOT_DIR
+
+COPY www.conf ${PHP_ROOT_DIR}/php-fpm.d/www.conf
+
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
 #EXPOSE 80
@@ -35,3 +41,7 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 COPY ./90-xdebug.ini /etc/php.d/90-xdebug.ini
 
 WORKDIR "/var/www/html/webroot"
+
+RUN usermod -u 1000 ${WEB_USER} \
+ && groupmod -g 1000 ${WEB_GROUP} \
+ && chgrp -R staff ${PHP_ROOT_DIR}/php-fpm.d/www.conf
