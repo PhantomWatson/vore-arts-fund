@@ -45,3 +45,6 @@ nbproject/*
 .sass-cache/
 config/.env.default
 bin/cake
+
+# Docker
+/database/*
