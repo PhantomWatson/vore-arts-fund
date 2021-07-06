@@ -24,100 +24,57 @@
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 
-/*
- * The default class to use for all routes
- *
- * The following route classes are supplied with CakePHP and are appropriate
- * to set as the default:
- *
- * - Route
- * - InflectedRoute
- * - DashedRoute
- *
- * If no call is made to `Router::defaultRouteClass()`, the class used is
- * `Route` (`Cake\Routing\Route\Route`)
- *
- * Note that `Route` does not do any inflections on URLs which will result in
- * inconsistently cased URLs when used with `:plugin`, `:controller` and
- * `:action` markers.
- */
 /** @var \Cake\Routing\RouteBuilder $routes */
 $routes->setRouteClass(DashedRoute::class);
 
 $routes->scope('/', function (RouteBuilder $builder) {
-    /*
-     * Here, we are connecting '/' (base path) to a controller called 'Pages',
-     * its action called 'display', and we pass a param to select the view file
-     * to use (in this case, templates/Pages/home.php)...
-     */
+    // Pages
     $builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
-
-    /*
-     * ...and connect the rest of 'Pages' controller's URLs.
-     */
-    $builder->connect('/pages/*', 'Pages::display');
-
-    $builder->connect('/apply', 'Applications::apply');
-    $builder->connect('/vote', 'Votes::index');
     $builder->connect('/about', 'Pages::about');
     $builder->connect('/contact', 'Pages::contact');
-    $builder->connect('/terms', 'Pages::terms');
+    $builder->connect('/pages/*', 'Pages::display');
     $builder->connect('/privacy', 'Pages::privacy');
-    $builder->connect('/login', 'Users::login');
-    $builder->connect('/register', 'Users::register');
-    $builder->connect('/logout', 'Users::logout');
-    $builder->connect('/forgot-password', 'Users::forgotPassword');
-    $builder->connect('/my-account', 'Users::myAccount');
-    $builder->connect('/verify', 'Users::verify');
-    $builder->connect('/verify/resend', 'Users::verifyResend');
-    $builder->connect('/change-account-info', 'Users::changeAccountInfo');
-    $builder->connect('/view-application/:id', 'Applications::view');
-    $builder->connect('/vote', 'Votes::index');
-    $builder->connect('/submit', 'Votes::submit');
-    $builder->connect('/withdraw/:id', 'Applications::withdraw');
+    $builder->connect('/terms', 'Pages::terms');
+
+    // Applications
+    $builder->connect('/apply', 'Applications::apply');
     $builder->connect('/delete/:id', 'Applications::delete');
     $builder->connect('/resubmit/:id', 'Applications::resubmit');
+    $builder->connect('/view-application/:id', 'Applications::view');
+    $builder->connect('/withdraw/:id', 'Applications::withdraw');
 
-    /*
-     * Connect catchall routes for all controllers.
-     *
-     * The `fallbacks` method is a shortcut for
-     *
-     * ```
-     * $builder->connect('/:controller', ['action' => 'index']);
-     * $builder->connect('/:controller/:action/*', []);
-     * ```
-     *
-     * You can remove these routes once you've connected the
-     * routes you want in your application.
-     */
-    $builder->fallbacks();
+    // Votes
+    $builder->connect('/submit', 'Votes::submit');
+    $builder->connect('/vote', 'Votes::index');
+    $builder->connect('/vote', 'Votes::index');
+
+    // Users
+    $builder->connect('/change-account-info', 'Users::changeAccountInfo');
+    $builder->connect('/forgot-password', 'Users::forgotPassword');
+    $builder->connect('/login', 'Users::login');
+    $builder->connect('/logout', 'Users::logout');
+    $builder->connect('/my-account', 'Users::myAccount');
+    $builder->connect('/register', 'Users::register');
+    $builder->connect('/verify', 'Users::verify');
+    $builder->connect('/verify/resend', 'Users::verifyResend');
+
+    $builder->fallbacks(DashedRoute::class);
 });
 
 // Admin Routes
 $routes->prefix('admin', function (RouteBuilder $builder) {
+    // Admin
     $builder->connect('/', 'Admin::index');
+
+    // Funding cycles
     $builder->connect('/funding-cycles', 'FundingCycles::index');
     $builder->connect('/funding-cycles/add', 'FundingCycles::add');
     $builder->connect('/funding-cycles/edit/:id', 'FundingCycles::edit');
+
+    // Applications
     $builder->connect('/applications', 'Applications::index');
     $builder->connect('/applications/review/:id', 'Applications::review');
     $builder->connect('/applications/set-status/:id', 'Applications::setStatus');
+
     $builder->fallbacks(DashedRoute::class);
 });
-
-/*
- * If you need a different set of middleware or none at all,
- * open new scope and define routes there.
- *
- * ```
- * $routes->scope('/api', function (RouteBuilder $builder) {
- *     // No $builder->applyMiddleware() here.
- *
- *     // Parse specified extensions from URLs
- *     // $builder->setExtensions(['json', 'xml']);
- *
- *     // Connect API actions here.
- * });
- * ```
- */
