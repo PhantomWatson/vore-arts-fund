@@ -38,8 +38,6 @@ RUN install-php-extensions @composer
 
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
-COPY ./90-xdebug.ini /etc/php.d/90-xdebug.ini
-
 WORKDIR "/var/www/html/webroot"
 
 RUN usermod -u 1000 ${WEB_USER} \
