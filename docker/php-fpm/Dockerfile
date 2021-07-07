@@ -28,6 +28,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     intl \
     mbstring \
     mysqlnd \
+    pdo_mysql \
     pdo \
     simplexml \
     zip
