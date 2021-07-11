@@ -72,6 +72,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}_php
     expose:
       - 9000
+      - 9003 # XDebug
     working_dir: ${PHP_APP_DIR}
     volumes:
       - ..:${PHP_APP_DIR}
