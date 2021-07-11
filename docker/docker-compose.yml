@@ -21,12 +21,12 @@ services:
     networks:
       public_net:
         ipv4_address: ${MYSQL_IP}
+    ports:
+      - 3306
     environment:
       - MYSQL_CONTAINER_USER=${MYSQL_CONTAINER_USER}
       - MYSQL_CONTAINER_GROUP=${MYSQL_CONTAINER_GROUP}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-
-      # Are these still necessary?
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
@@ -94,6 +94,26 @@ services:
       - MYSQL_IP=${MYSQL_IP}
       - MYSQL_ROOT_USER=${MYSQL_ROOT_USER}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_USER=${MYSQL_USER}
+      - PMA_PASSWORD=${MYSQL_PASSWORD}
+      - PMA_HOST=vore_mysql
+      - PMA_PORT=3306
+      - MYSQL_CONTAINER_USER=${MYSQL_CONTAINER_USER}
+      - MYSQL_CONTAINER_GROUP=${MYSQL_CONTAINER_GROUP}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    networks:
+      - public_net
 
 networks:
   public_net:
