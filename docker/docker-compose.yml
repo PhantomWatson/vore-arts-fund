@@ -6,6 +6,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}_mailhog
     ports:
       - 127.0.0.1:8125:8025
+    restart: ${RESTART}
 
   mysql:
     build:
@@ -30,6 +31,7 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    restart: ${RESTART}
 
   apache:
     build:
@@ -61,6 +63,7 @@ services:
       #- ./apache/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
       #- ./apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
     working_dir: /var/www/html
+    restart: ${RESTART}
 
   php:
     build:
@@ -94,10 +97,11 @@ services:
       - MYSQL_IP=${MYSQL_IP}
       - MYSQL_ROOT_USER=${MYSQL_ROOT_USER}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    restart: ${RESTART}
 
   phpmyadmin:
     image: phpmyadmin
-    restart: always
+    restart: ${RESTART}
     ports:
       - 8080:80
     environment:
