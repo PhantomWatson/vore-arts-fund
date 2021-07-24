@@ -1,3 +1,5 @@
+@import "../../vendor/twbs/bootstrap/scss/bootstrap.scss";
+
 .disabled a,
 a.disabled {
     pointer-events: none;
@@ -572,4 +574,8 @@ table td {
         text-align: right;
         top: 4px;
     }
+}
+
+.footnote {
+    @extend .text-muted;
 }
