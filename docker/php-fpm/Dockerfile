@@ -39,6 +39,12 @@ RUN install-php-extensions @composer
 
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
+
+RUN sudo apt-get install nodejs
+
+RUN npm install -g grunt
+
 WORKDIR "/var/www/html/webroot"
 
 RUN usermod -u 1000 ${WEB_USER} \
