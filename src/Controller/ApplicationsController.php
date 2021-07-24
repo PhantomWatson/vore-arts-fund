@@ -10,6 +10,7 @@ use Cake\ORM\TableRegistry;
  * ApplicationsController
  *
  * @property \App\Model\Table\ApplicationsTable $Applications
+ * @property \App\Model\Table\CategoriesTable $Categories
  */
 class ApplicationsController extends AppController
 {
@@ -23,56 +24,61 @@ class ApplicationsController extends AppController
      */
     public function apply(): ?Response
     {
-        if ($this->request->is('post')) {
-            $data = $this->request->getData();
-            $applicationsTable = TableRegistry::getTableLocator()->get('applications');
-            $imagesTable = TableRegistry::getTableLocator()->get('images');
-            $fundingCyclesTable = TableRegistry::getTableLocator()->get('funding_cycles');
-            $now = date('Y-m-d H:i:s');
-            $fundingCycle = $fundingCyclesTable
-                ->find()
-                ->select(['FundingCycles.id'])
-                ->where([
-                    'FundingCycles.application_begin <=' => $now,
-                    'FundingCycles.application_end >=' => $now,
-                ])
-                ->first();
-            if (!is_null($fundingCycle)) {
-                /** @var \App\Model\Entity\Application $application */
-                $application = $applicationsTable->newEntity($data);
-                $application->category_id = $data['category'] + 1;
-                $application->user_id = $this->Auth->user('id');
-                $application->funding_cycle_id = $fundingCycle->id;
-                $application->status_id = isset($data['save']) ? 1 : 0;
-                $result = $applicationsTable->save($application);
-                if ($result) {
-                    $this->Flash->success(
-                        'The application has been ' . (isset($data['save']) ? 'saved.' : 'submitted.')
-                    );
-                } else {
-                    $this->Flash->error(
-                        'The application could not be ' . (isset($data['save']) ? 'saved.' : 'submitted.')
-                    );
-                }
-                $rawImage = $data['image'];
-                if ($rawImage['size'] !== 0) {
-                    /** @var \App\Model\Entity\Image $image */
-                    $image = $imagesTable->newEmptyEntity();
-                    $image->application_id = $result->id;
-                    $image->weight = 0;
-                    $path = DS . 'img' . DS . $rawImage['name'];
-                    $path = str_replace(' ', '', $path);
-                    $image->path = $path;
-                    $image->caption = $data['imageCaption'];
-                    if (move_uploaded_file($rawImage['tmp_name'], WWW_ROOT . $path) && $imagesTable->save($image)) {
-                        $this->Flash->success(__('The image has been saved.'));
-                    } else {
-                        $this->Flash->error(__('The image could not be saved.'));
-                    }
-                }
+        $this->loadModel('Categories');
+        $this->set([
+            'categories' => $this->Categories->getOrdered()
+        ]);
+        if (!$this->request->is('post')) {
+            return null;
+        }
+
+        $data = $this->request->getData();
+        $applicationsTable = TableRegistry::getTableLocator()->get('applications');
+        $imagesTable = TableRegistry::getTableLocator()->get('images');
+        $fundingCyclesTable = TableRegistry::getTableLocator()->get('funding_cycles');
+        $now = date('Y-m-d H:i:s');
+        $fundingCycle = $fundingCyclesTable
+            ->find()
+            ->select(['FundingCycles.id'])
+            ->where([
+                'FundingCycles.application_begin <=' => $now,
+                'FundingCycles.application_end >=' => $now,
+            ])
+            ->first();
+        if (!is_null($fundingCycle)) {
+            /** @var \App\Model\Entity\Application $application */
+            $application = $applicationsTable->newEntity($data);
+            $application->user_id = $this->Auth->user('id');
+            $application->funding_cycle_id = $fundingCycle->id;
+            $application->status_id = isset($data['save']) ? 1 : 0;
+            $result = $applicationsTable->save($application);
+            if ($result) {
+                $this->Flash->success(
+                    'The application has been ' . (isset($data['save']) ? 'saved.' : 'submitted.')
+                );
             } else {
-                $this->Flash->error(__('No valid funding cycle.'));
+                $this->Flash->error(
+                    'The application could not be ' . (isset($data['save']) ? 'saved.' : 'submitted.')
+                );
             }
+            $rawImage = $data['image'];
+            if ($rawImage['size'] !== 0) {
+                /** @var \App\Model\Entity\Image $image */
+                $image = $imagesTable->newEmptyEntity();
+                $image->application_id = $result->id;
+                $image->weight = 0;
+                $path = DS . 'img' . DS . $rawImage['name'];
+                $path = str_replace(' ', '', $path);
+                $image->path = $path;
+                $image->caption = $data['imageCaption'];
+                if (move_uploaded_file($rawImage['tmp_name'], WWW_ROOT . $path) && $imagesTable->save($image)) {
+                    $this->Flash->success(__('The image has been saved.'));
+                } else {
+                    $this->Flash->error(__('The image could not be saved.'));
+                }
+            }
+        } else {
+            $this->Flash->error(__('No valid funding cycle.'));
         }
 
         return null;

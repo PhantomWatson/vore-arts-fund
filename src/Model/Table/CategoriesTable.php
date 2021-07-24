@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -60,5 +61,29 @@ class CategoriesTable extends Table
             ->notEmptyString('name');
 
         return $validator;
+    }
+
+    /**
+     * Returns a list-style array of categories alphabetized, but with "Other" at the end
+     *
+     * @return string[]
+     */
+    public function getOrdered()
+    {
+        $categories = $this
+            ->find('list')
+            ->where(function (QueryExpression $exp) {
+                return $exp->notLike('name', '%other%');
+            })
+            ->orderAsc('name')
+            ->toArray();
+
+        return $categories + $this
+            ->find('list')
+            ->where(function (QueryExpression $exp) {
+                return $exp->like('name', '%other%');
+            })
+            ->orderAsc('name')
+            ->toArray();
     }
 }
