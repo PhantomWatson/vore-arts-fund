@@ -7,8 +7,6 @@
 /config/app_local.php
 /logs/*
 /tmp/*
-/vendor/*
-
 
 # OS generated files #
 ######################
@@ -48,3 +46,7 @@ bin/cake
 
 # Docker
 /database/*
+
+# Dependencies
+/vendor/*
+/node_modules/*
