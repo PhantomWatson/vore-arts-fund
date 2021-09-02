@@ -579,3 +579,40 @@ table td {
 .footnote {
     @extend .text-muted;
 }
+
+.footnote ~ .form-group {
+    margin-bottom: 0;
+}
+
+.form-group ~ .footnote {
+    margin-bottom: 1rem;
+}
+
+.apply {
+    .form-group {
+        margin-bottom: 2em;
+    }
+
+    .accept-partial {
+        label {
+            display: block;
+
+            &[for="accept-partial-payout-0"],
+            &[for="accept-partial-payout-1"] {
+                &:not(:first-child) {
+                    font-weight: normal;
+
+                    &:after {
+                        content: "";
+                    }
+                }
+            }
+        }
+    }
+}
+
+form {
+    .footnote {
+        margin-bottom: 0;
+    }
+}

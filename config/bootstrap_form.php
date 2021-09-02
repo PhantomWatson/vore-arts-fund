@@ -2,13 +2,22 @@
 return [
     'error' => '<div class="alert alert-danger">{{content}}</div>',
     'inputContainer' => '<div class="form-group {{type}}{{required}}">{{content}}</div>',
-    'inputContainerError' =>
-        '<div class="form-group has-error has-feedback {{type}}{{required}}">{{content}}{{error}}</div>',
+    'inputWithFootnoteContainer' => '<div class="form-group {{type}}{{required}}">{{content}}<p class="footnote">{{footnote}}<p></div>',
+    'inputContainerError' => '<div class="form-group has-error has-feedback {{type}}{{required}}">{{content}}{{error}}</div>',
+    'inputWithFootnoteContainerError' => '<div class="form-group has-error has-feedback {{type}}{{required}}">{{content}}{{error}}<p class="footnote">{{footnote}}<p></div>',
     'select' => '<select class="form-control" name="{{name}}"{{attrs}}>{{content}}</select>',
     'selectMultiple' =>
         '<select class="form-control" name="{{name}}[]" multiple="multiple"{{attrs}}>{{content}}</select>',
     'input' => '<input class="form-control" type="{{type}}" name="{{name}}"{{attrs}}>',
     'textarea' => '<textarea class="form-control" name="{{name}}"{{attrs}}>{{value}}</textarea>',
+    'numberWithPrefixContainer' => '<div class="form-group {{type}}{{required}}"><div class="input-group mb-2 mr-sm-2"><div class="input-group-prepend"><div class="input-group-text">{{prefix}}</div></div>{{content}}</div></div>',
+    'numberWithPrefix' => '<input class="form-control" type="number" name="{{name}}"{{attrs}} />',
+    'file' => '
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="customFile" name="{{name}}" {{attrs}} />
+            <label class="custom-file-label" for="customFile">Choose file</label>
+        </div>
+    ',
 
     /* defaults
     'button' => '<button{{attrs}}>{{text}}</button>',
