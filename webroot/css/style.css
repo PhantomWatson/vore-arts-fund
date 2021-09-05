@@ -10767,12 +10767,12 @@ a:hover {
 
 header {
   background-color: #D33C44;
-  box-shadow: 0px 1px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px rgba(0, 0, 0, 0.24);
   color: #ffffff;
   font-size: 30px;
   height: 84px;
   line-height: 64px;
-  padding: 16px 0px;
+  padding: 16px 0;
 }
 
 header .header-title {
@@ -10790,7 +10790,6 @@ legend {
 .actions.columns {
   border-left: 5px solid #15848F;
   margin-top: 1rem;
-  padding-left: 15px;
   padding: 32px 20px;
 }
 .actions.columns h3, .actions.columns .h3 {
@@ -10979,10 +10978,10 @@ p.error {
 }
 
 pre {
-  background: none repeat scroll 0% 0% #FFF;
+  background: none repeat scroll 0 0 #FFF;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.24);
   color: rgba(0, 0, 0, 0.74);
-  margin: 15px 0px;
+  margin: 15px 0;
   padding: 5px;
 }
 
@@ -11033,7 +11032,7 @@ pre {
 
 .checks .success:before,
 .checks .problem:before {
-  line-height: 0px;
+  line-height: 0;
   font-size: 28px;
   height: 12px;
   width: 12px;
@@ -11066,7 +11065,6 @@ pre {
 }
 
 .top-bar-section li:not(.has-form) a:not(.button):hover {
-  background-color: #308e97;
   background: #308e97;
 }
 
@@ -11083,16 +11081,16 @@ pre {
 }
 
 .index table {
-  margin-top: 0rem;
   border: 0;
-  width: 100%;
+  margin-top: 0;
   table-layout: fixed;
+  width: 100%;
 }
 
 table {
   background: #fff;
-  margin-bottom: 1.25rem;
   border: none;
+  margin-bottom: 1.25rem;
   table-layout: fixed;
   width: 100%;
 }
@@ -11123,20 +11121,20 @@ table tr:nth-of-type(even) {
 
 fieldset {
   border: none;
-  padding: 1.25rem;
   margin: 1.125rem 0;
+  padding: 1.25rem;
 }
 
 fieldset legend {
   border-bottom: 2px solid #1798A5;
-  width: 100%;
   line-height: 2rem;
+  width: 100%;
 }
 
 .form button[type=submit] {
+  box-shadow: none;
   float: right;
   text-transform: uppercase;
-  box-shadow: none;
 }
 
 .form button:hover, .form button:focus {
@@ -11173,7 +11171,7 @@ div.message:before {
   font-size: 20px;
   height: 12px;
   left: -11px;
-  line-height: 0px;
+  line-height: 0;
   padding: 12px 14px 12px 10px;
   position: relative;
   text-align: center;
@@ -11250,7 +11248,7 @@ div.message.hidden {
   padding-bottom: 0.5rem;
   margin-top: 20px;
   margin-bottom: 10px;
-  border-bottom: 0px;
+  border-bottom: 0;
 }
 
 table td {
@@ -11306,6 +11304,9 @@ table td {
 }
 .apply .accept-partial label[for=accept-partial-payout-0]:not(:first-child):after, .apply .accept-partial label[for=accept-partial-payout-1]:not(:first-child):after {
   content: "";
+}
+.apply label {
+  font-weight: bold;
 }
 
 form .footnote {
