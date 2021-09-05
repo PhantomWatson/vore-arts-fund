@@ -405,15 +405,18 @@ table tr:nth-of-type(even) {
 }
 
 fieldset {
-    border: none;
+    border: 1px solid lighten($brand-red, 25%);
+    border-radius: 1rem;
     margin: 1.125rem 0;
     padding: 1.25rem;
-}
 
-fieldset legend {
-    border-bottom: 2px solid $link-light-blue;
-    line-height: 2rem;
-    width: 100%;
+    legend {
+        color: $brand-red;
+        border-bottom: 2px solid $brand-red;
+        line-height: 2rem;
+        margin-bottom: 1rem;
+        width: 100%;
+    }
 }
 
 .form button[type="submit"] {

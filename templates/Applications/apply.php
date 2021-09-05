@@ -1,5 +1,6 @@
 <?php
 /**
+ * @var \App\Model\Entity\Application $application
  * @var \App\View\AppView $this
  * @var string[] $categories
  */
@@ -9,8 +10,11 @@
 </div>
 <div class="apply">
     <?= $this->Flash->render() ?>
-    <?= $this->Form->create(null, ['enctype' => 'multipart/form-data']) ?>
+    <?= $this->Form->create($application, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>
+        <legend>
+            Project
+        </legend>
         <?= $this->Form->control('title', [
             'required' => true,
             'label' => 'The title of your project',
@@ -25,35 +29,75 @@
             ['empty' => true, 'required' => true]
         ) ?>
 
-        <?= $this->Form->control('description', ['type' => 'textarea', 'required' => true]) ?>
-
-        <?php $this->Form->setTemplates([
-            'formGroup' => '{{input}}',
-            'numberWithPrefixContainer' => '<div class="form-group {{type}}{{required}}"><label for="amount-requested">Amount Requested</label><div class="input-group mb-2 mr-sm-2"><div class="input-group-prepend"><div class="input-group-text">{{prefix}}</div></div>{{content}}</div></div>',
-            'numberWithPrefixInput' => 'dsfsdafdsf<input class="form-control" type="number" name="{{name}}"{{attrs}} />',
-        ]); ?>
-        <?= $this->Form->control(
-            'amount_requested',
+        <label for="description">
+            Description
+        </label>
+        <?= $this->Form->textarea(
+            'description',
             [
+                'id' => 'description',
                 'required' => true,
-                'type' => 'numberWithPrefix',
-                'templateVars' => ['prefix' => '$'],
+                'type' => 'textarea',
             ]
         ) ?>
-        <?php $this->Form->setTemplates([
-            'formGroup' => '{{label}}{{input}}',
-        ]); ?>
+        <p class="footnote">
+            Tell us what you're trying to accomplish, what expenses you need help covering, and what your plan is
+            for generating money with your project.
+        </p>
+    </fieldset>
 
-        <div class="form-group required accept-partial">
-            <?= $this->Form->label('accept-partial-payout-0', 'Accept Partial Payout') ?>
-            <?= $this->Form->radio('accept_partial_payout', ['Yes', 'No'], ['required' => true]) ?>
+    <fieldset>
+        <legend>
+            Payout
+        </legend>
+        <div class="form-group required">
+            <label for="amount-requested">
+                Amount Requested
+            </label>
+            <?php $this->Form->setTemplates([
+                'formGroup' => '{{input}}',
+            ]); ?>
+            <?= $this->Form->control(
+                'amount_requested',
+                [
+                    'required' => true,
+                    'label' => 'foo',
+                    'type' => 'number',
+                    'templateVars' => ['prefix' => '$'],
+                ]
+            ) ?>
+            <?php $this->Form->setTemplates([
+                'formGroup' => '{{label}}{{input}}',
+            ]); ?>
         </div>
+        <div class="form-group required accept-partial">
+            <?= $this->Form->label('accept-partial-payout-0', 'Would you accept a partial payout?') ?>
+            <?= $this->Form->radio('accept_partial_payout', ['Yes', 'No'], ['required' => true]) ?>
+            <p class="footnote">
+                We may not have the budget to pay out this full amount. Would you still like to be considered for a
+                smaller amount?
+            </p>
+        </div>
+    </fieldset>
 
-        <?= $this->Form->file('image') ?>
-
+    <fieldset>
+        <legend>
+            Image
+        </legend>
+        <p>
+            Have an image to help convey what your project is? Include it here.
+        </p>
+        <?= $this->Form->label('customFile', 'Image') ?>
+        <?= $this->Form->file('image', ['label' => false]) ?>
         <?= $this->Form->control('imageCaption') ?>
     </fieldset>
-    <?= $this->Form->submit(__('Save'), ['name' => 'save', 'class' => 'btn btn-primary']) ?>
-    <?= $this->Form->submit('Submit', ['type' => 'submit', 'class' => 'btn btn-primary']) ?>
+    <?= $this->Form->submit(
+        'Save for later',
+        ['name' => 'save', 'class' => 'btn btn-secondary']
+    ) ?>
+    <?= $this->Form->submit(
+        'Submit',
+        ['type' => 'submit', 'class' => 'btn btn-primary']
+    ) ?>
     <?= $this->Form->end() ?>
 </div>

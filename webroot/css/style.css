@@ -11120,14 +11120,16 @@ table tr:nth-of-type(even) {
 }
 
 fieldset {
-  border: none;
+  border: 1px solid #eaa4a8;
+  border-radius: 1rem;
   margin: 1.125rem 0;
   padding: 1.25rem;
 }
-
 fieldset legend {
-  border-bottom: 2px solid #1798A5;
+  color: #D33C44;
+  border-bottom: 2px solid #D33C44;
   line-height: 2rem;
+  margin-bottom: 1rem;
   width: 100%;
 }
 

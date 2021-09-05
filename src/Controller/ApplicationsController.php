@@ -25,8 +25,10 @@ class ApplicationsController extends AppController
     public function apply(): ?Response
     {
         $this->loadModel('Categories');
+        $application = $this->Applications->newEmptyEntity();
         $this->set([
-            'categories' => $this->Categories->getOrdered()
+            'application' => $application,
+            'categories' => $this->Categories->getOrdered(),
         ]);
         if (!$this->request->is('post')) {
             return null;
