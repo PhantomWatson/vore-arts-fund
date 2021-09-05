@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -82,5 +83,22 @@ class FundingCyclesTable extends Table
             ->notEmptyString('funding_available');
 
         return $validator;
+    }
+
+    /**
+     * Modifies a query to return the current funding cycle
+     *
+     * @param \Cake\ORM\Query $query
+     * @return \Cake\ORM\Query
+     */
+    public function findCurrent(Query $query)
+    {
+        $now = date('Y-m-d H:i:s');
+
+        return $query
+            ->where([
+                'FundingCycles.application_begin <=' => $now,
+                'FundingCycles.application_end >=' => $now,
+            ]);
     }
 }
