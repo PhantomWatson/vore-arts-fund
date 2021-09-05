@@ -35,24 +35,28 @@ class ApplicationsController extends AppController
     public function apply(): ?Response
     {
         // Set data needed by form
+        $fundingCycle = $this->FundingCycles->find('current')->first();
+        if (!$fundingCycle) {
+            $this->viewBuilder()->setTemplate('no_funding_cycle');
+        }
         $application = $this->Applications->newEmptyEntity();
         $this->set([
             'application' => $application,
             'categories' => $this->Categories->getOrdered(),
+            'fundingCycle' => $fundingCycle,
         ]);
 
         if (!$this->request->is('post')) {
             return null;
         }
 
-        // Process form
-        $data = $this->request->getData();
-        $fundingCycle = $this->FundingCycles->find('current')->first();
         if (is_null($fundingCycle)) {
             $this->Flash->error(__('No valid funding cycle.'));
             return null;
         }
 
+        // Process form
+        $data = $this->request->getData();
         $application = $this->Applications->newEntity($data);
         $application->user_id = $this->Auth->user('id');
         $application->funding_cycle_id = $fundingCycle->id;

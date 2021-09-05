@@ -1,13 +1,29 @@
 <?php
 /**
  * @var \App\Model\Entity\Application $application
+ * @var \App\Model\Entity\FundingCycle $fundingCycle
  * @var \App\View\AppView $this
  * @var string[] $categories
  */
 ?>
 <div class="pb-2 mt-4 mb-2 border-bottom">
-    <h1>Apply</h1>
+    <h1>
+        Apply for Funding
+    </h1>
 </div>
+<p class="alert alert-info">
+    The deadline to submit an application in the current funding cycle is
+    <strong><?= $fundingCycle->application_end->format('F j, Y') ?></strong>.
+    For more information about future opportunities for funding, refer to the
+    <?= $this->Html->link(
+        'Funding Cycles',
+        [
+            'controller' => 'FundingCycles',
+            'action' => 'index',
+        ]
+    ) ?> page.
+</p>
+
 <div class="apply">
     <?= $this->Flash->render() ?>
     <?= $this->Form->create($application, ['enctype' => 'multipart/form-data']) ?>
