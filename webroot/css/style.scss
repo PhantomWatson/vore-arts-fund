@@ -1,8 +1,11 @@
-@import "../../vendor/twbs/bootstrap/scss/bootstrap.scss";
-
 $brand-red: #D33C44;
 $link-light-blue: #1798A5;
 $link-hover-blue: #15848F;
+
+/* Bootstrap overrides */
+$primary: $brand-red;
+
+@import "../../vendor/twbs/bootstrap/scss/bootstrap.scss";
 
 .disabled a,
 a.disabled {
