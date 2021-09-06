@@ -35,10 +35,6 @@ a:hover, a:active {
     transition: all 0.2s;
 }
 
-ul, ol, dl, p {
-    font-size: 0.85rem;
-}
-
 p {
     line-height: 2;
 }

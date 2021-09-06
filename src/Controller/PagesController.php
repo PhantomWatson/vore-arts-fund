@@ -29,8 +29,9 @@ use Cake\View\Exception\MissingTemplateException;
  * This controller will render views from Template/Pages/
  *
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
+ *
+ * @property \App\Model\Table\FundingCyclesTable $FundingCycles
  */
-
 class PagesController extends AppController
 {
     /**
@@ -119,5 +120,23 @@ class PagesController extends AppController
      */
     public function privacy()
     {
+    }
+
+    /**
+     * @return void
+     */
+    public function home()
+    {
+        $this->loadModel('FundingCycles');
+        /** @var \App\Model\Entity\FundingCycle $fundingCycle */
+        $fundingCycle = $this->FundingCycles
+            ->find('currentAndFuture')
+            ->orderAsc('application_end')
+            ->first();
+        $fundingCycleIsCurrent = $fundingCycle && $fundingCycle->application_begin->isPast();
+        $this->set([
+            'fundingCycle' => $fundingCycle,
+            'fundingCycleIsCurrent' => $fundingCycleIsCurrent,
+        ]);
     }
 }

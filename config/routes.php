@@ -29,7 +29,7 @@ $routes->setRouteClass(DashedRoute::class);
 
 $routes->scope('/', function (RouteBuilder $builder) {
     // Pages
-    $builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
+    $builder->connect('/', 'Pages::home');
     $builder->connect('/about', 'Pages::about');
     $builder->connect('/contact', 'Pages::contact');
     $builder->connect('/pages/*', 'Pages::display');
