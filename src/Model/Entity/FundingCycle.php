@@ -16,6 +16,7 @@ use Cake\ORM\Entity;
  * @property int $funding_available
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
+ * @property string $name
  *
  * @property \App\Model\Entity\Application[] $applications
  * @property \App\Model\Entity\Vote[] $votes
@@ -42,4 +43,44 @@ class FundingCycle extends Entity
         'applications' => true,
         'votes' => true,
     ];
+
+    /**
+     * Virtual field for the name of the funding cycle, based on year and season when disbursement takes place
+     *
+     * Assumes that there will never be more than one in the same season
+     *
+     * @return string
+     */
+    public function _getName(): string
+    {
+        $disbursementDate = $this->vote_end->addDay(1);
+        $year = $disbursementDate->format('Y');
+        $disbursementMonth = $disbursementDate->format('n');
+        return $this->getSeasonName($disbursementMonth) . ' ' . $year;
+    }
+
+    /**
+     * Returns the name of the provided month's season
+     *
+     * 12-2: Winter
+     * 3-5: Spring
+     * 6-8: Summer
+     * 9-11: Fall
+     *
+     * @param int $monthNumber
+     * @return string
+     */
+    public function getSeasonName($monthNumber): string
+    {
+        if ($monthNumber == 12 || $monthNumber < 3) {
+            return 'Winter';
+        }
+        if ($monthNumber < 6) {
+            return 'Spring';
+        }
+        if ($monthNumber < 9) {
+            return 'Summer';
+        }
+        return 'Fall';
+    }
 }

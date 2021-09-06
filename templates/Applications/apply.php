@@ -6,11 +6,8 @@
  * @var string[] $categories
  */
 ?>
-<div class="pb-2 mt-4 mb-2 border-bottom">
-    <h1>
-        Apply for Funding
-    </h1>
-</div>
+<?= $this->element('page_title', ['title' => 'Apply for Funding']) ?>
+
 <p class="alert alert-info">
     The deadline to submit an application in the current funding cycle is
     <strong><?= $fundingCycle->application_end->format('F j, Y') ?></strong>.

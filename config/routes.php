@@ -58,6 +58,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/verify', 'Users::verify');
     $builder->connect('/verify/resend', 'Users::verifyResend');
 
+    // Funding Cycles
+    $builder->connect('/funding-cycles', 'FundingCycles::index');
+
     $builder->fallbacks(DashedRoute::class);
 });
 

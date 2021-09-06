@@ -96,9 +96,21 @@ class FundingCyclesTable extends Table
         $now = date('Y-m-d H:i:s');
 
         return $query
-            ->where([
-                'FundingCycles.application_begin <=' => $now,
-                'FundingCycles.application_end >=' => $now,
-            ]);
+            ->find('currentAndFuture')
+            ->where(['FundingCycles.application_end >=' => $now]);
+    }
+
+    /**
+     * Modifies a query to return the current and future funding cycles
+     *
+     * @param \Cake\ORM\Query $query
+     * @return \Cake\ORM\Query
+     */
+    public function findCurrentAndFuture(Query $query)
+    {
+        $now = date('Y-m-d H:i:s');
+
+        return $query
+            ->where(['FundingCycles.application_begin <=' => $now]);
     }
 }
