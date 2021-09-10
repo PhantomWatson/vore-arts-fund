@@ -28,7 +28,8 @@ class FundingCyclesController extends AppController
     {
         $fundingCycles = $this->FundingCycles
             ->find('currentAndFuture')
-            ->orderAsc('application_end');
+            ->orderAsc('application_end')
+            ->all();
 
         $this->set([
             'fundingCycles' => $fundingCycles,
