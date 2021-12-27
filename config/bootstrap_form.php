@@ -10,7 +10,6 @@ return [
         '<select class="form-control" name="{{name}}[]" multiple="multiple"{{attrs}}>{{content}}</select>',
     'input' => '<input class="form-control" type="{{type}}" name="{{name}}"{{attrs}}>',
     'textarea' => '{{label}}<textarea class="form-control" name="{{name}}"{{attrs}}>{{value}}</textarea>',
-    'numberContainer' => '<div class="form-group {{type}}{{required}}"><div class="input-group mb-2 mr-sm-2"><div class="input-group-prepend"><div class="input-group-text">{{prefix}}</div></div>{{content}}</div></div>',
     'file' => '
         <div class="custom-file">
             <input type="file" class="custom-file-input" id="customFile" name="{{name}}" {{attrs}} />

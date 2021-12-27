@@ -557,6 +557,7 @@ table td {
 
 .footnote {
     @extend .text-muted;
+    font-size: 80%;
 }
 
 .footnote ~ .form-group {
@@ -603,5 +604,13 @@ form {
 #home {
     section {
         margin: 2rem 0;
+    }
+}
+
+#register-form {
+    div.tel {
+        input {
+            margin-bottom: 0;
+        }
     }
 }

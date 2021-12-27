@@ -20,13 +20,20 @@
     <h1>Register</h1>
 </div>
 
-<div class="users form">
+<div class="users form" id="register-form">
     <?= $this->Form->create($user) ?>
     <fieldset>
         <?= $this->Form->control('email', ['type' => 'email']) ?>
         <?= $this->Form->control('password') ?>
         <?= $this->Form->control('name') ?>
-        <?= $this->Form->control('phone', ['type' => 'number']) ?>
+        <?= $this->Form->control('phone', [
+            'type' => 'tel',
+            'pattern' => '[0-9]{3}-[0-9]{3}-[0-9]{4}',
+            'label' => 'Phone number',
+        ]) ?>
+        <p class="footnote">
+            (with area code, e.g. 765-123-4567)
+        </p>
     </fieldset>
     <?= $this->Form->submit(__('Submit'), ['class' => 'btn btn-primary']) ?>
     <?= $this->Form->end() ?>
