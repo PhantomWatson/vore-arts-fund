@@ -20,9 +20,10 @@ class MessagesController extends AppController
      */
     public function inbox()
     {
+        $user = $this->request->getAttribute('identity');
         $messages = $this->Messages
             ->find()
-            ->where(['user_id' => $this->Auth->user('id')]);
+            ->where(['user_id' => $user ? $user->id : null]);
         $this->set(compact('messages'));
     }
 
@@ -33,9 +34,10 @@ class MessagesController extends AppController
      */
     public function outbox()
     {
+        $user = $this->request->getAttribute('identity');
         $messages = $this->Messages
             ->find()
-            ->where(['user' => $this->Auth->user('id')]);
+            ->where(['user' => $user ? $user->id : null]);
         $this->set(compact('messages'));
     }
 
@@ -49,7 +51,8 @@ class MessagesController extends AppController
         $message = $this->Messages->newEmptyEntity();
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-            $data['user_id'] = $this->Auth->user('id');
+            $user = $this->request->getAttribute('identity');
+            $data['user_id'] = $user ? $user->id : null;
             $message = $this->Messages->patchEntity($message, $data);
             if ($this->Messages->save($message)) {
                 $this->Flash->success('Message successfully sent.');

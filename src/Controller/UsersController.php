@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Entity\User;
-use Cake\Auth\DefaultPasswordHasher;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
@@ -17,6 +17,7 @@ use Twilio\Rest\Client;
  *
  * @property \App\Model\Table\UsersTable $Users
  * @property \Twilio\Rest\Client $Twilio
+ * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
 class UsersController extends AppController
@@ -29,12 +30,11 @@ class UsersController extends AppController
      *
      * @param \Cake\Event\EventInterface $event Event object
      * @return \Cake\Http\Response|void|null
-     * @throws \Twilio\Exceptions\ConfigurationException
      */
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
-        $this->Auth->allow([
+        $this->Authentication->allowUnauthenticated([
             'forgotPassword',
             'login',
             'logout',
@@ -73,15 +73,14 @@ class UsersController extends AppController
      */
     public function login(): ?Response
     {
-        if ($this->request->is('post')) {
-            $user = $this->Auth->identify();
-            if ($user) {
-                $this->Auth->setUser($user);
+        $result = $this->Authentication->getResult();
+        if ($result->isValid()) {
+            $target = $this->Authentication->getLoginRedirect();
+            return $this->redirect($target);
+        }
 
-                return $this->redirect($this->Auth->redirectUrl());
-            } else {
-                $this->Flash->error(__('Invalid username or password, try again'));
-            }
+        if ($this->request->is(['post']) && !$result->isValid()) {
+            $this->Flash->error('Invalid email address or password');
         }
 
         return null;
@@ -106,12 +105,12 @@ class UsersController extends AppController
                 if ($user->phone !== 1234567890) {
                     $this->send((string)$user->phone);
                 }
-                $this->Flash->success(__('The user has been saved.'));
-                $this->Auth->setUser($user);
+                $this->Flash->success('Your account has been registered');
+                $this->Authentication->setIdentity($user);
 
                 return $this->redirect(['action' => 'verify']);
             } else {
-                $this->Flash->error(__('Unable to register the user.'));
+                $this->Flash->error('There was an error registering your account');
             }
         }
         $this->set('user', $user);
@@ -166,7 +165,15 @@ class UsersController extends AppController
      */
     public function logout(): Response
     {
-        return $this->redirect($this->Auth->logout());
+        $result = $this->Authentication->getResult();
+
+        // regardless of POST or GET, redirect if user is logged in
+        if ($result->isValid()) {
+            $this->Authentication->logout();
+            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+        }
+
+        $this->redirect($this->referer());
     }
 
     /**
@@ -337,7 +344,7 @@ class UsersController extends AppController
     public function verify()
     {
         if ($this->request->is('post')) {
-            $user = $this->Users->get($this->Auth->user('id'));
+            $user = $this->request->getAttribute('identity');
             $data = $this->request->getData();
             if ($this->validate($user['phone'], $data['code'])) {
                 //success
@@ -382,7 +389,7 @@ class UsersController extends AppController
     public function changeAccountInfo(): ?Response
     {
         if ($this->request->is('post')) {
-            $user = $this->Users->get($this->Auth->user('id'));
+            $user = $this->request->getAttribute('identity');
 
             $currentPassword = $this->request->getData('current_password');
             $passwordIsCorrect = (new DefaultPasswordHasher())->check($currentPassword, $user->password);

@@ -31,6 +31,7 @@ use Cake\View\Exception\MissingTemplateException;
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  *
  * @property \App\Model\Table\FundingCyclesTable $FundingCycles
+ * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
  */
 class PagesController extends AppController
 {
@@ -43,7 +44,14 @@ class PagesController extends AppController
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
-        $this->Auth->allow();
+        $this->Authentication->allowUnauthenticated([
+            'display',
+            'about',
+            'contact',
+            'terms',
+            'privacy',
+            'home',
+        ]);
     }
 
     /**

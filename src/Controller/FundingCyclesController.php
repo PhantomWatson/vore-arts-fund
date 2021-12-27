@@ -9,6 +9,7 @@ use Cake\Event\EventInterface;
  * FundingCycles Controller
  *
  * @property \App\Model\Table\FundingCyclesTable $FundingCycles
+ * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
  * @method \App\Model\Entity\FundingCycle[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class FundingCyclesController extends AppController
@@ -16,7 +17,7 @@ class FundingCyclesController extends AppController
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
-        $this->Auth->allow();
+        $this->Authentication->allowUnauthenticated(['index']);
     }
 
     /**

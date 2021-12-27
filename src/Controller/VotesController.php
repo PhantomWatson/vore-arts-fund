@@ -27,6 +27,7 @@ use Cake\ORM\TableRegistry;
  *
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  * @property \App\Model\Table\VotesTable $Votes
+ * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
  */
 class VotesController extends AppController
 {
@@ -42,7 +43,7 @@ class VotesController extends AppController
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
-        $this->Auth->allow(['index', 'view']);
+        $this->Authentication->allowUnauthenticated(['index', 'view']);
     }
 
     /**
@@ -88,7 +89,8 @@ class VotesController extends AppController
         foreach ($keys as $key) {
             /** @var \App\Model\Entity\Vote $voteEntry */
             $voteEntry = $voteTable->newEmptyEntity();
-            $voteEntry->user_id = $this->Auth->user('id');
+            $user = $this->request->getAttribute('identity');
+            $voteEntry->user_id = $user ? $user->id : null;
             $voteEntry->application_id = $key;
             $voteEntry->funding_cycle_id = $fundingCycle->id;
             $voteEntry->weight = 1;

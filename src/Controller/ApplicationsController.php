@@ -58,7 +58,8 @@ class ApplicationsController extends AppController
         // Process form
         $data = $this->request->getData();
         $application = $this->Applications->newEntity($data);
-        $application->user_id = $this->Auth->user('id');
+        $user = $this->request->getAttribute('identity');
+        $application->user_id = $user ? $user->id : null;
         $application->funding_cycle_id = $fundingCycle->id;
         $application->status_id = isset($data['save']) ? 1 : 0;
         $result = $this->Applications->save($application);
