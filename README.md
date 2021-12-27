@@ -52,11 +52,22 @@ Follow these instructions to get a copy of the website running on your machine f
         ```bash
         $ chmod +x bin/cake
         ```
-    - Windows: the provided .bat file should be executable without changes
+    - Windows: the provided `.bat` file should be executable without changes
 1. Start your [development server](https://book.cakephp.org/3/en/installation.html#development-server)
     ```bash
     $ bin/cake server
     ```
+
+### Using Docker
+1. In a CLI, navigate to `/docker` and run `./build.sh` to build Docker images and start containers
+1. Add the following files to your `hosts` file
+   ```
+   127.0.0.1	vore.test
+   127.0.0.1	www.vore.test
+   ```
+1. In a browser, open `http://vore.text:9000`
+
+If the SSL certificate is working, `https://` can be used instead.
 
 ## Testing
 
