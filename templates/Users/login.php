@@ -8,7 +8,7 @@
     <h1>Login</h1>
 </div>
 
-<div class="users form">
+<div class="users form" id="login-form">
     <?= $this->Flash->render() ?>
     <?= $this->Form->create() ?>
     <fieldset>

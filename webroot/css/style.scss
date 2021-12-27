@@ -614,3 +614,14 @@ form {
         }
     }
 }
+
+#login-form {
+    form {
+        margin-bottom: 1rem;
+    }
+}
+
+input[type="submit"] {
+    @extend .btn;
+    @extend .btn-primary;
+}
