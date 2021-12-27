@@ -41,7 +41,7 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
 
-RUN sudo apt-get install nodejs
+RUN apt-get install nodejs
 
 RUN npm install -g grunt
 
