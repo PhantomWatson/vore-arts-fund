@@ -23,6 +23,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     bcmath \
     bz2 \
     curl \
+    dom \
     fileinfo \
     gd \
     intl \
