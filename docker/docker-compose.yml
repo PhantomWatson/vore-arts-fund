@@ -80,7 +80,7 @@ services:
     volumes:
       - ..:${PHP_APP_DIR}
       - ../logs/docker/php:${PHP_ROOT_DIR}/logs
-      - ../logs/docker/xdebug.log:/usr/local/etc/logs/xdebug.log
+      #- ../logs/docker/xdebug.log:/usr/local/etc/logs/xdebug.log
       - ./php-fpm/php-ini-overrides.ini:/usr/local/etc/php/conf.d/99-overrides.ini
       - ./php-fpm/90-xdebug.ini:/usr/local/etc/php/conf.d/90-xdebug.ini
     depends_on:
