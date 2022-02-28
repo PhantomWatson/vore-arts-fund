@@ -145,6 +145,7 @@ class PagesController extends AppController
         $this->set([
             'fundingCycle' => $fundingCycle,
             'fundingCycleIsCurrent' => $fundingCycleIsCurrent,
+            'title' => '',
         ]);
     }
 }

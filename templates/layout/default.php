@@ -2,6 +2,8 @@
 /**
  * @var \App\View\AppView $this
  */
+
+$title = $title ?? $this->fetch('title');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         Vore Arts Fund
-        <?= $this->fetch('title') ? ' - ' . $this->fetch('title') : '' ?>
+        <?= $title ? " - $title" : '' ?>
     </title>
     <?= $this->Html->meta('icon') ?>
 
