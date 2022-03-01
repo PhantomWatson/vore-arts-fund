@@ -28,7 +28,7 @@
         <?= $this->Form->control('name') ?>
         <?= $this->Form->control('phone', [
             'type' => 'tel',
-            'pattern' => '[0-9]{3}-[0-9]{3}-[0-9]{4}',
+            'minLength' => 10,
             'label' => 'Phone number',
         ]) ?>
         <p class="footnote">
