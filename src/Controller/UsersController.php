@@ -127,6 +127,7 @@ class UsersController extends AppController
      */
     public function send(string $phone)
     {
+        $phone = preg_replace('/[^0-9]/', '', $phone);
         $accountSid = Configure::read('twilio_account_sid');
         $authToken = Configure::read('twilio_auth_token');
         $twilio = new Client($accountSid, $authToken);
