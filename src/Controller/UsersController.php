@@ -96,7 +96,10 @@ class UsersController extends AppController
     {
         $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            $data = $this->request->getData();
+            $data['phone'] = preg_replace('/[^0-9]/', '', $data['phone']);
+
+            $user = $this->Users->patchEntity($user, $data);
             // admins should only be assignable from the database itself, new accounts always default to 0
             $user->is_admin = 0;
             // is_verified will later be assigned based on text verification API, see verify() below
