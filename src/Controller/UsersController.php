@@ -116,7 +116,10 @@ class UsersController extends AppController
                 $this->Flash->error('There was an error registering your account');
             }
         }
-        $this->set('user', $user);
+        $this->set([
+            'title' => 'Register an Account',
+            'user' => $user
+        ]);
 
         return null;
     }
