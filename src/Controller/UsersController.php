@@ -10,6 +10,7 @@ use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
 use Cake\Mailer\Mailer;
+use Cake\ORM\TableRegistry;
 use Twilio\Rest\Client;
 
 /**
@@ -383,6 +384,17 @@ class UsersController extends AppController
      */
     public function myAccount()
     {
+        /** @var User $user */
+        $user = $this->Authentication->getIdentity()->getOriginalData();
+        $applications = TableRegistry::getTableLocator()
+             ->get('Applications')
+             ->find()
+             ->where(['user_id' => $user->id])
+             ->all()
+             ->toArray();
+        $title = 'My Account';
+        $this->set(compact('user', 'applications', 'title'));
+
         return null;
     }
 
