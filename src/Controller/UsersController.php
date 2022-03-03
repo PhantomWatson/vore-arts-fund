@@ -351,13 +351,11 @@ class UsersController extends AppController
     public function verify()
     {
         if ($this->request->is('post')) {
-            $user = $this->request->getAttribute('identity');
+            /** @var User $user */
+            $user = $this->Authentication->getIdentity()->getOriginalData();
             $data = $this->request->getData();
-            if ($this->validate($user['phone'], $data['code'])) {
-                //success
-                $this->Users->patchEntity($user, [
-                    'is_verified' => 1,
-                ]);
+            if ($this->validate((string)$user->phone, $data['code'])) {
+                $this->Users->patchEntity($user, ['is_verified' => 1]);
                 $this->Users->save($user);
                 $this->redirect(['action' => 'myAccount']);
             } else {
