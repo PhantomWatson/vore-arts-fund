@@ -180,7 +180,7 @@ class UsersController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
-        $this->redirect($this->referer());
+        return $this->redirect($this->referer());
     }
 
     /**
