@@ -106,7 +106,7 @@ class UsersController extends AppController
             // is_verified will later be assigned based on text verification API, see verify() below
             $user->is_verified = 0;
             if ($this->Users->save($user)) {
-                if ($user->phone !== 1234567890) {
+                if (Configure::read('enablePhoneVerification')) {
                     $this->send((string)$user->phone);
                 }
                 $this->Flash->success('Your account has been registered');
