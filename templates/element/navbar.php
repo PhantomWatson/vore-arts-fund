@@ -1,15 +1,12 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var \Authentication\Authenticator\Result|\App\Model\Entity\User $user
  */
-
-use Cake\Core\Configure;
-
-$user = $this->request->getSession()->read('Auth.User');
-$isAdmin = $user['is_admin'] ?? false;
-$loggedIn = (bool)$user;
-$isVerified = $user['is_verified'] ?? false;
-$debug = Configure::read('debug');
+$user = $this->request->getAttribute('authentication')->getResult();
+$loggedIn = $user->isValid();
+$isAdmin = $user->is_admin ?? false;
+$isVerified = $user->is_verified ?? false;
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #BA0C2F">
     <a class="navbar-brand" href="/">Vore Arts Fund</a>
