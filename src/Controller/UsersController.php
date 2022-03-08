@@ -107,7 +107,7 @@ class UsersController extends AppController
             $user->is_verified = 0;
             if ($this->Users->save($user)) {
                 if (Configure::read('enablePhoneVerification')) {
-                    $this->send((string)$user->phone);
+                    $this->sendVerificationText((string)$user->phone);
                 }
                 $this->Flash->success('Your account has been registered');
                 $this->Authentication->setIdentity($user);
@@ -132,7 +132,7 @@ class UsersController extends AppController
      * @return void
      * @throws \Twilio\Exceptions\TwilioException
      */
-    public function send(string $phone)
+    public function sendVerificationText(string $phone)
     {
         $phone = preg_replace('/[^0-9]/', '', $phone);
         $accountSid = Configure::read('twilio_account_sid');
