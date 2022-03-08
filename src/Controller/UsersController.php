@@ -106,13 +106,14 @@ class UsersController extends AppController
             // is_verified will later be assigned based on text verification API, see verify() below
             $user->is_verified = 0;
             if ($this->Users->save($user)) {
-                if (Configure::read('enablePhoneVerification')) {
-                    $this->sendVerificationText((string)$user->phone);
-                }
                 $this->Flash->success('Your account has been registered');
                 $this->Authentication->setIdentity($user);
-
-                return $this->redirect(['action' => 'verify']);
+                if (Configure::read('enablePhoneVerification')) {
+                    $this->sendVerificationText((string)$user->phone);
+                    return $this->redirect(['action' => 'verify']);
+                } else {
+                    return $this->redirect(['controller' => 'pages', 'action' => 'home']);
+                }
             } else {
                 $this->Flash->error('There was an error registering your account');
             }
