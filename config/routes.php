@@ -49,11 +49,11 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/vote', 'Votes::index');
 
     // Users
-    $builder->connect('/change-account-info', 'Users::changeAccountInfo');
     $builder->connect('/forgot-password', 'Users::forgotPassword');
     $builder->connect('/login', 'Users::login');
     $builder->connect('/logout', 'Users::logout');
     $builder->connect('/account', 'Users::account');
+    $builder->connect('/account/update', 'Users::changeAccountInfo');
     $builder->connect('/register', 'Users::register');
     $builder->connect('/verify', 'Users::verify');
     $builder->connect('/verify/resend', 'Users::verifyResend');

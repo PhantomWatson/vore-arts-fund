@@ -123,7 +123,7 @@ class UsersControllerTest extends TestCase
             'name' => 'Joe',
             'current_password' => 'Password',
         ];
-        $this->post('/change-account-info', $data);
+        $this->post('/account/update', $data);
         $this->assertResponseSuccess();
         $usersTable = TableRegistry::getTableLocator()->get('users');
         $query = $usersTable->find()->where(['id' => 1, 'name' => 'Joe']);
