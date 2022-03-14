@@ -65,5 +65,9 @@ class AppController extends Controller
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
+
+        $this->set([
+            'user' => $this->request->getAttribute('authentication')->getResult()->getData()
+        ]);
     }
 }

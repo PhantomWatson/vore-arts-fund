@@ -1,10 +1,9 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Authentication\Authenticator\Result|\App\Model\Entity\User $user
+ * @var \App\Model\Entity\User $user
  */
-$user = $this->request->getAttribute('authentication')->getResult();
-$loggedIn = $user->isValid();
+$loggedIn = (bool)$user;
 $isAdmin = $user->is_admin ?? false;
 $isVerified = $user->is_verified ?? false;
 ?>
