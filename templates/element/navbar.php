@@ -23,7 +23,7 @@ $isVerified = $user->is_verified ?? false;
             </li>
             <?php if ($loggedIn): ?>
                 <li class="nav-item">
-                    <?= $this->Html->linkFromPath('My Account', 'Users::myAccount', [], ['class' => 'nav-link']) ?>
+                    <?= $this->Html->linkFromPath('Account', 'Users::myAccount', [], ['class' => 'nav-link']) ?>
                 </li>
                 <li class="nav-item">
                     <?= $this->Html->linkFromPath('Apply', 'Applications::apply', [], ['class' => 'nav-link']) ?>
