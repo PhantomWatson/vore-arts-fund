@@ -26,7 +26,7 @@
     'Back',
     [
         'controller' => 'Users',
-        'action' => 'myAccount',
+        'action' => 'account',
     ],
     ['class' => 'btn btn-secondary']
 ) ?>

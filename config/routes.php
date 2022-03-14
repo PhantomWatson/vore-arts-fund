@@ -53,7 +53,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/forgot-password', 'Users::forgotPassword');
     $builder->connect('/login', 'Users::login');
     $builder->connect('/logout', 'Users::logout');
-    $builder->connect('/my-account', 'Users::myAccount');
+    $builder->connect('/account', 'Users::account');
     $builder->connect('/register', 'Users::register');
     $builder->connect('/verify', 'Users::verify');
     $builder->connect('/verify/resend', 'Users::verifyResend');

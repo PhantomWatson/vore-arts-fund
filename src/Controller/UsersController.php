@@ -359,7 +359,7 @@ class UsersController extends AppController
             if ($this->validate((string)$user->phone, $data['code'])) {
                 $this->Users->patchEntity($user, ['is_verified' => 1]);
                 $this->Users->save($user);
-                $this->redirect(['action' => 'myAccount']);
+                $this->redirect(['action' => 'account']);
             } else {
                 $this->Flash->error(__('Error verifying phone'));
             }
@@ -383,7 +383,7 @@ class UsersController extends AppController
      *
      * @return null
      */
-    public function myAccount()
+    public function account()
     {
         /** @var User $user */
         $user = $this->Authentication->getIdentity()->getOriginalData();
@@ -393,7 +393,7 @@ class UsersController extends AppController
              ->where(['user_id' => $user->id])
              ->all()
              ->toArray();
-        $title = 'My Account';
+        $title = 'Account';
         $this->set(compact('user', 'applications', 'title'));
 
         return null;

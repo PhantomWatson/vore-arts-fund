@@ -99,7 +99,7 @@ class UsersControllerTest extends TestCase
                 ],
             ],
         ]);
-        $this->get('/my-account');
+        $this->get('/account');
         $this->assertResponseSuccess();
     }
 
