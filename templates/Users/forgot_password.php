@@ -23,7 +23,7 @@
     <?= $this->Flash->render() ?>
     <?= $this->Form->create() ?>
     <fieldset>
-        <?= $this->Form->create(null, ['action' => 'forgot_password', 'id' => 'web-form']) ?>
+        <?= $this->Form->create(null, ['action' => 'forgot_password']) ?>
         <?= $this->Form->control(
             'User.email',
             [
