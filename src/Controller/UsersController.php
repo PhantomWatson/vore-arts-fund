@@ -77,7 +77,7 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         if ($result->isValid()) {
             $target = $this->Authentication->getLoginRedirect();
-            return $this->redirect($target);
+            return $this->redirect($target ?? '/');
         }
 
         if ($this->request->is(['post']) && !$result->isValid()) {
