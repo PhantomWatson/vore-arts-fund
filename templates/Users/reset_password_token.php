@@ -6,7 +6,7 @@
 ?>
 <h1>Change Your Password</h1>
 <?= $this->Form->create($user, ['id' => 'web-form']) ?>
-    <?= $this->Form->control('password') ?>
+    <?= $this->Form->control('password', ['value' => '']) ?>
     <?= $this->Form->control('confirm_password', ['type' => 'password', 'required' => true]) ?>
     <?= $this->Form->submit('Change Password', ['class' => 'btn btn-primary']) ?>
 <?= $this->Form->end() ?>
