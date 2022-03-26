@@ -235,7 +235,7 @@ class UsersController extends AppController
             return $this->redirect(['action' => 'login']);
         }
 
-        if ($this->request->is('put')) {
+        if ($this->request->is(['post', 'put'])) {
             $data = $this->request->getData() + [
                 'reset_password_token' => null,
                 'token_created_date' => null,
