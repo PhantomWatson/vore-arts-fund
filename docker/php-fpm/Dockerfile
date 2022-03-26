@@ -12,7 +12,7 @@ RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 #EXPOSE 443
 EXPOSE 9000
 
-#RUN apt-get update \
+RUN apt-get update
 #    && apt-get -y --no-install-recommends install  php7.4-mysql php7.4-intl php7.4-mbstring php7.4-sqlite3\
 #    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
@@ -38,7 +38,8 @@ RUN docker-php-ext-install mysqli
 
 RUN install-php-extensions @composer
 
-RUN pecl install xdebug && docker-php-ext-enable xdebug
+RUN pecl install xdebug
+# && docker-php-ext-enable xdebug
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
 
