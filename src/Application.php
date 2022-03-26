@@ -19,6 +19,7 @@ namespace App;
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
+use Authentication\Identifier\IdentifierInterface;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
@@ -166,16 +167,15 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         ]);
 
         // Load identifiers
-        $service->loadIdentifier('Authentication.Password', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password',
-            ]
-        ]);
+        $fields = [
+            IdentifierInterface::CREDENTIAL_USERNAME => 'email',
+            IdentifierInterface::CREDENTIAL_PASSWORD => 'password',
+        ];
+        $service->loadIdentifier('Authentication.Password', ['fields' => $fields]);
 
         // Load the authenticators
         $service->loadAuthenticator('Authentication.Session');
-        $service->loadAuthenticator('Authentication.Form');
+        $service->loadAuthenticator('Authentication.Form', ['fields' => $fields]);
 
         // Configure the service. (see below for more details)
         return $service;
