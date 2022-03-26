@@ -406,6 +406,8 @@ class UsersController extends AppController
      */
     public function changeAccountInfo(): ?Response
     {
+        $this->set(['title' => 'Update Account Info']);
+
         if ($this->request->is('post')) {
             $user = $this->request->getAttribute('identity');
 
