@@ -13,7 +13,7 @@
     <?= $this->Form->create() ?>
     <fieldset>
         <?= $this->Form->control('email') ?>
-        <?= $this->Form->control('password') ?>
+        <?= $this->Form->control('password', ['value' => '']) ?>
     </fieldset>
     <?= $this->Form->submit(__('Login'), ['class' => 'btn btn-primary']) ?>
     <?= $this->Form->end() ?>
