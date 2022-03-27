@@ -1,22 +1,14 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Application[] $application
+ * @var \App\Model\Entity\Application[] $applications
  */
 
 use Cake\ORM\TableRegistry;
-
-$applications = TableRegistry::getTableLocator()
-    ->get('Applications')
-    ->find()
-    ->where(['status_id' => 5])
-    ->all()
-    ->toArray();
 ?>
 
-<div class="pb-2 mt-4 mb-2 border-bottom">
-    <h1>Vote</h1>
-</div>
+<?= $this->title() ?>
+
 <div>
     <?= $this->Flash->render() ?>
     <?= $this->Form->create() ?>

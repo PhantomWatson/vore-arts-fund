@@ -101,6 +101,7 @@ class PagesController extends AppController
      */
     public function about()
     {
+        $this->title('About');
     }
 
     /**
@@ -110,6 +111,7 @@ class PagesController extends AppController
      */
     public function contact()
     {
+        $this->title('Contact');
     }
 
     /**
@@ -119,6 +121,7 @@ class PagesController extends AppController
      */
     public function terms()
     {
+        $this->title('Terms');
     }
 
     /**
@@ -128,6 +131,7 @@ class PagesController extends AppController
      */
     public function privacy()
     {
+        $this->title('Privacy');
     }
 
     /**

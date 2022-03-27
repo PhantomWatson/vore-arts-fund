@@ -15,9 +15,7 @@
  */
 ?>
 
-<div class="pb-2 mt-4 mb-2 border-bottom">
-    <h1>Forgot Password</h1>
-</div>
+<?= $this->title() ?>
 
 <div class="users form">
     <?= $this->Flash->render() ?>

@@ -15,9 +15,8 @@
  */
 ?>
 
-<div class="pb-2 mt-4 mb-2 border-bottom">
-    <h1>Verify</h1>
-</div>
+<?= $this->title() ?>
+
 <?= $this->Form->create() ?>
 <h4>Verification Code</h4>
 <fieldset>

@@ -14,9 +14,8 @@
  * @var \App\View\AppView $this
  */
 ?>
-<div class="pb-2 mt-4 mb-2 border-bottom">
-    <h1>Withdraw</h1>
-</div>
+
+<?= $this->title() ?>
 
 <?= $this->Form->create() ?>
 

@@ -6,11 +6,7 @@
 $isAdmin = $user->is_admin;
 ?>
 
-<div class="pb-2 mt-4 mb-2 border-bottom">
-    <h1>
-        Change Account Information
-    </h1>
-</div>
+<?= $this->title() ?>
 
 <div class="users form">
     <?= $this->Form->create() ?>

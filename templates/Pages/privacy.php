@@ -15,4 +15,4 @@
  */
 ?>
 
-<h1>Privacy</h1>
+<?= $this->title() ?>

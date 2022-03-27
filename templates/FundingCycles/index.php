@@ -5,7 +5,7 @@
  */
 ?>
 
-<?= $this->element('title', ['title' => $title]) ?>
+<?= $this->title() ?>
 
 <?php if ($fundingCycles): ?>
     <p>

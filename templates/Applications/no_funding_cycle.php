@@ -1,2 +1,2 @@
-<?= $this->element('page_title', ['title' => 'Apply for Funding']) ?>
+<?= $this->title() ?>
 <?= $this->element('no_funding_cycle') ?>

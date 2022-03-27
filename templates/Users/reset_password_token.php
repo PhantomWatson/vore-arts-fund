@@ -4,7 +4,9 @@
  * @var \App\Model\Entity\User $user
  */
 ?>
-<h1>Change Your Password</h1>
+
+<?= $this->title() ?>
+
 <?= $this->Form->create($user) ?>
     <?= $this->Form->control('password', ['value' => '']) ?>
     <?= $this->Form->control('confirm_password', ['type' => 'password', 'required' => true]) ?>

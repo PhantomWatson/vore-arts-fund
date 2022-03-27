@@ -34,6 +34,8 @@ class ApplicationsController extends AppController
      */
     public function apply(): ?Response
     {
+        $this->title('Apply for Funding');
+
         // Set data needed by form
         $fundingCycle = $this->FundingCycles->find('current')->first();
         if (!$fundingCycle) {
@@ -95,16 +97,30 @@ class ApplicationsController extends AppController
     /**
      * Page for viewing an application
      *
-     * @return void
+     * @return \Cake\Http\Response|null
      */
     public function view()
     {
         $id = $this->request->getParam('id');
-        $application = null;
-        if ($this->request->is('get')) {
-            $application = $this->Applications->find()->where(['id' => $id])->first()->toArray();
+        /** @var \App\Model\Entity\Application $application */
+        $application = $this->Applications->find()->where(['id' => $id])->first();
+        if (!$application) {
+            $this->Flash->error('Sorry, but that application was not found');
+
+            return $this->redirect('/');
         }
-        $this->set(compact('application'));
+
+        $category = $this->Categories->find()->all()->toArray();
+        $image = $this->Images->find()->where(['application_id' => $application->id])->first();
+        $title = $application->title;
+        $this->set(compact(
+            'application',
+            'category',
+            'image',
+            'title',
+        ));
+
+        return null;
     }
 
     /**
@@ -122,6 +138,7 @@ class ApplicationsController extends AppController
                 $this->Flash->success('Application withdrawn.');
             }
         }
+        $this->set(['title' => 'Withdraw']);
     }
 
     /**
@@ -139,6 +156,7 @@ class ApplicationsController extends AppController
                 $this->Flash->success('Application has been resubmitted.');
             }
         }
+        $this->title('Resubmit');
     }
 
     /**
@@ -155,5 +173,6 @@ class ApplicationsController extends AppController
                 $this->Flash->success('Application has been deleted');
             }
         }
+        $this->title('Delete');
     }
 }

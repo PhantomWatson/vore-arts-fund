@@ -4,9 +4,7 @@
  */
 ?>
 
-<div class="pb-2 mt-4 mb-2 border-bottom">
-    <h1>Login</h1>
-</div>
+<?= $this->title() ?>
 
 <div class="users form" id="login-form">
     <?= $this->Flash->render() ?>

@@ -84,6 +84,8 @@ class UsersController extends AppController
             $this->Flash->error('Invalid email address or password');
         }
 
+        $this->title('Login');
+
         return null;
     }
 
@@ -214,6 +216,8 @@ class UsersController extends AppController
             }
         }
 
+        $this->title('Forgot Password');
+
         return null;
     }
 
@@ -254,6 +258,7 @@ class UsersController extends AppController
         }
 
         $this->set(['user' => $user]);
+        $this->title('Change Your Password');
 
         return null;
     }
@@ -365,6 +370,8 @@ class UsersController extends AppController
             }
         }
 
+        $this->title('Verify');
+
         return null;
     }
 
@@ -375,6 +382,8 @@ class UsersController extends AppController
      */
     public function verifyResend()
     {
+        $this->title('Verify Resend');
+
         return null;
     }
 
@@ -406,7 +415,7 @@ class UsersController extends AppController
      */
     public function changeAccountInfo(): ?Response
     {
-        $this->set(['title' => 'Update Account Info']);
+        $this->title('Update Account Info');
 
         if ($this->request->is('post')) {
             $user = $this->request->getAttribute('identity');

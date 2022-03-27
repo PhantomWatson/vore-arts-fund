@@ -1,12 +1,12 @@
 <?php
-use Cake\ORM\TableRegistry;
-
-$applications = TableRegistry::getTableLocator()->get('Applications')->find()->all()->toArray();
-$statuses = TableRegistry::getTableLocator()->get('Statuses')->find()->all()->toArray();
+/**
+ * @var \App\Model\Entity\Application[] $applications
+ * @var \App\Model\Entity\Status[] $status
+ */
 ?>
-<div class="pb-2 mt-4 mb-2 border-bottom">
-    <h1>Admin</h1>
-</div>
+
+<?= $this->title() ?>
+
 <p>
     <?= $this->Html->link(
         'Applications',

@@ -21,6 +21,7 @@ class FundingCyclesController extends AppController
      */
     public function index()
     {
+        $this->title('Funding Cycles');
     }
 
     /**
@@ -39,7 +40,8 @@ class FundingCyclesController extends AppController
                 $this->Flash->error(__('Error creating funding cycle'));
             }
         }
-        $this->set('fundingCycle', $fundingCycle);
+        $this->title('Add Funding Cycle');
+        $this->set(compact('fundingCycle'));
     }
 
     /**
@@ -49,6 +51,10 @@ class FundingCyclesController extends AppController
      */
     public function edit()
     {
+        $fundingCycle = $this->FundingCycles
+            ->find()
+            ->where(['id' => $this->request->getParam('id')])
+            ->first();
         if ($this->request->is('put')) {
             $updatedFundingCycle = $this->request->getData();
             $fundingCycle = $this->FundingCycles->get($updatedFundingCycle['id']);
@@ -59,5 +65,10 @@ class FundingCyclesController extends AppController
                 $this->Flash->error(__('Error updating funding cycle'));
             }
         }
+
+        $this->set([
+            'fundingCycle' => $fundingCycle,
+            'title' => 'Edit Funding Cycle',
+        ]);
     }
 }

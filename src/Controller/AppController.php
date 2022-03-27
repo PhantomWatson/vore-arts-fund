@@ -18,7 +18,6 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
-use Cake\Http\Response;
 
 /**
  * Application Controller
@@ -69,5 +68,15 @@ class AppController extends Controller
         $this->set([
             'user' => $this->request->getAttribute('authentication')->getResult()->getData()
         ]);
+    }
+
+    /**
+     * Sets the page title
+     *
+     * @param string $title
+     */
+    protected function title(string $title)
+    {
+        $this->set(compact('title'));
     }
 }

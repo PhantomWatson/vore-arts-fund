@@ -15,9 +15,7 @@
  */
 ?>
 
-<h1>
-    About
-</h1>
+<?= $this->title() ?>
 
 <section class="credits">
     <h2>

@@ -5,9 +5,7 @@
  */
 ?>
 
-<div class="pb-2 mt-4 mb-2 border-bottom">
-    <h1>Applications</h1>
-</div>
+<?= $this->title() ?>
 
 <div>
     <?php foreach ($applications as $application): ?>

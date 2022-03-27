@@ -41,4 +41,14 @@ class AppView extends View
             'templates' => 'bootstrap_form',
         ]);
     }
+
+    /**
+     * Helper method for the 'title' element
+     *
+     * @return string
+     */
+    public function title(): string
+    {
+        return $this->element('title');
+    }
 }

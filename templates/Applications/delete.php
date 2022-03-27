@@ -15,9 +15,8 @@
  */
 ?>
 
-<div class="pb-2 mt-4 mb-2 border-bottom">
-    <h1>Delete</h1>
-</div>
+<?= $this->title() ?>
+
 <?= $this->Flash->render() ?>
 <?= $this->Form->create() ?>
 
