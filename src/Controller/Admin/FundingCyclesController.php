@@ -22,6 +22,9 @@ class FundingCyclesController extends AppController
     public function index()
     {
         $this->title('Funding Cycles');
+        $this->set([
+            'fundingCycles' => $this->FundingCycles->find()->all()
+        ]);
     }
 
     /**
