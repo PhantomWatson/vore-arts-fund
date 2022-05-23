@@ -11,8 +11,9 @@
     <?= $this->Html->link(
         'Applications',
         [
-            'controller' => 'Admin',
-            'action' => 'Applications',
+            'prefix' => 'Admin',
+            'controller' => 'Applications',
+            'action' => 'index',
         ],
         ['class' => 'btn btn-secondary']
     ) ?>
@@ -21,8 +22,9 @@
     <?= $this->Html->link(
         'Funding Cycles',
         [
-            'controller' => 'Admin',
-            'action' => 'fundingCycles',
+            'prefix' => 'Admin',
+            'controller' => 'FundingCycles',
+            'action' => 'index',
         ],
         ['class' => 'btn btn-secondary']
     ) ?>
