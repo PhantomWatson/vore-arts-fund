@@ -1,7 +1,6 @@
 <?php
 /**
  * @var \App\Model\Entity\Application[] $applications
- * @var \App\Model\Entity\Status[] $status
  */
 ?>
 

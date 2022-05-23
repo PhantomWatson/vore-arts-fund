@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\Application;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 
@@ -63,7 +64,7 @@ class ApplicationsController extends AppController
         $user = $this->request->getAttribute('identity');
         $application->user_id = $user ? $user->id : null;
         $application->funding_cycle_id = $fundingCycle->id;
-        $application->status_id = isset($data['save']) ? 1 : 0;
+        $application->status_id = isset($data['save']) ? Application::STATUS_APPLYING : 0;
         $result = $this->Applications->save($application);
         if ($result) {
             $this->Flash->success(
@@ -133,7 +134,7 @@ class ApplicationsController extends AppController
         $id = $this->request->getParam('id');
         $application = $this->Applications->find()->where(['id' => $id])->first();
         if ($this->request->is('post')) {
-            $application = $this->Applications->patchEntity($application, ['status_id' => 8]);
+            $application = $this->Applications->patchEntity($application, ['status_id' => Application::STATUS_WITHDRAWN]);
             if ($this->Applications->save($application)) {
                 $this->Flash->success('Application withdrawn.');
             }
@@ -151,7 +152,7 @@ class ApplicationsController extends AppController
         $id = $this->request->getParam('id');
         $application = $this->Applications->find()->where(['id' => $id])->first();
         if ($this->request->is('post')) {
-            $application = $this->Applications->patchEntity($application, ['status_id' => 9]);
+            $application = $this->Applications->patchEntity($application, ['status_id' => Application::STATUS_UNDER_REVIEW]);
             if ($this->Applications->save($application)) {
                 $this->Flash->success('Application has been resubmitted.');
             }

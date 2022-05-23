@@ -3,7 +3,6 @@
  * @var \App\Model\Entity\Application $application
  * @var \App\Model\Entity\Category $category
  * @var \App\Model\Entity\Image $image
- * @var \App\Model\Entity\Status[] $statuses
  * @var \App\View\AppView $this
  * @var string $title
  * @var string[] $statusOptions

@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
+use App\Model\Entity\Application;
+use Cake\Utility\Hash;
 
 /**
  * FundingCyclesController
@@ -11,7 +13,6 @@ use App\Controller\AppController;
  * @property \App\Model\Table\ApplicationsTable $Applications
  * @property \App\Model\Table\CategoriesTable $Categories
  * @property \App\Model\Table\ImagesTable $Images
- * @property \App\Model\Table\StatusesTable $Statuses
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
 
@@ -25,6 +26,12 @@ class ApplicationsController extends AppController
     public function index()
     {
         $this->title('Applications');
+        $this->set([
+            'applications' => $this
+                ->Applications
+                ->find()
+                ->all(),
+        ]);
     }
 
     /**
@@ -37,22 +44,16 @@ class ApplicationsController extends AppController
         $this->loadModel('Applications');
         $this->loadModel('Categories');
         $this->loadModel('Images');
-        $this->loadModel('Statuses');
 
         $application = $this->Applications->get($this->request->getParam('id'));
         $category = $this->Categories->find()->all()->toArray();
         $image = $this->Images->find()->where(['application_id' => $application['id']])->first();
-        $statuses = $this->Statuses->find()->all();
-        $statusOptions = [];
-        foreach ($statuses as $status) {
-            $statusOptions[$status->id] = $status->name;
-        }
+        $statusOptions = Application::getStatuses();
         $title = $application['title'];
         $this->set(compact(
             'application',
             'category',
             'image',
-            'statuses',
             'statusOptions',
             'title',
         ));

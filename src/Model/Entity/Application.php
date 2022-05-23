@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\Http\Exception\InternalErrorException;
 use Cake\ORM\Entity;
 
 /**
@@ -17,13 +18,13 @@ use Cake\ORM\Entity;
  * @property bool $accept_partial_payout
  * @property int $funding_cycle_id
  * @property int $status_id
+ * @property string $status_name
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Category $category
  * @property \App\Model\Entity\FundingCycle $funding_cycle
- * @property \App\Model\Entity\Status $status
  * @property \App\Model\Entity\Image[] $images
  * @property \App\Model\Entity\Message[] $messages
  * @property \App\Model\Entity\Note[] $notes
@@ -31,6 +32,48 @@ use Cake\ORM\Entity;
  */
 class Application extends Entity
 {
+    const STATUS_APPLYING = 1;
+    const STATUS_ACCEPTED = 2;
+    const STATUS_REJECTED = 3;
+    const STATUS_REVISION_REQUESTED = 4;
+    const STATUS_VOTING = 5;
+    const STATUS_AWARDED = 6;
+    const STATUS_NOT_AWARDED = 7;
+    const STATUS_WITHDRAWN = 8;
+    const STATUS_UNDER_REVIEW = 9;
+
+    /**
+     * @return string[]
+     */
+    public static function getStatuses(): array
+    {
+        return [
+            self::STATUS_APPLYING => 'Applying',
+            self::STATUS_ACCEPTED => 'Accepted',
+            self::STATUS_REJECTED => 'Rejected',
+            self::STATUS_REVISION_REQUESTED => 'Revision Requested',
+            self::STATUS_VOTING => 'Voting',
+            self::STATUS_AWARDED => 'Awarded',
+            self::STATUS_NOT_AWARDED => 'Not Awarded',
+            self::STATUS_WITHDRAWN => 'Withdrawn',
+            self::STATUS_UNDER_REVIEW => 'Under Review',
+        ];
+    }
+
+    /**
+     * @param int $statusId
+     * @return string
+     * @throws \Cake\Http\Exception\InternalErrorException
+     */
+    public static function getStatus(int $statusId): string
+    {
+        $statuses = self::getStatuses();
+        if (key_exists($statusId, $statuses)) {
+            return $statuses[$statusId];
+        }
+        throw new InternalErrorException("Status #$statusId not recognized");
+    }
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -54,10 +97,17 @@ class Application extends Entity
         'user' => true,
         'category' => true,
         'funding_cycle' => true,
-        'status' => true,
         'images' => true,
         'messages' => true,
         'notes' => true,
         'votes' => true,
     ];
+
+    /**
+     * @return string
+     */
+    protected function _getStatusName()
+    {
+        return self::getStatus($this->status_id);
+    }
 }

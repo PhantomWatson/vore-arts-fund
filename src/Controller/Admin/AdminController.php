@@ -18,7 +18,6 @@ class AdminController extends AppController
         $this->title('Admin');
         $this->set([
             'applications' => TableRegistry::getTableLocator()->get('Applications')->find()->all()->toArray(),
-            'statuses' => TableRegistry::getTableLocator()->get('Statuses')->find()->all()->toArray(),
         ]);
     }
 }

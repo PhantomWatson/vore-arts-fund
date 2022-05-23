@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Application;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -13,7 +14,6 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\BelongsTo $Categories
  * @property \App\Model\Table\FundingCyclesTable&\Cake\ORM\Association\BelongsTo $FundingCycles
- * @property \App\Model\Table\StatusesTable&\Cake\ORM\Association\BelongsTo $Statuses
  * @property \App\Model\Table\ImagesTable&\Cake\ORM\Association\HasMany $Images
  * @property \App\Model\Table\MessagesTable&\Cake\ORM\Association\HasMany $Messages
  * @property \App\Model\Table\NotesTable&\Cake\ORM\Association\HasMany $Notes
@@ -57,10 +57,6 @@ class ApplicationsTable extends Table
         ]);
         $this->belongsTo('FundingCycles', [
             'foreignKey' => 'funding_cycle_id',
-            'joinType' => 'INNER',
-        ]);
-        $this->belongsTo('Statuses', [
-            'foreignKey' => 'status_id',
             'joinType' => 'INNER',
         ]);
         $this->hasMany('Images', [
@@ -111,6 +107,11 @@ class ApplicationsTable extends Table
             ->requirePresence('accept_partial_payout', 'create')
             ->notEmptyString('accept_partial_payout');
 
+        $validator
+            ->integer('status_id')
+            ->requirePresence('status_id', 'create')
+            ->inList('status_id', Application::getStatuses(), 'Invalid status');
+
         return $validator;
     }
 
@@ -126,7 +127,6 @@ class ApplicationsTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['category_id'], 'Categories'));
         $rules->add($rules->existsIn(['funding_cycle_id'], 'FundingCycles'));
-        $rules->add($rules->existsIn(['status_id'], 'Statuses'));
 
         return $rules;
     }
