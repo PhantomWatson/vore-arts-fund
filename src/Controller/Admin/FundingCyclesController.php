@@ -23,7 +23,11 @@ class FundingCyclesController extends AppController
     {
         $this->title('Funding Cycles');
         $this->set([
-            'fundingCycles' => $this->FundingCycles->find()->all()
+            'fundingCycles' => [
+                'past' => $this->FundingCycles->find('past')->all(),
+                'current' => $this->FundingCycles->find('current')->all(),
+                'future' => $this->FundingCycles->find('future')->all(),
+            ],
         ]);
     }
 
