@@ -159,6 +159,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         $service = new AuthenticationService();
         $service->setConfig([
             'unauthenticatedRedirect' => Router::url([
+                'prefix' => false,
                 'controller' => 'Users',
                 'action' => 'login',
                 'plugin' => null,
