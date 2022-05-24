@@ -8,6 +8,18 @@ $dateFormat = 'MMM d, YYYY';
 
 <?= $this->title() ?>
 
+<p>
+    <?= $this->Html->link(
+        'Add',
+        [
+            'prefix' => 'Admin',
+            'controller' => 'FundingCycles',
+            'action' => 'add',
+        ],
+        ['class' => 'btn btn-primary']
+    ) ?>
+</p>
+
 <table>
     <thead>
         <tr>
