@@ -44,6 +44,8 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class Application extends BaseApplication implements AuthenticationServiceProviderInterface
 {
+    const LOCAL_TIMEZONE = 'America/Indiana/Indianapolis';
+
     /**
      * @inheritDoc
      */

@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Application;
 use App\Controller\AppController;
+use Cake\I18n\FrozenTime;
 
 /**
  * FundingCyclesController
@@ -39,6 +41,7 @@ class FundingCyclesController extends AppController
      */
     public function add()
     {
+        /** @var \App\Model\Entity\FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->newEmptyEntity();
         if ($this->request->is('post')) {
             $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $this->request->getData());
@@ -47,6 +50,16 @@ class FundingCyclesController extends AppController
             } else {
                 $this->Flash->error(__('Error creating funding cycle'));
             }
+        } else {
+            $start = new FrozenTime('12:00am', Application::LOCAL_TIMEZONE);
+            $start = $start->day(1);
+            $end = new FrozenTime('11:59pm', Application::LOCAL_TIMEZONE);
+            $end = $end->lastOfMonth();
+            $end = $end->setTime(23, 59);
+            $fundingCycle->application_begin = $start;
+            $fundingCycle->application_end = $end;
+            $fundingCycle->vote_begin = $start;
+            $fundingCycle->vote_end = $end;
         }
         $this->title('Add Funding Cycle');
         $this->set(compact('fundingCycle'));
