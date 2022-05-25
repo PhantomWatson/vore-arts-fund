@@ -20,6 +20,10 @@
 
 <?= $this->Flash->render() ?>
 
+<p class="alert alert-info">
+    Funding cycles should begin on midnight of their first day and end on 11:59pm of their last day.
+</p>
+
 <?= $this->Form->create($fundingCycle) ?>
 <fieldset>
     <?= $this->Form->control('application_begin') ?>
