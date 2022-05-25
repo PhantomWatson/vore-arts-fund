@@ -22,11 +22,12 @@ class FundingCyclesController extends AppController
     public function index()
     {
         $this->title('Funding Cycles');
+        $table = $this->FundingCycles;
         $this->set([
             'fundingCycles' => [
-                'past' => $this->FundingCycles->find('past')->all(),
-                'current' => $this->FundingCycles->find('current')->all(),
-                'future' => $this->FundingCycles->find('future')->all(),
+                'past' => $table->find('past')->orderAsc('application_begin')->all(),
+                'current' => $table->find('current')->orderAsc('application_begin')->all(),
+                'future' => $table->find('future')->orderAsc('application_begin')->all(),
             ],
         ]);
     }
