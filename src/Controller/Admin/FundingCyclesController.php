@@ -55,7 +55,7 @@ class FundingCyclesController extends AppController
             $start = $start->day(1);
             $end = new FrozenTime('11:59pm', Application::LOCAL_TIMEZONE);
             $end = $end->lastOfMonth();
-            $end = $end->setTime(23, 59);
+            $end = $end->setTime(23, 59, 59);
             $fundingCycle->application_begin = $start;
             $fundingCycle->application_end = $end;
             $fundingCycle->vote_begin = $start;
