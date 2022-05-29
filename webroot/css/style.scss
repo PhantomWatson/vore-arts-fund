@@ -562,15 +562,15 @@ table td {
     margin-bottom: 0;
 }
 
+.form-group {
+    margin-bottom: 2em;
+}
+
 .form-group ~ .footnote {
     margin-bottom: 1rem;
 }
 
 .apply {
-    .form-group {
-        margin-bottom: 2em;
-    }
-
     .accept-partial {
         label {
             display: block;
