@@ -76,6 +76,15 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
 
     // Applications
     $builder->connect('/applications', 'Applications::index');
+    $builder->connect(
+        '/applications/:id',
+        [
+            'controller' => 'Applications',
+            'action' => 'index',
+        ]
+    )
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);
     $builder->connect('/applications/review/:id', 'Applications::review');
     $builder->connect('/applications/set-status/:id', 'Applications::setStatus');
 

@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 use App\Model\Entity\Application;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Utility\Hash;
 
 /**
@@ -23,14 +24,29 @@ class ApplicationsController extends AppController
      *
      * @return void
      */
-    public function index()
+    public function index($fundingCycleId = null)
     {
         $this->title('Applications');
-        $this->set([
-            'applications' => $this
+        $fundingCyclesTable = $this->fetchTable('FundingCycles');
+        $applications = [];
+
+        if (!$fundingCycleId) {
+            $currentCycle = $fundingCyclesTable->find('current')->first();
+            $fundingCycleId = $currentCycle ? $currentCycle->id : null;
+        }
+
+        if ($fundingCycleId) {
+            $applications = $this
                 ->Applications
                 ->find()
-                ->all(),
+                ->where(['funding_cycle_id' => $fundingCycleId])
+                ->all();
+        }
+
+        $this->set([
+            'applications' => $applications,
+            'fundingCycles' => $fundingCyclesTable->find()->orderDesc('application_begin')->all(),
+            'fundingCycleId' => $fundingCycleId,
         ]);
     }
 
