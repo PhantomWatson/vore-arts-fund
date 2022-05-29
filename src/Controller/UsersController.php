@@ -23,9 +23,6 @@ use Twilio\Rest\Client;
  */
 class UsersController extends AppController
 {
-    protected bool $allowCookie = true;
-    protected string $cookieTerm = '0';
-
     /**
      * beforeFilter callback method
      *
