@@ -48,6 +48,20 @@ $days .= ' ' . __n('day', 'days', $days);
         <label for="description">
             Description
         </label>
+        <p>
+            Tell us
+        </p>
+        <ul>
+            <li>
+                What you're trying to accomplish
+            </li>
+            <li>
+                What expenses you need help covering
+            </li>
+            <li>
+                How your project will generate money
+            </li>
+        </ul>
         <?= $this->Form->textarea(
             'description',
             [
@@ -56,10 +70,6 @@ $days .= ' ' . __n('day', 'days', $days);
                 'type' => 'textarea',
             ]
         ) ?>
-        <p class="footnote">
-            Tell us what you're trying to accomplish, what expenses you need help covering, and what your plan is
-            for generating money with your project.
-        </p>
     </fieldset>
 
     <fieldset>
