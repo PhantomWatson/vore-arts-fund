@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Model\Entity\Application;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
+use Cake\Routing\Router;
 
 /**
  * ApplicationsController
@@ -54,7 +55,16 @@ class ApplicationsController extends AppController
         }
 
         if (is_null($fundingCycle)) {
-            $this->Flash->error(__('No valid funding cycle.'));
+            $url = Router::url([
+                'prefix' => false,
+                'controller' => 'FundingCycles',
+                'action'     => 'index',
+            ]);
+            $this->Flash->error(
+                'Sorry, but applications are not being accepted at the moment. ' .
+                "Please check back later, or visit the <a href=\"$url\">Funding Cycles</a> page for information " .
+                'about upcoming application periods.'
+            );
             return null;
         }
 
