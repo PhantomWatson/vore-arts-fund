@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 
 use App\Application;
 use App\Controller\AppController;
+use App\Model\Entity\FundingCycle;
 use Cake\I18n\FrozenTime;
 
 /**
@@ -44,7 +45,11 @@ class FundingCyclesController extends AppController
         /** @var \App\Model\Entity\FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->newEmptyEntity();
         if ($this->request->is('post')) {
-            $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $this->request->getData());
+            $data = $this->request->getData();
+            foreach (FundingCycle::TIME_FIELDS as $field) {
+                $data[$field] = $this->convertTimeToUtc($data[$field]);
+            }
+            $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $data);
             if ($this->FundingCycles->save($fundingCycle)) {
                 $this->redirect(['action' => 'index']);
             } else {
@@ -65,6 +70,18 @@ class FundingCyclesController extends AppController
         $this->set(compact('fundingCycle'));
     }
 
+
+    /**
+     * Converts a local time into UTC for storage
+     *
+     * @param string $time Time string
+     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\FrozenTime
+     */
+    private function convertTimeToUtc($time)
+    {
+        return (new FrozenTime($time, \App\Application::LOCAL_TIMEZONE))->setTimezone('UTC');
+    }
+
     /**
      * Page for updating a funding cycle
      *
@@ -77,9 +94,12 @@ class FundingCyclesController extends AppController
             ->where(['id' => $this->request->getParam('id')])
             ->first();
         if ($this->request->is('put')) {
-            $updatedFundingCycle = $this->request->getData();
-            $fundingCycle = $this->FundingCycles->get($updatedFundingCycle['id']);
-            $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $updatedFundingCycle);
+            $data = $this->request->getData();
+            foreach (FundingCycle::TIME_FIELDS as $field) {
+                $data[$field] = $this->convertTimeToUtc($data[$field]);
+            }
+            $fundingCycle = $this->FundingCycles->get($data['id']);
+            $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $data);
             if ($this->FundingCycles->save($fundingCycle)) {
                 $this->Flash->success(__('Successfully updated funding cycle'));
             } else {

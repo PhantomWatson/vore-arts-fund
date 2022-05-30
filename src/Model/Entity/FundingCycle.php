@@ -23,6 +23,8 @@ use Cake\ORM\Entity;
  */
 class FundingCycle extends Entity
 {
+    const TIME_FIELDS = ['application_begin', 'application_end', 'vote_begin', 'vote_end'];
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
