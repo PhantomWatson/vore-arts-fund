@@ -119,8 +119,10 @@ $days .= ' ' . __n('day', 'days', $days);
         <p>
             Have an image to help convey what your project is? Include it here.
         </p>
-        <?= $this->Form->label('customFile', 'Image') ?>
-        <?= $this->Form->file('image', ['label' => false]) ?>
+        <div class="form-group">
+            <?= $this->Form->label('customFile', 'Image') ?>
+            <?= $this->Form->file('image', ['label' => false]) ?>
+        </div>
         <?= $this->Form->control('imageCaption') ?>
     </fieldset>
     <?= $this->Form->submit(
