@@ -45,31 +45,33 @@ $days .= ' ' . __n('day', 'days', $days);
             ['empty' => true, 'required' => true]
         ) ?>
 
-        <label for="description">
-            Description
-        </label>
-        <p>
-            Tell us
-        </p>
-        <ul>
-            <li>
-                What you're trying to accomplish
-            </li>
-            <li>
-                What expenses you need help covering
-            </li>
-            <li>
-                How your project will generate money
-            </li>
-        </ul>
-        <?= $this->Form->textarea(
-            'description',
-            [
-                'id' => 'description',
-                'required' => true,
-                'type' => 'textarea',
-            ]
-        ) ?>
+        <div class="form-group select required">
+            <label for="description">
+                Description
+            </label>
+            <p>
+                Tell us
+            </p>
+            <ul>
+                <li>
+                    What you're trying to accomplish
+                </li>
+                <li>
+                    What expenses you need help covering
+                </li>
+                <li>
+                    How your project will generate money
+                </li>
+            </ul>
+            <?= $this->Form->textarea(
+                'description',
+                [
+                    'id' => 'description',
+                    'required' => true,
+                    'type' => 'textarea',
+                ]
+            ) ?>
+        </div>
     </fieldset>
 
     <fieldset>
