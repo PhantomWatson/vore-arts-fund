@@ -5,15 +5,14 @@
  * @var \App\View\AppView $this
  * @var string[] $categories
  */
-$deadline = $fundingCycle->application_end->format('F j, Y');
-$days = $fundingCycle->application_end->diffInDays();
-$days .= ' ' . __n('day', 'days', $days);
+
+
 ?>
 <?= $this->title() ?>
 
 <p class="alert alert-info">
     The deadline to submit an application in the current funding cycle is
-    <strong><?= $deadline ?></strong> (<?= $days ?> from now).
+    <strong><?= $fundingCycle->application_end->format('F j, Y') ?></strong> (<?= $fromNow ?>).
     For more information about future opportunities for funding, refer to the
     <?= $this->Html->link(
         'Funding Cycles',
@@ -41,7 +40,7 @@ $days .= ' ' . __n('day', 'days', $days);
         ]) ?>
 
         <?= $this->Form->control(
-            'category',
+            'category_id',
             ['empty' => true, 'required' => true]
         ) ?>
 

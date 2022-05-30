@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Entity\Application;
+use App\Model\Entity\FundingCycle;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
+use Cake\I18n\FrozenTime;
 use Cake\Routing\Router;
 
 /**
@@ -27,6 +29,33 @@ class ApplicationsController extends AppController
     }
 
     /**
+     * Sets the $fromNow viewVar
+     *
+     * @param \App\Model\Entity\FundingCycle $fundingCycle
+     */
+    private function setFromNow(FundingCycle $fundingCycle)
+    {
+        // Set times to 00:00 to make "days from now" math easier
+        $deadline = $fundingCycle->application_end->setTime(0, 0, 0, 0);
+        $tz = \App\Application::LOCAL_TIMEZONE;
+        $today = (FrozenTime::now($tz))->setTime(0, 0, 0, 0);
+        $days = $deadline->diffInDays($today);
+        switch ($days) {
+            case 0:
+                $fromNow = 'today';
+                break;
+            case 1:
+                $fromNow = 'tomorrow';
+                break;
+            default:
+                $fromNow = "$days days from now";
+                break;
+        }
+
+        $this->set(['fromNow' => $fromNow]);
+    }
+
+    /**
      * Page for submitting an application
      *
      * @return \Cake\Http\Response|null
@@ -43,12 +72,14 @@ class ApplicationsController extends AppController
         if (!$fundingCycle) {
             $this->viewBuilder()->setTemplate('no_funding_cycle');
         }
+
         $application = $this->Applications->newEmptyEntity();
         $this->set([
             'application' => $application,
             'categories' => $this->Categories->getOrdered(),
             'fundingCycle' => $fundingCycle,
         ]);
+        $this->setFromNow($fundingCycle);
 
         if (!$this->request->is('post')) {
             return null;
