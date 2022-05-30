@@ -68,6 +68,7 @@ class ApplicationsController extends AppController
         $this->title('Apply for Funding');
 
         // Set data needed by form
+        /** @var FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->find('current')->first();
         if (!$fundingCycle) {
             $this->viewBuilder()->setTemplate('no_funding_cycle');
