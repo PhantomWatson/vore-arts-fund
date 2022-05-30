@@ -76,14 +76,11 @@ class ApplicationsController extends AppController
         $application->funding_cycle_id = $fundingCycle->id;
         $application->status_id = isset($data['save']) ? Application::STATUS_APPLYING : 0;
         $result = $this->Applications->save($application);
+        $verb = isset($data['save']) ? 'saved' : 'submitted';
         if ($result) {
-            $this->Flash->success(
-                'The application has been ' . (isset($data['save']) ? 'saved.' : 'submitted.')
-            );
+            $this->Flash->success("The application has been $verb.");
         } else {
-            $this->Flash->error(
-                'The application could not be ' . (isset($data['save']) ? 'saved.' : 'submitted.')
-            );
+            $this->Flash->error("The application could not be $verb.");
         }
         $rawImage = $data['image'];
         if ($rawImage['size'] !== 0) {
@@ -95,10 +92,8 @@ class ApplicationsController extends AppController
             $path = str_replace(' ', '', $path);
             $image->path = $path;
             $image->caption = $data['imageCaption'];
-            if (move_uploaded_file($rawImage['tmp_name'], WWW_ROOT . $path) && $this->Images->save($image)) {
-                $this->Flash->success(__('The image has been saved.'));
-            } else {
-                $this->Flash->error(__('The image could not be saved.'));
+            if (!move_uploaded_file($rawImage['tmp_name'], WWW_ROOT . $path) && $this->Images->save($image)) {
+                $this->Flash->error('Unfortunately, there was an error uploading that image.');
             }
         }
 
