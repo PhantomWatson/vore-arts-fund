@@ -68,6 +68,7 @@ class FundingCyclesController extends AppController
         }
         $this->title('Add Funding Cycle');
         $this->set(compact('fundingCycle'));
+        $this->viewBuilder()->setTemplate('form');
     }
 
 
@@ -111,5 +112,6 @@ class FundingCyclesController extends AppController
             'fundingCycle' => $fundingCycle,
             'title' => 'Edit Funding Cycle',
         ]);
+        $this->viewBuilder()->setTemplate('form');
     }
 }
