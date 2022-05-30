@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
 /**
@@ -84,5 +85,25 @@ class FundingCycle extends Entity
             return 'Summer';
         }
         return 'Fall';
+    }
+
+    protected function _getApplicationBegin(FrozenTime $time): FrozenTime
+    {
+        return $time->setTimezone(\App\Application::LOCAL_TIMEZONE);
+    }
+
+    protected function _getApplicationEnd(FrozenTime $time): FrozenTime
+    {
+        return $time->setTimezone(\App\Application::LOCAL_TIMEZONE);
+    }
+
+    protected function _getVoteBegin(FrozenTime $time): FrozenTime
+    {
+        return $time->setTimezone(\App\Application::LOCAL_TIMEZONE);
+    }
+
+    protected function _getVoteEnd(FrozenTime $time): FrozenTime
+    {
+        return $time->setTimezone(\App\Application::LOCAL_TIMEZONE);
     }
 }
