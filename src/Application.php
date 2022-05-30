@@ -185,6 +185,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 'prefix' => false,
                 'controller' => 'Users',
                 'action' => 'login',
+                'plugin' => false,
             ]),
         ]);
 
