@@ -82,16 +82,20 @@ $days .= ' ' . __n('day', 'days', $days);
             </label>
             <?php $this->Form->setTemplates([
                 'formGroup' => '{{input}}',
+                'inputContainer' => '{{content}}',
             ]); ?>
-            <?= $this->Form->control(
-                'amount_requested',
-                [
-                    'required' => true,
-                    'label' => 'foo',
-                    'type' => 'number',
-                    'templateVars' => ['prefix' => '$'],
-                ]
-            ) ?>
+            <div class="input-group mb-3">
+                <span class="input-group-text">$</span>
+                <?= $this->Form->control(
+                    'amount_requested',
+                    [
+                        'required' => true,
+                        'type' => 'number',
+                        'step' => 1,
+                    ]
+                ) ?>
+                <span class="input-group-text">.00</span>
+            </div>
             <?php $this->Form->setTemplates([
                 'formGroup' => '{{label}}{{input}}',
             ]); ?>
