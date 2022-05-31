@@ -3,6 +3,18 @@
  * @var \App\Model\Entity\Application[]|\Cake\ORM\ResultSet $applications
  * @var \App\View\AppView $this
  */
+
+use App\Model\Entity\Application;
+
+$updateWhen = [
+    Application::STATUS_DRAFT,
+    Application::STATUS_REVISION_REQUESTED,
+];
+$withdrawWhen = [
+    Application::STATUS_UNDER_REVIEW,
+    Application::STATUS_VOTING
+];
+
 ?>
 <?= $this->title() ?>
 
@@ -42,29 +54,33 @@
                         <?= $application->status_name ?>
                     </td>
                     <td>
+                        <?php if (in_array($application->status_id, $updateWhen)): ?>
+                            <?= $this->Html->link(
+                                'Update / Submit',
+                                [
+                                    'controller' => 'Applications',
+                                    'action' => 'edit',
+                                    'id' => $application->id,
+                                ],
+                                ['class' => 'btn btn-secondary']
+                            ) ?>
+                        <?php endif; ?>
+                        <?php if (in_array($application->status_id, $withdrawWhen)): ?>
+                            <?= $this->Html->link(
+                                'Withdraw',
+                                [
+                                    'controller' => 'Applications',
+                                    'action' => 'withdraw',
+                                    'id' => $application->id,
+                                ],
+                                ['class' => 'btn btn-secondary']
+                            ) ?>
+                        <?php endif; ?>
                         <?= $this->Html->link(
-                            'Update',
+                            'View',
                             [
                                 'controller' => 'Applications',
-                                'action' => 'edit',
-                                'id' => $application->id,
-                            ],
-                            ['class' => 'btn btn-secondary']
-                        ) ?>
-                        <?= $this->Html->link(
-                            'Submit',
-                            [
-                                'controller' => 'Applications',
-                                'action' => 'submit',
-                                'id' => $application->id,
-                            ],
-                            ['class' => 'btn btn-secondary']
-                        ) ?>
-                        <?= $this->Html->link(
-                            'Withdraw',
-                            [
-                                'controller' => 'Applications',
-                                'action' => 'withdraw',
+                                'action' => 'view',
                                 'id' => $application->id,
                             ],
                             ['class' => 'btn btn-secondary']
