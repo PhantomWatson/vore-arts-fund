@@ -66,7 +66,6 @@ class ImagesTable extends Table
         $validator
             ->scalar('caption')
             ->maxLength('caption', 200)
-            ->requirePresence('caption', 'create')
             ->notEmptyString('caption');
 
         $validator
