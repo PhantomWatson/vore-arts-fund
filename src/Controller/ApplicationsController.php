@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Model\Entity\Application;
 use App\Model\Entity\FundingCycle;
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
 use Cake\Routing\Router;
 use Cake\Utility\Security;
@@ -58,12 +59,12 @@ class ApplicationsController extends AppController
     /**
      * Page for submitting an application
      *
-     * @return void
+     * @return \Cake\Http\Response|null
      * @throws \Cake\Http\Exception\ForbiddenException When a directory traversal attempt.
      * @throws \Cake\Http\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
-    public function apply()
+    public function apply(): ?Response
     {
         $this->title('Apply for Funding');
 
@@ -83,7 +84,7 @@ class ApplicationsController extends AppController
         $this->setFromNow($fundingCycle);
 
         if (!$this->request->is('post')) {
-            return;
+            return null;
         }
 
         if (is_null($fundingCycle)) {
@@ -97,7 +98,7 @@ class ApplicationsController extends AppController
                 "Please check back later, or visit the <a href=\"$url\">Funding Cycles</a> page for information " .
                 'about upcoming application periods.'
             );
-            return;
+            return null;
         }
 
         // Process form
@@ -108,10 +109,12 @@ class ApplicationsController extends AppController
         $application->funding_cycle_id = $fundingCycle->id;
         $application->status_id = isset($data['save']) ? Application::STATUS_APPLYING : 0;
         $verb = isset($data['save']) ? 'saved' : 'submitted';
+        $hasErrors = false;
         if ($this->Applications->save($application)) {
             $this->Flash->success("The application has been $verb.");
         } else {
             $this->Flash->error("The application could not be $verb.");
+            $hasErrors = true;
         }
 
         // Process image
@@ -137,11 +140,21 @@ class ApplicationsController extends AppController
                 $this->Flash->error(
                     'Unfortunately, there was an error uploading that image. Details: ' . $e->getMessage()
                 );
-                return;
+                return null;
             }
 
-            $this->Images->save($image);
+            if (!$this->Images->save($image)) {
+                $hasErrors = true;
+            }
         }
+
+        // Bounce back to form on error
+        if ($hasErrors) {
+            return null;
+        }
+
+        // Otherwise, go to applications index page
+        return $this->redirect(['index']);
     }
 
     /**
@@ -224,5 +237,19 @@ class ApplicationsController extends AppController
             }
         }
         $this->title('Delete');
+    }
+
+    public function index()
+    {
+        $this->title('My Applications');
+        /** @var \App\Model\Entity\User $user */
+        $user = $this->Authentication->getIdentity();
+        $applications = $this->Applications
+            ->find()
+            ->where(['user_id' => $user->id])
+            ->orderDesc('Applications.created')
+            ->contain(['FundingCycles'])
+            ->all();
+        $this->set(compact('applications'));
     }
 }

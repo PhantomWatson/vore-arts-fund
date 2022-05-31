@@ -26,6 +26,9 @@ $isVerified = $user->is_verified ?? false;
                     <?= $this->Html->linkFromPath('Account', 'Users::account', [], ['class' => 'nav-link']) ?>
                 </li>
                 <li class="nav-item">
+                    <?= $this->Html->linkFromPath('My Applications', 'Applications::index', [], ['class' => 'nav-link']) ?>
+                </li>
+                <li class="nav-item">
                     <?= $this->Html->linkFromPath('Apply', 'Applications::apply', [], ['class' => 'nav-link']) ?>
                 </li>
                 <li class="nav-item">
