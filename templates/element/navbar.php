@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
+ * @var bool $hasApplications
  */
 $loggedIn = (bool)$user;
 $isAdmin = $user->is_admin ?? false;
@@ -25,12 +26,15 @@ $isVerified = $user->is_verified ?? false;
                 <li class="nav-item">
                     <?= $this->Html->linkFromPath('Account', 'Users::account', [], ['class' => 'nav-link']) ?>
                 </li>
-                <li class="nav-item">
-                    <?= $this->Html->linkFromPath('My Applications', 'Applications::index', [], ['class' => 'nav-link']) ?>
-                </li>
-                <li class="nav-item">
-                    <?= $this->Html->linkFromPath('Apply', 'Applications::apply', [], ['class' => 'nav-link']) ?>
-                </li>
+                <?php if ($hasApplications): ?>
+                    <li class="nav-item">
+                        <?= $this->Html->linkFromPath('My Applications', 'Applications::index', [], ['class' => 'nav-link']) ?>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <?= $this->Html->linkFromPath('Apply', 'Applications::apply', [], ['class' => 'nav-link']) ?>
+                    </li>
+                <?php endif; ?>
                 <li class="nav-item">
                     <?= $this->Html->linkFromPath('Log Out', 'Users::logout', [], ['class' => 'nav-link']) ?>
                 </li>

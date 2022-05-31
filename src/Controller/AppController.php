@@ -53,9 +53,11 @@ class AppController extends Controller
     {
         parent::beforeFilter($event);
 
-        $this->set([
-            'user' => $this->Authentication->getIdentity()
-        ]);
+        /** @var \App\Model\Entity\User|null $user */
+        $user = $this->Authentication->getIdentity();
+        $applicationsTable = $this->getTableLocator()->get('Applications');
+        $hasApplications = $user && $applicationsTable->exists(['user_id' => $user->id]);
+        $this->set(compact('user', 'hasApplications'));
     }
 
     /**
