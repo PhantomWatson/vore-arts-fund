@@ -7,7 +7,11 @@
 <?= $this->title() ?>
 
 <p>
-    <?= $application->category->name ?>
+    <strong>Category:</strong> <?= $application->category->name ?>
+</p>
+
+<p>
+    <strong>Funding cycle:</strong> <?= $application->funding_cycle->name ?>
 </p>
 
 <p>

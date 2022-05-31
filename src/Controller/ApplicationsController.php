@@ -231,7 +231,7 @@ class ApplicationsController extends AppController
         $application = $this->Applications
             ->find()
             ->where(['Applications.id' => $applicationId])
-            ->contain(['Images', 'Categories'])
+            ->contain(['Images', 'Categories', 'FundingCycles'])
             ->first();
         if (!$application) {
             $this->Flash->error('Sorry, but that application was not found');
