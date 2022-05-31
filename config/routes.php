@@ -37,15 +37,16 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/terms', 'Pages::terms');
 
     // Applications
+    $builder->connect('/my-applications', 'Applications::index');
+    $builder->connect('/my-applications/:id', 'Applications::viewMy');
+    $builder->connect('/my-applications/delete/:id', 'Applications::delete');
+    $builder->connect('/my-applications/resubmit/:id', 'Applications::resubmit');
+    $builder->connect('/my-applications/withdraw/:id', 'Applications::withdraw');
+    $builder->connect('/applications/:id', 'Applications::view');
     $builder->connect('/apply', 'Applications::apply');
-    $builder->connect('/delete/:id', 'Applications::delete');
-    $builder->connect('/resubmit/:id', 'Applications::resubmit');
-    $builder->connect('/application/:id', 'Applications::view');
-    $builder->connect('/withdraw/:id', 'Applications::withdraw');
 
     // Votes
     $builder->connect('/submit', 'Votes::submit');
-    $builder->connect('/vote', 'Votes::index');
     $builder->connect('/vote', 'Votes::index');
 
     // Users

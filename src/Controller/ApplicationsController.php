@@ -159,11 +159,54 @@ class ApplicationsController extends AppController
     }
 
     /**
-     * Page for viewing an application
+     * Page for viewing an arbitrary application
      *
      * @return \Cake\Http\Response|null
      */
-    public function view()
+    public function view(): ?Response
+    {
+        $id = $this->request->getParam('id');
+        /** @var Application $application */
+        $application = $this->Applications->find()->where(['id' => $id])->first();
+
+        // Statuses in which an application is viewable by the public
+        $viewableStatuses = [
+            Application::STATUS_VOTING,
+            Application::STATUS_AWARDED,
+            Application::STATUS_NOT_AWARDED,
+        ];
+
+        $isViewable = in_array($application->status_id, $viewableStatuses);
+        if (!$isViewable) {
+            $this->Flash->error('Sorry, but that application is not available to view');
+            return $this->redirect('/');
+        }
+
+        return $this->_view();
+    }
+
+    /**
+     * Page for viewing one's own application
+     *
+     * @return \Cake\Http\Response|null
+     */
+    public function viewMy(): ?Response
+    {
+        $id = $this->request->getParam('id');
+        /** @var \App\Model\Entity\User $user */
+        $user = $this->Authentication->getIdentity();
+        if (!$this->Applications->exists(['id' => $id, 'user_id' => $user])) {
+            $this->Flash->error('Sorry, but that application is not available to view');
+            return $this->redirect('/');
+        }
+
+        return $this->_view();
+    }
+
+    /**
+     * @return \Cake\Http\Response|null
+     */
+    private function _view()
     {
         $id = $this->request->getParam('id');
         /** @var \App\Model\Entity\Application $application */

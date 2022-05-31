@@ -80,7 +80,7 @@ $withdrawWhen = [
                             'View',
                             [
                                 'controller' => 'Applications',
-                                'action' => 'view',
+                                'action' => 'viewMy',
                                 'id' => $application->id,
                             ],
                             ['class' => 'btn btn-secondary']
