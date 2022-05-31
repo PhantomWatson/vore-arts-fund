@@ -6,9 +6,9 @@ namespace App\Controller;
 use App\Model\Entity\Application;
 use App\Model\Entity\FundingCycle;
 use Cake\Event\EventInterface;
-use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
 use Cake\Routing\Router;
+use Cake\Utility\Security;
 
 /**
  * ApplicationsController
@@ -58,12 +58,12 @@ class ApplicationsController extends AppController
     /**
      * Page for submitting an application
      *
-     * @return \Cake\Http\Response|null
+     * @return void
      * @throws \Cake\Http\Exception\ForbiddenException When a directory traversal attempt.
      * @throws \Cake\Http\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
-    public function apply(): ?Response
+    public function apply()
     {
         $this->title('Apply for Funding');
 
@@ -83,7 +83,7 @@ class ApplicationsController extends AppController
         $this->setFromNow($fundingCycle);
 
         if (!$this->request->is('post')) {
-            return null;
+            return;
         }
 
         if (is_null($fundingCycle)) {
@@ -97,7 +97,7 @@ class ApplicationsController extends AppController
                 "Please check back later, or visit the <a href=\"$url\">Funding Cycles</a> page for information " .
                 'about upcoming application periods.'
             );
-            return null;
+            return;
         }
 
         // Process form
@@ -107,29 +107,41 @@ class ApplicationsController extends AppController
         $application->user_id = $user ? $user->id : null;
         $application->funding_cycle_id = $fundingCycle->id;
         $application->status_id = isset($data['save']) ? Application::STATUS_APPLYING : 0;
-        $result = $this->Applications->save($application);
         $verb = isset($data['save']) ? 'saved' : 'submitted';
-        if ($result) {
+        if ($this->Applications->save($application)) {
             $this->Flash->success("The application has been $verb.");
         } else {
             $this->Flash->error("The application could not be $verb.");
         }
+
+        // Process image
+        /** @var \Laminas\Diactoros\UploadedFile $rawImage */
         $rawImage = $data['image'];
-        if ($rawImage['size'] !== 0) {
+        if ($rawImage && $rawImage->getSize() !== 0) {
             /** @var \App\Model\Entity\Image $image */
             $image = $this->Images->newEmptyEntity();
-            $image->application_id = $result->id;
+            $image->application_id = $application->id;
             $image->weight = 0;
-            $path = DS . 'img' . DS . $rawImage['name'];
-            $path = str_replace(' ', '', $path);
-            $image->path = $path;
             $image->caption = $data['imageCaption'];
-            if (!move_uploaded_file($rawImage['tmp_name'], WWW_ROOT . $path) && $this->Images->save($image)) {
-                $this->Flash->error('Unfortunately, there was an error uploading that image.');
+            $filenameSplit = explode('.', $rawImage->getClientFilename());
+            $image->filename = sprintf(
+                '%s-%s.%s',
+                $application->id,
+                Security::randomString(10),
+                end($filenameSplit)
+            );
+            $path = WWW_ROOT . 'img' . DS . 'applications' . DS . $image->filename;
+            try {
+                $rawImage->moveTo($path);
+            } catch (\Exception $e) {
+                $this->Flash->error(
+                    'Unfortunately, there was an error uploading that image. Details: ' . $e->getMessage()
+                );
+                return;
             }
-        }
 
-        return null;
+            $this->Images->save($image);
+        }
     }
 
     /**
