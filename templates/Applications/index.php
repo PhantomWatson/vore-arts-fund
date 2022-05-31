@@ -6,6 +6,17 @@
 ?>
 <?= $this->title() ?>
 
+<p>
+    <?= $this->Html->link(
+        'Submit a new application for funding',
+        [
+            'controller' => 'Applications',
+            'action' => 'apply',
+        ],
+        ['class' => 'btn btn-primary']
+    ) ?>
+</p>
+
 <?php if ($applications->count()): ?>
     <table class="table">
         <thead>
