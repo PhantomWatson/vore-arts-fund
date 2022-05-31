@@ -69,6 +69,12 @@ class ImagesTable extends Table
             ->requirePresence('caption', 'create')
             ->notEmptyString('caption');
 
+        $validator
+            ->scalar('filename')
+            ->maxLength('filename', 50)
+            ->requirePresence('filename')
+            ->notEmptyString('filename');
+
         return $validator;
     }
 

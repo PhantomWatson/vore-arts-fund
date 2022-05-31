@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $application_id
+ * @property string $filename
  * @property int $weight
  * @property string $caption
  * @property \Cake\I18n\FrozenTime $created
@@ -29,6 +30,7 @@ class Image extends Entity
      */
     protected $_accessible = [
         'application_id' => true,
+        'filename' => true,
         'weight' => true,
         'caption' => true,
         'created' => true,
