@@ -40,7 +40,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/apply', 'Applications::apply');
     $builder->connect('/delete/:id', 'Applications::delete');
     $builder->connect('/resubmit/:id', 'Applications::resubmit');
-    $builder->connect('/view-application/:id', 'Applications::view');
+    $builder->connect('/application/:id', 'Applications::view');
     $builder->connect('/withdraw/:id', 'Applications::withdraw');
 
     // Votes
