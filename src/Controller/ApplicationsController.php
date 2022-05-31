@@ -192,10 +192,10 @@ class ApplicationsController extends AppController
      */
     public function viewMy(): ?Response
     {
-        $id = $this->request->getParam('id');
+        $applicationId = $this->request->getParam('id');
         /** @var \App\Model\Entity\User $user */
         $user = $this->Authentication->getIdentity();
-        if (!$this->Applications->exists(['id' => $id, 'user_id' => $user])) {
+        if (!$this->Applications->exists(['id' => $applicationId, 'user_id' => $user->id])) {
             $this->Flash->error('Sorry, but that application is not available to view');
             return $this->redirect('/');
         }
@@ -208,24 +208,22 @@ class ApplicationsController extends AppController
      */
     private function _view()
     {
-        $id = $this->request->getParam('id');
+        $applicationId = $this->request->getParam('id');
         /** @var \App\Model\Entity\Application $application */
-        $application = $this->Applications->find()->where(['id' => $id])->first();
+        $application = $this->Applications
+            ->find()
+            ->where(['Applications.id' => $applicationId])
+            ->contain(['Images', 'Categories'])
+            ->first();
         if (!$application) {
             $this->Flash->error('Sorry, but that application was not found');
 
             return $this->redirect('/');
         }
 
-        $category = $this->Categories->find()->all()->toArray();
-        $image = $this->Images->find()->where(['application_id' => $application->id])->first();
-        $title = $application->title;
-        $this->set(compact(
-            'application',
-            'category',
-            'image',
-            'title',
-        ));
+        $this->set(compact('application'));
+        $this->title('Application: ' . $application->title);
+        $this->viewBuilder()->setTemplate('view');
 
         return null;
     }
