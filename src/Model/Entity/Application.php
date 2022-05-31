@@ -32,7 +32,8 @@ use Cake\ORM\Entity;
  */
 class Application extends Entity
 {
-    const STATUS_APPLYING = 1;
+    const STATUS_DRAFT = 0;
+    const STATUS_UNDER_REVIEW = 1;
     const STATUS_ACCEPTED = 2;
     const STATUS_REJECTED = 3;
     const STATUS_REVISION_REQUESTED = 4;
@@ -40,7 +41,6 @@ class Application extends Entity
     const STATUS_AWARDED = 6;
     const STATUS_NOT_AWARDED = 7;
     const STATUS_WITHDRAWN = 8;
-    const STATUS_UNDER_REVIEW = 9;
 
     /**
      * @return string[]
@@ -48,15 +48,15 @@ class Application extends Entity
     public static function getStatuses(): array
     {
         return [
-            self::STATUS_APPLYING => 'Applying',
-            self::STATUS_ACCEPTED => 'Accepted',
-            self::STATUS_REJECTED => 'Rejected',
+            self::STATUS_DRAFT              => 'Draft',
+            self::STATUS_UNDER_REVIEW       => 'Under Review',
+            self::STATUS_ACCEPTED           => 'Accepted',
+            self::STATUS_REJECTED           => 'Rejected',
             self::STATUS_REVISION_REQUESTED => 'Revision Requested',
-            self::STATUS_VOTING => 'Voting',
-            self::STATUS_AWARDED => 'Awarded',
-            self::STATUS_NOT_AWARDED => 'Not Awarded',
-            self::STATUS_WITHDRAWN => 'Withdrawn',
-            self::STATUS_UNDER_REVIEW => 'Under Review',
+            self::STATUS_VOTING             => 'Voting',
+            self::STATUS_AWARDED            => 'Awarded',
+            self::STATUS_NOT_AWARDED        => 'Not Awarded',
+            self::STATUS_WITHDRAWN          => 'Withdrawn',
         ];
     }
 

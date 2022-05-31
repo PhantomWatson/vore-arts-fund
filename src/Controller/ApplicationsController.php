@@ -102,13 +102,14 @@ class ApplicationsController extends AppController
         }
 
         // Process form
+        $submitting = !isset($data['save']);
         $data = $this->request->getData();
         $application = $this->Applications->newEntity($data);
         $user = $this->request->getAttribute('identity');
         $application->user_id = $user ? $user->id : null;
         $application->funding_cycle_id = $fundingCycle->id;
-        $application->status_id = isset($data['save']) ? Application::STATUS_APPLYING : 0;
-        $verb = isset($data['save']) ? 'saved' : 'submitted';
+        $application->status_id = $submitting ? Application::STATUS_UNDER_REVIEW : Application::STATUS_DRAFT;
+        $verb = $submitting ? 'submitted' : 'saved';
         $hasErrors = false;
         if ($this->Applications->save($application)) {
             $this->Flash->success("The application has been $verb.");
