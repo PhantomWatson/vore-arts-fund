@@ -6,10 +6,12 @@ namespace App\Controller;
 use App\Model\Entity\Application;
 use App\Model\Entity\FundingCycle;
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
 use Cake\Routing\Router;
 use Cake\Utility\Security;
+use Exception;
 
 /**
  * ApplicationsController
@@ -32,12 +34,12 @@ class ApplicationsController extends AppController
     /**
      * Sets the $fromNow viewVar
      *
-     * @param \App\Model\Entity\FundingCycle $fundingCycle
+     * @param FrozenTime $deadline
      */
-    private function setFromNow(FundingCycle $fundingCycle)
+    private function setFromNow($deadline)
     {
         // Set times to 00:00 to make "days from now" math easier
-        $deadline = $fundingCycle->application_end->setTime(0, 0, 0, 0);
+        $deadline = $deadline->setTime(0, 0, 0, 0);
         $tz = \App\Application::LOCAL_TIMEZONE;
         $today = (FrozenTime::now($tz))->setTime(0, 0, 0, 0);
         $days = $deadline->diffInDays($today);
@@ -66,27 +68,8 @@ class ApplicationsController extends AppController
      */
     public function apply(): ?Response
     {
-        $this->title('Apply for Funding');
-
-        // Set data needed by form
         /** @var FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->find('current')->first();
-        if (!$fundingCycle) {
-            $this->viewBuilder()->setTemplate('no_funding_cycle');
-        }
-
-        $application = $this->Applications->newEmptyEntity();
-        $this->set([
-            'application' => $application,
-            'categories' => $this->Categories->getOrdered(),
-            'fundingCycle' => $fundingCycle,
-        ]);
-        $this->setFromNow($fundingCycle);
-
-        if (!$this->request->is('post')) {
-            return null;
-        }
-
         if (is_null($fundingCycle)) {
             $url = Router::url([
                 'prefix' => false,
@@ -98,23 +81,35 @@ class ApplicationsController extends AppController
                 "Please check back later, or visit the <a href=\"$url\">Funding Cycles</a> page for information " .
                 'about upcoming application periods.'
             );
+            return $this->redirect('/');
+        }
+
+        $this->title('Apply for Funding');
+        $this->viewBuilder()->setTemplate('form');
+        $application = $this->Applications->newEmptyEntity();
+        $categories = $this->Categories->getOrdered();
+        $deadline = $fundingCycle->application_end->format('F j, Y');
+        $this->set(compact('application', 'categories', 'fundingCycle', 'deadline'));
+        $this->setFromNow($fundingCycle->application_end);
+
+        if (!$this->request->is('post')) {
             return null;
         }
 
         // Process form
-        $submitting = !isset($data['save']);
         $data = $this->request->getData();
         $application = $this->Applications->newEntity($data);
         $user = $this->request->getAttribute('identity');
         $application->user_id = $user ? $user->id : null;
         $application->funding_cycle_id = $fundingCycle->id;
-        $application->status_id = $submitting ? Application::STATUS_UNDER_REVIEW : Application::STATUS_DRAFT;
-        $verb = $submitting ? 'submitted' : 'saved';
+        $savingToDraft = isset($data['save']);
+        $application->status_id = $savingToDraft ? Application::STATUS_DRAFT : Application::STATUS_UNDER_REVIEW;
+        $verb = $savingToDraft ? 'saved' : 'submitted';
         $hasErrors = false;
         if ($this->Applications->save($application)) {
-            $this->Flash->success("The application has been $verb.");
+            $this->Flash->success("Your application has been $verb.");
         } else {
-            $this->Flash->error("The application could not be $verb.");
+            $this->Flash->error("Your application could not be $verb.");
             $hasErrors = true;
         }
 
@@ -122,29 +117,7 @@ class ApplicationsController extends AppController
         /** @var \Laminas\Diactoros\UploadedFile $rawImage */
         $rawImage = $data['image'];
         if ($rawImage && $rawImage->getSize() !== 0) {
-            /** @var \App\Model\Entity\Image $image */
-            $image = $this->Images->newEmptyEntity();
-            $image->application_id = $application->id;
-            $image->weight = 0;
-            $image->caption = $data['imageCaption'];
-            $filenameSplit = explode('.', $rawImage->getClientFilename());
-            $image->filename = sprintf(
-                '%s-%s.%s',
-                $application->id,
-                Security::randomString(10),
-                end($filenameSplit)
-            );
-            $path = WWW_ROOT . 'img' . DS . 'applications' . DS . $image->filename;
-            try {
-                $rawImage->moveTo($path);
-            } catch (\Exception $e) {
-                $this->Flash->error(
-                    'Unfortunately, there was an error uploading that image. Details: ' . $e->getMessage()
-                );
-                return null;
-            }
-
-            if (!$this->Images->save($image)) {
+            if (!$this->processImageUpload($rawImage, $application->id, $data['imageCaption'])) {
                 $hasErrors = true;
             }
         }
@@ -156,6 +129,39 @@ class ApplicationsController extends AppController
 
         // Otherwise, go to applications index page
         return $this->redirect(['index']);
+    }
+
+    /**
+     * @param \Laminas\Diactoros\UploadedFile $rawImage
+     * @param int $applicationId
+     * @param string $caption
+     * @return \App\Model\Entity\Image|false|null
+     */
+    private function processImageUpload($rawImage, $applicationId, $caption)
+    {
+        /** @var \App\Model\Entity\Image $image */
+        $image = $this->Images->newEmptyEntity();
+        $image->application_id = $applicationId;
+        $image->weight = 0;
+        $image->caption = $caption;
+        $filenameSplit = explode('.', $rawImage->getClientFilename());
+        $image->filename = sprintf(
+            '%s-%s.%s',
+            $applicationId,
+            Security::randomString(10),
+            end($filenameSplit)
+        );
+        $path = WWW_ROOT . 'img' . DS . 'applications' . DS . $image->filename;
+        try {
+            $rawImage->moveTo($path);
+        } catch (Exception $e) {
+            $this->Flash->error(
+                'Unfortunately, there was an error uploading that image. Details: ' . $e->getMessage()
+            );
+            return null;
+        }
+
+        return $this->Images->save($image);
     }
 
     /**
@@ -193,14 +199,26 @@ class ApplicationsController extends AppController
     public function viewMy(): ?Response
     {
         $applicationId = $this->request->getParam('id');
-        /** @var \App\Model\Entity\User $user */
-        $user = $this->Authentication->getIdentity();
-        if (!$this->Applications->exists(['id' => $applicationId, 'user_id' => $user->id])) {
+        if (!$this->isOwnApplication($applicationId)) {
             $this->Flash->error('Sorry, but that application is not available to view');
             return $this->redirect('/');
         }
 
         return $this->_view();
+    }
+
+    /**
+     * Returns TRUE if the current user owns the specified application
+     *
+     * @param int $applicationId
+     * @return bool
+     */
+    private function isOwnApplication($applicationId): bool
+    {
+        /** @var \App\Model\Entity\User $user */
+        $user = $this->Authentication->getIdentity();
+
+        return $this->Applications->exists(['id' => $applicationId, 'user_id' => $user->id]);
     }
 
     /**
@@ -247,21 +265,70 @@ class ApplicationsController extends AppController
     }
 
     /**
-     * Page for resubmitting a returned application
+     * Page for updating a draft or (re)submitting an application
      *
-     * @return void
+     * @return \Cake\Http\Response|null
      */
-    public function resubmit()
+    public function edit(): ?Response
     {
-        $id = $this->request->getParam('id');
-        $application = $this->Applications->find()->where(['id' => $id])->first();
-        if ($this->request->is('post')) {
-            $application = $this->Applications->patchEntity($application, ['status_id' => Application::STATUS_UNDER_REVIEW]);
-            if ($this->Applications->save($application)) {
-                $this->Flash->success('Application has been resubmitted.');
-            }
+        $applicationId = $this->request->getParam('id');
+        if (!$this->isOwnApplication($applicationId)) {
+            $this->Flash->error('That application was not found');
+            return $this->redirect('/');
         }
+
+        /** @var Application $application */
+        $application = $this->Applications
+            ->find()
+            ->where(['id' => $applicationId])
+            ->contain('FundingCycles')
+            ->first();
+
+        $isUpdatable = in_array(
+            $application->status_id,
+            [Application::STATUS_DRAFT, Application::STATUS_REVISION_REQUESTED]
+        );
+        if (!$isUpdatable) {
+            $this->Flash->error('That application cannot currently be updated.');
+            return $this->redirect('/');
+        }
+
         $this->title('Resubmit');
+        $this->viewBuilder()->setTemplate('form');
+        // If application is draft, deadline is application_end
+        // If application is revision-requested, deadline is resubmit_deadline
+        switch ($application->status_id) {
+            case Application::STATUS_DRAFT:
+                $deadline = $application->funding_cycle->application_end;
+                break;
+            case Application::STATUS_REVISION_REQUESTED:
+                $deadline = $application->funding_cycle->resubmit_deadline;
+                break;
+            default:
+                throw new BadRequestException('That application cannot currently be updated.');
+        }
+        $this->set(compact('application'));
+        $this->setFromNow($deadline);
+
+        if (!$this->request->is('post')) {
+            return null;
+        }
+
+        $data = $this->request->getData();
+        $application = $this->Applications->patchEntity($application, $data);
+        $savingToDraft = isset($data['save']);
+
+        // If saving, status doesn't change. Otherwise, it's submitted for review.
+        if (!$savingToDraft) {
+            $application->status_id = Application::STATUS_UNDER_REVIEW;
+        }
+
+        if ($this->Applications->save($application)) {
+            $verb = $savingToDraft ? 'updated' : 'submitted';
+            $this->Flash->success("Application has been $verb.");
+        }
+
+        return null;
     }
 
     /**
