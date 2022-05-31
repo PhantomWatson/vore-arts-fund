@@ -4,9 +4,8 @@
  * @var \App\Model\Entity\FundingCycle $fundingCycle
  * @var \App\View\AppView $this
  * @var string[] $categories
+ * @var string $fromNow
  */
-
-
 ?>
 <?= $this->title() ?>
 
