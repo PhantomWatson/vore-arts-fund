@@ -13,6 +13,7 @@ use Cake\Event\EventInterface;
  * will inherit them.
  *
  * @link https://book.cakephp.org/4/en/controllers.html#the-app-controller
+ * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
  */
 class AppController extends Controller
 {
@@ -53,7 +54,7 @@ class AppController extends Controller
         parent::beforeFilter($event);
 
         $this->set([
-            'user' => $this->request->getAttribute('authentication')->getResult()->getData()
+            'user' => $this->Authentication->getIdentity()
         ]);
     }
 
