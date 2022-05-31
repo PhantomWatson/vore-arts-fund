@@ -28,6 +28,7 @@
 <fieldset>
     <?= $this->Form->control('application_begin') ?>
     <?= $this->Form->control('application_end') ?>
+    <?= $this->Form->control('resubmit_deadline') ?>
     <?= $this->Form->control('vote_begin') ?>
     <?= $this->Form->control('vote_end') ?>
     <?= $this->Form->control('funding_available') ?>

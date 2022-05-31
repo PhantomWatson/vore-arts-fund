@@ -63,6 +63,7 @@ class FundingCyclesController extends AppController
             $end = $end->setTime(23, 59, 59);
             $fundingCycle->application_begin = $start;
             $fundingCycle->application_end = $end;
+            $fundingCycle->resubmit_deadline = $end;
             $fundingCycle->vote_begin = $start;
             $fundingCycle->vote_end = $end;
         }

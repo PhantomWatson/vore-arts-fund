@@ -12,6 +12,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property \Cake\I18n\FrozenTime|null $application_begin
  * @property \Cake\I18n\FrozenTime|null $application_end
+ * @property \Cake\I18n\FrozenTime|null $resubmit_deadline
  * @property \Cake\I18n\FrozenTime|null $vote_begin
  * @property \Cake\I18n\FrozenTime|null $vote_end
  * @property int $funding_available
@@ -38,6 +39,7 @@ class FundingCycle extends Entity
     protected $_accessible = [
         'application_begin' => true,
         'application_end' => true,
+        'resubmit_deadline' => true,
         'vote_begin' => true,
         'vote_end' => true,
         'funding_available' => true,
@@ -103,6 +105,11 @@ class FundingCycle extends Entity
     }
 
     protected function _getVoteEnd(FrozenTime $time): FrozenTime
+    {
+        return $time->setTimezone(\App\Application::LOCAL_TIMEZONE);
+    }
+
+    protected function _getResubmitDeadline(FrozenTime $time): FrozenTime
     {
         return $time->setTimezone(\App\Application::LOCAL_TIMEZONE);
     }
