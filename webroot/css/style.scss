@@ -636,3 +636,44 @@ body {
     height: 200px;
     width: 200px;
 }
+
+#cycles-chart {
+    background-color: #fff;
+    width: auto;
+
+    td {
+        text-align: center;
+    }
+
+    .spring {
+        th,
+        td:not(.blank) {
+            background-color: #d9ead3;
+        }
+    }
+
+    .summer {
+        th,
+        td:not(.blank) {
+            background-color: #fff2cc;
+        }
+    }
+
+    .fall {
+        th,
+        td:not(.blank) {
+            background-color: #f4cccc;
+        }
+    }
+
+    .winter {
+        th,
+        td:not(.blank) {
+            background-color: #cfe2f3;
+        }
+    }
+}
+
+.form-control {
+    appearance: auto;
+}

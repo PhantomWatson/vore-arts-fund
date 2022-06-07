@@ -11703,4 +11703,32 @@ body {
   width: 200px;
 }
 
+#cycles-chart {
+  background-color: #fff;
+  width: auto;
+}
+#cycles-chart td {
+  text-align: center;
+}
+#cycles-chart .spring th,
+#cycles-chart .spring td:not(.blank) {
+  background-color: #d9ead3;
+}
+#cycles-chart .summer th,
+#cycles-chart .summer td:not(.blank) {
+  background-color: #fff2cc;
+}
+#cycles-chart .fall th,
+#cycles-chart .fall td:not(.blank) {
+  background-color: #f4cccc;
+}
+#cycles-chart .winter th,
+#cycles-chart .winter td:not(.blank) {
+  background-color: #cfe2f3;
+}
+
+.form-control {
+  appearance: auto;
+}
+
 /*# sourceMappingURL=style.css.map */

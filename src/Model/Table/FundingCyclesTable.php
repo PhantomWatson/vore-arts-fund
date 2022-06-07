@@ -63,19 +63,28 @@ class FundingCyclesTable extends Table
 
         $validator
             ->dateTime('application_begin')
-            ->allowEmptyDateTime('application_begin');
+            ->requirePresence('application_begin', 'create')
+            ->allowEmptyDateTime('application_begin', 'Required', false);
 
         $validator
             ->dateTime('application_end')
-            ->allowEmptyDateTime('application_end');
+            ->requirePresence('application_end', 'create')
+            ->allowEmptyDateTime('application_end', 'Required', false);
 
         $validator
             ->dateTime('vote_begin')
-            ->allowEmptyDateTime('vote_begin');
+            ->requirePresence('vote_begin', 'create')
+            ->allowEmptyDateTime('vote_begin', 'Required', false);
 
         $validator
             ->dateTime('vote_end')
-            ->allowEmptyDateTime('vote_end');
+            ->requirePresence('vote_end', 'create')
+            ->allowEmptyDateTime('vote_end', 'Required', false);
+
+        $validator
+            ->dateTime('resubmit_deadline')
+            ->requirePresence('resubmit_deadline', 'create')
+            ->allowEmptyDateTime('resubmit_deadline', 'Required', false);
 
         $validator
             ->integer('funding_available')
