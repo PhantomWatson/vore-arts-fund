@@ -27,7 +27,7 @@
         deadline and the beginning of voting.
     </p>
 
-    <table class="table" id="cycles-chart">
+    <table class="table table-bordered" id="cycles-chart">
         <thead>
             <tr>
                 <th>Cycle</th>
