@@ -95,7 +95,6 @@ class ApplicationsController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'register']);
         }
 
-
         $this->title('Apply for Funding');
         $this->viewBuilder()->setTemplate('form');
         $application = $this->Applications->newEmptyEntity();
