@@ -79,7 +79,8 @@ class ApplicationsController extends AppController
             $this->Flash->error(
                 'Sorry, but applications are not being accepted at the moment. ' .
                 "Please check back later, or visit the <a href=\"$url\">Funding Cycles</a> page for information " .
-                'about upcoming application periods.'
+                'about upcoming application periods.',
+                ['escape' => false]
             );
             return $this->redirect('/');
         }
