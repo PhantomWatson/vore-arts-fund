@@ -91,16 +91,17 @@ class FundingCyclesController extends AppController
      */
     public function edit()
     {
+        $fundingCycleId = $this->request->getParam('id');
         $fundingCycle = $this->FundingCycles
             ->find()
-            ->where(['id' => $this->request->getParam('id')])
+            ->where(['id' => $fundingCycleId])
             ->first();
         if ($this->request->is('put')) {
             $data = $this->request->getData();
             foreach (FundingCycle::TIME_FIELDS as $field) {
                 $data[$field] = $this->convertTimeToUtc($data[$field]);
             }
-            $fundingCycle = $this->FundingCycles->get($data['id']);
+            $fundingCycle = $this->FundingCycles->get($fundingCycleId);
             $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $data);
             if ($this->FundingCycles->save($fundingCycle)) {
                 $this->Flash->success(__('Successfully updated funding cycle'));
