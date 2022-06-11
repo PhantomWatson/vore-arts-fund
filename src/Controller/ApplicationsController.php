@@ -29,6 +29,8 @@ class ApplicationsController extends AppController
         $this->FundingCycles = $this->fetchTable('FundingCycles');
         $this->Categories = $this->fetchTable('Categories');
         $this->Images = $this->fetchTable('Images');
+
+        $this->Authentication->allowUnauthenticated(['apply']);
     }
 
     /**
@@ -84,6 +86,15 @@ class ApplicationsController extends AppController
             );
             return $this->redirect('/');
         }
+
+        // Show nonstandard error message and redirect if unauthenticated
+        /** @var \App\Model\Entity\User|null $user */
+        $user = $this->Authentication->getIdentity();
+        if (!$user) {
+            $this->Flash->error('You\'ll need to register an account or log in before applying.');
+            return $this->redirect(['controller' => 'Users', 'action' => 'register']);
+        }
+
 
         $this->title('Apply for Funding');
         $this->viewBuilder()->setTemplate('form');
