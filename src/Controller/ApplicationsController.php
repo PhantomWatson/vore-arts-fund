@@ -26,9 +26,9 @@ class ApplicationsController extends AppController
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
-        $this->loadModel('FundingCycles');
-        $this->loadModel('Categories');
-        $this->loadModel('Images');
+        $this->FundingCycles = $this->fetchTable('FundingCycles');
+        $this->Categories = $this->fetchTable('Categories');
+        $this->Images = $this->fetchTable('Images');
     }
 
     /**
