@@ -11166,7 +11166,6 @@ header {
   line-height: 64px;
   padding: 16px 0;
 }
-
 header .header-title {
   padding-left: 80px;
 }
@@ -11305,13 +11304,6 @@ input[type=radio] {
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.24);
   margin-right: 0.7rem;
 }
-.view .numbers {
-  background-color: #B7E3EC;
-  border-radius: 3px;
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.24);
-  color: #FFF;
-  margin-right: 0.7rem;
-}
 .view .columns.dates {
   background-color: #DCE47E;
   border-radius: 3px;
@@ -11324,6 +11316,13 @@ input[type=radio] {
   border-radius: 3px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.24);
   color: #fff;
+  margin-right: 0.7rem;
+}
+.view .numbers {
+  background-color: #B7E3EC;
+  border-radius: 3px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.24);
+  color: #FFF;
   margin-right: 0.7rem;
 }
 .view .strings p {
@@ -11409,17 +11408,14 @@ pre {
 .checks h4, .checks .h4 {
   margin-bottom: 1.5rem;
 }
-
 .checks hr {
   border: 0;
   height: 0;
 }
-
 .checks .success,
 .checks .problem {
   margin-left: 10px;
 }
-
 .checks .success:before,
 .checks .problem:before {
   line-height: 0;
@@ -11433,13 +11429,11 @@ pre {
   position: relative;
   left: -11px;
 }
-
 .checks .success:before {
   content: "✓";
   color: green;
   margin-right: 9px;
 }
-
 .checks .problem:before {
   content: "✘";
   color: red;
@@ -11450,7 +11444,10 @@ pre {
   background: #01545b;
 }
 
-.top-bar.expanded, .top-bar, .top-bar-section ul li, .top-bar-section li:not(.has-form) a:not(.button) {
+.top-bar.expanded,
+.top-bar,
+.top-bar-section ul li,
+.top-bar-section li:not(.has-form) a:not(.button) {
   background: #116d76;
 }
 
@@ -11496,8 +11493,8 @@ fieldset legend {
   float: right;
   text-transform: uppercase;
 }
-
-.form button:hover, .form button:focus {
+.form button:hover,
+.form button:focus {
   background: #BE840B;
   box-shadow: none;
 }
@@ -11538,18 +11535,15 @@ div.message:before {
   vertical-align: middle;
   width: 12px;
 }
-
 div.message.error {
   background-color: #C3232D;
   color: #FFF;
 }
-
 div.message.error:before {
   color: #C3232D;
   content: "x";
   padding: 11px 16px 14px 7px;
 }
-
 div.message.hidden {
   height: 0;
 }
@@ -11624,7 +11618,6 @@ table td {
   border-bottom: 1px dashed #AAA;
   clear: both;
 }
-
 .credits dt {
   background-color: #FFF;
   display: inline;
@@ -11648,7 +11641,6 @@ table td {
 .footnote {
   font-size: 80%;
 }
-
 .footnote ~ .form-group {
   margin-bottom: 0;
 }
@@ -11656,7 +11648,6 @@ table td {
 .form-group {
   margin-bottom: 2em;
 }
-
 .form-group ~ .footnote {
   margin-bottom: 1rem;
 }
