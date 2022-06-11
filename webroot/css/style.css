@@ -11544,6 +11544,9 @@ div.message.error:before {
   content: "x";
   padding: 11px 16px 14px 7px;
 }
+div.message.error a {
+  color: #fff;
+}
 div.message.hidden {
   height: 0;
 }
