@@ -22,6 +22,9 @@ $isVerified = $user->is_verified ?? false;
             <li class="nav-item">
                 <?= $this->Html->linkFromPath('Vote', 'Votes::index', [], ['class' => 'nav-link']) ?>
             </li>
+            <li class="nav-item">
+                <?= $this->Html->linkFromPath('Apply', 'Applications::apply', [], ['class' => 'nav-link']) ?>
+            </li>
             <?php if ($loggedIn): ?>
                 <li class="nav-item">
                     <?= $this->Html->linkFromPath('Account', 'Users::account', [], ['class' => 'nav-link']) ?>
@@ -29,10 +32,6 @@ $isVerified = $user->is_verified ?? false;
                 <?php if ($hasApplications): ?>
                     <li class="nav-item">
                         <?= $this->Html->linkFromPath('My Applications', 'Applications::index', [], ['class' => 'nav-link']) ?>
-                    </li>
-                <?php else: ?>
-                    <li class="nav-item">
-                        <?= $this->Html->linkFromPath('Apply', 'Applications::apply', [], ['class' => 'nav-link']) ?>
                     </li>
                 <?php endif; ?>
                 <li class="nav-item">
