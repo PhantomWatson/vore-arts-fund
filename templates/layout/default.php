@@ -37,7 +37,6 @@ $title = $title ?? $this->fetch('title');
     <?= $this->element('navbar') ?>
     <?= $this->Flash->render() ?>
     <div class="container clearfix">
-        <?= $this->Flash->render() ?>
         <?= $this->fetch('content') ?>
         <footer>
             <?= $this->fetch('footer') ?>
