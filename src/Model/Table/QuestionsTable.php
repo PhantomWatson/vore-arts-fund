@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -71,5 +72,18 @@ class QuestionsTable extends Table
             ->notEmptyString('weight');
 
         return $validator;
+    }
+
+    /**
+     * Modifies a query to return appropriate results for displaying in an application
+     *
+     * @param \Cake\ORM\Query $query
+     * @return \Cake\ORM\Query
+     */
+    public function findForApplication(Query $query)
+    {
+        return $query
+            ->where(['enabled' => true])
+            ->orderAsc('weight');
     }
 }

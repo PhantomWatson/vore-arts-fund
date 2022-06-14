@@ -100,7 +100,9 @@ class ApplicationsController extends AppController
         $application = $this->Applications->newEmptyEntity();
         $categories = $this->Categories->getOrdered();
         $deadline = $fundingCycle->application_end->format('F j, Y');
-        $this->set(compact('application', 'categories', 'fundingCycle', 'deadline'));
+        $questionsTable = $this->fetchTable('Questions');
+        $questions = $questionsTable->find('forApplication')->toArray();
+        $this->set(compact('application', 'categories', 'fundingCycle', 'deadline', 'questions'));
         $this->setFromNow($fundingCycle->application_end);
 
         if (!$this->request->is('post')) {

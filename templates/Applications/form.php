@@ -2,12 +2,14 @@
 /**
  * @var \App\Model\Entity\Application $application
  * @var \App\Model\Entity\FundingCycle $fundingCycle
+ * @var \App\Model\Entity\Question[] $questions
  * @var \App\View\AppView $this
- * @var string[] $categories
- * @var string $fromNow
  * @var string $deadline
+ * @var string $fromNow
+ * @var string[] $categories
  */
 ?>
+
 <?= $this->title() ?>
 
 <p class="alert alert-info">
@@ -46,22 +48,8 @@
 
         <div class="form-group select required">
             <label for="description">
-                Description
+                Description of project
             </label>
-            <p>
-                Tell us
-            </p>
-            <ul>
-                <li>
-                    What you're trying to accomplish
-                </li>
-                <li>
-                    What expenses you need help covering
-                </li>
-                <li>
-                    How your project will generate money
-                </li>
-            </ul>
             <?= $this->Form->textarea(
                 'description',
                 [
@@ -70,7 +58,27 @@
                     'type' => 'textarea',
                 ]
             ) ?>
+            <p class="footnote">
+                What are you trying to accomplish?
+            </p>
         </div>
+
+        <?php foreach ($questions as $question): ?>
+            <div class="form-group select required">
+                <label for="description">
+                    <?= $question->question ?>
+                </label>
+                <?= $this->Form->hidden("answers.$question->id.question_id", ['value' => $question->id]) ?>
+                <?= $this->Form->textarea(
+                    "answers.$question->id.question",
+                    [
+                        'id' => 'description',
+                        'required' => true,
+                        'type' => 'textarea',
+                    ]
+                ) ?>
+            </div>
+        <?php endforeach; ?>
     </fieldset>
 
     <fieldset>
