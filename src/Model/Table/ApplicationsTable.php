@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\Application;
+use Cake\Datasource\EntityInterface;
+use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -18,16 +20,16 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\MessagesTable&\Cake\ORM\Association\HasMany $Messages
  * @property \App\Model\Table\NotesTable&\Cake\ORM\Association\HasMany $Notes
  * @property \App\Model\Table\VotesTable&\Cake\ORM\Association\HasMany $Votes
- * @method \App\Model\Entity\Application get($primaryKey, $options = [])
- * @method \App\Model\Entity\Application newEntity(array $data, array $options = [])
- * @method \App\Model\Entity\Application[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Application|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Application saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Application patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Application[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Application findOrCreate($search, callable $callback = null, $options = [])
+ * @method Application get($primaryKey, $options = [])
+ * @method Application newEntity(array $data, array $options = [])
+ * @method Application[] newEntities(array $data, array $options = [])
+ * @method Application|false save(EntityInterface $entity, $options = [])
+ * @method Application saveOrFail(EntityInterface $entity, $options = [])
+ * @method Application patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method Application[] patchEntities($entities, array $data, array $options = [])
+ * @method Application findOrCreate($search, callable $callback = null, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
- * @method \App\Model\Entity\Application[]|\Cake\Datasource\ResultSetInterface|false saveMany($entities, $options = [])
+ * @method Application[]|ResultSetInterface|false saveMany($entities, $options = [])
  */
 class ApplicationsTable extends Table
 {
