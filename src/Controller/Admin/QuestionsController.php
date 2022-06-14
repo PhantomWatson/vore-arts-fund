@@ -57,6 +57,12 @@ class QuestionsController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The question could not be saved. Please, try again.'));
+        } else {
+            $heaviestQuestion = $this
+                ->Questions
+                ->find('forApplication')
+                ->last();
+            $question->weight = $heaviestQuestion ? $heaviestQuestion->weight + 1 : 0;
         }
         $this->set(compact('question'));
         $this->viewBuilder()->setTemplate('form');
