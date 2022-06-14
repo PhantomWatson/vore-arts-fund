@@ -285,11 +285,7 @@ class ApplicationsController extends AppController
             ->contain('FundingCycles')
             ->first();
 
-        $isUpdatable = in_array(
-            $application->status_id,
-            [Application::STATUS_DRAFT, Application::STATUS_REVISION_REQUESTED]
-        );
-        if (!$isUpdatable) {
+        if (!$application->isUpdatable()) {
             $this->Flash->error('That application cannot currently be updated.');
             return $this->redirect('/');
         }

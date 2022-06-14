@@ -45,7 +45,7 @@ class Application extends Entity
     const STATUS_WITHDRAWN = 8;
 
     /**
-     * Returns TRUE if this event can be viewed by the public
+     * Returns TRUE if this application can be viewed by the public
      *
      * @return bool
      */
@@ -58,6 +58,21 @@ class Application extends Entity
         ];
 
         return in_array($this->status_id, $viewableStatuses);
+    }
+
+    /**
+     * Returns TRUE if this application can be updated by the applicant
+     *
+     * @return bool
+     */
+    public function isUpdatable(): bool
+    {
+        $updatableStatuses = [
+            Application::STATUS_DRAFT,
+            Application::STATUS_REVISION_REQUESTED,
+        ];
+
+        return in_array($this->status_id, $updatableStatuses);
     }
 
     /**
