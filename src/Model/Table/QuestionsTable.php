@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Question;
+use Cake\Datasource\EntityInterface;
+use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -11,21 +14,19 @@ use Cake\Validation\Validator;
  * Questions Model
  *
  * @property \App\Model\Table\AnswersTable&\Cake\ORM\Association\HasMany $Answers
- *
- * @method \App\Model\Entity\Question newEmptyEntity()
- * @method \App\Model\Entity\Question newEntity(array $data, array $options = [])
- * @method \App\Model\Entity\Question[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Question get($primaryKey, $options = [])
- * @method \App\Model\Entity\Question findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \App\Model\Entity\Question patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Question[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\Question|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Question saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Question[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Question[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\Question[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Question[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
- *
+ * @method Question newEmptyEntity()
+ * @method Question newEntity(array $data, array $options = [])
+ * @method Question[] newEntities(array $data, array $options = [])
+ * @method Question get($primaryKey, $options = [])
+ * @method Question findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method Question patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method Question[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method Question|false save(EntityInterface $entity, $options = [])
+ * @method Question saveOrFail(EntityInterface $entity, $options = [])
+ * @method Question[]|ResultSetInterface|false saveMany(iterable $entities, $options = [])
+ * @method Question[]|ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
+ * @method Question[]|ResultSetInterface|false deleteMany(iterable $entities, $options = [])
+ * @method Question[]|ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class QuestionsTable extends Table
