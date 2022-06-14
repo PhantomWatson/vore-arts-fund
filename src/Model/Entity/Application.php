@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
 /**
@@ -41,6 +43,22 @@ class Application extends Entity
     const STATUS_AWARDED = 6;
     const STATUS_NOT_AWARDED = 7;
     const STATUS_WITHDRAWN = 8;
+
+    /**
+     * Returns TRUE if this event can be viewed by the public
+     *
+     * @return bool
+     */
+    public function isViewable(): bool
+    {
+        $viewableStatuses = [
+            Application::STATUS_VOTING,
+            Application::STATUS_AWARDED,
+            Application::STATUS_NOT_AWARDED,
+        ];
+
+        return in_array($this->status_id, $viewableStatuses);
+    }
 
     /**
      * @return string[]
@@ -110,5 +128,27 @@ class Application extends Entity
     protected function _getStatusName()
     {
         return self::getStatus($this->status_id);
+    }
+
+    /**
+     * Returns the deadline to submit the current application (which may be in the "resubmit" window after the initial
+     * application window)
+     *
+     * If application is draft, deadline is application_end
+     * If application is revision-requested, deadline is resubmit_deadline
+     *
+     * @return \Cake\I18n\FrozenTime
+     * @throws \Cake\Http\Exception\BadRequestException
+     */
+    public function getSubmitDeadline(): FrozenTime
+    {
+        switch ($this->status_id) {
+            case Application::STATUS_DRAFT:
+                return $this->funding_cycle->application_end;
+            case Application::STATUS_REVISION_REQUESTED:
+                return $this->funding_cycle->resubmit_deadline;
+            default:
+                throw new BadRequestException('That application cannot currently be updated.');
+        }
     }
 }

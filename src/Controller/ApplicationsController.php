@@ -6,7 +6,6 @@ namespace App\Controller;
 use App\Model\Entity\Application;
 use App\Model\Entity\FundingCycle;
 use Cake\Event\EventInterface;
-use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
 use Cake\Routing\Router;
@@ -185,15 +184,7 @@ class ApplicationsController extends AppController
         /** @var Application $application */
         $application = $this->Applications->find()->where(['id' => $id])->first();
 
-        // Statuses in which an application is viewable by the public
-        $viewableStatuses = [
-            Application::STATUS_VOTING,
-            Application::STATUS_AWARDED,
-            Application::STATUS_NOT_AWARDED,
-        ];
-
-        $isViewable = in_array($application->status_id, $viewableStatuses);
-        if (!$isViewable) {
+        if (!$application->isViewable()) {
             $this->Flash->error('Sorry, but that application is not available to view');
             return $this->redirect('/');
         }
@@ -305,18 +296,7 @@ class ApplicationsController extends AppController
 
         $this->title('Resubmit');
         $this->viewBuilder()->setTemplate('form');
-        // If application is draft, deadline is application_end
-        // If application is revision-requested, deadline is resubmit_deadline
-        switch ($application->status_id) {
-            case Application::STATUS_DRAFT:
-                $this->setFromNow($application->funding_cycle->application_end);
-                break;
-            case Application::STATUS_REVISION_REQUESTED:
-                $this->setFromNow($application->funding_cycle->resubmit_deadline);
-                break;
-            default:
-                throw new BadRequestException('That application cannot currently be updated.');
-        }
+        $this->setFromNow($application->getSubmitDeadline());
         $this->set(compact('application'));
         $this->setApplicationVars();
 
