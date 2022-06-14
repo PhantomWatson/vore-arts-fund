@@ -98,11 +98,8 @@ class ApplicationsController extends AppController
         $this->title('Apply for Funding');
         $this->viewBuilder()->setTemplate('form');
         $application = $this->Applications->newEmptyEntity();
-        $categories = $this->Categories->getOrdered();
-        $deadline = $fundingCycle->application_end->format('F j, Y');
-        $questionsTable = $this->fetchTable('Questions');
-        $questions = $questionsTable->find('forApplication')->toArray();
-        $this->set(compact('application', 'categories', 'fundingCycle', 'deadline', 'questions'));
+        $this->setApplicationVars();
+        $this->set(compact('application'));
         $this->setFromNow($fundingCycle->application_end);
 
         if (!$this->request->is('post')) {
@@ -312,16 +309,16 @@ class ApplicationsController extends AppController
         // If application is revision-requested, deadline is resubmit_deadline
         switch ($application->status_id) {
             case Application::STATUS_DRAFT:
-                $deadline = $application->funding_cycle->application_end;
+                $this->setFromNow($application->funding_cycle->application_end);
                 break;
             case Application::STATUS_REVISION_REQUESTED:
-                $deadline = $application->funding_cycle->resubmit_deadline;
+                $this->setFromNow($application->funding_cycle->resubmit_deadline);
                 break;
             default:
                 throw new BadRequestException('That application cannot currently be updated.');
         }
         $this->set(compact('application'));
-        $this->setFromNow($deadline);
+        $this->setApplicationVars();
 
         if (!$this->request->is('post')) {
             return null;
@@ -373,5 +370,21 @@ class ApplicationsController extends AppController
             ->contain(['FundingCycles'])
             ->all();
         $this->set(compact('applications'));
+    }
+
+    /**
+     * Sets view variables needed by the application form
+     *
+     * @return void
+     */
+    private function setApplicationVars()
+    {
+        /** @var FundingCycle $fundingCycle */
+        $fundingCycle = $this->FundingCycles->find('current')->first();
+        $categories = $this->Categories->getOrdered();
+        $deadline = $fundingCycle->application_end->format('F j, Y');
+        $questionsTable = $this->fetchTable('Questions');
+        $questions = $questionsTable->find('forApplication')->toArray();
+        $this->set(compact('categories', 'fundingCycle', 'deadline', 'questions'));
     }
 }
