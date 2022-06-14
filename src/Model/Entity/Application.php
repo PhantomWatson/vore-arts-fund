@@ -117,23 +117,13 @@ class Application extends Entity
      * @var array
      */
     protected $_accessible = [
-        'user_id' => true,
         'title' => true,
         'category_id' => true,
         'description' => true,
         'amount_requested' => true,
         'accept_partial_payout' => true,
-        'funding_cycle_id' => false,
-        'status_id' => false,
-        'created' => true,
-        'modified' => true,
-        'user' => false,
         'category' => true,
-        'funding_cycle' => false,
         'images' => true,
-        'messages' => false,
-        'notes' => false,
-        'votes' => false,
         '*' => false,
     ];
 
