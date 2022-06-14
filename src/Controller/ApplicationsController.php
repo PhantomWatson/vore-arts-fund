@@ -293,7 +293,7 @@ class ApplicationsController extends AppController
         /** @var Application $application */
         $application = $this->Applications
             ->find()
-            ->where(['id' => $applicationId])
+            ->where(['Applications.id' => $applicationId])
             ->contain('FundingCycles')
             ->first();
 
