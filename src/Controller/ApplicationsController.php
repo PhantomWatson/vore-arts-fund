@@ -279,11 +279,7 @@ class ApplicationsController extends AppController
         }
 
         /** @var Application $application */
-        $application = $this->Applications
-            ->find()
-            ->where(['Applications.id' => $applicationId])
-            ->contain('FundingCycles')
-            ->first();
+        $application = $this->Applications->getForForm($applicationId);
 
         if (!$application->isUpdatable()) {
             $this->Flash->error('That application cannot currently be updated.');

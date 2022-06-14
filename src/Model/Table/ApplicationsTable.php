@@ -135,4 +135,19 @@ class ApplicationsTable extends Table
 
         return $rules;
     }
+
+    /**
+     * Returns an application entity for the apply/edit form
+     *
+     * @param int $applicationId
+     * @return EntityInterface|Application|null
+     */
+    public function getForForm($applicationId)
+    {
+        return $this
+            ->find()
+            ->where(['Applications.id' => $applicationId])
+            ->contain('FundingCycles')
+            ->first();
+    }
 }
