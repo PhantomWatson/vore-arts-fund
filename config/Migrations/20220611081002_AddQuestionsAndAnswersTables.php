@@ -14,13 +14,8 @@ class AddQuestionsAndAnswersTables extends AbstractMigration
      */
     public function change()
     {
-        $qTable = $this->table('questions', ['id' => false, 'primary_key' => ['id']]);
+        $qTable = $this->table('questions');
         $qTable
-            ->addColumn('id', 'integer', [
-                'default' => null,
-                'limit' => 6,
-                'null' => false,
-            ])
             ->addColumn('question', 'text', [
                 'default' => null,
                 'null' => true,
@@ -46,13 +41,8 @@ class AddQuestionsAndAnswersTables extends AbstractMigration
             ])
             ->create();
 
-        $aTable = $this->table('answers', ['id' => false, 'primary_key' => ['id']]);
+        $aTable = $this->table('answers');
         $aTable
-            ->addColumn('id', 'integer', [
-                'default' => null,
-                'limit' => 6,
-                'null' => false,
-            ])
             ->addColumn('application_id', 'integer', [
                 'default' => null,
                 'limit' => 6,
