@@ -71,6 +71,9 @@ class ApplicationsTable extends Table
         $this->hasMany('Votes', [
             'foreignKey' => 'application_id',
         ]);
+        $this->hasMany('Answers', [
+            'foreignKey' => 'application_id',
+        ]);
     }
 
     /**
