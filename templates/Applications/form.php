@@ -63,14 +63,14 @@
             </p>
         </div>
 
-        <?php foreach ($questions as $question): ?>
+        <?php foreach ($questions as $i => $question): ?>
             <div class="form-group select required">
                 <label for="description">
                     <?= $question->question ?>
                 </label>
-                <?= $this->Form->hidden("answers.$question->id.question_id", ['value' => $question->id]) ?>
+                <?= $this->Form->hidden("answers.$i.question_id", ['value' => $question->id]) ?>
                 <?= $this->Form->textarea(
-                    "answers.$question->id.question",
+                    "answers.$i.answer",
                     [
                         'id' => 'description',
                         'required' => true,
