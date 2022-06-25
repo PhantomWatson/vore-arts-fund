@@ -123,6 +123,7 @@ class Application extends Entity
         'amount_requested' => true,
         'accept_partial_payout' => true,
         'category' => true,
+        'answers' => true,
         'images' => true,
         '*' => false,
     ];
