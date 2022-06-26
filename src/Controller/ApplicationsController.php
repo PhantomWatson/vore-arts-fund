@@ -104,14 +104,14 @@ class ApplicationsController extends AppController
         // Process form
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-            $application = $this->Applications->newEntity($data);
+            $application = $this->Applications->newEntity($data, ['associated' => ['Answers']]);
             $application->user_id = $user->id;
             $application->funding_cycle_id = $fundingCycle->id;
             if ($this->processForm($application, $data)) {
-                return $this->redirect(['index']);
+                return $this->redirect(['action' => 'index']);
             }
         } else {
-            $application = $this->Applications->newEntity();
+            $application = $this->Applications->newEmptyEntity();
         }
 
         $this->set(compact('application'));
@@ -133,7 +133,7 @@ class ApplicationsController extends AppController
         $application->status_id = $savingToDraft ? Application::STATUS_DRAFT : Application::STATUS_UNDER_REVIEW;
         $verb = $savingToDraft ? 'saved' : 'submitted';
         $hasErrors = false;
-        $this->Applications->patchEntity($application, $data, ['associated' => ['Answers']]);
+        $application = $this->Applications->patchEntity($application, $data, ['associated' => ['Answers']]);
         if ($this->Applications->save($application)) {
             $this->Flash->success("Your application has been $verb.");
         } else {
