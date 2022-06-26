@@ -34,10 +34,13 @@ $withdrawWhen = [
         <thead>
             <tr>
                 <th>
-                    Funding Cycle
+                    Project
                 </th>
                 <th>
                     Status
+                </th>
+                <th>
+                    Funding Cycle
                 </th>
                 <th>
                     Actions
@@ -48,10 +51,13 @@ $withdrawWhen = [
             <?php foreach ($applications as $application): ?>
                 <tr>
                     <td>
-                        <?= $application->funding_cycle->name ?>
+                        <?= $application->title ?>
                     </td>
                     <td>
                         <?= $application->status_name ?>
+                    </td>
+                    <td>
+                        <?= $application->funding_cycle->name ?>
                     </td>
                     <td>
                         <?php if (in_array($application->status_id, $updateWhen)): ?>
