@@ -6,7 +6,7 @@ namespace App\Controller\Admin;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 
-class AdminController extends AppController
+class DashboardController extends AppController
 {
     /**
      * Admin index page

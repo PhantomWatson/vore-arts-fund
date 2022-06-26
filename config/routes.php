@@ -68,7 +68,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
 // Admin Routes
 $routes->prefix('admin', function (RouteBuilder $builder) {
     // Admin
-    $builder->connect('/', 'Admin::index');
+    $builder->connect('/', 'Dashboard::index');
 
     // Funding cycles
     $builder->connect('/funding-cycles', 'FundingCycles::index');
