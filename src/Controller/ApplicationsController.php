@@ -69,6 +69,7 @@ class ApplicationsController extends AppController
      */
     public function apply(): ?Response
     {
+        // Check if applications can be accepted
         /** @var FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->find('current')->first();
         if (is_null($fundingCycle)) {
@@ -94,27 +95,45 @@ class ApplicationsController extends AppController
             return $this->redirect(['controller' => 'Users', 'action' => 'register']);
         }
 
+        // Set up view vars
         $this->title('Apply for Funding');
         $this->viewBuilder()->setTemplate('form');
-        $application = $this->Applications->newEmptyEntity();
         $this->setApplicationVars();
-        $this->set(compact('application'));
         $this->setFromNow($fundingCycle->application_end);
 
-        if (!$this->request->is('post')) {
-            return null;
+        // Process form
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+            $application = $this->Applications->newEntity($data);
+            $application->user_id = $user->id;
+            $application->funding_cycle_id = $fundingCycle->id;
+            if ($this->processForm($application, $data)) {
+                return $this->redirect(['index']);
+            }
+        } else {
+            $application = $this->Applications->newEntity();
         }
 
-        // Process form
-        $data = $this->request->getData();
-        $application = $this->Applications->newEntity($data);
-        $user = $this->request->getAttribute('identity');
-        $application->user_id = $user ? $user->id : null;
-        $application->funding_cycle_id = $fundingCycle->id;
+        $this->set(compact('application'));
+
+        return null;
+    }
+
+    /**
+     * @param Application $application
+     * @param array $data
+     * @return bool
+     */
+    private function processForm($application, $data): bool
+    {
+        if ($application->id) {
+            $data = $this->applyApplicationIdToAnswers($data, $application->id);
+        }
         $savingToDraft = isset($data['save']);
         $application->status_id = $savingToDraft ? Application::STATUS_DRAFT : Application::STATUS_UNDER_REVIEW;
         $verb = $savingToDraft ? 'saved' : 'submitted';
         $hasErrors = false;
+        $this->Applications->patchEntity($application, $data, ['associated' => ['Answers']]);
         if ($this->Applications->save($application)) {
             $this->Flash->success("Your application has been $verb.");
         } else {
@@ -131,13 +150,7 @@ class ApplicationsController extends AppController
             }
         }
 
-        // Bounce back to form on error
-        if ($hasErrors) {
-            return null;
-        }
-
-        // Otherwise, go to applications index page
-        return $this->redirect(['index']);
+        return !$hasErrors;
     }
 
     /**
@@ -272,43 +285,43 @@ class ApplicationsController extends AppController
      */
     public function edit(): ?Response
     {
+        // Confirm application exists
         $applicationId = $this->request->getParam('id');
         if (!$this->isOwnApplication($applicationId)) {
             $this->Flash->error('That application was not found');
             return $this->redirect('/');
         }
 
+        // Confirm application can be updated
         /** @var Application $application */
         $application = $this->Applications->getForForm($applicationId);
-
         if (!$application->isUpdatable()) {
             $this->Flash->error('That application cannot currently be updated.');
             return $this->redirect('/');
         }
 
+        // Set up view vars
         $this->title('Resubmit');
         $this->viewBuilder()->setTemplate('form');
         $this->setFromNow($application->getSubmitDeadline());
-        $this->set(compact('application'));
         $this->setApplicationVars();
 
-        if (!$this->request->is('post')) {
-            return null;
+        // Process form
+        if ($this->request->is('put')) {
+            $data = $this->request->getData();
+
+            // If saving, status doesn't change. Otherwise, it's submitted for review.
+            $savingToDraft = isset($data['save']);
+            if (!$savingToDraft) {
+                $application->status_id = Application::STATUS_UNDER_REVIEW;
+            }
+
+            if ($this->processForm($application, $data)) {
+                return $this->redirect(['index']);
+            }
         }
 
-        $data = $this->request->getData();
-        $application = $this->Applications->patchEntity($application, $data);
-        $savingToDraft = isset($data['save']);
-
-        // If saving, status doesn't change. Otherwise, it's submitted for review.
-        if (!$savingToDraft) {
-            $application->status_id = Application::STATUS_UNDER_REVIEW;
-        }
-
-        if ($this->Applications->save($application)) {
-            $verb = $savingToDraft ? 'updated' : 'submitted';
-            $this->Flash->success("Application has been $verb.");
-        }
+        $this->set(compact('application'));
 
         return null;
     }
@@ -358,5 +371,13 @@ class ApplicationsController extends AppController
         $questionsTable = $this->fetchTable('Questions');
         $questions = $questionsTable->find('forApplication')->toArray();
         $this->set(compact('categories', 'fundingCycle', 'deadline', 'questions'));
+    }
+
+    private function applyApplicationIdToAnswers($data, $applicationId): array
+    {
+        foreach ($data['answers'] as $i => $answer) {
+            $data['answers'][$i]['application_id'] = $applicationId;
+        }
+        return $data;
     }
 }
