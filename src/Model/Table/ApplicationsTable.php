@@ -114,7 +114,6 @@ class ApplicationsTable extends Table
 
         $validator
             ->integer('status_id')
-            ->requirePresence('status_id', 'create')
             ->inList('status_id', Application::getStatuses(), 'Invalid status');
 
         return $validator;

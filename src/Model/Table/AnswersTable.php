@@ -67,7 +67,6 @@ class AnswersTable extends Table
     {
         $validator
             ->integer('application_id')
-            ->requirePresence('application_id', 'create')
             ->notEmptyString('application_id');
 
         $validator
