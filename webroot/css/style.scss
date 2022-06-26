@@ -678,11 +678,6 @@ form {
     }
 }
 
-input[type="submit"] {
-    @extend .btn;
-    @extend .btn-primary;
-}
-
 body {
     padding-bottom: 4em;
 }

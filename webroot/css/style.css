@@ -2274,7 +2274,7 @@ textarea.form-control-lg {
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
 }
-.btn-check[disabled] + .btn, .btn-check[disabled] + input[type=submit], .btn-check:disabled + .btn, .btn-check:disabled + input[type=submit] {
+.btn-check[disabled] + .btn, .btn-check:disabled + .btn {
   pointer-events: none;
   filter: none;
   opacity: 0.65;
@@ -2433,11 +2433,11 @@ textarea.form-control-lg {
 .input-group > .form-select:focus {
   z-index: 3;
 }
-.input-group .btn, .input-group input[type=submit] {
+.input-group .btn {
   position: relative;
   z-index: 2;
 }
-.input-group .btn:focus, .input-group input[type=submit]:focus {
+.input-group .btn:focus {
   z-index: 3;
 }
 
@@ -2459,8 +2459,7 @@ textarea.form-control-lg {
 .input-group-lg > .form-control,
 .input-group-lg > .form-select,
 .input-group-lg > .input-group-text,
-.input-group-lg > .btn,
-.input-group-lg > input[type=submit] {
+.input-group-lg > .btn {
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
   border-radius: 0.3rem;
@@ -2469,8 +2468,7 @@ textarea.form-control-lg {
 .input-group-sm > .form-control,
 .input-group-sm > .form-select,
 .input-group-sm > .input-group-text,
-.input-group-sm > .btn,
-.input-group-sm > input[type=submit] {
+.input-group-sm > .btn {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   border-radius: 0.2rem;
@@ -2675,7 +2673,7 @@ textarea.form-control-lg {
   z-index: 3;
 }
 
-.btn, input[type=submit] {
+.btn {
   display: inline-block;
   font-weight: 400;
   line-height: 1.5;
@@ -2693,47 +2691,47 @@ textarea.form-control-lg {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
-  .btn, input[type=submit] {
+  .btn {
     transition: none;
   }
 }
-.btn:hover, input[type=submit]:hover {
+.btn:hover {
   color: #212529;
 }
-.btn-check:focus + .btn, .btn-check:focus + input[type=submit], .btn:focus, input[type=submit]:focus {
+.btn-check:focus + .btn, .btn:focus {
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(211, 60, 68, 0.25);
 }
-.btn:disabled, input[type=submit]:disabled, .btn.disabled, input.disabled[type=submit], fieldset:disabled .btn, fieldset:disabled input[type=submit] {
+.btn:disabled, .btn.disabled, fieldset:disabled .btn {
   pointer-events: none;
   opacity: 0.65;
 }
 
-.btn-primary, input[type=submit] {
+.btn-primary {
   color: #fff;
   background-color: #D33C44;
   border-color: #D33C44;
 }
-.btn-primary:hover, input[type=submit]:hover {
+.btn-primary:hover {
   color: #fff;
   background-color: #b3333a;
   border-color: #a93036;
 }
-.btn-check:focus + .btn-primary, .btn-check:focus + input[type=submit], .btn-primary:focus, input[type=submit]:focus {
+.btn-check:focus + .btn-primary, .btn-primary:focus {
   color: #fff;
   background-color: #b3333a;
   border-color: #a93036;
   box-shadow: 0 0 0 0.25rem rgba(218, 89, 96, 0.5);
 }
-.btn-check:checked + .btn-primary, .btn-check:checked + input[type=submit], .btn-check:active + .btn-primary, .btn-check:active + input[type=submit], .btn-primary:active, input[type=submit]:active, .btn-primary.active, input.active[type=submit], .show > .btn-primary.dropdown-toggle, .show > input.dropdown-toggle[type=submit] {
+.btn-check:checked + .btn-primary, .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
   color: #fff;
   background-color: #a93036;
   border-color: #9e2d33;
 }
-.btn-check:checked + .btn-primary:focus, .btn-check:checked + input[type=submit]:focus, .btn-check:active + .btn-primary:focus, .btn-check:active + input[type=submit]:focus, .btn-primary:active:focus, input[type=submit]:active:focus, .btn-primary.active:focus, input.active[type=submit]:focus, .show > .btn-primary.dropdown-toggle:focus, .show > input.dropdown-toggle[type=submit]:focus {
+.btn-check:checked + .btn-primary:focus, .btn-check:active + .btn-primary:focus, .btn-primary:active:focus, .btn-primary.active:focus, .show > .btn-primary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.25rem rgba(218, 89, 96, 0.5);
 }
-.btn-primary:disabled, input[type=submit]:disabled, .btn-primary.disabled, input.disabled[type=submit] {
+.btn-primary:disabled, .btn-primary.disabled {
   color: #fff;
   background-color: #D33C44;
   border-color: #D33C44;
@@ -3161,13 +3159,13 @@ textarea.form-control-lg {
   color: #6c757d;
 }
 
-.btn-lg, .btn-group-lg > .btn, .btn-group-lg > input[type=submit] {
+.btn-lg, .btn-group-lg > .btn {
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
   border-radius: 0.3rem;
 }
 
-.btn-sm, .btn-group-sm > .btn, .btn-group-sm > input[type=submit] {
+.btn-sm, .btn-group-sm > .btn {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   border-radius: 0.2rem;
@@ -3517,35 +3515,23 @@ textarea.form-control-lg {
   display: inline-flex;
   vertical-align: middle;
 }
-.btn-group > .btn, .btn-group > input[type=submit],
-.btn-group-vertical > .btn,
-.btn-group-vertical > input[type=submit] {
+.btn-group > .btn,
+.btn-group-vertical > .btn {
   position: relative;
   flex: 1 1 auto;
 }
-.btn-group > .btn-check:checked + .btn, .btn-group > .btn-check:checked + input[type=submit],
+.btn-group > .btn-check:checked + .btn,
 .btn-group > .btn-check:focus + .btn,
-.btn-group > .btn-check:focus + input[type=submit],
 .btn-group > .btn:hover,
-.btn-group > input[type=submit]:hover,
 .btn-group > .btn:focus,
-.btn-group > input[type=submit]:focus,
 .btn-group > .btn:active,
-.btn-group > input[type=submit]:active,
 .btn-group > .btn.active,
-.btn-group > input.active[type=submit],
 .btn-group-vertical > .btn-check:checked + .btn,
-.btn-group-vertical > .btn-check:checked + input[type=submit],
 .btn-group-vertical > .btn-check:focus + .btn,
-.btn-group-vertical > .btn-check:focus + input[type=submit],
 .btn-group-vertical > .btn:hover,
-.btn-group-vertical > input[type=submit]:hover,
 .btn-group-vertical > .btn:focus,
-.btn-group-vertical > input[type=submit]:focus,
 .btn-group-vertical > .btn:active,
-.btn-group-vertical > input[type=submit]:active,
-.btn-group-vertical > .btn.active,
-.btn-group-vertical > input.active[type=submit] {
+.btn-group-vertical > .btn.active {
   z-index: 1;
 }
 
@@ -3558,21 +3544,18 @@ textarea.form-control-lg {
   width: auto;
 }
 
-.btn-group > .btn:not(:first-child), .btn-group > input[type=submit]:not(:first-child),
+.btn-group > .btn:not(:first-child),
 .btn-group > .btn-group:not(:first-child) {
   margin-left: -1px;
 }
-.btn-group > .btn:not(:last-child):not(.dropdown-toggle), .btn-group > input[type=submit]:not(:last-child):not(.dropdown-toggle),
-.btn-group > .btn-group:not(:last-child) > .btn,
-.btn-group > .btn-group:not(:last-child) > input[type=submit] {
+.btn-group > .btn:not(:last-child):not(.dropdown-toggle),
+.btn-group > .btn-group:not(:last-child) > .btn {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-.btn-group > .btn:nth-child(n+3), .btn-group > input[type=submit]:nth-child(n+3),
+.btn-group > .btn:nth-child(n+3),
 .btn-group > :not(.btn-check) + .btn,
-.btn-group > :not(.btn-check) + input[type=submit],
-.btn-group > .btn-group:not(:first-child) > .btn,
-.btn-group > .btn-group:not(:first-child) > input[type=submit] {
+.btn-group > .btn-group:not(:first-child) > .btn {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -3588,12 +3571,12 @@ textarea.form-control-lg {
   margin-right: 0;
 }
 
-.btn-sm + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split, .btn-group-sm > input[type=submit] + .dropdown-toggle-split {
+.btn-sm + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split {
   padding-right: 0.375rem;
   padding-left: 0.375rem;
 }
 
-.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split, .btn-group-lg > input[type=submit] + .dropdown-toggle-split {
+.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split {
   padding-right: 0.75rem;
   padding-left: 0.75rem;
 }
@@ -3603,23 +3586,21 @@ textarea.form-control-lg {
   align-items: flex-start;
   justify-content: center;
 }
-.btn-group-vertical > .btn, .btn-group-vertical > input[type=submit],
+.btn-group-vertical > .btn,
 .btn-group-vertical > .btn-group {
   width: 100%;
 }
-.btn-group-vertical > .btn:not(:first-child), .btn-group-vertical > input[type=submit]:not(:first-child),
+.btn-group-vertical > .btn:not(:first-child),
 .btn-group-vertical > .btn-group:not(:first-child) {
   margin-top: -1px;
 }
-.btn-group-vertical > .btn:not(:last-child):not(.dropdown-toggle), .btn-group-vertical > input[type=submit]:not(:last-child):not(.dropdown-toggle),
-.btn-group-vertical > .btn-group:not(:last-child) > .btn,
-.btn-group-vertical > .btn-group:not(:last-child) > input[type=submit] {
+.btn-group-vertical > .btn:not(:last-child):not(.dropdown-toggle),
+.btn-group-vertical > .btn-group:not(:last-child) > .btn {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-.btn-group-vertical > .btn ~ .btn, .btn-group-vertical > input[type=submit] ~ .btn, .btn-group-vertical > .btn ~ input[type=submit], .btn-group-vertical > input[type=submit] ~ input[type=submit],
-.btn-group-vertical > .btn-group:not(:first-child) > .btn,
-.btn-group-vertical > .btn-group:not(:first-child) > input[type=submit] {
+.btn-group-vertical > .btn ~ .btn,
+.btn-group-vertical > .btn-group:not(:first-child) > .btn {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
@@ -4592,7 +4573,7 @@ textarea.form-control-lg {
   display: none;
 }
 
-.btn .badge, input[type=submit] .badge {
+.btn .badge {
   position: relative;
   top: -1px;
 }
@@ -6028,7 +6009,7 @@ textarea.form-control-lg {
   background-color: currentColor;
   opacity: 0.5;
 }
-.placeholder.btn::before, input.placeholder[type=submit]::before {
+.placeholder.btn::before {
   display: inline-block;
   content: "";
 }
