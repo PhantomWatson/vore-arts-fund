@@ -146,7 +146,7 @@ class ApplicationsTable extends Table
         return $this
             ->find()
             ->where(['Applications.id' => $applicationId])
-            ->contain('FundingCycles')
+            ->contain(['FundingCycles', 'Answers'])
             ->first();
     }
 }
