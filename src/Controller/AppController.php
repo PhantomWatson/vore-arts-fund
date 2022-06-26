@@ -55,9 +55,17 @@ class AppController extends Controller
 
         /** @var \App\Model\Entity\User|null $user */
         $user = $this->Authentication->getIdentity();
+        $isLoggedIn = (bool)$user;
+        $isAdmin = $user->is_admin ?? false;
+        $isVerified = $user->is_verified ?? false;
         $applicationsTable = $this->getTableLocator()->get('Applications');
         $hasApplications = $user && $applicationsTable->exists(['user_id' => $user->id]);
-        $this->set(compact('user', 'hasApplications'));
+        $this->set(compact(
+            'hasApplications',
+            'isAdmin',
+            'isLoggedIn',
+            'isVerified',
+        ));
     }
 
     /**

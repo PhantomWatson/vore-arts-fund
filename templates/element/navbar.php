@@ -1,12 +1,11 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\User $user
  * @var bool $hasApplications
+ * @var bool $isAdmin
+ * @var bool $isLoggedIn
+ * @var bool $isVerified
  */
-$loggedIn = (bool)$user;
-$isAdmin = $user->is_admin ?? false;
-$isVerified = $user->is_verified ?? false;
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #BA0C2F">
     <a class="navbar-brand" href="/">Vore Arts Fund</a>
@@ -25,7 +24,7 @@ $isVerified = $user->is_verified ?? false;
             <li class="nav-item">
                 <?= $this->Html->linkFromPath('Apply', 'Applications::apply', [], ['class' => 'nav-link']) ?>
             </li>
-            <?php if ($loggedIn): ?>
+            <?php if ($isLoggedIn): ?>
                 <li class="nav-item">
                     <?= $this->Html->linkFromPath('Account', 'Users::account', [], ['class' => 'nav-link']) ?>
                 </li>
