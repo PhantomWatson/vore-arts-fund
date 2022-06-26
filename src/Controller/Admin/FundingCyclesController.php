@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Application;
-use App\Controller\AppController;
 use App\Model\Entity\FundingCycle;
 use Cake\I18n\FrozenTime;
 
@@ -15,7 +14,7 @@ use Cake\I18n\FrozenTime;
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
 
-class FundingCyclesController extends AppController
+class FundingCyclesController extends AdminController
 {
     /**
      * Funding cycles index page

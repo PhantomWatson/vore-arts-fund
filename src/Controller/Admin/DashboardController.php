@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 
-class DashboardController extends AppController
+class DashboardController extends AdminController
 {
     /**
      * Admin index page

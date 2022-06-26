@@ -3,10 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Controller\AppController;
 use App\Model\Entity\Application;
-use Cake\ORM\Locator\LocatorAwareTrait;
-use Cake\Utility\Hash;
 
 /**
  * FundingCyclesController
@@ -17,7 +14,7 @@ use Cake\Utility\Hash;
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
 
-class ApplicationsController extends AppController
+class ApplicationsController extends AdminController
 {
     /**
      * Applications index page

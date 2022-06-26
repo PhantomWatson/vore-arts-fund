@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Controller\AppController;
 use App\Model\Entity\Question;
 use Cake\Datasource\ResultSetInterface;
 
@@ -13,7 +12,7 @@ use Cake\Datasource\ResultSetInterface;
  * @property \App\Model\Table\QuestionsTable $Questions
  * @method Question[]|ResultSetInterface paginate($object = null, array $settings = [])
  */
-class QuestionsController extends AppController
+class QuestionsController extends AdminController
 {
     /**
      * Index method
