@@ -5,6 +5,7 @@
  */
 
 use App\Model\Entity\Application;
+use Cake\Routing\Router;
 
 $updateWhen = [
     Application::STATUS_DRAFT,
@@ -88,6 +89,9 @@ $withdrawWhen = [
                                 'controller' => 'Applications',
                                 'action' => 'viewMy',
                                 'id' => $application->id,
+                                '?' => [
+                                    'back' => Router::url()
+                                ]
                             ],
                             ['class' => 'btn btn-secondary']
                         ) ?>

@@ -261,6 +261,9 @@ class ApplicationsController extends AppController
         $questions = $questionsTable->find('forApplication')->toArray();
 
         $this->set(compact('application', 'questions'));
+        $this->set([
+            'back' => $this->getRequest()->getQuery('back'),
+        ]);
         $this->title('Application: ' . $application->title);
         $this->viewBuilder()->setTemplate('view');
 

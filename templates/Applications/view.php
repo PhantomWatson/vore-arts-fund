@@ -3,12 +3,21 @@
  * @var \App\Model\Entity\Application $application
  * @var \App\Model\Entity\Question[] $questions
  * @var \App\View\AppView $this
+ * @var string|null $back
  */
+$back = $back ?? null;
 
 use Cake\Utility\Hash;
-
 ?>
 <?= $this->title() ?>
+
+<?php if ($back): ?>
+    <?= $this->Html->link(
+        'Back',
+        $back,
+        ['class' => 'btn btn-secondary']
+    ) ?>
+<?php endif; ?>
 
 <p>
     <strong>Category:</strong> <?= $application->category->name ?>
@@ -56,12 +65,3 @@ use Cake\Utility\Hash;
         </div>
     <?php endforeach; ?>
 <?php endif; ?>
-
-<?= $this->Html->link(
-    'Back',
-    [
-        'controller' => 'Votes',
-        'action' => 'index',
-    ],
-    ['class' => 'btn btn-secondary']
-) ?>
