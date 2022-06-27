@@ -327,7 +327,7 @@ class ApplicationsController extends AppController
             }
 
             if ($this->processForm($application, $data)) {
-                return $this->redirect(['index']);
+                return $this->redirect(['action' => 'index']);
             }
         }
 
