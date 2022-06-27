@@ -18,12 +18,17 @@ use Cake\Utility\Hash;
     <strong>Funding cycle:</strong> <?= $application->funding_cycle->name ?>
 </p>
 
-<p>
-    <?= nl2br($application->description) ?>
-</p>
+<section class="application-view">
+    <h3>
+        Description
+    </h3>
+    <p>
+        <?= nl2br($application->description) ?>
+    </p>
+</section>
 
 <?php foreach ($questions as $question): ?>
-    <section class="application-view-q-a">
+    <section class="application-view">
         <h3>
             <?= $question->question ?>
         </h3>
