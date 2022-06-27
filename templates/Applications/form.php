@@ -134,11 +134,18 @@
     </fieldset>
     <?= $this->Form->submit(
         'Save for later',
-        ['name' => 'save', 'class' => 'btn btn-secondary']
+        [
+            'name' => 'save',
+            'class' => 'btn btn-secondary',
+        ]
     ) ?>
-    <?= $this->Form->submit(
+    <?= $this->Form->button(
         'Submit',
-        ['type' => 'submit', 'class' => 'btn btn-primary']
+        [
+            'type' => 'submit',
+            'class' => 'btn btn-primary',
+            'confirm' => 'Are you sure you\'re ready to submit this application for review?'
+        ]
     ) ?>
     <?= $this->Form->end() ?>
 </div>
