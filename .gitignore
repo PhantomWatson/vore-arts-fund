@@ -50,3 +50,6 @@ bin/cake
 # Dependencies
 /vendor/*
 /node_modules/*
+
+# Application directories
+/webroot/img/applications
