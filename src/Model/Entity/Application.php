@@ -24,12 +24,13 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
- * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\Answer[] $answers
  * @property \App\Model\Entity\Category $category
  * @property \App\Model\Entity\FundingCycle $funding_cycle
  * @property \App\Model\Entity\Image[] $images
  * @property \App\Model\Entity\Message[] $messages
  * @property \App\Model\Entity\Note[] $notes
+ * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Vote[] $votes
  */
 class Application extends Entity

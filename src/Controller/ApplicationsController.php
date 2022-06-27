@@ -195,7 +195,11 @@ class ApplicationsController extends AppController
     {
         $id = $this->request->getParam('id');
         /** @var Application $application */
-        $application = $this->Applications->find()->where(['id' => $id])->first();
+        $application = $this->Applications
+            ->find()
+            ->where(['id' => $id])
+            ->contain(['Answers'])
+            ->first();
 
         if (!$application->isViewable()) {
             $this->Flash->error('Sorry, but that application is not available to view');
@@ -245,7 +249,7 @@ class ApplicationsController extends AppController
         $application = $this->Applications
             ->find()
             ->where(['Applications.id' => $applicationId])
-            ->contain(['Images', 'Categories', 'FundingCycles'])
+            ->contain(['Images', 'Categories', 'FundingCycles', 'Answers'])
             ->first();
         if (!$application) {
             $this->Flash->error('Sorry, but that application was not found');
@@ -253,7 +257,10 @@ class ApplicationsController extends AppController
             return $this->redirect('/');
         }
 
-        $this->set(compact('application'));
+        $questionsTable = $this->fetchTable('Questions');
+        $questions = $questionsTable->find('forApplication')->toArray();
+
+        $this->set(compact('application', 'questions'));
         $this->title('Application: ' . $application->title);
         $this->viewBuilder()->setTemplate('view');
 
