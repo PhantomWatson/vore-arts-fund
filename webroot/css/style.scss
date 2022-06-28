@@ -682,9 +682,10 @@ body {
     padding-bottom: 4em;
 }
 
-.image-thumbnail {
-    height: 200px;
-    width: 200px;
+#image-gallery {
+    img {
+        cursor: zoom-in;
+    }
 }
 
 #cycles-chart {

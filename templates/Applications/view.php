@@ -7,7 +7,10 @@
  */
 $back = $back ?? null;
 
+use App\Model\Entity\Image;
 use Cake\Utility\Hash;
+
+$this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 ?>
 <?= $this->title() ?>
 
@@ -26,6 +29,21 @@ use Cake\Utility\Hash;
 <p>
     <strong>Funding cycle:</strong> <?= $application->funding_cycle->name ?>
 </p>
+
+<?php if ($application->images): ?>
+    <section class="application-view">
+        <h3 class="visually-hidden">
+            Images
+        </h3>
+        <div id="image-gallery">
+            <?php foreach ($application->images as $image): ?>
+                <img src="/img/applications/<?= Image::THUMB_PREFIX ?><?= $image->filename ?>"
+                     alt="<?= $image->caption ?>" class="img-thumbnail" title="Click to open full-size image"
+                     data-full="/img/applications/<?= $image->filename ?>" />
+            <?php endforeach; ?>
+        </div>
+    </section>
+<?php endif; ?>
 
 <section class="application-view">
     <h3>
@@ -53,15 +71,25 @@ use Cake\Utility\Hash;
     </section>
 <?php endforeach; ?>
 
-<?php if ($application->images): ?>
-    <?php foreach ($application->images as $image): ?>
-        <div class="card" style="width: 18rem;">
-            <img src="/img/applications/<?= $image->filename ?>" class="card-img-top image-thumbnail" alt="<?= $image->caption ?>" />
-            <div class="card-body">
-                <p class="card-text">
-                    <?= $image->caption ?>
-                </p>
-            </div>
-        </div>
-    <?php endforeach; ?>
-<?php endif; ?>
+<script src="/viewerjs/viewer.min.js"></script>
+<script type="text/javascript">
+    const gallery = new Viewer(
+        document.getElementById('image-gallery'),
+        {
+            url: 'data-full',
+            toolbar: {
+                zoomIn: true,
+                zoomOut: true,
+                oneToOne: false,
+                reset: true,
+                prev: true,
+                play: false,
+                next: true,
+                rotateLeft: false,
+                rotateRight: false,
+                flipHorizontal: false,
+                flipVertical: false,
+            },
+        }
+    );
+</script>
