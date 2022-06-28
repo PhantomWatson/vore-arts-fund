@@ -8,6 +8,9 @@
  * @var string $fromNow
  * @var string[] $categories
  */
+
+$this->Html->css('/filepond/filepond.css', ['block' => true]);
+$this->Html->css('/filepond/filepond-plugin-image-preview.css', ['block' => true]);
 ?>
 
 <?= $this->title() ?>
@@ -123,14 +126,18 @@
         <legend>
             Image
         </legend>
-        <p>
-            Have an image to help convey what your project is? Include it here.
-        </p>
         <div class="form-group">
-            <?= $this->Form->label('customFile', 'Image') ?>
-            <?= $this->Form->file('image', ['label' => false]) ?>
+            <?= $this->Form->label(
+                'filepond[]',
+                'Have images to help convey what your project is? Upload them here.'
+            ) ?>
+            <?= $this->Form->control('filepond[]', [
+                'accept' => 'image/*',
+                'label' => false,
+                'type' => 'file',
+                'multiple' => true,
+            ]) ?>
         </div>
-        <?= $this->Form->control('imageCaption') ?>
     </fieldset>
     <?= $this->Form->submit(
         'Save for later',
@@ -149,3 +156,65 @@
     ) ?>
     <?= $this->Form->end() ?>
 </div>
+
+<script src="/filepond/filepond-plugin-image-preview.js"></></script>
+<script src="/filepond/filepond-plugin-file-validate-type.js"></></script>
+<script src="/filepond/filepond-plugin-image-transform.js"></></script>
+<script src="/filepond/filepond-plugin-image-resize.js"></></script>
+<script src="/filepond/filepond.js"></></script>
+<script>
+    FilePond.registerPlugin(FilePondPluginImagePreview);
+    FilePond.registerPlugin(FilePondPluginFileValidateType);
+    FilePond.registerPlugin(FilePondPluginImageTransform);
+    FilePond.registerPlugin(FilePondPluginImageResize);
+    const pond = FilePond.create(
+        document.querySelector('#customFile'),
+        {
+            // General
+            allowMultiple: true,
+            allowReorder: true,
+            maxFiles: 5,
+            server: {
+                url: '/images/upload',
+                process: {
+                    // Massage data as it comes back from the upload endpoint
+                    ondata: function (formData) {
+                        let newFormData = new FormData();
+                        for ([oldKey, image] of formData.entries()) {
+                            if (image instanceof File) {
+                                let newKey = image.name.includes('thumb_') ? 'thumb' : 'full';
+                                newFormData.append(newKey, image);
+                            }
+                        }
+                        return newFormData;
+                    }
+                },
+            },
+
+            // Validation
+            acceptedFileTypes: ['image/*'],
+            fileValidateTypeLabelExpectedTypes: 'Duh',
+            labelFileTypeNotAllowed: 'Only images can be uploaded here',
+
+            // Resizing
+            imageResizeTargetWidth: 1000,
+            imageResizeTargetHeight: 1000,
+            imageResizeMode: 'contain',
+            imageResizeUpscale: false,
+
+            // Transforming
+            imageTransformOutputMimeType: 'image/png',
+            imageTransformVariants: {
+                thumb_: (transforms) => {
+                    transforms.resize = {
+                        size: {
+                            width: 128,
+                            height: 128,
+                        },
+                    };
+                    return transforms;
+                },
+            },
+        },
+    );
+</script>

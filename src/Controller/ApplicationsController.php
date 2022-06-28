@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Model\Entity\Application;
 use App\Model\Entity\FundingCycle;
+use App\Model\Entity\Image;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
@@ -141,12 +142,23 @@ class ApplicationsController extends AppController
             $hasErrors = true;
         }
 
-        // Process image
-        /** @var \Laminas\Diactoros\UploadedFile $rawImage */
-        $rawImage = $data['image'];
-        if ($rawImage && $rawImage->getSize() !== 0) {
-            if (!$this->processImageUpload($rawImage, $application->id, $data['imageCaption'])) {
-                $hasErrors = true;
+        // Process images
+        foreach ($data['filepond'] ?? [] as $imageEncoded) {
+            /** @var \stdClass $imageFilenames */
+            $imageFilenames = json_decode($imageEncoded);
+            if (!($imageFilenames->full ?? false) || !($imageFilenames->thumb ?? false)) {
+                continue;
+            }
+
+            /** @var Image $image */
+            $image = $this->Images->newEmptyEntity();
+            $image->application_id = $application->id;
+            $image->weight = 0;
+            $image->filename = $imageFilenames->full;
+            if (!$this->Images->save($image)) {
+                $this->Flash->error(
+                    'There was an error saving an image. Details: Record could not be added to database'
+                );
             }
         }
 
