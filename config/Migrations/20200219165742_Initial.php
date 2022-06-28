@@ -132,7 +132,7 @@ class Initial extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('caption', 'string', [
-                'default' => null,
+                'default' => '',
                 'limit' => 200,
                 'null' => false,
             ])
