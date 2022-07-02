@@ -29,7 +29,6 @@ $this->Html->css('/filepond/filepond-plugin-image-preview.css', ['block' => true
 </p>
 
 <div class="apply">
-    <?= $this->Flash->render() ?>
     <?= $this->Form->create($application, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>
         <legend>

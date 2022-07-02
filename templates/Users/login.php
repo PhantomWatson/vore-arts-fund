@@ -7,7 +7,6 @@
 <?= $this->title() ?>
 
 <div class="users form" id="login-form">
-    <?= $this->Flash->render() ?>
     <?= $this->Form->create() ?>
     <fieldset>
         <?= $this->Form->control('email') ?>

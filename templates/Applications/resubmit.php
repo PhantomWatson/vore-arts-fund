@@ -16,7 +16,6 @@
 ?>
 
 <?= $this->title() ?>
-<?= $this->Flash->render() ?>
 <?= $this->Form->create() ?>
 
 <h4> Are you sure you want to resubmit your application? </h4>

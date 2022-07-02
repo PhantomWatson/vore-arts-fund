@@ -10,7 +10,6 @@ use Cake\ORM\TableRegistry;
 <?= $this->title() ?>
 
 <div>
-    <?= $this->Flash->render() ?>
     <?= $this->Form->create() ?>
     <fieldset class="fieldset">
         <legend class="form">

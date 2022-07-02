@@ -10,7 +10,6 @@ $isAdmin = $user->is_admin;
 
 <div class="users form">
     <?= $this->Form->create() ?>
-    <?= $this->Flash->render() ?>
     <fieldset>
         <?= $this->Form->control('email') ?>
         <?= $this->Form->control('name') ?>

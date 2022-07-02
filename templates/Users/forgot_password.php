@@ -18,7 +18,6 @@
 <?= $this->title() ?>
 
 <div class="users form">
-    <?= $this->Flash->render() ?>
     <?= $this->Form->create() ?>
     <fieldset>
         <?= $this->Form->create(null, ['action' => 'forgot_password']) ?>
