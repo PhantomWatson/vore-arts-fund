@@ -6,8 +6,6 @@
  */
 ?>
 
-<?= $this->title() ?>
-
 <div class="users form" id="register-form">
     <p>
         Register an account in order to vote or to submit applications for funding

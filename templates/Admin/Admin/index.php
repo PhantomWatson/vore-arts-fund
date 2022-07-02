@@ -4,7 +4,6 @@
  */
 ?>
 
-<?= $this->title() ?>
 
 <p>
     <?= $this->Html->link(

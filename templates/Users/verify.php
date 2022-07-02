@@ -15,8 +15,6 @@
  */
 ?>
 
-<?= $this->title() ?>
-
 <?= $this->Form->create() ?>
 <h4>Verification Code</h4>
 <fieldset>

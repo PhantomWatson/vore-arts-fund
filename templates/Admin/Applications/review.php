@@ -9,8 +9,6 @@
  */
 ?>
 
-<?= $this->title() ?>
-
 <div>
     <h4>Status</h4>
     <?= $this->Form->create() ?>

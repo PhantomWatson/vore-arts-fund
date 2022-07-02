@@ -7,8 +7,6 @@
 use Cake\ORM\TableRegistry;
 ?>
 
-<?= $this->title() ?>
-
 <div>
     <?= $this->Form->create() ?>
     <fieldset class="fieldset">

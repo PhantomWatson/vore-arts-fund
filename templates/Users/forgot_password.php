@@ -15,8 +15,6 @@
  */
 ?>
 
-<?= $this->title() ?>
-
 <div class="users form">
     <?= $this->Form->create() ?>
     <fieldset>

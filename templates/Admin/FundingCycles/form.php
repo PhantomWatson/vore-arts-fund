@@ -16,8 +16,6 @@
  */
 ?>
 
-<?= $this->title() ?>
-
 <div class="alert alert-info">
     <p>
         Funding cycles should begin on midnight of their first day and end on 11:59pm of their last day. If resubmitting

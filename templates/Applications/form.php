@@ -13,8 +13,6 @@ $this->Html->css('/filepond/filepond.css', ['block' => true]);
 $this->Html->css('/filepond/filepond-plugin-image-preview.css', ['block' => true]);
 ?>
 
-<?= $this->title() ?>
-
 <p class="alert alert-info">
     The deadline to submit an application in the current funding cycle is
     <strong><?= $deadline ?></strong> (<?= $fromNow ?>).

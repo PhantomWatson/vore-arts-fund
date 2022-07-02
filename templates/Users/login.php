@@ -4,8 +4,6 @@
  */
 ?>
 
-<?= $this->title() ?>
-
 <div class="users form" id="login-form">
     <?= $this->Form->create() ?>
     <fieldset>

@@ -6,8 +6,6 @@
 $isAdmin = $user->is_admin;
 ?>
 
-<?= $this->title() ?>
-
 <div class="users form">
     <?= $this->Form->create() ?>
     <fieldset>

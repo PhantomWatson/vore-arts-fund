@@ -5,8 +5,6 @@
  */
 ?>
 
-<?= $this->title() ?>
-
 <div>
     <?php foreach ($applications as $application): ?>
         <div>

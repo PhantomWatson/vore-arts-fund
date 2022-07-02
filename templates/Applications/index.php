@@ -15,9 +15,7 @@ $withdrawWhen = [
     Application::STATUS_UNDER_REVIEW,
     Application::STATUS_VOTING
 ];
-
 ?>
-<?= $this->title() ?>
 
 <p>
     <?= $this->Html->link(

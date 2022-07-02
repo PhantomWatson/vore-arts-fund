@@ -15,8 +15,6 @@
  */
 ?>
 
-<?= $this->title() ?>
-
 <?= $this->Form->create() ?>
 
 <h4>Are you sure you want to delete your application?</h4>

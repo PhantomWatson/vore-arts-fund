@@ -7,8 +7,6 @@
  */
 ?>
 
-<?= $this->title() ?>
-
 <?= $this->Html->link(
     'Change Account Info',
     [

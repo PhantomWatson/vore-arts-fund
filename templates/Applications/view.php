@@ -12,7 +12,6 @@ use Cake\Utility\Hash;
 
 $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 ?>
-<?= $this->title() ?>
 
 <?php if ($back): ?>
     <?= $this->Html->link(

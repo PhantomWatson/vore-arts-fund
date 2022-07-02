@@ -5,8 +5,6 @@
  */
 ?>
 
-<?= $this->title() ?>
-
 <?= $this->Form->create($user) ?>
     <?= $this->Form->control('password', ['value' => '']) ?>
     <?= $this->Form->control('confirm_password', ['type' => 'password', 'required' => true]) ?>

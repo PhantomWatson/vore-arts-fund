@@ -5,8 +5,6 @@
  */
 ?>
 
-<?= $this->title() ?>
-
 <p>
     <?= $this->Html->link('Back to questions', ['action' => 'index'], ['class' => 'btn btn-secondary']) ?>
 </p>

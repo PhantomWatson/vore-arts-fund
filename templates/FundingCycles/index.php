@@ -5,8 +5,6 @@
  */
 ?>
 
-<?= $this->title() ?>
-
 <?php if ($fundingCycles): ?>
     <p>
         Recipients are decided and funding is disbursed shortly after each funding cycle's voting deadline.

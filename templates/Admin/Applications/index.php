@@ -6,8 +6,6 @@
  */
 ?>
 
-<?= $this->title() ?>
-
 <?php if ($fundingCycles): ?>
     <p>
         <label for="funding-cycle-selector">

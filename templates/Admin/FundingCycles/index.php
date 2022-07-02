@@ -6,8 +6,6 @@
 $dateFormat = 'MMM d, YYYY';
 ?>
 
-<?= $this->title() ?>
-
 <p>
     <?= $this->Html->link(
         'Add',

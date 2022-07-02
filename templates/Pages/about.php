@@ -15,8 +15,6 @@
  */
 ?>
 
-<?= $this->title() ?>
-
 <section class="credits">
     <h2>
         Board of Directors
