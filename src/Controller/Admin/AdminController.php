@@ -11,6 +11,14 @@ use Cake\Http\Exception\ForbiddenException;
 class AdminController extends AppController
 {
     /**
+     * @return void
+     */
+    public function index()
+    {
+        $this->title('Admin Dashboard');
+    }
+
+    /**
      * beforeFilter callback.
      *
      * @param \Cake\Event\EventInterface $event Event.
