@@ -77,4 +77,24 @@ class AppController extends Controller
     {
         $this->set(compact('title'));
     }
+
+    /**
+     * Sets view vars needed to view an application
+     *
+     * @param int $applicationId
+     * @return void
+     */
+    protected function setViewApplicationViewVars($applicationId)
+    {
+        $applicationsTable = $this->fetchTable('Applications');
+        $application = $applicationsTable
+            ->find()
+            ->where(['Applications.id' => $applicationId])
+            ->contain(['Images', 'Categories', 'FundingCycles', 'Answers'])
+            ->first();
+        $questionsTable = $this->fetchTable('Questions');
+        $questions = $questionsTable->find('forApplication')->toArray();
+        $this->set(compact('application', 'questions'));
+        $this->title('Application: ' . $application->title);
+    }
 }

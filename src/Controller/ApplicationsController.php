@@ -257,27 +257,16 @@ class ApplicationsController extends AppController
     private function _view()
     {
         $applicationId = $this->request->getParam('id');
-        /** @var \App\Model\Entity\Application $application */
-        $application = $this->Applications
-            ->find()
-            ->where(['Applications.id' => $applicationId])
-            ->contain(['Images', 'Categories', 'FundingCycles', 'Answers'])
-            ->first();
-        if (!$application) {
+        if (!$this->Applications->exists(['Applications.id' => $applicationId])) {
             $this->Flash->error('Sorry, but that application was not found');
-
             return $this->redirect('/');
         }
 
-        $questionsTable = $this->fetchTable('Questions');
-        $questions = $questionsTable->find('forApplication')->toArray();
-
-        $this->set(compact('application', 'questions'));
         $this->set([
             'back' => $this->getRequest()->getQuery('back'),
         ]);
-        $this->title('Application: ' . $application->title);
         $this->viewBuilder()->setTemplate('view');
+        $this->setViewApplicationViewVars($applicationId);
 
         return null;
     }

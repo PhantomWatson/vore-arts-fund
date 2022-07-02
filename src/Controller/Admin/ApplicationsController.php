@@ -54,22 +54,10 @@ class ApplicationsController extends AdminController
      */
     public function review()
     {
-        $this->loadModel('Applications');
-        $this->loadModel('Categories');
-        $this->loadModel('Images');
-
-        $application = $this->Applications->get($this->request->getParam('id'));
-        $category = $this->Categories->find()->all()->toArray();
-        $image = $this->Images->find()->where(['application_id' => $application['id']])->first();
+        $applicationId = $this->request->getParam('id');
         $statusOptions = Application::getStatuses();
-        $title = $application['title'];
-        $this->set(compact(
-            'application',
-            'category',
-            'image',
-            'statusOptions',
-            'title',
-        ));
+        $this->setViewApplicationViewVars($applicationId);
+        $this->set(compact('statusOptions'));
     }
 
     /**
