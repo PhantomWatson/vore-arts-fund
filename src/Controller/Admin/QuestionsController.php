@@ -49,7 +49,9 @@ class QuestionsController extends AdminController
     {
         $question = $this->Questions->newEmptyEntity();
         if ($this->request->is('post')) {
-            $question = $this->Questions->patchEntity($question, $this->request->getData());
+            $data = $this->request->getData();
+            $data['weight'] = $this->Questions->getHighestWeight() + 1;
+            $question = $this->Questions->patchEntity($question, $data);
             if ($this->Questions->save($question)) {
                 $this->Flash->success(__('The question has been saved.'));
 

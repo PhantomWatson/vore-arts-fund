@@ -103,4 +103,21 @@ class QuestionsTable extends Table
 
         return $rules;
     }
+
+    /**
+     * Returns the highest weight of an enabled question (or zero if there are no questions)
+     *
+     * @return int
+     */
+    public function getHighestWeight(): int
+    {
+        /** @var Question $result */
+        $result = $this
+            ->find()
+            ->select(['weight'])
+            ->where(['enabled' => true])
+            ->orderDesc('weight')
+            ->first();
+        return $result ? $result->weight : 0;
+    }
 }
