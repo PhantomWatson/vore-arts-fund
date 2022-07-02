@@ -4,16 +4,18 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
 
 /**
  * Question Entity
  *
  * @property int $id
- * @property string|null $question
- * @property bool $enabled
- * @property int $weight
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
+ * @property bool $enabled
+ * @property bool $hasAnswers
+ * @property int $weight
+ * @property string|null $question
  *
  * @property \App\Model\Entity\Answer[] $answers
  */
@@ -36,4 +38,15 @@ class Question extends Entity
         'modified' => true,
         'answers' => true,
     ];
+
+    /**
+     * Returns TRUE if this question has associated answers
+     *
+     * @return bool
+     */
+    protected function _getHasAnswers(): bool
+    {
+        $answersTable = TableRegistry::getTableLocator()->get('Answers');
+        return $answersTable->exists(['question_id' => $this->id]);
+    }
 }

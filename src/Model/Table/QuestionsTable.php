@@ -98,8 +98,7 @@ class QuestionsTable extends Table
     {
         // Prevent deleting questions with answers
         $rules->addDelete(function ($entity, $options) {
-            $answersTable = TableRegistry::getTableLocator()->get('Answers');
-            return $answersTable->exists(['question_id' => $entity->id]);
+            return $entity->hasAnswers;
         }, 'cantDeleteQuestionsWithAnswers');
 
         return $rules;

@@ -18,8 +18,25 @@
                 <td><?= $question->question ?></td>
                 <td><?= $this->Number->format($question->weight) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $question->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $question->id], ['confirm' => __('Are you sure you want to delete # {0}?', $question->id)]) ?>
+                    <?= $this->Html->link(
+                        'Edit',
+                        ['action' => 'edit', $question->id],
+                        ['class' => 'btn btn-secondary']
+                    ) ?>
+                    <?php if ($question->hasAnswers): ?>
+                        <button class="btn btn-secondary disabled" title="Can't delete (question has answers)">
+                            Delete
+                        </button>
+                    <?php else: ?>
+                        <?= $this->Form->postLink(
+                            'Delete',
+                            ['action' => 'delete', $question->id],
+                            [
+                                'confirm' => __('Are you sure you want to delete # {0}?', $question->id),
+                                'class' => 'btn btn-secondary',
+                            ]
+                        ) ?>
+                    <?php endif; ?>
                 </td>
             </tr>
         <?php endforeach; ?>
