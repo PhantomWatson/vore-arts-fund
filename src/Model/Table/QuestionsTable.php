@@ -7,7 +7,9 @@ use App\Model\Entity\Question;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Query;
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -86,5 +88,20 @@ class QuestionsTable extends Table
         return $query
             ->where(['enabled' => true])
             ->orderAsc('weight');
+    }
+
+    /**
+     * @param RulesChecker $rules
+     * @return RulesChecker
+     */
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        // Prevent deleting questions with answers
+        $rules->addDelete(function ($entity, $options) {
+            $answersTable = TableRegistry::getTableLocator()->get('Answers');
+            return $answersTable->exists(['question_id' => $entity->id]);
+        }, 'cantDeleteQuestionsWithAnswers');
+
+        return $rules;
     }
 }
