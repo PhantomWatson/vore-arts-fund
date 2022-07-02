@@ -95,6 +95,9 @@ class QuestionsController extends AdminController
         $this->set(compact('question'));
         $this->viewBuilder()->setTemplate('form');
         $this->title('Edit Question');
+        if ($question->hasAnswers) {
+            $this->Flash->warning('This question has received answers');
+        }
     }
 
     /**
