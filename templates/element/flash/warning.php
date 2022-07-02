@@ -7,7 +7,7 @@
 echo $this->element(
     'flash/base',
     [
-        'alertClass' => 'success',
+        'alertClass' => 'warning',
         'message' => $message,
         'params' => $params,
     ]
