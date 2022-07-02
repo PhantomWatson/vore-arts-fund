@@ -21,7 +21,7 @@ class AdminController extends AppController
         parent::beforeFilter($event);
         /** @var User|null $user */
         $user = $this->Authentication->getIdentity();
-        if (!$user->is_admin) {
+        if (!($user->is_admin ?? false)) {
             throw new ForbiddenException();
         }
     }
