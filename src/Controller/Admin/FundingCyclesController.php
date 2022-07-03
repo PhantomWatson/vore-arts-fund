@@ -50,9 +50,10 @@ class FundingCyclesController extends AdminController
             }
             $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $data);
             if ($this->FundingCycles->save($fundingCycle)) {
+                $this->Flash->success('Funding cycle added');
                 $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__('Error creating funding cycle'));
+                $this->Flash->error('Error creating funding cycle');
             }
         } else {
             $start = new FrozenTime('12:00am', Application::LOCAL_TIMEZONE);
