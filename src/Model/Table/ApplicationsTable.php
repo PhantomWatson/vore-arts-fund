@@ -114,7 +114,7 @@ class ApplicationsTable extends Table
 
         $validator
             ->integer('status_id')
-            ->inList('status_id', Application::getStatuses(), 'Invalid status');
+            ->inList('status_id', array_keys(Application::getStatuses()), 'Invalid status');
 
         return $validator;
     }

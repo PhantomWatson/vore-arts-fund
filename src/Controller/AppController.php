@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\Application;
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
 
@@ -87,6 +88,7 @@ class AppController extends Controller
     protected function setViewApplicationViewVars($applicationId)
     {
         $applicationsTable = $this->fetchTable('Applications');
+        /** @var Application $application */
         $application = $applicationsTable
             ->find()
             ->where(['Applications.id' => $applicationId])

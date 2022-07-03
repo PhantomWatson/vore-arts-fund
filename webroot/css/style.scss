@@ -734,3 +734,31 @@ body {
     vertical-align: middle;
     width: auto;
 }
+
+#review-action-column {
+    > section {
+        margin-bottom: 2em;
+    }
+    .form-group.textarea {
+        margin-bottom: 0.5em;
+    }
+}
+
+#review-notes {
+    margin-top: 1em;
+
+    section {
+        border: 1px solid #ddd;
+        border-radius: 1em;
+        margin-bottom: 1em;
+        padding: 1em;
+
+        p {
+            margin-bottom: 0;
+        }
+        .date {
+            font-size: 80%;
+            text-align: right;
+        }
+    }
+}

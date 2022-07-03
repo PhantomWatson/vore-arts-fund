@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Model\Entity\Application;
+use App\Model\Entity\User;
 use Cake\Http\Response;
 
 /**
@@ -56,11 +57,52 @@ class ApplicationsController extends AdminController
     public function review()
     {
         $applicationId = $this->request->getParam('id');
-        $application = $this->Applications->get($applicationId);
+        $application = $this->Applications->get(
+            $applicationId,
+            [
+                'contain' => [
+                    'Answers',
+                    'Categories',
+                    'FundingCycles',
+                    'Images',
+                ]
+            ]
+        );
         if (!$application) {
             $this->Flash->error('Application not found');
             return $this->redirect(['action' => 'index']);
         }
+
+        $notesTable = $this->fetchTable('Notes');
+        if (!$this->request->is('get')) {
+            $data = $this->request->getData();
+
+            // Updating status
+            if ($data['status_id'] ?? false) {
+                $application->status_id = (int)$data['status_id'];
+                if ($this->Applications->save($application)) {
+                    $this->Flash->success('Status updated');
+                } else {
+                    $this->Flash->error('Error updating status');
+                }
+
+            }
+
+            // Adding note
+            if ($data['body'] ?? false) {
+                /** @var User $user */
+                $user = $this->Authentication->getIdentity();
+                $data['user_id'] = $user->id;
+                $data['application_id'] = $applicationId;
+                $note = $notesTable->newEntity($data);
+                if ($notesTable->save($note)) {
+                    $this->Flash->success('Note added');
+                } else {
+                    $this->Flash->error('Error adding note');
+                }
+            }
+        }
+
         $statuses = Application::getStatuses();
         $validStatuses = Application::getValidStatusOptions($application->status_id);
         $statusOptions = [];
@@ -69,7 +111,14 @@ class ApplicationsController extends AdminController
         }
 
         $this->setViewApplicationViewVars($applicationId);
-        $this->set(compact('statusOptions'));
+        $notes = $notesTable
+            ->find()
+            ->where(['application_id' => $applicationId])
+            ->contain(['Users'])
+            ->orderDesc('Notes.created')
+            ->all();
+        $newNote = $notesTable->newEmptyEntity();
+        $this->set(compact('application', 'notes', 'newNote', 'statusOptions'));
 
         return null;
     }

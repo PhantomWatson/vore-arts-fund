@@ -1,6 +1,8 @@
 <?php
 /**
  * @var \App\Model\Entity\Application $application
+ * @var \App\Model\Entity\Note $newNote
+ * @var \App\Model\Entity\Note[]|\Cake\ORM\ResultSet $notes
  * @var \App\Model\Entity\Question[] $questions
  * @var \App\View\AppView $this
  * @var string $title
@@ -19,54 +21,61 @@
     ) ?>
 </p>
 
-<div>
-    <div class="row">
-        <fieldset>
-            <p>
-                Status:
-                <strong>
-                    <?= $application->status_name ?>
-                </strong>
-            </p>
-            <form class="form-inline" method="patch">
-                <label class="control-label">
-                    Change status to
-                </label>
-                <select name="status" class="form-select" id="change-status">
-                    <?php foreach ($statusOptions as $statusId => $statusName): ?>
-                        <option value="<?= $statusId ?>">
-                            <?= $statusName ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-                <button type="submit" class="btn btn-primary">
-                    Update status
-                </button>
-            </form>
-        </fieldset>
+<div class="row">
+    <div class="col-6">
+        <?= $this->element('../Applications/view') ?>
     </div>
+    <div class="col-6" id="review-action-column">
+        <section>
+            <h3>
+                Status: <?= $application->status_name ?>
+            </h3>
+            <?= $this->Form->create($application) ?>
+            <label class="control-label" for="change-status">
+                Change status to
+            </label>
+            <select name="status_id" class="form-select" id="change-status">
+                <?php foreach ($statusOptions as $statusId => $statusName): ?>
+                    <option value="<?= $statusId ?>">
+                        <?= $statusName ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <?= $this->Form->submit('Update status', ['class' => 'btn btn-primary']) ?>
+            <?= $this->Form->end() ?>
+        </section>
 
-    <form class="row row-cols-lg-auto g-3 align-items-center">
-        <div class="col-12">
-
-            <div class="form-group form-inline">
-
-            </div>
-        </div>
-        <div class="col-12">
-
-        </div>
-    </form>
+        <section>
+            <h3>
+                Notes
+            </h3>
+            <?= $this->Form->create($newNote) ?>
+            <?= $this->Form->control(
+                'body',
+                [
+                    'type' => 'textarea',
+                    'label' => false
+                ]
+            ) ?>
+            <?= $this->Form->submit('Add note', ['class' => 'btn btn-primary']) ?>
+            <?= $this->Form->end() ?>
+            <?php if (!$notes->isEmpty()): ?>
+                <div id="review-notes">
+                    <?php foreach ($notes as $note): ?>
+                        <section>
+                            <h4>
+                                <?= $note->user->name ?>
+                            </h4>
+                            <p>
+                                <?= nl2br($note->body) ?>
+                            </p>
+                            <p class="date">
+                                <?= $note->created->format('F j, Y') ?>
+                            </p>
+                        </section>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </section>
+    </div>
 </div>
-
-<?= $this->element('../Applications/view') ?>
-
-<form>
-    <h4>Comment</h4>
-    <?= $this->Form->create() ?>
-    <fieldset>
-        <?= $this->Form->textarea('Comment') ?>
-    </fieldset>
-    <?= $this->Form->submit(__('Comment'), ['class' => 'btn btn-secondary']) ?>
-    <?= $this->Form->end() ?>
-</form>
