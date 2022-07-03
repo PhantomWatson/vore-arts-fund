@@ -57,17 +57,7 @@ class ApplicationsController extends AdminController
     public function review()
     {
         $applicationId = $this->request->getParam('id');
-        $application = $this->Applications->get(
-            $applicationId,
-            [
-                'contain' => [
-                    'Answers',
-                    'Categories',
-                    'FundingCycles',
-                    'Images',
-                ]
-            ]
-        );
+        $application = $this->Applications->getForViewing($applicationId);
         if (!$application) {
             $this->Flash->error('Application not found');
             return $this->redirect(['action' => 'index']);
@@ -85,7 +75,6 @@ class ApplicationsController extends AdminController
                 } else {
                     $this->Flash->error('Error updating status');
                 }
-
             }
 
             // Adding note
@@ -110,7 +99,9 @@ class ApplicationsController extends AdminController
             $statusOptions[$statusId] = $statuses[$statusId];
         }
 
-        $this->setViewApplicationViewVars($applicationId);
+        // Set view vars
+        $questionsTable = $this->fetchTable('Questions');
+        $questions = $questionsTable->find('forApplication')->toArray();
         $notes = $notesTable
             ->find()
             ->where(['application_id' => $applicationId])
@@ -118,7 +109,14 @@ class ApplicationsController extends AdminController
             ->orderDesc('Notes.created')
             ->all();
         $newNote = $notesTable->newEmptyEntity();
-        $this->set(compact('application', 'notes', 'newNote', 'statusOptions'));
+        $this->set(compact(
+            'application',
+            'newNote',
+            'notes',
+            'questions',
+            'statusOptions',
+        ));
+        $this->title('Application: ' . $application->title);
 
         return null;
     }

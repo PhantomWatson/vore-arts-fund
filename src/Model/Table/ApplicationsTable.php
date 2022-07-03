@@ -149,4 +149,24 @@ class ApplicationsTable extends Table
             ->contain(['FundingCycles', 'Answers'])
             ->first();
     }
+
+    /**
+     * @param int $applicationId
+     * @return Application
+     */
+    public function getForViewing($applicationId)
+    {
+        return $this->get(
+            $applicationId,
+            [
+                'contain' => [
+                    'Answers',
+                    'Categories',
+                    'FundingCycles',
+                    'Images',
+                    'Users',
+                ]
+            ]
+        );
+    }
 }

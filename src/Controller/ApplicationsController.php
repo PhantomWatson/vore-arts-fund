@@ -262,11 +262,15 @@ class ApplicationsController extends AppController
             return $this->redirect('/');
         }
 
+        $application = $this->Applications->getForViewing($applicationId);
+        $questionsTable = $this->fetchTable('Questions');
         $this->set([
+            'application' => $application,
             'back' => $this->getRequest()->getQuery('back'),
+            'questions' => $questionsTable->find('forApplication')->toArray(),
         ]);
         $this->viewBuilder()->setTemplate('view');
-        $this->setViewApplicationViewVars($applicationId);
+        $this->title('Application: ' . $application->title);
 
         return null;
     }

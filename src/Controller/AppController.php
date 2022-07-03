@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Entity\Application;
+use App\Model\Table\ApplicationsTable;
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
 
@@ -77,26 +78,5 @@ class AppController extends Controller
     protected function title(string $title)
     {
         $this->set(compact('title'));
-    }
-
-    /**
-     * Sets view vars needed to view an application
-     *
-     * @param int $applicationId
-     * @return void
-     */
-    protected function setViewApplicationViewVars($applicationId)
-    {
-        $applicationsTable = $this->fetchTable('Applications');
-        /** @var Application $application */
-        $application = $applicationsTable
-            ->find()
-            ->where(['Applications.id' => $applicationId])
-            ->contain(['Images', 'Categories', 'FundingCycles', 'Answers'])
-            ->first();
-        $questionsTable = $this->fetchTable('Questions');
-        $questions = $questionsTable->find('forApplication')->toArray();
-        $this->set(compact('application', 'questions'));
-        $this->title('Application: ' . $application->title);
     }
 }

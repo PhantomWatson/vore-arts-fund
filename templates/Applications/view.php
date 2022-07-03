@@ -22,9 +22,11 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 <?php endif; ?>
 
 <p>
+    <strong>Applicant:</strong> <?= $application->user->name ?>
+</p>
+<p>
     <strong>Category:</strong> <?= $application->category->name ?>
 </p>
-
 <p>
     <strong>Funding cycle:</strong> <?= $application->funding_cycle->name ?>
 </p>
