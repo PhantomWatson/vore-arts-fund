@@ -22,9 +22,6 @@ class VotesController extends AppController
     {
         parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated(['index', 'view']);
-        $this->loadModel('Applications');
-        $this->loadModel('FundingCycles');
-        $this->loadModel('Votes');
     }
 
     /**
@@ -34,7 +31,7 @@ class VotesController extends AppController
      */
     public function index()
     {
-        $applications = $this->Applications
+        $applications = $this->fetchTable('Applications')
             ->find()
             ->where(['status_id' => 5 ])
             ->all()
@@ -53,7 +50,7 @@ class VotesController extends AppController
     public function submit(): ?Response
     {
         $this->set([
-            'applications' => $this->Applications
+            'applications' => $this->fetchTable('Applications')
                 ->find()
                 ->where(['status_id' => 5])
                 ->all()
@@ -62,7 +59,7 @@ class VotesController extends AppController
         ]);
 
         $now = date('Y-m-d H:i:s');
-        $fundingCycle = $this->FundingCycles
+        $fundingCycle = $this->fetchTable('FundingCycles')
             ->find()
             ->where([
                 'FundingCycles.application_begin <=' => $now,
@@ -79,15 +76,16 @@ class VotesController extends AppController
         $keys = array_keys($data);
 
         $success = false;
+        $votesTable = $this->fetchTable('Votes');
         foreach ($keys as $key) {
             /** @var \App\Model\Entity\Vote $voteEntry */
-            $voteEntry = $this->Votes->newEmptyEntity();
+            $voteEntry = $votesTable->newEmptyEntity();
             $user = $this->request->getAttribute('identity');
             $voteEntry->user_id = $user ? $user->id : null;
             $voteEntry->application_id = $key;
             $voteEntry->funding_cycle_id = $fundingCycle->id;
             $voteEntry->weight = 1;
-            if (!$this->Votes->save($voteEntry)) {
+            if (!$votesTable->save($voteEntry)) {
                 break;
             }
             $success = true;
