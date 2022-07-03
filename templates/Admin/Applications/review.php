@@ -8,32 +8,55 @@
  */
 ?>
 
-<?= $this->Html->link(
-    'Back',
-    [
-        'controller' => 'Admin',
-        'action' => 'applications',
-    ],
-    ['class' => 'btn btn-secondary']
-) ?>
+<p>
+    <?= $this->Html->link(
+        'Back',
+        [
+            'controller' => 'Admin',
+            'action' => 'applications',
+        ],
+        ['class' => 'btn btn-secondary']
+    ) ?>
+</p>
 
 <div>
-    <h4>Status</h4>
-    <?= $this->Form->create() ?>
-    <fieldset>
-        <?= $this->Form->control(
-            'status_id',
-            [
-                'type' => 'select',
-                'options' => $statusOptions,
-                'label' => false,
-                'empty' => 'Category',
-                'default' => $application->status_id,
-            ]
-        ) ?>
-    </fieldset>
-    <?= $this->Form->submit(__('Update Status'), ['class' => 'btn btn-secondary']) ?>
-    <?= $this->Form->end() ?>
+    <div class="row">
+        <fieldset>
+            <p>
+                Status:
+                <strong>
+                    <?= $application->status_name ?>
+                </strong>
+            </p>
+            <form class="form-inline" method="patch">
+                <label class="control-label">
+                    Change status to
+                </label>
+                <select name="status" class="form-select" id="change-status">
+                    <?php foreach ($statusOptions as $statusId => $statusName): ?>
+                        <option value="<?= $statusId ?>">
+                            <?= $statusName ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <button type="submit" class="btn btn-primary">
+                    Update status
+                </button>
+            </form>
+        </fieldset>
+    </div>
+
+    <form class="row row-cols-lg-auto g-3 align-items-center">
+        <div class="col-12">
+
+            <div class="form-group form-inline">
+
+            </div>
+        </div>
+        <div class="col-12">
+
+        </div>
+    </form>
 </div>
 
 <?= $this->element('../Applications/view') ?>

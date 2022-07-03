@@ -95,6 +95,49 @@ class Application extends Entity
     }
 
     /**
+     * Takes a current status and returns an array of valid statuses that this application can be changed to
+     *
+     * @param int $currentStatusId
+     * @return int[]
+     */
+    public static function getValidStatusOptions(int $currentStatusId)
+    {
+        switch ($currentStatusId) {
+            case self::STATUS_DRAFT:
+            case self::STATUS_REVISION_REQUESTED:
+                return [
+                    self::STATUS_UNDER_REVIEW,
+                    self::STATUS_WITHDRAWN,
+                ];
+            case self::STATUS_UNDER_REVIEW:
+                return [
+                    self::STATUS_ACCEPTED,
+                    self::STATUS_REJECTED,
+                    self::STATUS_REVISION_REQUESTED,
+                    self::STATUS_WITHDRAWN,
+                ];
+            case self::STATUS_ACCEPTED:
+                return [
+                    self::STATUS_VOTING,
+                    self::STATUS_WITHDRAWN,
+                ];
+            case self::STATUS_VOTING:
+                return [
+                    self::STATUS_AWARDED,
+                    self::STATUS_NOT_AWARDED,
+                    self::STATUS_WITHDRAWN,
+                ];
+            case self::STATUS_REJECTED:
+            case self::STATUS_AWARDED:
+            case self::STATUS_NOT_AWARDED:
+            case self::STATUS_WITHDRAWN:
+                return [];
+        }
+
+        throw new InternalErrorException("Unrecognized status: $currentStatusId");
+    }
+
+    /**
      * @param int $statusId
      * @return string
      * @throws \Cake\Http\Exception\InternalErrorException

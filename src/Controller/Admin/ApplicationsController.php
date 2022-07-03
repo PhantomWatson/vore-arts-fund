@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Model\Entity\Application;
+use Cake\Http\Response;
 
 /**
  * FundingCyclesController
@@ -50,14 +51,27 @@ class ApplicationsController extends AdminController
     /**
      * Page for reviewing an application
      *
-     * @return void
+     * @return Response|null
      */
     public function review()
     {
         $applicationId = $this->request->getParam('id');
-        $statusOptions = Application::getStatuses();
+        $application = $this->Applications->get($applicationId);
+        if (!$application) {
+            $this->Flash->error('Application not found');
+            return $this->redirect(['action' => 'index']);
+        }
+        $statuses = Application::getStatuses();
+        $validStatuses = Application::getValidStatusOptions($application->status_id);
+        $statusOptions = [];
+        foreach ($validStatuses as $statusId) {
+            $statusOptions[$statusId] = $statuses[$statusId];
+        }
+
         $this->setViewApplicationViewVars($applicationId);
         $this->set(compact('statusOptions'));
+
+        return null;
     }
 
     /**
