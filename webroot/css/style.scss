@@ -736,9 +736,14 @@ body {
 }
 
 #review-action-column {
+    background-color: #eee;
+    border-radius: 1em;
+    padding: 1em;
+
     > section {
         margin-bottom: 2em;
     }
+
     .form-group.textarea {
         margin-bottom: 0.5em;
     }

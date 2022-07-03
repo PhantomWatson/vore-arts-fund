@@ -23,10 +23,10 @@
 </p>
 
 <div class="row">
-    <div class="col-6">
+    <div class="col-md-6">
         <?= $this->element('../Applications/view') ?>
     </div>
-    <div class="col-6" id="review-action-column">
+    <div class="col-md-6" id="review-action-column">
         <section>
             <h3>
                 Status: <?= $application->status_name ?>

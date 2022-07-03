@@ -10695,6 +10695,11 @@ body {
   width: auto;
 }
 
+#review-action-column {
+  background-color: #eee;
+  border-radius: 1em;
+  padding: 1em;
+}
 #review-action-column > section {
   margin-bottom: 2em;
 }
