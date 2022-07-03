@@ -150,4 +150,34 @@ class FundingCyclesTable extends Table
         return $query
             ->where(['FundingCycles.application_end >=' => $now]);
     }
+
+    /**
+     * Modifies a query to return the funding cycle that is currently accepting votes
+     *
+     * @param \Cake\ORM\Query $query
+     * @return \Cake\ORM\Query
+     */
+    public function findCurrentVoting(Query $query)
+    {
+        $now = date('Y-m-d H:i:s');
+
+        return $query
+            ->where(['FundingCycles.vote_begin <=' => $now])
+            ->where(['FundingCycles.vote_end >=' => $now]);
+    }
+
+    /**
+     * Modifies a query to return the funding cycle that will be accepting votes next
+     *
+     * @param \Cake\ORM\Query $query
+     * @return \Cake\ORM\Query
+     */
+    public function findNextVoting(Query $query)
+    {
+        $now = date('Y-m-d H:i:s');
+
+        return $query
+            ->where(['FundingCycles.vote_begin >' => $now])
+            ->orderAsc('FundingCycles.vote_begin');
+    }
 }

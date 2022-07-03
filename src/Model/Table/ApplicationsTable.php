@@ -6,6 +6,7 @@ namespace App\Model\Table;
 use App\Model\Entity\Application;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\ResultSetInterface;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -168,5 +169,28 @@ class ApplicationsTable extends Table
                 ]
             ]
         );
+    }
+
+    /**
+     * Modifies a query to return the funding cycle that will be accepting votes next
+     *
+     * @param \Cake\ORM\Query $query
+     * @param array $options
+     * @return \Cake\ORM\Query
+     */
+    public function findForVoting(Query $query, array $options)
+    {
+        return $query
+            ->where([
+                'Applications.funding_cycle_id' => $options['funding_cycle_id'],
+                'Applications.status_id' => Application::STATUS_ACCEPTED,
+            ])
+            ->contain([
+                'Answers',
+                'Categories',
+                'Images',
+                'Users'
+            ])
+            ->orderAsc('Applications.title');
     }
 }

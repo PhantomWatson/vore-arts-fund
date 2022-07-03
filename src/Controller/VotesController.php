@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\FundingCycle;
+use App\Model\Table\FundingCyclesTable;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 
@@ -31,16 +33,30 @@ class VotesController extends AppController
      */
     public function index()
     {
-        $applications = $this->fetchTable('Applications')
-            ->find()
-            ->where(['status_id' => 5 ])
-            ->all()
-            ->toArray();
-        $title = 'Applications';
-
+        /** @var FundingCyclesTable $fundingCyclesTable */
+        $fundingCyclesTable = $this->fetchTable('FundingCycles');
+        /** @var FundingCycle|null $cycle */
+        $cycle = $fundingCyclesTable->find('currentVoting')->first();
+        /** @var FundingCycle|null $nextCycle */
+        $nextCycle = $fundingCyclesTable->find('nextVoting')->first();
+        $applications = $cycle
+            ? $this->fetchTable('Applications')
+                ->find('forVoting', ['funding_cycle_id' => $cycle->id])
+                ->all()
+            : [];
+        $this->title(
+            $cycle
+                ? 'Vote: ' . $cycle->name
+                : (
+                    $nextCycle
+                        ? 'Voting begins ' . $nextCycle->vote_begin->format('F j, Y')
+                        : 'Check back later for voting info'
+                )
+        );
         $this->set(compact(
             'applications',
-            'title',
+            'cycle',
+            'nextCycle',
         ));
     }
 
