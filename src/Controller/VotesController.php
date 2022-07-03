@@ -7,11 +7,6 @@ use Cake\Event\EventInterface;
 use Cake\Http\Response;
 
 /**
- * Static content controller
- *
- * This controller will render views from Template/Pages/
- *
- * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  * @property \App\Model\Table\ApplicationsTable $Applications
  * @property \App\Model\Table\VotesTable $Votes
  * @property \App\Model\Table\FundingCyclesTable $FundingCycles
@@ -20,13 +15,8 @@ use Cake\Http\Response;
 class VotesController extends AppController
 {
     /**
-     * Displays a view
-     *
-     * @param \Cake\Event\EventInterface $event Event object
-     * @return \Cake\Http\Response|void|null
-     * @throws \Cake\Http\Exception\ForbiddenException When a directory traversal attempt.
-     * @throws \Cake\Http\Exception\NotFoundException When the view file could not
-     *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
+     * @param EventInterface $event
+     * @return void
      */
     public function beforeFilter(EventInterface $event): void
     {
