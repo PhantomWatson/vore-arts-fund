@@ -73,7 +73,7 @@
 
     <p>
         <label for="wizard-checkbox">
-            <input type="checkbox" id="wizard-checkbox"/> Use wizard
+            <input type="checkbox" id="wizard-checkbox" /> Use wizard
         </label>
     </p>
 
