@@ -14,8 +14,9 @@
     <?= $this->Html->link(
         'Back',
         [
-            'controller' => 'Admin',
-            'action' => 'applications',
+            'prefix' => 'Admin',
+            'controller' => 'Applications',
+            'action' => 'index',
         ],
         ['class' => 'btn btn-secondary']
     ) ?>
