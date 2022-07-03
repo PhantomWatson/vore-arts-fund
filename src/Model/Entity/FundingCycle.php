@@ -25,7 +25,13 @@ use Cake\ORM\Entity;
  */
 class FundingCycle extends Entity
 {
-    const TIME_FIELDS = ['application_begin', 'application_end', 'vote_begin', 'vote_end'];
+    const TIME_FIELDS = [
+        'application_begin',
+        'application_end',
+        'resubmit_deadline',
+        'vote_begin',
+        'vote_end'
+    ];
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -89,28 +95,28 @@ class FundingCycle extends Entity
         return 'Fall';
     }
 
-    protected function _getApplicationBegin(FrozenTime $time): FrozenTime
+    protected function _getApplicationBegin(?FrozenTime $time): ?FrozenTime
     {
-        return $time->setTimezone(\App\Application::LOCAL_TIMEZONE);
+        return $time ? $time->setTimezone(\App\Application::LOCAL_TIMEZONE) : null;
     }
 
-    protected function _getApplicationEnd(FrozenTime $time): FrozenTime
+    protected function _getApplicationEnd(?FrozenTime $time): ?FrozenTime
     {
-        return $time->setTimezone(\App\Application::LOCAL_TIMEZONE);
+        return $time ? $time->setTimezone(\App\Application::LOCAL_TIMEZONE) : null;
     }
 
-    protected function _getVoteBegin(FrozenTime $time): FrozenTime
+    protected function _getVoteBegin(?FrozenTime $time): ?FrozenTime
     {
-        return $time->setTimezone(\App\Application::LOCAL_TIMEZONE);
+        return $time ? $time->setTimezone(\App\Application::LOCAL_TIMEZONE) : null;
     }
 
-    protected function _getVoteEnd(FrozenTime $time): FrozenTime
+    protected function _getVoteEnd(?FrozenTime $time): ?FrozenTime
     {
-        return $time->setTimezone(\App\Application::LOCAL_TIMEZONE);
+        return $time ? $time->setTimezone(\App\Application::LOCAL_TIMEZONE) : null;
     }
 
-    protected function _getResubmitDeadline(FrozenTime $time): FrozenTime
+    protected function _getResubmitDeadline(?FrozenTime $time): ?FrozenTime
     {
-        return $time->setTimezone(\App\Application::LOCAL_TIMEZONE);
+        return $time ? $time->setTimezone(\App\Application::LOCAL_TIMEZONE) : null;
     }
 }
