@@ -7,12 +7,13 @@ module.exports = {
     filename: 'bundle.js'
   },
   devServer: {
-    port: 8081,
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
       "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
-    }
+    },
+    host: 'vore.test',
+    port: 8081,
   },
   module: {
     rules: [
