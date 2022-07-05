@@ -50,6 +50,7 @@ bin/cake
 # Dependencies
 /vendor/*
 /node_modules/*
+/webroot/vote-app/node_modules/*
 
 # Application directories
 /webroot/img/applications

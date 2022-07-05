@@ -5,6 +5,10 @@
  * @var \App\Model\Entity\FundingCycle|null $cycle
  * @var \App\Model\Entity\FundingCycle|null $nextCycle
  */
+$bundlePathBase = \Cake\Core\Configure::read('debug')
+    ? 'http://localhost:8081'
+    : '/vote-app/dist/index.js';
+
 ?>
 
 <?php if ($cycle): ?>
@@ -50,3 +54,6 @@
         <?php endif; ?>
     </p>
 <?php endif; ?>
+
+<div id="voting-root"></div>
+<script type="module" src="<?= $bundlePathBase ?>/bundle.js"></script>
