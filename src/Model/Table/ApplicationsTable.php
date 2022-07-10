@@ -172,7 +172,7 @@ class ApplicationsTable extends Table
     }
 
     /**
-     * Modifies a query to return the funding cycle that will be accepting votes next
+     * Modifies a query to return the votable applications for the specified funding cycle
      *
      * @param \Cake\ORM\Query $query
      * @param array $options
