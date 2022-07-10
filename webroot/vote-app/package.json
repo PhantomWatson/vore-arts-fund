@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Vore Arts Fund voting application",
   "main": "src/index.js",
+  "private": true,
   "scripts": {
     "start": "webpack serve --mode development --hot --live-reload",
     "build": "webpack --mode production",
