@@ -6,7 +6,7 @@
  * @var \App\Model\Entity\FundingCycle|null $nextCycle
  */
 $bundlePathBase = \Cake\Core\Configure::read('debug')
-    ? 'http://localhost:8081'
+    ? 'http://vore.test:8081/vote-app/dist'
     : '/vote-app/dist/index.js';
 
 ?>
