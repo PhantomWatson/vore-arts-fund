@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Entity\FundingCycle;
+use App\Model\Entity\User;
 use App\Model\Table\FundingCyclesTable;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
@@ -33,17 +34,27 @@ class VotesController extends AppController
      */
     public function index()
     {
-        /** @var FundingCyclesTable $fundingCyclesTable */
+        // Get current cycle and applications
+        /**
+         * @var FundingCyclesTable $fundingCyclesTable
+         * @var FundingCycle|null $cycle
+         * @var FundingCycle|null $nextCycle
+         * @var User|null $user
+         */
         $fundingCyclesTable = $this->fetchTable('FundingCycles');
-        /** @var FundingCycle|null $cycle */
         $cycle = $fundingCyclesTable->find('currentVoting')->first();
-        /** @var FundingCycle|null $nextCycle */
-        $nextCycle = $fundingCyclesTable->find('nextVoting')->first();
         $applications = $cycle
             ? $this->fetchTable('Applications')
                 ->find('forVoting', ['funding_cycle_id' => $cycle->id])
                 ->all()
+                ->toArray()
             : [];
+        $user = $this->Authentication->getIdentity();
+        $hasVoted = $user && $cycle && $this->Votes->hasVoted($user->id, $cycle->id);
+        $nextCycle = $fundingCyclesTable->find('nextVoting')->first();
+        $showUpcoming = $hasVoted || !$cycle || !$applications;
+        $canVote = $user && !$showUpcoming;
+
         $this->title(
             $cycle
                 ? 'Vote: ' . $cycle->name
@@ -53,10 +64,14 @@ class VotesController extends AppController
                         : 'Check back later for voting info'
                 )
         );
+
         $this->set(compact(
             'applications',
+            'canVote',
             'cycle',
+            'hasVoted',
             'nextCycle',
+            'showUpcoming',
         ));
     }
 

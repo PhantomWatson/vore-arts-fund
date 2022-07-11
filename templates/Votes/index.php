@@ -1,29 +1,28 @@
 <?php
 /**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Application[]|\Cake\ORM\ResultSet $applications
+ * @var \App\Model\Entity\Application[] $applications
  * @var \App\Model\Entity\FundingCycle|null $cycle
  * @var \App\Model\Entity\FundingCycle|null $nextCycle
+ * @var \App\View\AppView $this
+ * @var bool $canVote
+ * @var bool $hasVoted
+ * @var bool $isLoggedIn
+ * @var bool $showUpcoming
  */
 $bundlePathBase = \Cake\Core\Configure::read('debug')
     ? 'http://vore.test:8081/vote-app/dist'
     : '/vote-app/dist/index.js';
-
 ?>
 
+<?php if ($hasVoted): ?>
+    <p class="alert alert-info">
+        Thank you for voting in this funding cycle!
+    </p>
+<?php endif; ?>
+
 <?php if ($cycle): ?>
-    <?php if ($applications->isEmpty()): ?>
-        <div class="alert alert-info">
-            Unfortunately, there are no applications available to vote on in this funding cycle.
-            <?php if ($nextCycle): ?>
-                Voting for the next funding cycle will begin on
-                <strong><?= $nextCycle->vote_end->format('F j, Y') ?></strong>
-            <?php else: ?>
-                Please check back later for information about the next opportunity to vote.
-            <?php endif; ?>
-        </div>
-    <?php else: ?>
-        <div class="alert alert-info">
+    <div class="alert alert-info">
+        <?php if ($applications): ?>
             <p>
                 Voting is underway for the applicants in this funding cycle! Here are the steps:
             </p>
@@ -42,9 +41,34 @@ $bundlePathBase = \Cake\Core\Configure::read('debug')
                 The deadline to cast your votes is
                 <strong><?= $cycle->vote_end->format('F j, Y') ?></strong>.
             </p>
-        </div>
+        <?php else: ?>
+            <p>
+                Unfortunately, there are no applications to vote on in this funding cycle.
+            </p>
+        <?php endif; ?>
+    </div>
+
+    <?php if (!$isLoggedIn): ?>
+        <p class="alert alert-warning">
+            You must
+            <?= $this->Html->link(
+                'log in',
+                [
+                    'controller' => 'Users',
+                    'action' => 'login',
+                ]
+            ) ?>
+            to vote.
+        </p>
     <?php endif; ?>
-<?php else: ?>
+<?php endif; ?>
+
+<?php if ($canVote): ?>
+    <div id="voting-root"></div>
+    <script type="module" src="<?= $bundlePathBase ?>/bundle.js"></script>
+<?php endif; ?>
+
+<?php if ($showUpcoming): ?>
     <p class="alert alert-info">
         <?php if ($nextCycle): ?>
             Voting for the <?= $nextCycle->name ?> applicants begins on
@@ -54,6 +78,3 @@ $bundlePathBase = \Cake\Core\Configure::read('debug')
         <?php endif; ?>
     </p>
 <?php endif; ?>
-
-<div id="voting-root"></div>
-<script type="module" src="<?= $bundlePathBase ?>/bundle.js"></script>

@@ -91,4 +91,17 @@ class VotesTable extends Table
 
         return $rules;
     }
+
+    /**
+     * @param int $userId
+     * @param int $cycleId
+     * @return bool
+     */
+    public function hasVoted(int $userId, int $cycleId): bool
+    {
+        return $this->exists([
+            'user_id' => $userId,
+            'funding_cycle_id' => $cycleId
+        ]);
+    }
 }
