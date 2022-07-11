@@ -91,3 +91,7 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
 
     $builder->fallbacks(DashedRoute::class);
 });
+
+$routes->prefix('api', function (RouteBuilder $builder) {
+    $builder->connect('/applications/*', ['controller' => 'Applications']);
+});

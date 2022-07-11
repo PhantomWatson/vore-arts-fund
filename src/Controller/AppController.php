@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Model\Entity\Application;
-use App\Model\Table\ApplicationsTable;
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
+use Cake\View\JsonView;
 
 /**
  * Application Controller
@@ -78,5 +77,15 @@ class AppController extends Controller
     protected function title(string $title)
     {
         $this->set(compact('title'));
+    }
+
+    /**
+     * Sets supported view classes
+     *
+     * @return string[]
+     */
+    public function viewClasses(): array
+    {
+        return [JsonView::class];
     }
 }

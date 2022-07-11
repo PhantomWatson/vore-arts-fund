@@ -172,7 +172,8 @@ class ApplicationsTable extends Table
     }
 
     /**
-     * Modifies a query to return the votable applications for the specified funding cycle
+     * Modifies a query to return the votable applications for the specified funding cycle, including only the
+     * necessary fields
      *
      * @param \Cake\ORM\Query $query
      * @param array $options
@@ -181,15 +182,58 @@ class ApplicationsTable extends Table
     public function findForVoting(Query $query, array $options)
     {
         return $query
+            ->select([
+                'Applications.accept_partial_payout',
+                'Applications.amount_requested',
+                'Applications.category_id',
+                'Applications.description',
+                'Applications.id',
+                'Applications.title',
+                'Applications.user_id',
+            ])
             ->where([
                 'Applications.funding_cycle_id' => $options['funding_cycle_id'],
                 'Applications.status_id' => Application::STATUS_ACCEPTED,
             ])
             ->contain([
-                'Answers',
-                'Categories',
-                'Images',
-                'Users'
+                'Answers' => function (Query $q) {
+                    return $q
+                        ->select([
+                            'Answers.answer',
+                            'Answers.application_id',
+                            'Answers.id',
+                            'Answers.question_id',
+                        ])
+                        ->contain([
+                            'Questions' => function (Query $q) {
+                                return $q->select([
+                                    'Questions.id',
+                                    'Questions.question',
+                                    'Questions.weight',
+                                ]);
+                            }
+                        ]);
+                },
+                'Categories' => function (Query $q) {
+                    return $q->select([
+                        'Categories.id',
+                        'Categories.name',
+                    ]);
+                },
+                'Images' => function (Query $q) {
+                    return $q->select([
+                        'Images.application_id',
+                        'Images.filename',
+                        'Images.id',
+                        'Images.weight',
+                    ]);
+                },
+                'Users' => function (Query $q) {
+                    return $q->select([
+                        'Users.id',
+                        'Users.name',
+                    ]);
+                },
             ])
             ->orderAsc('Applications.title');
     }
