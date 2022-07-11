@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\FundingCycle|null $cycle
  * @var \App\Model\Entity\FundingCycle|null $nextCycle
  * @var \App\View\AppView $this
+ * @var array $toLoad
  * @var bool $canVote
  * @var bool $hasVoted
  * @var bool $isLoggedIn
@@ -11,7 +12,7 @@
  */
 $bundlePathBase = \Cake\Core\Configure::read('debug')
     ? 'http://vore.test:8081/vote-app/dist'
-    : '/vote-app/dist/index.js';
+    : '';
 ?>
 
 <?php if ($hasVoted): ?>
@@ -64,8 +65,13 @@ $bundlePathBase = \Cake\Core\Configure::read('debug')
 <?php endif; ?>
 
 <?php if ($canVote): ?>
-    <div id="voting-root"></div>
-    <script type="module" src="<?= $bundlePathBase ?>/bundle.js"></script>
+    <div id="root"></div>
+    <?php foreach ($toLoad['js'] as $file): ?>
+        <?= $this->Html->script("/vote-app/dist/$file") ?>
+    <?php endforeach; ?>
+    <?php foreach ($toLoad['css'] as $file): ?>
+        <?= $this->Html->css("/vote-app/dist/styles/$file", ['block' => true]) ?>
+    <?php endforeach; ?>
 <?php endif; ?>
 
 <?php if ($showUpcoming): ?>
