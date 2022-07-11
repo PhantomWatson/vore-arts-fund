@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5198bc28a8d739f61af059065885b149",
+    "content-hash": "d54702c706d19c14910c781299e1a20a",
     "packages": [
         {
             "name": "cakephp/authentication",
@@ -857,6 +857,41 @@
                 "source": "https://github.com/serbanghita/Mobile-Detect/tree/2.8.39"
             },
             "time": "2022-02-17T19:24:25+00:00"
+        },
+        {
+            "name": "ozee31/cakephp-cors",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ozee31/cakephp-cors.git",
+                "reference": "fc45012d85972b8b2a4e9af7aef57fef033d16f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ozee31/cakephp-cors/zipball/fc45012d85972b8b2a4e9af7aef57fef033d16f9",
+                "reference": "fc45012d85972b8b2a4e9af7aef57fef033d16f9",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^4.0",
+                "php": ">=7.2.0",
+                "psr/http-server-handler": "^1.0",
+                "psr/http-server-middleware": "^1.0"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "^4.0",
+                "phpunit/phpunit": "~8.5.0"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Cors\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "A CakePHP (3.3.x) plugin for activate cors domain in your application",
+            "abandoned": true,
+            "time": "2020-05-14T16:20:43+00:00"
         },
         {
             "name": "psr/container",
@@ -6527,8 +6562,9 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.4",
-        "ext-intl": "*"
+        "ext-intl": "*",
+        "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "1.1.0"
 }

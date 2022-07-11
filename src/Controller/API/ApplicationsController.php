@@ -5,6 +5,7 @@ namespace App\Controller\API;
 
 use App\Controller\AppController;
 use App\Model\Table\FundingCyclesTable;
+use Cake\Event\EventInterface;
 use Cake\Http\Exception\MethodNotAllowedException;
 
 /**
@@ -15,13 +16,27 @@ use Cake\Http\Exception\MethodNotAllowedException;
 class ApplicationsController extends AppController
 {
     /**
-     * GFET /api/applications endpoint
+     * beforeFilter callback method
+     *
+     * @param \Cake\Event\EventInterface $event Event object
+     * @return \Cake\Http\Response|void|null
+     */
+    public function beforeFilter(EventInterface $event): void
+    {
+        parent::beforeFilter($event);
+        $this->Authentication->allowUnauthenticated([
+            'index',
+        ]);
+    }
+
+    /**
+     * GET /api/applications endpoint
      *
      * @return void
      */
     public function index()
     {
-        if (!$this->request->is('get')) {
+        if (!$this->request->is(['get', 'options'])) {
             throw new MethodNotAllowedException('Only GET is supported at this endpoint');
         }
         /** @var FundingCyclesTable $fundingCyclesTable */

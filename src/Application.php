@@ -64,6 +64,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             if (Configure::read('debug')) {
                 $this->addPlugin('IdeHelper');
             }
+            $this->addPlugin('Cors');
         }
 
         /*
