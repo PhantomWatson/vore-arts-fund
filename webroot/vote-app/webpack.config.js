@@ -1,39 +1,67 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-module.exports = (env, argv) => {
-  const isDev = argv.mode === "development";
+const webpack = require("webpack");
+const paths = require("./config/paths");
+const path = require("path");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const HTMLWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const { merge } = require("webpack-merge");
+const loadPreset = require("./config/presets/loadPreset");
+const loadConfig = (mode) => require(`./config/webpack.${mode}.js`)(mode);
 
-  return {
-    entry: [
-      './src/index.js',
-    ],
-    output: {
-      path: path.join(__dirname, '/dist'),
-      filename: 'bundle.js',
-      publicPath: isDev ? 'http://vore.test:9000/vote-app/dist/' : '/vote-app/dist/',
-    },
-    devServer: {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+module.exports = function (env) {
+  const { mode = "production" } = env || {};
+  return merge(
+    {
+      mode,
+      entry: `${paths.srcPath}/index.js`,
+      output: {
+        path: paths.distPath,
+        filename: "[name].bundle.js",
+        publicPath: "/",
       },
-      host: 'vore.test',
-      port: 8081,
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            use: ["babel-loader"],
+            exclude: path.resolve(__dirname, "node_modules"),
+          },
+          // Images: Copy image files to build folder
+          { test: /\.(?:ico|gif|png|jpg|jpeg)$/i, type: "asset/resource" },
+
+          // Fonts and SVGs: Inline files
+          { test: /\.(woff(2)?|eot|ttf|otf|svg|)$/, type: "asset/inline" },
+        ],
+      },
+      resolve: {
+        modules: [paths.srcPath, "node_modules"],
+        extensions: [".js", ".jsx", ".json"],
+      },
+      plugins: [
+        new CleanWebpackPlugin(),
+        // Copies files from target to destination folder
+        new CopyWebpackPlugin({
+          patterns: [
+            {
+              from: paths.publicPath,
+              to: "assets",
+              globOptions: {
+                ignore: ["*.DS_Store"],
+              },
+              noErrorOnMissing: true,
+            },
+          ],
+        }),
+        new HTMLWebpackPlugin({
+          template: `${paths.publicPath}/index.html`,
+        }),
+        new webpack.ProgressPlugin(),
+        new webpack.ProvidePlugin({
+          "React": "react",
+        })
+      ],
     },
-    module: {
-      rules: [
-        {
-          test: /\.jsx?$/,
-          exclude: /node_modules/,
-          loader: 'babel-loader',
-        },
-        {
-          test: /\.css$/,
-          use: [ 'style-loader', 'css-loader' ]
-        }
-      ]
-    },
-    plugins: [],
-    target: isDev ? "web" : "browserslist:modern",
-  };
-}
+    loadConfig(mode),
+    loadPreset(env)
+  );
+};
