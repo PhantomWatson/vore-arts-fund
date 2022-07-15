@@ -8,6 +8,8 @@ class API {
   }
 
   static async getApplications(setErrorMsg) {
+    //return this.getDummyApplications();
+
     let retval = null;
     const url = this.getBasePath() + '/api/applications';
     const fetchOptions = {
