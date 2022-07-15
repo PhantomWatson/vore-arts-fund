@@ -1,3 +1,5 @@
+import {currencyFormatter} from "./Formatter";
+
 const ApplicationList = (props) => {
   return (
     <>
@@ -7,17 +9,36 @@ const ApplicationList = (props) => {
         </p>
       }
       {props.applications.length > 0 &&
-        <ul>
-          {props.applications.map(function (application, index) {
-            return (
-              <li key={index}>
-                {application.title}
-                <br />
-                from {application.user.name}
-              </li>
-            );
-          })}
-        </ul>
+        <table id="vote-application-list">
+          <tbody>
+            {props.applications.map((application, index) => {
+              return (
+                <tr key={index}>
+                  <td>
+                    <p className="application-title">
+                      {application.title}
+                    </p>
+                    <p className="application-summary">
+                      {currencyFormatter.format(application.amount_requested) + ' '}
+                      requested by {application.user.name}
+                    </p>
+                  </td>
+                  <td className="vote-actions">
+                    <button>
+                      👍 Approve
+                    </button>
+                    <button>
+                      👎 Reject
+                    </button>
+                    <button>
+                      👁 View details
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       }
     </>
   );

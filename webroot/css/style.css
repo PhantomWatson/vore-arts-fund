@@ -548,7 +548,7 @@ progress {
   }
 }
 
-.list-unstyled {
+.list-unstyled, #vote-steps {
   padding-left: 0;
   list-style: none;
 }
@@ -616,7 +616,7 @@ progress {
   color: #6c757d;
 }
 
-.container,
+.container, #voter-app,
 .container-fluid,
 .container-xxl,
 .container-xl,
@@ -631,27 +631,27 @@ progress {
 }
 
 @media (min-width: 576px) {
-  .container-sm, .container {
+  .container-sm, .container, #voter-app {
     max-width: 540px;
   }
 }
 @media (min-width: 768px) {
-  .container-md, .container-sm, .container {
+  .container-md, .container-sm, .container, #voter-app {
     max-width: 720px;
   }
 }
 @media (min-width: 992px) {
-  .container-lg, .container-md, .container-sm, .container {
+  .container-lg, .container-md, .container-sm, .container, #voter-app {
     max-width: 960px;
   }
 }
 @media (min-width: 1200px) {
-  .container-xl, .container-lg, .container-md, .container-sm, .container {
+  .container-xl, .container-lg, .container-md, .container-sm, .container, #voter-app {
     max-width: 1140px;
   }
 }
 @media (min-width: 1400px) {
-  .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+  .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container, #voter-app {
     max-width: 1320px;
   }
 }
@@ -1726,7 +1726,7 @@ progress {
     --bs-gutter-y: 3rem;
   }
 }
-.table {
+.table, #vote-application-list {
   --bs-table-bg: transparent;
   --bs-table-accent-bg: transparent;
   --bs-table-striped-color: #212529;
@@ -1741,19 +1741,19 @@ progress {
   vertical-align: top;
   border-color: #dee2e6;
 }
-.table > :not(caption) > * > * {
+.table > :not(caption) > * > *, #vote-application-list > :not(caption) > * > * {
   padding: 0.5rem 0.5rem;
   background-color: var(--bs-table-bg);
   border-bottom-width: 1px;
   box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
 }
-.table > tbody {
+.table > tbody, #vote-application-list > tbody {
   vertical-align: inherit;
 }
-.table > thead {
+.table > thead, #vote-application-list > thead {
   vertical-align: bottom;
 }
-.table > :not(:first-child) {
+.table > :not(:first-child), #vote-application-list > :not(:first-child) {
   border-top: 2px solid currentColor;
 }
 
@@ -2274,7 +2274,7 @@ textarea.form-control-lg {
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
 }
-.btn-check[disabled] + .btn, .btn-check:disabled + .btn {
+.btn-check[disabled] + .btn, .vote-actions .btn-check[disabled] + button, .btn-check:disabled + .btn, .vote-actions .btn-check:disabled + button {
   pointer-events: none;
   filter: none;
   opacity: 0.65;
@@ -2433,11 +2433,11 @@ textarea.form-control-lg {
 .input-group > .form-select:focus {
   z-index: 3;
 }
-.input-group .btn {
+.input-group .btn, .input-group .vote-actions button, .vote-actions .input-group button {
   position: relative;
   z-index: 2;
 }
-.input-group .btn:focus {
+.input-group .btn:focus, .input-group .vote-actions button:focus, .vote-actions .input-group button:focus {
   z-index: 3;
 }
 
@@ -2459,7 +2459,8 @@ textarea.form-control-lg {
 .input-group-lg > .form-control,
 .input-group-lg > .form-select,
 .input-group-lg > .input-group-text,
-.input-group-lg > .btn {
+.input-group-lg > .btn,
+.vote-actions .input-group-lg > button {
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
   border-radius: 0.3rem;
@@ -2468,7 +2469,8 @@ textarea.form-control-lg {
 .input-group-sm > .form-control,
 .input-group-sm > .form-select,
 .input-group-sm > .input-group-text,
-.input-group-sm > .btn {
+.input-group-sm > .btn,
+.vote-actions .input-group-sm > button {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   border-radius: 0.2rem;
@@ -2673,7 +2675,7 @@ textarea.form-control-lg {
   z-index: 3;
 }
 
-.btn {
+.btn, .vote-actions button {
   display: inline-block;
   font-weight: 400;
   line-height: 1.5;
@@ -2691,18 +2693,18 @@ textarea.form-control-lg {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
-  .btn {
+  .btn, .vote-actions button {
     transition: none;
   }
 }
-.btn:hover {
+.btn:hover, .vote-actions button:hover {
   color: #212529;
 }
-.btn-check:focus + .btn, .btn:focus {
+.btn-check:focus + .btn, .vote-actions .btn-check:focus + button, .btn:focus, .vote-actions button:focus {
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(211, 60, 68, 0.25);
 }
-.btn:disabled, .btn.disabled, fieldset:disabled .btn {
+.btn:disabled, .vote-actions button:disabled, .btn.disabled, .vote-actions button.disabled, fieldset:disabled .btn, fieldset:disabled .vote-actions button, .vote-actions fieldset:disabled button {
   pointer-events: none;
   opacity: 0.65;
 }
@@ -2887,31 +2889,31 @@ textarea.form-control-lg {
   border-color: #dc3545;
 }
 
-.btn-light {
+.btn-light, .vote-actions button {
   color: #000;
   background-color: #f8f9fa;
   border-color: #f8f9fa;
 }
-.btn-light:hover {
+.btn-light:hover, .vote-actions button:hover {
   color: #000;
   background-color: #f9fafb;
   border-color: #f9fafb;
 }
-.btn-check:focus + .btn-light, .btn-light:focus {
+.btn-check:focus + .btn-light, .vote-actions .btn-check:focus + button, .btn-light:focus, .vote-actions button:focus {
   color: #000;
   background-color: #f9fafb;
   border-color: #f9fafb;
   box-shadow: 0 0 0 0.25rem rgba(211, 212, 213, 0.5);
 }
-.btn-check:checked + .btn-light, .btn-check:active + .btn-light, .btn-light:active, .btn-light.active, .show > .btn-light.dropdown-toggle {
+.btn-check:checked + .btn-light, .vote-actions .btn-check:checked + button, .btn-check:active + .btn-light, .vote-actions .btn-check:active + button, .btn-light:active, .vote-actions button:active, .btn-light.active, .vote-actions button.active, .show > .btn-light.dropdown-toggle, .vote-actions .show > button.dropdown-toggle {
   color: #000;
   background-color: #f9fafb;
   border-color: #f9fafb;
 }
-.btn-check:checked + .btn-light:focus, .btn-check:active + .btn-light:focus, .btn-light:active:focus, .btn-light.active:focus, .show > .btn-light.dropdown-toggle:focus {
+.btn-check:checked + .btn-light:focus, .vote-actions .btn-check:checked + button:focus, .btn-check:active + .btn-light:focus, .vote-actions .btn-check:active + button:focus, .btn-light:active:focus, .vote-actions button:active:focus, .btn-light.active:focus, .vote-actions button.active:focus, .show > .btn-light.dropdown-toggle:focus, .vote-actions .show > button.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.25rem rgba(211, 212, 213, 0.5);
 }
-.btn-light:disabled, .btn-light.disabled {
+.btn-light:disabled, .vote-actions button:disabled, .btn-light.disabled, .vote-actions button.disabled {
   color: #000;
   background-color: #f8f9fa;
   border-color: #f8f9fa;
@@ -3159,13 +3161,13 @@ textarea.form-control-lg {
   color: #6c757d;
 }
 
-.btn-lg, .btn-group-lg > .btn {
+.btn-lg, .btn-group-lg > .btn, .vote-actions .btn-group-lg > button {
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
   border-radius: 0.3rem;
 }
 
-.btn-sm, .btn-group-sm > .btn {
+.btn-sm, .btn-group-sm > .btn, .vote-actions .btn-group-sm > button {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   border-radius: 0.2rem;
@@ -3515,23 +3517,35 @@ textarea.form-control-lg {
   display: inline-flex;
   vertical-align: middle;
 }
-.btn-group > .btn,
-.btn-group-vertical > .btn {
+.btn-group > .btn, .vote-actions .btn-group > button,
+.btn-group-vertical > .btn,
+.vote-actions .btn-group-vertical > button {
   position: relative;
   flex: 1 1 auto;
 }
-.btn-group > .btn-check:checked + .btn,
+.btn-group > .btn-check:checked + .btn, .vote-actions .btn-group > .btn-check:checked + button,
 .btn-group > .btn-check:focus + .btn,
+.vote-actions .btn-group > .btn-check:focus + button,
 .btn-group > .btn:hover,
+.vote-actions .btn-group > button:hover,
 .btn-group > .btn:focus,
+.vote-actions .btn-group > button:focus,
 .btn-group > .btn:active,
+.vote-actions .btn-group > button:active,
 .btn-group > .btn.active,
+.vote-actions .btn-group > button.active,
 .btn-group-vertical > .btn-check:checked + .btn,
+.vote-actions .btn-group-vertical > .btn-check:checked + button,
 .btn-group-vertical > .btn-check:focus + .btn,
+.vote-actions .btn-group-vertical > .btn-check:focus + button,
 .btn-group-vertical > .btn:hover,
+.vote-actions .btn-group-vertical > button:hover,
 .btn-group-vertical > .btn:focus,
+.vote-actions .btn-group-vertical > button:focus,
 .btn-group-vertical > .btn:active,
-.btn-group-vertical > .btn.active {
+.vote-actions .btn-group-vertical > button:active,
+.btn-group-vertical > .btn.active,
+.vote-actions .btn-group-vertical > button.active {
   z-index: 1;
 }
 
@@ -3544,18 +3558,21 @@ textarea.form-control-lg {
   width: auto;
 }
 
-.btn-group > .btn:not(:first-child),
+.btn-group > .btn:not(:first-child), .vote-actions .btn-group > button:not(:first-child),
 .btn-group > .btn-group:not(:first-child) {
   margin-left: -1px;
 }
-.btn-group > .btn:not(:last-child):not(.dropdown-toggle),
-.btn-group > .btn-group:not(:last-child) > .btn {
+.btn-group > .btn:not(:last-child):not(.dropdown-toggle), .vote-actions .btn-group > button:not(:last-child):not(.dropdown-toggle),
+.btn-group > .btn-group:not(:last-child) > .btn,
+.vote-actions .btn-group > .btn-group:not(:last-child) > button {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-.btn-group > .btn:nth-child(n+3),
+.btn-group > .btn:nth-child(n+3), .vote-actions .btn-group > button:nth-child(n+3),
 .btn-group > :not(.btn-check) + .btn,
-.btn-group > .btn-group:not(:first-child) > .btn {
+.vote-actions .btn-group > :not(.btn-check) + button,
+.btn-group > .btn-group:not(:first-child) > .btn,
+.vote-actions .btn-group > .btn-group:not(:first-child) > button {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -3571,12 +3588,12 @@ textarea.form-control-lg {
   margin-right: 0;
 }
 
-.btn-sm + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split {
+.btn-sm + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split, .vote-actions .btn-group-sm > button + .dropdown-toggle-split {
   padding-right: 0.375rem;
   padding-left: 0.375rem;
 }
 
-.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split {
+.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split, .vote-actions .btn-group-lg > button + .dropdown-toggle-split {
   padding-right: 0.75rem;
   padding-left: 0.75rem;
 }
@@ -3586,21 +3603,23 @@ textarea.form-control-lg {
   align-items: flex-start;
   justify-content: center;
 }
-.btn-group-vertical > .btn,
+.btn-group-vertical > .btn, .vote-actions .btn-group-vertical > button,
 .btn-group-vertical > .btn-group {
   width: 100%;
 }
-.btn-group-vertical > .btn:not(:first-child),
+.btn-group-vertical > .btn:not(:first-child), .vote-actions .btn-group-vertical > button:not(:first-child),
 .btn-group-vertical > .btn-group:not(:first-child) {
   margin-top: -1px;
 }
-.btn-group-vertical > .btn:not(:last-child):not(.dropdown-toggle),
-.btn-group-vertical > .btn-group:not(:last-child) > .btn {
+.btn-group-vertical > .btn:not(:last-child):not(.dropdown-toggle), .vote-actions .btn-group-vertical > button:not(:last-child):not(.dropdown-toggle),
+.btn-group-vertical > .btn-group:not(:last-child) > .btn,
+.vote-actions .btn-group-vertical > .btn-group:not(:last-child) > button {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-.btn-group-vertical > .btn ~ .btn,
-.btn-group-vertical > .btn-group:not(:first-child) > .btn {
+.btn-group-vertical > .btn ~ .btn, .vote-actions .btn-group-vertical > button ~ .btn, .vote-actions .btn-group-vertical > .btn ~ button, .vote-actions .btn-group-vertical > button ~ button,
+.btn-group-vertical > .btn-group:not(:first-child) > .btn,
+.vote-actions .btn-group-vertical > .btn-group:not(:first-child) > button {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
@@ -3710,7 +3729,7 @@ textarea.form-control-lg {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
-.navbar > .container,
+.navbar > .container, .navbar > #voter-app,
 .navbar > .container-fluid,
 .navbar > .container-sm,
 .navbar > .container-md,
@@ -4573,7 +4592,7 @@ textarea.form-control-lg {
   display: none;
 }
 
-.btn .badge {
+.btn .badge, .vote-actions button .badge {
   position: relative;
   top: -1px;
 }
@@ -6009,7 +6028,7 @@ textarea.form-control-lg {
   background-color: currentColor;
   opacity: 0.5;
 }
-.placeholder.btn::before {
+.placeholder.btn::before, .vote-actions button.placeholder::before {
   display: inline-block;
   content: "";
 }
@@ -10536,7 +10555,7 @@ div.message.hidden {
 }
 
 /* Use 'one true layout' methods to get equal height columns */
-.container {
+.container, #voter-app {
   min-height: 92%; /* full height almost always */
   overflow: hidden;
 }
@@ -10722,6 +10741,34 @@ body {
 #review-notes section .date {
   font-size: 80%;
   text-align: right;
+}
+
+#vote-steps {
+  border-bottom: 1px solid #aaa;
+  list-style: none;
+  padding-left: 0;
+}
+#vote-steps li {
+  display: inline-block;
+  padding: 0.5em;
+  margin-right: 1em;
+}
+#vote-steps .active {
+  font-weight: bold;
+}
+
+.vote-actions button {
+  margin-left: 0.5em;
+}
+
+.vote-step-title {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.application-title {
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
 /*# sourceMappingURL=style.css.map */

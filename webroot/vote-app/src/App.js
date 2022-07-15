@@ -58,8 +58,8 @@ const App = () => {
                   {selectedApplication === null &&
                     <>
                       <p>
-                        <strong>Step one:</strong> Review each application and either approve it if you think it should be
-                        funded or reject it.
+                        <span className="vote-step-title">Step one:</span> Review each application and either <strong>approve</strong> it
+                        if you think it should be funded or <strong>reject</strong> it.
                       </p>
                       <ApplicationList applications={applications} />
                     </>
