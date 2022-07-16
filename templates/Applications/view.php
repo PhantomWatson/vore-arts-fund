@@ -36,7 +36,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
         <h3 class="visually-hidden">
             Images
         </h3>
-        <div id="image-gallery">
+        <div class="image-gallery">
             <?php foreach ($application->images as $image): ?>
                 <img src="/img/applications/<?= Image::THUMB_PREFIX ?><?= $image->filename ?>"
                      alt="<?= $image->caption ?>" class="img-thumbnail" title="Click to open full-size image"
@@ -73,24 +73,4 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 <?php endforeach; ?>
 
 <script src="/viewerjs/viewer.min.js"></script>
-<script type="text/javascript">
-    const gallery = new Viewer(
-        document.getElementById('image-gallery'),
-        {
-            url: 'data-full',
-            toolbar: {
-                zoomIn: true,
-                zoomOut: true,
-                oneToOne: false,
-                reset: true,
-                prev: true,
-                play: false,
-                next: true,
-                rotateLeft: false,
-                rotateRight: false,
-                flipHorizontal: false,
-                flipVertical: false,
-            },
-        }
-    );
-</script>
+<script src="/js/image-viewer.js"></script>

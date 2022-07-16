@@ -682,9 +682,10 @@ body {
     padding-bottom: 4em;
 }
 
-#image-gallery {
+.image-gallery {
     img {
         cursor: zoom-in;
+        margin-right: 0.5em;
     }
 }
 
