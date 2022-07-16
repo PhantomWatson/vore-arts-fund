@@ -1,6 +1,13 @@
 import {currencyFormatter} from "./Formatter";
+import Application from "./Application";
+import {useState} from "react";
 
 const ApplicationList = (props) => {
+  let [selectedApplication, selectApplication] = useState(null);
+  const handleClose = () => {
+    selectApplication(null);
+  };
+
   return (
     <>
       {props.applications.length === 0 &&
@@ -14,6 +21,26 @@ const ApplicationList = (props) => {
             {props.applications.map((application, index) => {
               return (
                 <tr key={index}>
+                  <td className="vote-actions">
+                    {application.vote === null &&
+                      <button className="vote-actions-vote" onClick={() => {selectApplication(application)}}>
+                        Vote
+                      </button>
+                    }
+                    {application.vote !== null &&
+                      <>
+                        {application.vote === true &&
+                          <i className="fa-solid fa-thumbs-up"></i>
+                        }
+                        {application.vote === false &&
+                          <i className="fa-solid fa-thumbs-down"></i>
+                        }
+                        <button className="vote-actions-change-vote">
+                          Change vote
+                        </button>
+                      </>
+                    }
+                  </td>
                   <td>
                     <p className="application-title">
                       {application.title}
@@ -23,23 +50,13 @@ const ApplicationList = (props) => {
                       requested by {application.user.name}
                     </p>
                   </td>
-                  <td className="vote-actions">
-                    <button>
-                      👍 Approve
-                    </button>
-                    <button>
-                      👎 Reject
-                    </button>
-                    <button>
-                      👁 View details
-                    </button>
-                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       }
+      <Application application={selectedApplication} handleClose={handleClose} />
     </>
   );
 };

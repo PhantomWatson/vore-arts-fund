@@ -791,13 +791,33 @@ body {
 
 #vote-application-list {
     @extend .table;
+
+    .fa-thumbs-up {
+        color: green;
+    }
+
+    .fa-thumbs-down {
+        color: red;
+    }
 }
 
 .vote-actions {
+    padding: 1em !important;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 1%;
+
     button {
         @extend .btn;
-        @extend .btn-light;
-        margin-left: 0.5em;
+
+        &.vote-actions-change-vote {
+            @extend .btn-secondary;
+            @extend .btn-sm;
+        }
+
+        &.vote-actions-vote {
+            @extend .btn-primary;
+        }
     }
 }
 
