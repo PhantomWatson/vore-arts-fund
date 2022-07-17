@@ -1,6 +1,5 @@
 class API {
   static getBasePath() {
-    console.log('host is', window.location.host);
     if (window.location.host === 'localhost:3000') {
       return 'http://vore.test:9000';
     }

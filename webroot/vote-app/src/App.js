@@ -22,7 +22,6 @@ const App = () => {
         return application;
       });
       setApplications(fetchedApplications);
-      console.log(fetchedApplications);
     }
   }, []);
 

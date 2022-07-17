@@ -4,8 +4,6 @@ import {currencyFormatter} from "./Formatter";
 import {useEffect} from "react";
 
 const Application = (props) => {
-  console.log('rendering application');
-  console.log(props.application);
   const devMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
   const imgBase = devMode ? 'http://vore.test:9000' : '';
 
@@ -23,7 +21,6 @@ const Application = (props) => {
 
   useEffect(() => {
     const gallery = document.querySelector('.image-gallery');
-    console.log('gallery: ', gallery);
     if (!gallery) {
       return;
     }
