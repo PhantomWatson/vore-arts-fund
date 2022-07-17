@@ -1,11 +1,13 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {currencyFormatter} from "./Formatter";
-import {useState} from "react";
+import {useEffect} from "react";
 
 const Application = (props) => {
   console.log('rendering application');
   console.log(props.application);
+  const devMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+  const imgBase = devMode ? 'http://vore.test:9000' : '';
 
   const questionSort = function(a, b) {
     if (a.question.weight < b.question.weight) {
@@ -19,12 +21,35 @@ const Application = (props) => {
 
   let answers = props.application ? props.application.answers.sort(questionSort) : [];
 
+  useEffect(() => {
+    const gallery = document.querySelector('.image-gallery');
+    console.log('gallery: ', gallery);
+    if (!gallery) {
+      return;
+    }
+    new Viewer(
+      gallery,
+      {
+        url: 'data-full',
+        toolbar: {
+          zoomIn: true,
+          zoomOut: true,
+          oneToOne: false,
+          reset: true,
+          prev: true,
+          play: false,
+          next: true,
+          rotateLeft: false,
+          rotateRight: false,
+          flipHorizontal: false,
+          flipVertical: false,
+        },
+      }
+    );
+  });
+
   return (
     <>
-      <p>
-        APPLICATION?!
-        {JSON.stringify(props.application)}
-      </p>
       {props.application !== null &&
         <Modal className="vote-application" show={true} onHide={props.handleClose}>
           <Modal.Header closeButton>
@@ -35,7 +60,7 @@ const Application = (props) => {
 
           <Modal.Body>
             <p>
-              {currencyFormatter.format(props.application.amount_requested) + ' '}
+              Description: {currencyFormatter.format(props.application.amount_requested) + ' '}
               requested by {props.application.user.name}
             </p>
             <p>
@@ -56,15 +81,27 @@ const Application = (props) => {
                 </div>
               );
             })}
+            <div className="image-gallery">
+              {props.application.images.map((image, index) => {
+                return (
+                  <img src={`${imgBase}/img/applications/thumb_${image.filename}`} key={index}
+                       alt="Image submitted with application" className="img-thumbnail"
+                       title="Click to open full-size image"
+                       data-full={`${imgBase}/img/applications/${image.filename}`} />
+                );
+              })}
+            </div>
           </Modal.Body>
 
           <Modal.Footer>
             <Button variant="success">
               <i className="fa-solid fa-thumbs-up"></i>
+              &nbsp;
               Approve
             </Button>
             <Button variant="danger">
               <i className="fa-solid fa-thumbs-down"></i>
+              &nbsp;
               Reject
             </Button>
           </Modal.Footer>
