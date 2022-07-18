@@ -7,7 +7,6 @@ import {useEffect, useState} from "react";
 const App = () => {
   const [applications, setApplications] = useState(null);
   const [currentStep, setCurrentStep] = useState('select');
-  const [selectedApplication, setSelectedApplication] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
   const handleVote = (applicationId, vote) => {
@@ -73,20 +72,11 @@ const App = () => {
               </ul>
               {currentStep === 'select' &&
                 <>
-                  {selectedApplication === null &&
-                    <>
-                      <p>
-                        <span className="vote-step-title">Step one:</span> Review each application and either <strong>approve</strong> it
-                        if you think it should be funded or <strong>reject</strong> it.
-                      </p>
-                      <ApplicationList applications={applications} handleVote={handleVote} />
-                    </>
-                  }
-                  {selectedApplication &&
-                    <p>
-                      Selected application {selectedApplication}
-                    </p>
-                  }
+                  <p>
+                    <span className="vote-step-title">Step one:</span> Review each application and either <strong>approve</strong> it
+                    if you think it should be funded or <strong>reject</strong> it.
+                  </p>
+                  <ApplicationList applications={applications} handleVote={handleVote} />
                 </>
               }
               {currentStep === 'sort' &&
