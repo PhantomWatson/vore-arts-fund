@@ -10,6 +10,20 @@ const App = () => {
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
+  const handleVote = (applicationId, vote) => {
+    let applicationIsFound = false;
+    for (let i = 0, length = applications.length; i < length; i++) {
+      if (applications[i].id === applicationId) {
+        applications[i].vote = vote;
+        applicationIsFound = true;
+      }
+    }
+    if (!applicationIsFound) {
+      console.log(`Application #${applicationId} not found`);
+    }
+    setApplications(applications);
+  };
+
   useEffect(async () => {
     // Fetch applications and set their vote property to null (no vote cast)
     let fetchedApplications = await API.getApplications(setErrorMsg);
@@ -65,7 +79,7 @@ const App = () => {
                         <span className="vote-step-title">Step one:</span> Review each application and either <strong>approve</strong> it
                         if you think it should be funded or <strong>reject</strong> it.
                       </p>
-                      <ApplicationList applications={applications} />
+                      <ApplicationList applications={applications} handleVote={handleVote} />
                     </>
                   }
                   {selectedApplication &&

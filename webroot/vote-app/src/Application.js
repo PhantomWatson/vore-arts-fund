@@ -6,7 +6,6 @@ import {useEffect} from "react";
 const Application = (props) => {
   const devMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
   const imgBase = devMode ? 'http://vore.test:9000' : '';
-
   const questionSort = function(a, b) {
     if (a.question.weight < b.question.weight) {
       return -1;
@@ -16,8 +15,15 @@ const Application = (props) => {
     }
     return 0;
   }
-
   let answers = props.application ? props.application.answers.sort(questionSort) : [];
+  const voteYes = () => {
+    props.handleVote(props.application.id, true);
+    props.handleClose();
+  }
+  const voteNo = () => {
+    props.handleVote(props.application.id, false);
+    props.handleClose();
+  }
 
   useEffect(() => {
     const gallery = document.querySelector('.image-gallery');
@@ -91,12 +97,12 @@ const Application = (props) => {
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="success">
+            <Button variant="success" onClick={voteYes}>
               <i className="fa-solid fa-thumbs-up"></i>
               &nbsp;
               Approve
             </Button>
-            <Button variant="danger">
+            <Button variant="danger" onClick={voteNo}>
               <i className="fa-solid fa-thumbs-down"></i>
               &nbsp;
               Reject

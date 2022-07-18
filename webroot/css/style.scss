@@ -804,15 +804,20 @@ body {
 
 .vote-actions {
     padding: 1em !important;
+    text-align: center;
     vertical-align: middle;
     white-space: nowrap;
     width: 1%;
+
+    i {
+        font-size: 2em;
+    }
 
     button {
         @extend .btn;
 
         &.vote-actions-change-vote {
-            @extend .btn-secondary;
+            @extend .btn-link;
             @extend .btn-sm;
         }
 

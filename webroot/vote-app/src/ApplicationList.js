@@ -35,6 +35,7 @@ const ApplicationList = (props) => {
                         {application.vote === false &&
                           <i className="fa-solid fa-thumbs-down"></i>
                         }
+                        <br />
                         <button className="vote-actions-change-vote">
                           Change vote
                         </button>
@@ -56,7 +57,7 @@ const ApplicationList = (props) => {
           </tbody>
         </table>
       }
-      <Application application={selectedApplication} handleClose={handleClose} />
+      <Application application={selectedApplication} handleClose={handleClose} handleVote={props.handleVote} />
     </>
   );
 };
