@@ -788,6 +788,17 @@ body {
     .active {
         font-weight: bold;
     }
+
+    button {
+        &[disabled] {
+            color: $body-color;
+            opacity: 1;
+            text-decoration: none;
+        }
+        &:not([disabled]) {
+            color: $link-color;
+        }
+    }
 }
 
 #vote-application-list {
@@ -830,6 +841,10 @@ body {
 .vote-step-title {
     font-size: 1.2em;
     font-weight: bold;
+}
+
+.vote-footer {
+    text-align: right;
 }
 
 .application-title {

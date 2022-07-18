@@ -10757,6 +10757,14 @@ body {
 #vote-steps .active {
   font-weight: bold;
 }
+#vote-steps button[disabled] {
+  color: #212529;
+  opacity: 1;
+  text-decoration: none;
+}
+#vote-steps button:not([disabled]) {
+  color: #D33C44;
+}
 
 #vote-application-list .fa-thumbs-up {
   color: green;
@@ -10778,6 +10786,10 @@ body {
 .vote-step-title {
   font-size: 1.2em;
   font-weight: bold;
+}
+
+.vote-footer {
+  text-align: right;
 }
 
 .application-title {
