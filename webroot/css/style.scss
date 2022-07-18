@@ -801,7 +801,7 @@ body {
     }
 }
 
-#vote-application-list {
+.vote-application-list {
     @extend .table;
 
     .fa-thumbs-up {
@@ -832,7 +832,9 @@ body {
             @extend .btn-sm;
         }
 
-        &.vote-actions-vote {
+        &.vote-actions-vote,
+        &.vote-actions-rank
+        {
             @extend .btn-primary;
         }
     }

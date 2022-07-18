@@ -1726,7 +1726,7 @@ progress {
     --bs-gutter-y: 3rem;
   }
 }
-.table, #vote-application-list {
+.table, .vote-application-list {
   --bs-table-bg: transparent;
   --bs-table-accent-bg: transparent;
   --bs-table-striped-color: #212529;
@@ -1741,19 +1741,19 @@ progress {
   vertical-align: top;
   border-color: #dee2e6;
 }
-.table > :not(caption) > * > *, #vote-application-list > :not(caption) > * > * {
+.table > :not(caption) > * > *, .vote-application-list > :not(caption) > * > * {
   padding: 0.5rem 0.5rem;
   background-color: var(--bs-table-bg);
   border-bottom-width: 1px;
   box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
 }
-.table > tbody, #vote-application-list > tbody {
+.table > tbody, .vote-application-list > tbody {
   vertical-align: inherit;
 }
-.table > thead, #vote-application-list > thead {
+.table > thead, .vote-application-list > thead {
   vertical-align: bottom;
 }
-.table > :not(:first-child), #vote-application-list > :not(:first-child) {
+.table > :not(:first-child), .vote-application-list > :not(:first-child) {
   border-top: 2px solid currentColor;
 }
 
@@ -2709,31 +2709,31 @@ textarea.form-control-lg {
   opacity: 0.65;
 }
 
-.btn-primary, .vote-actions button.vote-actions-vote {
+.btn-primary, .vote-actions button.vote-actions-vote, .vote-actions button.vote-actions-rank {
   color: #fff;
   background-color: #D33C44;
   border-color: #D33C44;
 }
-.btn-primary:hover, .vote-actions button.vote-actions-vote:hover {
+.btn-primary:hover, .vote-actions button.vote-actions-vote:hover, .vote-actions button.vote-actions-rank:hover {
   color: #fff;
   background-color: #b3333a;
   border-color: #a93036;
 }
-.btn-check:focus + .btn-primary, .vote-actions .btn-check:focus + button.vote-actions-vote, .btn-primary:focus, .vote-actions button.vote-actions-vote:focus {
+.btn-check:focus + .btn-primary, .vote-actions .btn-check:focus + button.vote-actions-vote, .vote-actions .btn-check:focus + button.vote-actions-rank, .btn-primary:focus, .vote-actions button.vote-actions-vote:focus, .vote-actions button.vote-actions-rank:focus {
   color: #fff;
   background-color: #b3333a;
   border-color: #a93036;
   box-shadow: 0 0 0 0.25rem rgba(218, 89, 96, 0.5);
 }
-.btn-check:checked + .btn-primary, .vote-actions .btn-check:checked + button.vote-actions-vote, .btn-check:active + .btn-primary, .vote-actions .btn-check:active + button.vote-actions-vote, .btn-primary:active, .vote-actions button.vote-actions-vote:active, .btn-primary.active, .vote-actions button.active.vote-actions-vote, .show > .btn-primary.dropdown-toggle, .vote-actions .show > button.dropdown-toggle.vote-actions-vote {
+.btn-check:checked + .btn-primary, .vote-actions .btn-check:checked + button.vote-actions-vote, .vote-actions .btn-check:checked + button.vote-actions-rank, .btn-check:active + .btn-primary, .vote-actions .btn-check:active + button.vote-actions-vote, .vote-actions .btn-check:active + button.vote-actions-rank, .btn-primary:active, .vote-actions button.vote-actions-vote:active, .vote-actions button.vote-actions-rank:active, .btn-primary.active, .vote-actions button.active.vote-actions-vote, .vote-actions button.active.vote-actions-rank, .show > .btn-primary.dropdown-toggle, .vote-actions .show > button.dropdown-toggle.vote-actions-vote, .vote-actions .show > button.dropdown-toggle.vote-actions-rank {
   color: #fff;
   background-color: #a93036;
   border-color: #9e2d33;
 }
-.btn-check:checked + .btn-primary:focus, .vote-actions .btn-check:checked + button.vote-actions-vote:focus, .btn-check:active + .btn-primary:focus, .vote-actions .btn-check:active + button.vote-actions-vote:focus, .btn-primary:active:focus, .vote-actions button.vote-actions-vote:active:focus, .btn-primary.active:focus, .vote-actions button.active.vote-actions-vote:focus, .show > .btn-primary.dropdown-toggle:focus, .vote-actions .show > button.dropdown-toggle.vote-actions-vote:focus {
+.btn-check:checked + .btn-primary:focus, .vote-actions .btn-check:checked + button.vote-actions-vote:focus, .vote-actions .btn-check:checked + button.vote-actions-rank:focus, .btn-check:active + .btn-primary:focus, .vote-actions .btn-check:active + button.vote-actions-vote:focus, .vote-actions .btn-check:active + button.vote-actions-rank:focus, .btn-primary:active:focus, .vote-actions button.vote-actions-vote:active:focus, .vote-actions button.vote-actions-rank:active:focus, .btn-primary.active:focus, .vote-actions button.active.vote-actions-vote:focus, .vote-actions button.active.vote-actions-rank:focus, .show > .btn-primary.dropdown-toggle:focus, .vote-actions .show > button.dropdown-toggle.vote-actions-vote:focus, .vote-actions .show > button.dropdown-toggle.vote-actions-rank:focus {
   box-shadow: 0 0 0 0.25rem rgba(218, 89, 96, 0.5);
 }
-.btn-primary:disabled, .vote-actions button.vote-actions-vote:disabled, .btn-primary.disabled, .vote-actions button.disabled.vote-actions-vote {
+.btn-primary:disabled, .vote-actions button.vote-actions-vote:disabled, .vote-actions button.vote-actions-rank:disabled, .btn-primary.disabled, .vote-actions button.disabled.vote-actions-vote, .vote-actions button.disabled.vote-actions-rank {
   color: #fff;
   background-color: #D33C44;
   border-color: #D33C44;
@@ -10766,10 +10766,10 @@ body {
   color: #D33C44;
 }
 
-#vote-application-list .fa-thumbs-up {
+.vote-application-list .fa-thumbs-up {
   color: green;
 }
-#vote-application-list .fa-thumbs-down {
+.vote-application-list .fa-thumbs-down {
   color: red;
 }
 

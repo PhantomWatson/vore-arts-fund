@@ -1,9 +1,10 @@
 import "./App.css";
 import * as React from 'react';
 import API from "./API.js";
-import ApplicationList from "./ApplicationList";
+import ApplicationSelectList from "./ApplicationSelectList";
 import Button from 'react-bootstrap/Button';
 import {useEffect, useState} from "react";
+import ApplicationSortList from "./ApplicationSortList";
 
 const App = () => {
   const [applications, setApplications] = useState(null);
@@ -118,7 +119,7 @@ const App = () => {
                     <span className="vote-step-title">Step one:</span> Review each application and either <strong>approve</strong> it
                     if you think it should be funded or <strong>reject</strong> it.
                   </p>
-                  <ApplicationList applications={applications} handleVote={handleVote} />
+                  <ApplicationSelectList applications={applications} handleVote={handleVote} />
                   <div className="vote-footer">
                     <Button disabled={!allVotesAreCast} variant="primary" size="lg" onClick={handleGoToSort}>
                       Next
@@ -133,9 +134,7 @@ const App = () => {
                     applications that you want funded, it's time to <strong>rank</strong> them, with #1 being the {' '}
                     highest-priority for funding, and #{approvedApplications.length} being the lowest-priority.
                   </p>
-                  <p>
-                    Applications approved
-                  </p>
+                  <ApplicationSortList applications={approvedApplications} />
                 </>
               }
               {currentStep === 'submit' &&
