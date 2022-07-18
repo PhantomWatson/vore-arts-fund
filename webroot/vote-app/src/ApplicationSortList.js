@@ -5,8 +5,9 @@ import AlertNoApplications from "./AlertNoApplications";
 const ApplicationSortList = (props) => {
   const [sortedApplications, setSortedApplications] = useState([]);
   const [unsortedApplications, setUnsortedApplications] = useState(props.applications);
+
+  // Moves application from unsorted to sorted
   const selectApplication = (application) => {
-    // Move application from unsorted to sorted
     const newSortedApplications = sortedApplications.concat([application]);
     setSortedApplications(newSortedApplications);
     const newUnsortedApplications = [];
