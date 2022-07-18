@@ -14,7 +14,12 @@ const App = () => {
     // Fetch applications and set their vote property to null (no vote cast)
     let fetchedApplications = await API.getApplications(setErrorMsg);
     if (fetchedApplications === null) {
-
+      if (!errorMsg) {
+        setErrorMsg(
+          'Sorry, but there was an error loading the current applications. '
+          + 'Please try again or contact an administrator for assistance.'
+        );
+      }
     } else {
       fetchedApplications = fetchedApplications.map((application) => {
         application.vote = null;
