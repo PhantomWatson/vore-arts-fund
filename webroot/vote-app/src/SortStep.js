@@ -2,10 +2,12 @@ import AlertNoApplications from './AlertNoApplications';
 import ApplicationSummary from './ApplicationSummary';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useEffect, useState } from 'react';
+import Button from "react-bootstrap/Button";
 
 const SortStep = (props) => {
   const [sortedApplications, setSortedApplications] = useState([]);
   const [unsortedApplications, setUnsortedApplications] = useState(props.applications);
+  const [sortingIsFinished, setSortingIsFinished] = useState(false);
 
   // Moves application from unsorted to sorted
   const selectApplication = (application) => {
@@ -21,7 +23,10 @@ const SortStep = (props) => {
     setUnsortedApplications(newUnsortedApplications);
 
     if (newUnsortedApplications.length === 0) {
-      props.setSortingIsFinished(true);
+      setSortingIsFinished(true);
+
+      // Propagate final sorted list up to parent
+      props.setSortedApplications(newSortedApplications);
     }
   };
 
@@ -46,6 +51,9 @@ const SortStep = (props) => {
     newSortedApplications.splice(source.index, 1);
     newSortedApplications.splice(destination.index, 0, movedApplication);
     setSortedApplications(newSortedApplications);
+
+    // Propagate final sorted list up to parent
+    props.setSortedApplications(newSortedApplications);
   };
 
   if (props.applications.length === 0) {
@@ -85,33 +93,33 @@ const SortStep = (props) => {
                        ref={provided.innerRef}
                        className={snapshot.isDraggingOver ? 'is-dragging-over' : ''}
                 >
-                {sortedApplications.map((application, index) => {
-                  return (
-                    <Draggable
-                      key={application.id}
-                      draggableId={String(application.id)}
-                      index={index}
-                    >
-                      {(provided, snapshot) => (
-                        <tr
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          ref={provided.innerRef}
-                          className={snapshot.isDragging ? 'is-dragging' : ''}
-                          style={provided.draggableProps.style}
-                        >
-                          <td className="vote-rank">
-                            #{index + 1}
-                          </td>
-                          <td>
-                            <ApplicationSummary application={application} />
-                          </td>
-                        </tr>
-                      )}
-                    </Draggable>
-                  );
-                })}
-                {provided.placeholder}
+                  {sortedApplications.map((application, index) => {
+                    return (
+                      <Draggable
+                        key={application.id}
+                        draggableId={String(application.id)}
+                        index={index}
+                      >
+                        {(provided, snapshot) => (
+                          <tr
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            ref={provided.innerRef}
+                            className={snapshot.isDragging ? 'is-dragging' : ''}
+                            style={provided.draggableProps.style}
+                          >
+                            <td className="vote-rank">
+                              #{index + 1}
+                            </td>
+                            <td>
+                              <ApplicationSummary application={application} />
+                            </td>
+                          </tr>
+                        )}
+                      </Draggable>
+                    );
+                  })}
+                  {provided.placeholder}
                 </tbody>
               )}
             </Droppable>
@@ -120,10 +128,42 @@ const SortStep = (props) => {
       </>
   ) : '';
 
+  const navButtons = (
+    <div className="vote-footer row">
+      <div className="col">
+        <Button
+          variant="secondary"
+          size="lg"
+          onClick={props.handleGoToSelect}
+        >
+          Back
+        </Button>
+      </div>
+      <div className="col">
+        {sortingIsFinished &&
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={props.handleSubmit}
+          >
+            Submit votes
+            {props.submitIsLoading &&
+              <>
+                {' '}
+                <i className="fa-solid fa-spinner fa-spin-pulse" title="Loading"></i>
+              </>
+            }
+          </Button>
+        }
+      </div>
+    </div>
+  );
+
   return (
     <>
       {unsortedList}
       {sortedList}
+      {navButtons}
     </>
   );
 };

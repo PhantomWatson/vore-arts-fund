@@ -94,4 +94,5 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
 
 $routes->prefix('api', function (RouteBuilder $builder) {
     $builder->connect('/applications/*', ['controller' => 'Applications']);
+    $builder->connect('/votes/*', ['controller' => 'Votes']);
 });

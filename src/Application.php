@@ -115,9 +115,13 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             'httponly' => true,
         ]);
         $csrf->skipCheckCallback(function ($request) {
-            // Skip token check for uploading images
-            if ($request->getParam('controller') === 'Images' && $request->getParam('action') === 'upload') {
-                return true;
+            $prefix = $request->getParam('prefix');
+            $controller = $request->getParam('controller');
+            $action = $request->getParam('action');
+            switch ("$prefix/$controller/$action") {
+                case '/Images/upload':
+                case 'Api/Votes/index':
+                    return true;
             }
             return false;
         });

@@ -8,12 +8,16 @@ import SortStep from "./SortStep";
 import StepsHeader from "./StepsHeader";
 
 const App = () => {
+  const isDevMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
   const [applications, setApplications] = useState(null);
   const [currentStep, setCurrentStep] = useState('select');
   const [errorMsg, setErrorMsg] = useState(null);
   const [allVotesAreCast, setAllVotesAreCast] = useState(false);
   const [approvedApplications, setApprovedApplications] = useState([]);
+  const [sortedApplications, setSortedApplications] = useState([]);
   const [sortingIsFinished, setSortingIsFinished] = useState(false);
+  const [submitIsLoading, setSubmitIsLoading] = useState(false);
+
   const handleVote = (applicationId, vote) => {
     // Update the selected application's vote
     let applicationIsFound = false;
@@ -47,9 +51,11 @@ const App = () => {
     }
     setAllVotesAreCast(!pendingVoteFound);
   };
+
   const handleGoToSelect = () => {
     setCurrentStep('select');
   };
+
   const handleGoToSort = () => {
     if (approvedApplications.length > 1) {
       setCurrentStep('sort');
@@ -57,8 +63,34 @@ const App = () => {
       setCurrentStep('submit');
     }
   };
-  const handleGoToSubmit = () => {
-    setCurrentStep('submit');
+
+  const handleSubmit = async () => {
+    setSubmitIsLoading(true);
+    const urlBase = isDevMode ? 'http://vore.test:9000' : '';
+    const url = urlBase + '/api/votes';
+    let success = false;
+    const data = {
+      applications: sortedApplications
+    };
+    await fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data),
+    })
+      .then((response => response.json()))
+      .then(data => {
+        console.log('Success:', data);
+        success = true;
+      })
+      .catch((error) => {
+        alert('Sorry, but an error is preventing your vote from being submitted. Please try again, or contact an administrator for assistance.');
+        console.error('Error:', error);
+      });
+    setSubmitIsLoading(false);
+
+    if (success) {
+      setCurrentStep('submit');
+    }
   };
 
   // Fetch applications and set their vote property to null (no vote cast)
@@ -105,7 +137,7 @@ const App = () => {
                            submitIsDisabled={
                              !(allVotesAreCast && (sortingIsFinished || approvedApplications.length < 2))
                            }
-                           handleGoToSubmit={handleGoToSubmit}
+                           handleSubmit={handleSubmit}
 
               />
               {currentStep === 'select' &&
@@ -150,29 +182,15 @@ const App = () => {
                       Once you're finished, you can <strong>drag and drop applications to reorder them</strong>.
                     </p>
                   </div>
-                  <SortStep applications={approvedApplications} setSortingIsFinished={setSortingIsFinished} />
-                  <div className="vote-footer row">
-                    <div className="col">
-                      <Button
-                        variant="secondary"
-                        size="lg"
-                        onClick={handleGoToSelect}
-                      >
-                        Back
-                      </Button>
-                    </div>
-                    <div className="col">
-                      {sortingIsFinished &&
-                        <Button
-                          variant="primary"
-                          size="lg"
-                          onClick={handleGoToSubmit}
-                        >
-                          Submit votes
-                        </Button>
-                      }
-                    </div>
-                  </div>
+                  <SortStep
+                    applications={approvedApplications}
+                    handleGoToSelect={handleGoToSelect}
+                    handleSubmit={handleSubmit}
+                    setSortedApplications={setSortedApplications}
+                    setSortingIsFinished={setSortingIsFinished}
+                    setSubmitIsLoading={setSubmitIsLoading}
+                    submitIsLoading={submitIsLoading}
+                  />
                 </>
               }
               {currentStep === 'submit' &&

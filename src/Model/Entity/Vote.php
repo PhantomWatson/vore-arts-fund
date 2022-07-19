@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\Http\Exception\InternalErrorException;
 use Cake\ORM\Entity;
 
 /**
@@ -42,4 +43,25 @@ class Vote extends Entity
         'application' => true,
         'funding_cycle' => true,
     ];
+
+    /**
+     * When a project is placed in the nth position on a voter’s list of x selected projects, its score will be
+     * increased by 1-(n-1)/x.
+     *
+     * Example: If a voter selects five projects, those projects’ scores will increase by 1.0, 0.8, 0.6, 0.4, and 0.2
+     * points, respective to how that voter ranked them.
+     *
+     * @param int $rank Position (1-indexed) that an application was placed at by a voter
+     * @param int $selectedApplicationCount Total count of all applications voted on by a voter
+     * @return float|int
+     * @throws InternalErrorException
+     */
+    public static function calculateWeight(int $rank, int $selectedApplicationCount)
+    {
+        if ($rank < 1 || $rank > $selectedApplicationCount) {
+            throw new InternalErrorException("Invalid rank: $rank of $selectedApplicationCount");
+        }
+
+        return (1 - (($rank - 1) / $selectedApplicationCount));
+    }
 }

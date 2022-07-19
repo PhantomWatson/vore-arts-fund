@@ -1,0 +1,119 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Controller\API;
+
+use App\Controller\AppController;
+use App\Model\Entity\Application;
+use App\Model\Entity\FundingCycle;
+use App\Model\Entity\User;
+use App\Model\Entity\Vote;
+use App\Model\Table\FundingCyclesTable;
+use Cake\Event\EventInterface;
+use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\ForbiddenException;
+use Cake\Http\Exception\InternalErrorException;
+use Cake\Http\Exception\MethodNotAllowedException;
+
+/**
+ * ApplicationsController
+ *
+ * @property \App\Model\Table\VotesTable $Votes
+ */
+class VotesController extends AppController
+{
+    /**
+     * Allows unauthenticated votes, assigned to an arbitrary user
+     * @var bool
+     */
+    private bool $testingMode = true;
+
+    /**
+     * beforeFilter callback method
+     *
+     * @param \Cake\Event\EventInterface $event Event object
+     * @return \Cake\Http\Response|void|null
+     */
+    public function beforeFilter(EventInterface $event): void
+    {
+        parent::beforeFilter($event);
+        if ($this->testingMode) {
+            $this->Authentication->allowUnauthenticated([
+                'index',
+            ]);
+        }
+    }
+
+    /**
+     * POST /api/votes endpoint
+     *
+     * @return void
+     * @throws BadRequestException
+     * @throws ForbiddenException
+     * @throws InternalErrorException
+     * @throws MethodNotAllowedException
+     */
+    public function index()
+    {
+        if (!$this->request->is(['post', 'options'])) {
+            throw new MethodNotAllowedException('Only POST is supported at this endpoint');
+        }
+        $data = $this->request->getData();
+        if (!($data['applications'] ?? false)) {
+            throw new BadRequestException('No votes were submitted in your request');
+        }
+
+        if ($this->testingMode) {
+            $userId = 1;
+        } else {
+            /** @var User $user */
+            $user = $this->request->getAttribute('identity');
+            $userId = $user->id ?? false;
+            if ($userId === false) {
+                throw new ForbiddenException('You must be logged in to vote');
+            }
+            if (!$user->is_verified) {
+                throw new ForbiddenException('Your account must be verified before you vote');
+            }
+        }
+
+        /** @var FundingCyclesTable $fundingCyclesTable */
+        $fundingCyclesTable = $this->fetchTable('FundingCycles');
+        /** @var FundingCycle $fundingCycle */
+        $fundingCycle = $fundingCyclesTable->find('currentVoting')->first();
+        $applicationCount = count($data['applications']);
+        $applicationsTable = $this->fetchTable('Applications');
+        foreach ($data['applications'] as $i => $application) {
+            /** @var \App\Model\Entity\Vote $vote */
+            $vote = $this->Votes->newEmptyEntity();
+            $vote->user_id = $userId;
+            $vote->application_id = $application['id'];
+            $vote->funding_cycle_id = $fundingCycle->id;
+            $rank = $i + 1;
+            $vote->weight = Vote::calculateWeight($rank, $applicationCount);
+
+            // Verify that application is a valid voting target
+            $valid = $applicationsTable->exists([
+                'Applications.id' => $application['id'],
+                'Applications.funding_cycle_id' => $fundingCycle->id,
+                'Applications.status_id' => Application::STATUS_ACCEPTED,
+            ]);
+            if (!$valid) {
+                throw new BadRequestException(
+                    "Application #{$application['id']} either does not exist or cannot currently be voted on."
+                );
+            }
+
+            if (!$this->Votes->save($vote)) {
+                $error = $vote->getErrors();
+                throw new InternalErrorException(
+                    'There was an error submitting your votes. Details: ' . print_r($error, true)
+                );
+            }
+        }
+
+        $this->set(['result' => true]);
+        $this->viewBuilder()->setOption('serialize', ['result']);
+        $this->viewBuilder()->setClassName('Json');
+    }
+}
