@@ -50,7 +50,7 @@ const SortStep = (props) => {
 
   const unsortedList = unsortedApplications.length > 0 ? (
       <>
-        <table className="vote-application-list">
+        <table className="vote-application-list vote-select-for-sorting">
           <tbody>
           {unsortedApplications.map((application, index) => {
             return (

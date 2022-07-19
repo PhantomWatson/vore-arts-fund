@@ -10898,6 +10898,10 @@ body {
   background-color: #EEE;
 }
 
+.vote-select-for-sorting {
+  margin-bottom: 5em;
+}
+
 .application-title {
   font-size: 1.5em;
   font-weight: bold;
