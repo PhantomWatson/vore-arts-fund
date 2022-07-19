@@ -10880,6 +10880,7 @@ body {
 }
 
 .vote-footer {
+  padding: 0.5em;
   text-align: right;
 }
 .vote-footer .col:first-child {
