@@ -43,7 +43,7 @@ class ApplicationsController extends AppController
         $fundingCyclesTable = $this->fetchTable('FundingCycles');
         $fundingCycle = $fundingCyclesTable->find('currentVoting')->first();
         $applications = $fundingCycle
-            ? $this->Applications->find('forVoting', ['funding_cycle_id' => $fundingCycle->id])->limit(3)->all()
+            ? $this->Applications->find('forVoting', ['funding_cycle_id' => $fundingCycle->id])->all()
             : [];
         $this->set(compact('applications'));
         $this->viewBuilder()->setOption('serialize', ['applications']);
