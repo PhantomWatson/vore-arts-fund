@@ -2274,7 +2274,9 @@ textarea.form-control-lg {
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
 }
-.btn-check[disabled] + .btn, .vote-actions .btn-check[disabled] + button, .btn-check:disabled + .btn, .vote-actions .btn-check:disabled + button {
+.btn-check[disabled] + .btn, .vote-actions .btn-check[disabled] + button,
+.vote-rank .btn-check[disabled] + button, .btn-check:disabled + .btn, .vote-actions .btn-check:disabled + button,
+.vote-rank .btn-check:disabled + button {
   pointer-events: none;
   filter: none;
   opacity: 0.65;
@@ -2433,11 +2435,15 @@ textarea.form-control-lg {
 .input-group > .form-select:focus {
   z-index: 3;
 }
-.input-group .btn, .input-group .vote-actions button, .vote-actions .input-group button {
+.input-group .btn, .input-group .vote-actions button, .vote-actions .input-group button,
+.input-group .vote-rank button,
+.vote-rank .input-group button {
   position: relative;
   z-index: 2;
 }
-.input-group .btn:focus, .input-group .vote-actions button:focus, .vote-actions .input-group button:focus {
+.input-group .btn:focus, .input-group .vote-actions button:focus, .vote-actions .input-group button:focus,
+.input-group .vote-rank button:focus,
+.vote-rank .input-group button:focus {
   z-index: 3;
 }
 
@@ -2460,7 +2466,8 @@ textarea.form-control-lg {
 .input-group-lg > .form-select,
 .input-group-lg > .input-group-text,
 .input-group-lg > .btn,
-.vote-actions .input-group-lg > button {
+.vote-actions .input-group-lg > button,
+.vote-rank .input-group-lg > button {
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
   border-radius: 0.3rem;
@@ -2470,7 +2477,8 @@ textarea.form-control-lg {
 .input-group-sm > .form-select,
 .input-group-sm > .input-group-text,
 .input-group-sm > .btn,
-.vote-actions .input-group-sm > button {
+.vote-actions .input-group-sm > button,
+.vote-rank .input-group-sm > button {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   border-radius: 0.2rem;
@@ -2675,7 +2683,8 @@ textarea.form-control-lg {
   z-index: 3;
 }
 
-.btn, .vote-actions button {
+.btn, .vote-actions button,
+.vote-rank button {
   display: inline-block;
   font-weight: 400;
   line-height: 1.5;
@@ -2693,47 +2702,87 @@ textarea.form-control-lg {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
-  .btn, .vote-actions button {
+  .btn, .vote-actions button,
+.vote-rank button {
     transition: none;
   }
 }
-.btn:hover, .vote-actions button:hover {
+.btn:hover, .vote-actions button:hover,
+.vote-rank button:hover {
   color: #212529;
 }
-.btn-check:focus + .btn, .vote-actions .btn-check:focus + button, .btn:focus, .vote-actions button:focus {
+.btn-check:focus + .btn, .vote-actions .btn-check:focus + button,
+.vote-rank .btn-check:focus + button, .btn:focus, .vote-actions button:focus,
+.vote-rank button:focus {
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(211, 60, 68, 0.25);
 }
-.btn:disabled, .vote-actions button:disabled, .btn.disabled, .vote-actions button.disabled, fieldset:disabled .btn, fieldset:disabled .vote-actions button, .vote-actions fieldset:disabled button {
+.btn:disabled, .vote-actions button:disabled,
+.vote-rank button:disabled, .btn.disabled, .vote-actions button.disabled,
+.vote-rank button.disabled, fieldset:disabled .btn, fieldset:disabled .vote-actions button, .vote-actions fieldset:disabled button,
+fieldset:disabled .vote-rank button,
+.vote-rank fieldset:disabled button {
   pointer-events: none;
   opacity: 0.65;
 }
 
-.btn-primary, .vote-actions button.vote-actions-vote, .vote-actions button.vote-actions-rank {
+.btn-primary, .vote-actions button.vote-actions-vote, .vote-actions button.vote-actions-rank,
+.vote-rank button.vote-actions-vote,
+.vote-rank button.vote-actions-rank {
   color: #fff;
   background-color: #D33C44;
   border-color: #D33C44;
 }
-.btn-primary:hover, .vote-actions button.vote-actions-vote:hover, .vote-actions button.vote-actions-rank:hover {
+.btn-primary:hover, .vote-actions button.vote-actions-vote:hover, .vote-actions button.vote-actions-rank:hover,
+.vote-rank button.vote-actions-vote:hover,
+.vote-rank button.vote-actions-rank:hover {
   color: #fff;
   background-color: #b3333a;
   border-color: #a93036;
 }
-.btn-check:focus + .btn-primary, .vote-actions .btn-check:focus + button.vote-actions-vote, .vote-actions .btn-check:focus + button.vote-actions-rank, .btn-primary:focus, .vote-actions button.vote-actions-vote:focus, .vote-actions button.vote-actions-rank:focus {
+.btn-check:focus + .btn-primary, .vote-actions .btn-check:focus + button.vote-actions-vote, .vote-actions .btn-check:focus + button.vote-actions-rank,
+.vote-rank .btn-check:focus + button.vote-actions-vote,
+.vote-rank .btn-check:focus + button.vote-actions-rank, .btn-primary:focus, .vote-actions button.vote-actions-vote:focus, .vote-actions button.vote-actions-rank:focus,
+.vote-rank button.vote-actions-vote:focus,
+.vote-rank button.vote-actions-rank:focus {
   color: #fff;
   background-color: #b3333a;
   border-color: #a93036;
   box-shadow: 0 0 0 0.25rem rgba(218, 89, 96, 0.5);
 }
-.btn-check:checked + .btn-primary, .vote-actions .btn-check:checked + button.vote-actions-vote, .vote-actions .btn-check:checked + button.vote-actions-rank, .btn-check:active + .btn-primary, .vote-actions .btn-check:active + button.vote-actions-vote, .vote-actions .btn-check:active + button.vote-actions-rank, .btn-primary:active, .vote-actions button.vote-actions-vote:active, .vote-actions button.vote-actions-rank:active, .btn-primary.active, .vote-actions button.active.vote-actions-vote, .vote-actions button.active.vote-actions-rank, .show > .btn-primary.dropdown-toggle, .vote-actions .show > button.dropdown-toggle.vote-actions-vote, .vote-actions .show > button.dropdown-toggle.vote-actions-rank {
+.btn-check:checked + .btn-primary, .vote-actions .btn-check:checked + button.vote-actions-vote, .vote-actions .btn-check:checked + button.vote-actions-rank,
+.vote-rank .btn-check:checked + button.vote-actions-vote,
+.vote-rank .btn-check:checked + button.vote-actions-rank, .btn-check:active + .btn-primary, .vote-actions .btn-check:active + button.vote-actions-vote, .vote-actions .btn-check:active + button.vote-actions-rank,
+.vote-rank .btn-check:active + button.vote-actions-vote,
+.vote-rank .btn-check:active + button.vote-actions-rank, .btn-primary:active, .vote-actions button.vote-actions-vote:active, .vote-actions button.vote-actions-rank:active,
+.vote-rank button.vote-actions-vote:active,
+.vote-rank button.vote-actions-rank:active, .btn-primary.active, .vote-actions button.active.vote-actions-vote, .vote-actions button.active.vote-actions-rank,
+.vote-rank button.active.vote-actions-vote,
+.vote-rank button.active.vote-actions-rank, .show > .btn-primary.dropdown-toggle, .vote-actions .show > button.dropdown-toggle.vote-actions-vote, .vote-actions .show > button.dropdown-toggle.vote-actions-rank,
+.vote-rank .show > button.dropdown-toggle.vote-actions-vote,
+.vote-rank .show > button.dropdown-toggle.vote-actions-rank {
   color: #fff;
   background-color: #a93036;
   border-color: #9e2d33;
 }
-.btn-check:checked + .btn-primary:focus, .vote-actions .btn-check:checked + button.vote-actions-vote:focus, .vote-actions .btn-check:checked + button.vote-actions-rank:focus, .btn-check:active + .btn-primary:focus, .vote-actions .btn-check:active + button.vote-actions-vote:focus, .vote-actions .btn-check:active + button.vote-actions-rank:focus, .btn-primary:active:focus, .vote-actions button.vote-actions-vote:active:focus, .vote-actions button.vote-actions-rank:active:focus, .btn-primary.active:focus, .vote-actions button.active.vote-actions-vote:focus, .vote-actions button.active.vote-actions-rank:focus, .show > .btn-primary.dropdown-toggle:focus, .vote-actions .show > button.dropdown-toggle.vote-actions-vote:focus, .vote-actions .show > button.dropdown-toggle.vote-actions-rank:focus {
+.btn-check:checked + .btn-primary:focus, .vote-actions .btn-check:checked + button.vote-actions-vote:focus, .vote-actions .btn-check:checked + button.vote-actions-rank:focus,
+.vote-rank .btn-check:checked + button.vote-actions-vote:focus,
+.vote-rank .btn-check:checked + button.vote-actions-rank:focus, .btn-check:active + .btn-primary:focus, .vote-actions .btn-check:active + button.vote-actions-vote:focus, .vote-actions .btn-check:active + button.vote-actions-rank:focus,
+.vote-rank .btn-check:active + button.vote-actions-vote:focus,
+.vote-rank .btn-check:active + button.vote-actions-rank:focus, .btn-primary:active:focus, .vote-actions button.vote-actions-vote:active:focus, .vote-actions button.vote-actions-rank:active:focus,
+.vote-rank button.vote-actions-vote:active:focus,
+.vote-rank button.vote-actions-rank:active:focus, .btn-primary.active:focus, .vote-actions button.active.vote-actions-vote:focus, .vote-actions button.active.vote-actions-rank:focus,
+.vote-rank button.active.vote-actions-vote:focus,
+.vote-rank button.active.vote-actions-rank:focus, .show > .btn-primary.dropdown-toggle:focus, .vote-actions .show > button.dropdown-toggle.vote-actions-vote:focus, .vote-actions .show > button.dropdown-toggle.vote-actions-rank:focus,
+.vote-rank .show > button.dropdown-toggle.vote-actions-vote:focus,
+.vote-rank .show > button.dropdown-toggle.vote-actions-rank:focus {
   box-shadow: 0 0 0 0.25rem rgba(218, 89, 96, 0.5);
 }
-.btn-primary:disabled, .vote-actions button.vote-actions-vote:disabled, .vote-actions button.vote-actions-rank:disabled, .btn-primary.disabled, .vote-actions button.disabled.vote-actions-vote, .vote-actions button.disabled.vote-actions-rank {
+.btn-primary:disabled, .vote-actions button.vote-actions-vote:disabled, .vote-actions button.vote-actions-rank:disabled,
+.vote-rank button.vote-actions-vote:disabled,
+.vote-rank button.vote-actions-rank:disabled, .btn-primary.disabled, .vote-actions button.disabled.vote-actions-vote, .vote-actions button.disabled.vote-actions-rank,
+.vote-rank button.disabled.vote-actions-vote,
+.vote-rank button.disabled.vote-actions-rank {
   color: #fff;
   background-color: #D33C44;
   border-color: #D33C44;
@@ -3149,25 +3198,32 @@ textarea.form-control-lg {
   background-color: transparent;
 }
 
-.btn-link, .vote-actions button.vote-actions-change-vote {
+.btn-link, .vote-actions button.vote-actions-change-vote,
+.vote-rank button.vote-actions-change-vote {
   font-weight: 400;
   color: #D33C44;
   text-decoration: underline;
 }
-.btn-link:hover, .vote-actions button.vote-actions-change-vote:hover {
+.btn-link:hover, .vote-actions button.vote-actions-change-vote:hover,
+.vote-rank button.vote-actions-change-vote:hover {
   color: #a93036;
 }
-.btn-link:disabled, .vote-actions button.vote-actions-change-vote:disabled, .btn-link.disabled, .vote-actions button.disabled.vote-actions-change-vote {
+.btn-link:disabled, .vote-actions button.vote-actions-change-vote:disabled,
+.vote-rank button.vote-actions-change-vote:disabled, .btn-link.disabled, .vote-actions button.disabled.vote-actions-change-vote,
+.vote-rank button.disabled.vote-actions-change-vote {
   color: #6c757d;
 }
 
-.btn-lg, .btn-group-lg > .btn, .vote-actions .btn-group-lg > button {
+.btn-lg, .btn-group-lg > .btn, .vote-actions .btn-group-lg > button,
+.vote-rank .btn-group-lg > button {
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
   border-radius: 0.3rem;
 }
 
-.btn-sm, .vote-actions button.vote-actions-change-vote, .btn-group-sm > .btn, .vote-actions .btn-group-sm > button {
+.btn-sm, .vote-actions button.vote-actions-change-vote,
+.vote-rank button.vote-actions-change-vote, .btn-group-sm > .btn, .vote-actions .btn-group-sm > button,
+.vote-rank .btn-group-sm > button {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   border-radius: 0.2rem;
@@ -3518,34 +3574,48 @@ textarea.form-control-lg {
   vertical-align: middle;
 }
 .btn-group > .btn, .vote-actions .btn-group > button,
+.vote-rank .btn-group > button,
 .btn-group-vertical > .btn,
-.vote-actions .btn-group-vertical > button {
+.vote-actions .btn-group-vertical > button,
+.vote-rank .btn-group-vertical > button {
   position: relative;
   flex: 1 1 auto;
 }
 .btn-group > .btn-check:checked + .btn, .vote-actions .btn-group > .btn-check:checked + button,
+.vote-rank .btn-group > .btn-check:checked + button,
 .btn-group > .btn-check:focus + .btn,
 .vote-actions .btn-group > .btn-check:focus + button,
+.vote-rank .btn-group > .btn-check:focus + button,
 .btn-group > .btn:hover,
 .vote-actions .btn-group > button:hover,
+.vote-rank .btn-group > button:hover,
 .btn-group > .btn:focus,
 .vote-actions .btn-group > button:focus,
+.vote-rank .btn-group > button:focus,
 .btn-group > .btn:active,
 .vote-actions .btn-group > button:active,
+.vote-rank .btn-group > button:active,
 .btn-group > .btn.active,
 .vote-actions .btn-group > button.active,
+.vote-rank .btn-group > button.active,
 .btn-group-vertical > .btn-check:checked + .btn,
 .vote-actions .btn-group-vertical > .btn-check:checked + button,
+.vote-rank .btn-group-vertical > .btn-check:checked + button,
 .btn-group-vertical > .btn-check:focus + .btn,
 .vote-actions .btn-group-vertical > .btn-check:focus + button,
+.vote-rank .btn-group-vertical > .btn-check:focus + button,
 .btn-group-vertical > .btn:hover,
 .vote-actions .btn-group-vertical > button:hover,
+.vote-rank .btn-group-vertical > button:hover,
 .btn-group-vertical > .btn:focus,
 .vote-actions .btn-group-vertical > button:focus,
+.vote-rank .btn-group-vertical > button:focus,
 .btn-group-vertical > .btn:active,
 .vote-actions .btn-group-vertical > button:active,
+.vote-rank .btn-group-vertical > button:active,
 .btn-group-vertical > .btn.active,
-.vote-actions .btn-group-vertical > button.active {
+.vote-actions .btn-group-vertical > button.active,
+.vote-rank .btn-group-vertical > button.active {
   z-index: 1;
 }
 
@@ -3559,20 +3629,26 @@ textarea.form-control-lg {
 }
 
 .btn-group > .btn:not(:first-child), .vote-actions .btn-group > button:not(:first-child),
+.vote-rank .btn-group > button:not(:first-child),
 .btn-group > .btn-group:not(:first-child) {
   margin-left: -1px;
 }
 .btn-group > .btn:not(:last-child):not(.dropdown-toggle), .vote-actions .btn-group > button:not(:last-child):not(.dropdown-toggle),
+.vote-rank .btn-group > button:not(:last-child):not(.dropdown-toggle),
 .btn-group > .btn-group:not(:last-child) > .btn,
-.vote-actions .btn-group > .btn-group:not(:last-child) > button {
+.vote-actions .btn-group > .btn-group:not(:last-child) > button,
+.vote-rank .btn-group > .btn-group:not(:last-child) > button {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 .btn-group > .btn:nth-child(n+3), .vote-actions .btn-group > button:nth-child(n+3),
+.vote-rank .btn-group > button:nth-child(n+3),
 .btn-group > :not(.btn-check) + .btn,
 .vote-actions .btn-group > :not(.btn-check) + button,
+.vote-rank .btn-group > :not(.btn-check) + button,
 .btn-group > .btn-group:not(:first-child) > .btn,
-.vote-actions .btn-group > .btn-group:not(:first-child) > button {
+.vote-actions .btn-group > .btn-group:not(:first-child) > button,
+.vote-rank .btn-group > .btn-group:not(:first-child) > button {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -3588,12 +3664,15 @@ textarea.form-control-lg {
   margin-right: 0;
 }
 
-.btn-sm + .dropdown-toggle-split, .vote-actions button.vote-actions-change-vote + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split, .vote-actions .btn-group-sm > button + .dropdown-toggle-split {
+.btn-sm + .dropdown-toggle-split, .vote-actions button.vote-actions-change-vote + .dropdown-toggle-split,
+.vote-rank button.vote-actions-change-vote + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split, .vote-actions .btn-group-sm > button + .dropdown-toggle-split,
+.vote-rank .btn-group-sm > button + .dropdown-toggle-split {
   padding-right: 0.375rem;
   padding-left: 0.375rem;
 }
 
-.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split, .vote-actions .btn-group-lg > button + .dropdown-toggle-split {
+.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split, .vote-actions .btn-group-lg > button + .dropdown-toggle-split,
+.vote-rank .btn-group-lg > button + .dropdown-toggle-split {
   padding-right: 0.75rem;
   padding-left: 0.75rem;
 }
@@ -3604,22 +3683,30 @@ textarea.form-control-lg {
   justify-content: center;
 }
 .btn-group-vertical > .btn, .vote-actions .btn-group-vertical > button,
+.vote-rank .btn-group-vertical > button,
 .btn-group-vertical > .btn-group {
   width: 100%;
 }
 .btn-group-vertical > .btn:not(:first-child), .vote-actions .btn-group-vertical > button:not(:first-child),
+.vote-rank .btn-group-vertical > button:not(:first-child),
 .btn-group-vertical > .btn-group:not(:first-child) {
   margin-top: -1px;
 }
 .btn-group-vertical > .btn:not(:last-child):not(.dropdown-toggle), .vote-actions .btn-group-vertical > button:not(:last-child):not(.dropdown-toggle),
+.vote-rank .btn-group-vertical > button:not(:last-child):not(.dropdown-toggle),
 .btn-group-vertical > .btn-group:not(:last-child) > .btn,
-.vote-actions .btn-group-vertical > .btn-group:not(:last-child) > button {
+.vote-actions .btn-group-vertical > .btn-group:not(:last-child) > button,
+.vote-rank .btn-group-vertical > .btn-group:not(:last-child) > button {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-.btn-group-vertical > .btn ~ .btn, .vote-actions .btn-group-vertical > button ~ .btn, .vote-actions .btn-group-vertical > .btn ~ button, .vote-actions .btn-group-vertical > button ~ button,
+.btn-group-vertical > .btn ~ .btn, .vote-actions .btn-group-vertical > button ~ .btn,
+.vote-rank .btn-group-vertical > button ~ .btn, .vote-actions .btn-group-vertical > .btn ~ button, .vote-actions .btn-group-vertical > button ~ button,
+.vote-rank .btn-group-vertical > .btn ~ button,
+.vote-rank .btn-group-vertical > button ~ button,
 .btn-group-vertical > .btn-group:not(:first-child) > .btn,
-.vote-actions .btn-group-vertical > .btn-group:not(:first-child) > button {
+.vote-actions .btn-group-vertical > .btn-group:not(:first-child) > button,
+.vote-rank .btn-group-vertical > .btn-group:not(:first-child) > button {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
@@ -4592,7 +4679,8 @@ textarea.form-control-lg {
   display: none;
 }
 
-.btn .badge, .vote-actions button .badge {
+.btn .badge, .vote-actions button .badge,
+.vote-rank button .badge {
   position: relative;
   top: -1px;
 }
@@ -6028,7 +6116,8 @@ textarea.form-control-lg {
   background-color: currentColor;
   opacity: 0.5;
 }
-.placeholder.btn::before, .vote-actions button.placeholder::before {
+.placeholder.btn::before, .vote-actions button.placeholder::before,
+.vote-rank button.placeholder::before {
   display: inline-block;
   content: "";
 }
@@ -10773,14 +10862,16 @@ body {
   color: red;
 }
 
-.vote-actions {
+.vote-actions,
+.vote-rank {
   padding: 1em !important;
   text-align: center;
   vertical-align: middle;
   white-space: nowrap;
   width: 1%;
 }
-.vote-actions i {
+.vote-actions i,
+.vote-rank i {
   font-size: 2em;
 }
 .vote-step-title {
@@ -10797,6 +10888,14 @@ body {
   font-weight: bold;
   text-align: center;
   vertical-align: middle;
+}
+
+.vote-sortable-table .is-dragging {
+  background-color: #faf4d0;
+  user-select: none;
+}
+.vote-sortable-table .is-dragging-over {
+  background-color: #EEE;
 }
 
 .application-title {

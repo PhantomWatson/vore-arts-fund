@@ -1,6 +1,7 @@
-import {useEffect, useState} from "react";
-import ApplicationSummary from "./ApplicationSummary";
-import AlertNoApplications from "./AlertNoApplications";
+import AlertNoApplications from './AlertNoApplications';
+import ApplicationSummary from './ApplicationSummary';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { useEffect, useState } from 'react';
 
 const ApplicationSortList = (props) => {
   const [sortedApplications, setSortedApplications] = useState([]);
@@ -27,6 +28,21 @@ const ApplicationSortList = (props) => {
       selectApplication(lastApplication);
     }
   }, [unsortedApplications]);
+
+  const onDragEnd = (result) => {
+    const { destination, source } = result;
+
+    // No change
+    if (destination.droppableId === source.droppableId && destination.index === source.index) {
+      return;
+    }
+
+    const newSortedApplications = [...sortedApplications];
+    const movedApplication = newSortedApplications[source.index];
+    newSortedApplications.splice(source.index, 1);
+    newSortedApplications.splice(destination.index, 0, movedApplication);
+    setSortedApplications(newSortedApplications);
+  };
 
   if (props.applications.length === 0) {
     return <AlertNoApplications />;
@@ -78,22 +94,46 @@ const ApplicationSortList = (props) => {
           <p className="alert alert-info">
             Drag and drop to reorder
           </p>
-          <table className="vote-application-list">
-            <tbody>
-              {sortedApplications.map((application, index) => {
-                return (
-                  <tr key={index}>
-                    <td className="vote-rank">
-                      #{index + 1}
-                    </td>
-                    <td>
-                      <ApplicationSummary application={application} />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <table className="vote-application-list vote-sortable-table">
+              <Droppable droppableId="droppable">
+                {(provided, snapshot) => (
+                  <tbody {...provided.droppableProps}
+                         ref={provided.innerRef}
+                         className={snapshot.isDraggingOver ? 'is-dragging-over' : ''}
+                  >
+                    {sortedApplications.map((application, index) => {
+                      return (
+                        <Draggable
+                          key={application.id}
+                          draggableId={String(application.id)}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <tr
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              ref={provided.innerRef}
+                              className={snapshot.isDragging ? 'is-dragging' : ''}
+                              style={provided.draggableProps.style}
+                            >
+                              <td className="vote-rank">
+                                #{index + 1}
+                              </td>
+                              <td>
+                                <ApplicationSummary application={application} />
+                              </td>
+                            </tr>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                    {provided.placeholder}
+                  </tbody>
+                )}
+              </Droppable>
+            </table>
+          </DragDropContext>
         </>
       }
     </>

@@ -813,7 +813,8 @@ body {
     }
 }
 
-.vote-actions {
+.vote-actions,
+.vote-rank {
     padding: 1em !important;
     text-align: center;
     vertical-align: middle;
@@ -854,6 +855,16 @@ body {
     font-weight: bold;
     text-align: center;
     vertical-align: middle;
+}
+
+.vote-sortable-table {
+    .is-dragging {
+        background-color: #faf4d0;
+        user-select: none;
+    }
+    .is-dragging-over {
+        background-color: #EEE;
+    }
 }
 
 .application-title {
