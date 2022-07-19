@@ -57,7 +57,7 @@ const SortStep = (props) => {
               <tr key={index}>
                 <td className="vote-actions">
                   <button className="vote-actions-rank" onClick={() => {selectApplication(application)}}>
-                    Select
+                    Rank #{sortedApplications.length + 1}
                   </button>
                 </td>
                 <td>
