@@ -848,6 +848,14 @@ body {
 
 .vote-footer {
     text-align: right;
+
+    .col:first-child {
+        text-align: left;
+    }
+
+    .col:last-child {
+        text-align: right;
+    }
 }
 
 .vote-rank {
@@ -862,12 +870,10 @@ body {
         background-color: #faf4d0;
         user-select: none;
     }
+
     .is-dragging-over {
         background-color: #EEE;
     }
-}
-.vote-select-for-sorting {
-    margin-bottom: 5em;
 }
 
 .application-title {

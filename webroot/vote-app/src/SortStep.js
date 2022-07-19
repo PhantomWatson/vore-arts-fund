@@ -19,6 +19,10 @@ const SortStep = (props) => {
       newUnsortedApplications.push(unsortedApplications[i]);
     }
     setUnsortedApplications(newUnsortedApplications);
+
+    if (newUnsortedApplications.length === 0) {
+      props.setSortingIsFinished(true);
+    }
   };
 
   // Avoid leaving a single application in the unsorted array

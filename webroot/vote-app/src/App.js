@@ -149,7 +149,28 @@ const App = () => {
                       Once you're finished, you can <strong>drag and drop applications to reorder them</strong>.
                     </p>
                   </div>
-                  <SortStep applications={approvedApplications} />
+                  <SortStep applications={approvedApplications} setSortingIsFinished={setSortingIsFinished} />
+                  <div className="vote-footer row">
+                    <div className="col">
+                      <Button
+                        variant="secondary"
+                        size="lg"
+                        onClick={handleGoToSelect}
+                      >
+                        Back
+                      </Button>
+                    </div>
+                    <div className="col">
+                      <Button
+                        disabled={!sortingIsFinished}
+                        variant="primary"
+                        size="lg"
+                        onClick={handleGoToSubmit}
+                      >
+                        Submit votes
+                      </Button>
+                    </div>
+                  </div>
                 </>
               }
               {currentStep === 'submit' &&

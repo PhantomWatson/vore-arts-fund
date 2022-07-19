@@ -10882,6 +10882,12 @@ body {
 .vote-footer {
   text-align: right;
 }
+.vote-footer .col:first-child {
+  text-align: left;
+}
+.vote-footer .col:last-child {
+  text-align: right;
+}
 
 .vote-rank {
   font-size: 2em;
@@ -10896,10 +10902,6 @@ body {
 }
 .vote-sortable-table .is-dragging-over {
   background-color: #EEE;
-}
-
-.vote-select-for-sorting {
-  margin-bottom: 5em;
 }
 
 .application-title {
