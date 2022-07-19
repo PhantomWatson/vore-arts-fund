@@ -118,16 +118,17 @@ const App = () => {
                   <SelectStep applications={applications}
                               handleVote={handleVote}
                   />
-                  <div className="vote-footer">
-                    <Button
-                      disabled={!allVotesAreCast}
-                      variant="primary"
-                      size="lg"
-                      onClick={handleGoToSort}
-                    >
-                      Next
-                    </Button>
-                  </div>
+                  {allVotesAreCast &&
+                    <div className="vote-footer">
+                      <Button
+                        variant="primary"
+                        size="lg"
+                        onClick={handleGoToSort}
+                      >
+                        Next
+                      </Button>
+                    </div>
+                  }
                 </>
               }
               {currentStep === 'sort' &&
@@ -161,14 +162,15 @@ const App = () => {
                       </Button>
                     </div>
                     <div className="col">
-                      <Button
-                        disabled={!sortingIsFinished}
-                        variant="primary"
-                        size="lg"
-                        onClick={handleGoToSubmit}
-                      >
-                        Submit votes
-                      </Button>
+                      {sortingIsFinished &&
+                        <Button
+                          variant="primary"
+                          size="lg"
+                          onClick={handleGoToSubmit}
+                        >
+                          Submit votes
+                        </Button>
+                      }
                     </div>
                   </div>
                 </>
