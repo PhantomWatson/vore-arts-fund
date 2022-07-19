@@ -22,20 +22,26 @@ const SelectStep = (props) => {
               <tr key={index}>
                 <td className="vote-actions">
                   {application.vote === null &&
-                    <button className="vote-actions-vote" onClick={() => {selectApplication(application)}}>
+                    <button
+                      className="vote-actions-vote"
+                      onClick={() => {selectApplication(application)}}
+                    >
                       Review
                     </button>
                   }
                   {application.vote !== null &&
                     <>
-                      {application.vote === true &&
-                        <i className="fa-solid fa-thumbs-up"></i>
-                      }
-                      {application.vote === false &&
-                        <i className="fa-solid fa-thumbs-down"></i>
-                      }
-                      <br />
-                      <button className="vote-actions-change-vote">
+                      <button
+                        className="vote-actions-change-vote"
+                        onClick={() => {selectApplication(application)}}
+                      >
+                        {application.vote === true &&
+                          <i className="fa-solid fa-thumbs-up"></i>
+                        }
+                        {application.vote === false &&
+                          <i className="fa-solid fa-thumbs-down"></i>
+                        }
+                        <br />
                         Change vote
                       </button>
                     </>
