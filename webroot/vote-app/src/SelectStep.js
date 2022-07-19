@@ -23,7 +23,7 @@ const SelectStep = (props) => {
                 <td className="vote-actions">
                   {application.vote === null &&
                     <button className="vote-actions-vote" onClick={() => {selectApplication(application)}}>
-                      Vote
+                      Review
                     </button>
                   }
                   {application.vote !== null &&
