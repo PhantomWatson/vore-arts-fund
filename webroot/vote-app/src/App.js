@@ -1,10 +1,11 @@
 import "./App.css";
 import * as React from 'react';
 import API from "./API.js";
-import ApplicationSelectList from "./ApplicationSelectList";
+import SelectStep from "./SelectStep";
 import Button from 'react-bootstrap/Button';
 import {useEffect, useState} from "react";
-import ApplicationSortList from "./ApplicationSortList";
+import SortStep from "./SortStep";
+import StepsHeader from "./StepsHeader";
 
 const App = () => {
   const [applications, setApplications] = useState(null);
@@ -96,32 +97,34 @@ const App = () => {
           }
           {applications !== null &&
             <>
-              <ul id="vote-steps">
-                <li className={currentStep === 'select' ? 'active' : ''}>
-                  <Button variant="link" disabled={!allVotesAreCast} onClick={handleGoToSelect}>
-                    1. Select
-                  </Button>
-                </li>
-                <li className={currentStep === 'sort' ? 'active' : ''}>
-                  <Button variant="link" disabled={!allVotesAreCast} onClick={handleGoToSort}>
-                    2. Sort
-                  </Button>
-                </li>
-                <li className={currentStep === 'submit' ? 'active' : ''}>
-                  <Button variant="link" disabled={!(allVotesAreCast && (sortingIsFinished || approvedApplications.length < 2))} onClick={handleGoToSubmit}>
-                    3. Submit
-                  </Button>
-                </li>
-              </ul>
+              <StepsHeader currentStep={currentStep}
+                           selectIsDisabled={!allVotesAreCast}
+                           handleGoToSelect={handleGoToSelect}
+                           sortIsDisabled={!allVotesAreCast}
+                           handleGoToSort={handleGoToSort}
+                           submitIsDisabled={
+                             !(allVotesAreCast && (sortingIsFinished || approvedApplications.length < 2))
+                           }
+                           handleGoToSubmit={handleGoToSubmit}
+
+              />
               {currentStep === 'select' &&
                 <>
                   <p className="alert alert-info">
-                    <span className="vote-step-title">Step one:</span> Review each application and either <strong>approve</strong> it
+                    <span className="vote-step-title">Step one:</span>{' '}
+                    Review each application and either <strong>approve</strong> it{' '}
                     if you think it should be funded or <strong>reject</strong> it.
                   </p>
-                  <ApplicationSelectList applications={applications} handleVote={handleVote} />
+                  <SelectStep applications={applications}
+                              handleVote={handleVote}
+                  />
                   <div className="vote-footer">
-                    <Button disabled={!allVotesAreCast} variant="primary" size="lg" onClick={handleGoToSort}>
+                    <Button
+                      disabled={!allVotesAreCast}
+                      variant="primary"
+                      size="lg"
+                      onClick={handleGoToSort}
+                    >
                       Next
                     </Button>
                   </div>
@@ -129,12 +132,24 @@ const App = () => {
               }
               {currentStep === 'sort' &&
                 <>
-                  <p className="alert alert-info">
-                    <span className="vote-step-title">Step two:</span> Now that you've <em>selected</em> the {' '}
-                    applications that you want funded, it's time to <strong>rank</strong> them, with #1 being the {' '}
-                    highest-priority for funding, and #{approvedApplications.length} being the lowest-priority.
-                  </p>
-                  <ApplicationSortList applications={approvedApplications} />
+                  <div className="alert alert-info">
+                    <p>
+                      <span className="vote-step-title">Step two:</span> Now that you've <em>selected</em> the{' '}
+                      applications that you want funded, it's time to <em>rank</em> them, with #1 being the{' '}
+                      highest-priority for funding, and #{approvedApplications.length} being the lowest-priority.
+                    </p>
+                    <p>
+                      First, <strong>select the application that you would <em>most</em> like to see funded</strong>{' '}
+                      from this list.
+                    </p>
+                    <p>
+                      Then select your <em>second-</em>favorite application, and so on, until all have been ranked.
+                    </p>
+                    <p>
+                      Once you're finished, you can <strong>drag and drop applications to reorder them</strong>.
+                    </p>
+                  </div>
+                  <SortStep applications={approvedApplications} />
                 </>
               }
               {currentStep === 'submit' &&

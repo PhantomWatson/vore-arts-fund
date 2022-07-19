@@ -3,7 +3,7 @@ import {useState} from "react";
 import ApplicationSummary from "./ApplicationSummary";
 import AlertNoApplications from "./AlertNoApplications";
 
-const ApplicationSelectList = (props) => {
+const SelectStep = (props) => {
   let [selectedApplication, selectApplication] = useState(null);
   const handleClose = () => {
     selectApplication(null);
@@ -54,4 +54,4 @@ const ApplicationSelectList = (props) => {
   );
 };
 
-export default ApplicationSelectList;
+export default SelectStep;
