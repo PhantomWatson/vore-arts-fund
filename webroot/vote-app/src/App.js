@@ -83,7 +83,10 @@ const App = () => {
         success = true;
       })
       .catch((error) => {
-        alert('Sorry, but an error is preventing your vote from being submitted. Please try again, or contact an administrator for assistance.');
+        alert(
+          'Sorry, but an error is preventing your vote from being submitted. ' +
+          'Please try again, or contact an administrator for assistance.'
+        );
         console.error('Error:', error);
       });
     setSubmitIsLoading(false);
