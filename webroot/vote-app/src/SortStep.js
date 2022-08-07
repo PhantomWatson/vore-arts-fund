@@ -135,6 +135,7 @@ const SortStep = (props) => {
           variant="secondary"
           size="lg"
           onClick={props.handleGoToSelect}
+          disabled={props.submitIsLoading}
         >
           Back
         </Button>
@@ -145,6 +146,7 @@ const SortStep = (props) => {
             variant="primary"
             size="lg"
             onClick={props.handleSubmit}
+            disabled={props.submitIsLoading}
           >
             Submit votes
             {props.submitIsLoading &&
