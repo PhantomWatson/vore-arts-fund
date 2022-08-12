@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller\API;
 
-use App\Controller\AppController;
 use App\Model\Entity\Application;
 use App\Model\Entity\FundingCycle;
 use App\Model\Entity\User;
@@ -20,7 +19,7 @@ use Cake\Http\Exception\MethodNotAllowedException;
  *
  * @property \App\Model\Table\VotesTable $Votes
  */
-class VotesController extends AppController
+class VotesController extends ApiController
 {
     /**
      * Allows unauthenticated votes, assigned to an arbitrary user

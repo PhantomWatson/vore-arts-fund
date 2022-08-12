@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller\API;
 
-use App\Controller\AppController;
 use App\Model\Table\FundingCyclesTable;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\MethodNotAllowedException;
@@ -13,7 +12,7 @@ use Cake\Http\Exception\MethodNotAllowedException;
  *
  * @property \App\Model\Table\ApplicationsTable $Applications
  */
-class ApplicationsController extends AppController
+class ApplicationsController extends ApiController
 {
     /**
      * beforeFilter callback method
@@ -43,7 +42,7 @@ class ApplicationsController extends AppController
         $fundingCyclesTable = $this->fetchTable('FundingCycles');
         $fundingCycle = $fundingCyclesTable->find('currentVoting')->first();
         $applications = $fundingCycle
-            ? $this->Applications->find('forVoting', ['funding_cycle_id' => $fundingCycle->id])->all()
+            ? $this->Applications->find('forVoting', ['funding_cycle_id' => $fundingCycle->id])->limit(3)->all()
             : [];
         $this->set(compact('applications'));
         $this->viewBuilder()->setOption('serialize', ['applications']);
