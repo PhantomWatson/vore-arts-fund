@@ -114,12 +114,13 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             'httponly' => true,
         ]);
         $csrf->skipCheckCallback(function ($request) {
-            $prefix = $request->getParam('prefix');
+            if ($request->getParam('prefix') === 'Api') {
+                return true;
+            }
             $controller = $request->getParam('controller');
             $action = $request->getParam('action');
-            switch ("$prefix/$controller/$action") {
-                case '/Images/upload':
-                case 'Api/Votes/index':
+            switch ("$controller/$action") {
+                case 'Images/upload':
                     return true;
             }
             return false;
