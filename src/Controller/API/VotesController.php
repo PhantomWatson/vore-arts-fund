@@ -55,11 +55,14 @@ class VotesController extends ApiController
     public function index()
     {
         if (!$this->request->is(['post', 'options'])) {
-            throw new MethodNotAllowedException('Only POST is supported at this endpoint');
+            throw new MethodNotAllowedException('Only POST is supported at this endpoint. Method ' . $this->request->getMethod() . ' is not allowed.');
         }
-        $data = $this->request->getData();
+
+        /* For some reason, submitting this data as application/json resulted in a blank request body.
+         * The hack to get around this is to submit JSON as application/x-www-form-urlencoded, then decode it. */
+        $data = json_decode(file_get_contents("php://input"), true);
         if (!($data['applications'] ?? false)) {
-            throw new BadRequestException('No votes were submitted in your request');
+            throw new BadRequestException('No votes were submitted in your request.');
         }
 
         if ($this->testingMode) {

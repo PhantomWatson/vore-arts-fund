@@ -72,23 +72,32 @@ const App = () => {
     const data = {
       applications: sortedApplications
     };
-    await fetch(url, {
+    const fetchOptions = {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: JSON.stringify(data),
-    })
-      .then((response => response.json()))
-      .then(data => {
-        console.log('Success:', data);
+    };
+    let isError = false;
+    try {
+      const response = await fetch(url, fetchOptions);
+      const responseJson = await response.json();
+      if (responseJson?.result) {
+        console.log('Success:', responseJson);
         success = true;
-      })
-      .catch((error) => {
-        alert(
-          'Sorry, but an error is preventing your vote from being submitted. ' +
-          'Please try again, or contact an administrator for assistance.'
-        );
-        console.error('Error:', error);
-      });
+      } else {
+        isError = true;
+        console.error('Response:', responseJson);
+      }
+    } catch(error) {
+      isError = true;
+      console.error('Error:', error);
+    }
+    if (isError) {
+      alert(
+        'Sorry, but an error is preventing your vote from being submitted. ' +
+        'Please try again, or contact an administrator for assistance.'
+      );
+    }
     setSubmitIsLoading(false);
 
     if (success) {

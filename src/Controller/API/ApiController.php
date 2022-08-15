@@ -23,9 +23,11 @@ class ApiController extends AppController
         parent::beforeFilter($event);
         $preflightRequestCacheExpiration = 60 * 60;
         $this->response = $this->response->cors($this->request)
-            ->allowOrigin(['localhost:3000'])
-            ->allowMethods(['GET', 'POST'])
-            ->allowHeaders(['content-type'])
+            ->allowOrigin(['http://localhost:3000'])
+            ->allowMethods(['GET', 'POST', 'OPTIONS'])
+            ->allowHeaders(['Accept', 'Content-Type', 'X-CSRF-Token'])
+            ->allowCredentials()
+            ->exposeHeaders(['Link'])
             ->maxAge(Configure::read('debug') ? 1 : $preflightRequestCacheExpiration)
             ->build();
     }
