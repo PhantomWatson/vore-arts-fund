@@ -8,7 +8,6 @@ import SortStep from "./SortStep";
 import StepsHeader from "./StepsHeader";
 
 const App = () => {
-  const isDevMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
   const [applications, setApplications] = useState(null);
   const [currentStep, setCurrentStep] = useState('select');
   const [errorMsg, setErrorMsg] = useState(null);
@@ -65,43 +64,24 @@ const App = () => {
   };
 
   const handleSubmit = async () => {
-    setSubmitIsLoading(true);
-    const urlBase = isDevMode ? 'http://vore.test:9000' : '';
-    const url = urlBase + '/api/votes';
     let success = false;
-    const data = {
-      applications: sortedApplications
-    };
-    const fetchOptions = {
-      method: 'POST',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: JSON.stringify(data),
-    };
-    let isError = false;
+    setSubmitIsLoading(true);
     try {
-      const response = await fetch(url, fetchOptions);
-      const responseJson = await response.json();
-      if (responseJson?.result) {
-        console.log('Success:', responseJson);
-        success = true;
-      } else {
-        isError = true;
-        console.error('Response:', responseJson);
-      }
+      success = await API.postVotes({
+        applications: sortedApplications
+      });
     } catch(error) {
-      isError = true;
       console.error('Error:', error);
-    }
-    if (isError) {
-      alert(
-        'Sorry, but an error is preventing your vote from being submitted. ' +
-        'Please try again, or contact an administrator for assistance.'
-      );
     }
     setSubmitIsLoading(false);
 
     if (success) {
       setCurrentStep('submit');
+    } else {
+      alert(
+        'Sorry, but an error is preventing your vote from being submitted. ' +
+        'Please try again, or contact an administrator for assistance.'
+      );
     }
   };
 

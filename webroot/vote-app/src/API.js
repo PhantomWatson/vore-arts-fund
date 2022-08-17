@@ -25,6 +25,25 @@ class API {
     return retval;
   }
 
+  static async postVotes(data) {
+    const isDevMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+    const urlBase = isDevMode ? 'http://vore.test:9000' : '';
+    const url = urlBase + '/api/votes';
+    const fetchOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: JSON.stringify(data),
+    };
+    const response = await fetch(url, fetchOptions);
+    const responseJson = await response.json();
+    if (responseJson?.result) {
+      console.log('Success:', responseJson);
+      return true;
+    }
+    console.error('Error response:', responseJson);
+    return false;
+  }
+
   static getDummyApplications() {
     return [
       {
