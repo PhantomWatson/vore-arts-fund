@@ -142,7 +142,7 @@ const App = () => {
                   <SelectStep applications={applications}
                               handleVote={handleVote}
                   />
-                  {allVotesAreCast &&
+                  {allVotesAreCast && approvedApplications.length > 0 &&
                     <div className="vote-footer">
                       <Button
                         variant="primary"
@@ -152,6 +152,13 @@ const App = () => {
                         Next
                       </Button>
                     </div>
+                  }
+                  {allVotesAreCast && approvedApplications.length === 0 &&
+                    <p className="alert alert-warning">
+                      You must approve at least one application in order to cast a vote.
+                      If there are no applications that you'd like to approve,
+                      then you can abstain from voting this time.
+                    </p>
                   }
                 </>
               }
