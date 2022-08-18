@@ -145,7 +145,7 @@ const SortStep = (props) => {
           <Button
             variant="primary"
             size="lg"
-            onClick={props.handleSubmit}
+            onClick={() => {props.handlePostVotes(sortedApplications)}}
             disabled={props.submitIsLoading}
           >
             Submit votes

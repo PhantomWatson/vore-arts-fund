@@ -2,10 +2,10 @@ import "./App.css";
 import * as React from 'react';
 import API from "./API.js";
 import SelectStep from "./SelectStep";
-import Button from 'react-bootstrap/Button';
 import {useEffect, useState} from "react";
 import SortStep from "./SortStep";
 import StepsHeader from "./StepsHeader";
+import SelectStepSubmit from "./SelectStepSubmit";
 
 const App = () => {
   const [applications, setApplications] = useState(null);
@@ -55,15 +55,25 @@ const App = () => {
     setCurrentStep('select');
   };
 
-  const handleGoToSort = () => {
+  const handleSubmitSelectStep = async () => {
+    // Go to sort step
     if (approvedApplications.length > 1) {
       setCurrentStep('sort');
-    } else {
-      setCurrentStep('submit');
+      return;
+    }
+
+    // Or submit if there's only one application approved
+    if (approvedApplications.length === 1) {
+      await handlePostVotes(approvedApplications);
+    }
+
+    // Or abort with an error if no application was approved
+    if (approvedApplications.length === 0) {
+      throw new Error('Can\'t submit form with no approved applications');
     }
   };
 
-  const handleSubmit = async () => {
+  const handlePostVotes = async (sortedApplications) => {
     let success = false;
     setSubmitIsLoading(true);
     try {
@@ -121,17 +131,7 @@ const App = () => {
           }
           {applications !== null &&
             <>
-              <StepsHeader currentStep={currentStep}
-                           selectIsDisabled={!allVotesAreCast}
-                           handleGoToSelect={handleGoToSelect}
-                           sortIsDisabled={!allVotesAreCast}
-                           handleGoToSort={handleGoToSort}
-                           submitIsDisabled={
-                             !(allVotesAreCast && (sortingIsFinished || approvedApplications.length < 2))
-                           }
-                           handleSubmit={handleSubmit}
-
-              />
+              <StepsHeader currentStep={currentStep} />
               {currentStep === 'select' &&
                 <>
                   <p className="alert alert-info">
@@ -142,24 +142,11 @@ const App = () => {
                   <SelectStep applications={applications}
                               handleVote={handleVote}
                   />
-                  {allVotesAreCast && approvedApplications.length > 0 &&
-                    <div className="vote-footer">
-                      <Button
-                        variant="primary"
-                        size="lg"
-                        onClick={handleGoToSort}
-                      >
-                        Next
-                      </Button>
-                    </div>
-                  }
-                  {allVotesAreCast && approvedApplications.length === 0 &&
-                    <p className="alert alert-warning">
-                      You must approve at least one application in order to cast a vote.
-                      If there are no applications that you'd like to approve,
-                      then you can abstain from voting this time.
-                    </p>
-                  }
+                  <SelectStepSubmit
+                    approvedApplications={approvedApplications}
+                    handleSubmitSelectStep={handleSubmitSelectStep}
+                    allVotesAreCast={allVotesAreCast}
+                  />
                 </>
               }
               {currentStep === 'sort' &&
@@ -184,7 +171,7 @@ const App = () => {
                   <SortStep
                     applications={approvedApplications}
                     handleGoToSelect={handleGoToSelect}
-                    handleSubmit={handleSubmit}
+                    handlePostVotes={handlePostVotes}
                     setSortedApplications={setSortedApplications}
                     setSortingIsFinished={setSortingIsFinished}
                     setSubmitIsLoading={setSubmitIsLoading}
