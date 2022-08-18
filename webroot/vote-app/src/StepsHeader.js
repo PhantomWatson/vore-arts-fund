@@ -1,5 +1,3 @@
-import Button from "react-bootstrap/Button";
-
 const StepsHeader = (props) => {
   return (
     <ul id="vote-steps">
