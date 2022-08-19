@@ -125,7 +125,9 @@ const App = () => {
       {!errorMsg &&
         <>
           {applications === null &&
-            <p>
+            <p className="alert alert-info">
+              <i className="fa-solid fa-spinner fa-spin-pulse me-2" title="Loading"></i>
+              {' '}
               Loading applications...
             </p>
           }
