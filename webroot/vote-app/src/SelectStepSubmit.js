@@ -1,14 +1,15 @@
 import Button from "react-bootstrap/Button";
 import * as React from "react";
+import Alert from "./Alert";
 
 const SelectStepSubmit = (props) => {
   return (
     <>
       {props.allVotesAreCast && props.approvedApplications.length === 1 &&
-        <p className="alert alert-info">
+        <Alert flavor="info">
           Since you've only approved <strong>one</strong> application, you'll skip the sorting step and immediately
           submit your vote.
-        </p>
+        </Alert>
       }
       {props.allVotesAreCast && props.approvedApplications.length > 0 &&
         <div className="vote-footer">
@@ -29,11 +30,11 @@ const SelectStepSubmit = (props) => {
         </div>
       }
       {props.allVotesAreCast && props.approvedApplications.length === 0 &&
-        <p className="alert alert-warning">
+        <Alert flavor="warning">
           You must approve at least one application in order to cast a vote.
           If there are no applications that you'd like to approve,
           then you can abstain from voting this time.
-        </p>
+        </Alert>
       }
     </>
   );

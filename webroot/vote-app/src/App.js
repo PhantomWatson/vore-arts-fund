@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import SortStep from "./SortStep";
 import StepsHeader from "./StepsHeader";
 import SelectStepSubmit from "./SelectStepSubmit";
+import Alert from "./Alert";
 
 const App = () => {
   const [applications, setApplications] = useState(null);
@@ -118,29 +119,27 @@ const App = () => {
   return (
     <div id="voter-app">
       {errorMsg &&
-        <p className="alert alert-danger">
+        <Alert flavor="danger">
           {errorMsg}
-        </p>
+        </Alert>
       }
       {!errorMsg &&
         <>
           {applications === null &&
-            <p className="alert alert-info">
-              <i className="fa-solid fa-spinner fa-spin-pulse me-2" title="Loading"></i>
-              {' '}
+            <Alert flavor="loading">
               Loading applications...
-            </p>
+            </Alert>
           }
           {applications !== null &&
             <>
               <StepsHeader currentStep={currentStep} />
               {currentStep === 'select' &&
                 <>
-                  <p className="alert alert-info">
+                  <Alert flavor="info">
                     <span className="vote-step-title">Step one:</span>{' '}
                     Review each application and either <strong>approve</strong> it{' '}
                     if you think it should be funded or <strong>reject</strong> it.
-                  </p>
+                  </Alert>
                   <SelectStep applications={applications}
                               handleVote={handleVote}
                   />
@@ -154,7 +153,7 @@ const App = () => {
               }
               {currentStep === 'sort' &&
                 <>
-                  <div className="alert alert-info">
+                  <Alert flavor="info">
                     <p>
                       <span className="vote-step-title">Step two:</span> Now that you've <em>selected</em> the{' '}
                       applications that you want funded, it's time to <em>rank</em> them, with #1 being the{' '}
@@ -170,7 +169,7 @@ const App = () => {
                     <p>
                       Once you're finished, you can <strong>drag and drop applications to reorder them</strong>.
                     </p>
-                  </div>
+                  </Alert>
                   <SortStep
                     applications={approvedApplications}
                     handleGoToSelect={handleGoToSelect}
