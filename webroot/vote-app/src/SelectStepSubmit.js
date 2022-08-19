@@ -16,9 +16,15 @@ const SelectStepSubmit = (props) => {
             variant="primary"
             size="lg"
             onClick={props.handleSubmitSelectStep}
-            disabled={!props.allVotesAreCast || props.approvedApplications.length === 0}
+            disabled={!props.allVotesAreCast || props.approvedApplications.length === 0 || props.submitIsLoading}
           >
             {props.approvedApplications.length === 1 ? 'Cast votes' : 'Next'}
+            {props.submitIsLoading &&
+              <>
+                {' '}
+                <i className="fa-solid fa-spinner fa-spin-pulse" title="Loading"></i>
+              </>
+            }
           </Button>
         </div>
       }

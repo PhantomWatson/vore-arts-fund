@@ -146,6 +146,7 @@ const App = () => {
                     approvedApplications={approvedApplications}
                     handleSubmitSelectStep={handleSubmitSelectStep}
                     allVotesAreCast={allVotesAreCast}
+                    submitIsLoading={submitIsLoading}
                   />
                 </>
               }
