@@ -173,8 +173,6 @@ const App = () => {
                     handleGoToSelect={handleGoToSelect}
                     handlePostVotes={handlePostVotes}
                     setSortedApplications={setSortedApplications}
-                    setSortingIsFinished={setSortingIsFinished}
-                    setSubmitIsLoading={setSubmitIsLoading}
                     submitIsLoading={submitIsLoading}
                   />
                 </>
