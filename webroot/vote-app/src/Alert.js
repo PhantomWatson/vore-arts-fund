@@ -15,6 +15,9 @@ const Alert = (props) => {
       case 'danger':
         iconClassName = 'fa-solid fa-circle-exclamation';
         break;
+      case 'success':
+        iconClassName = 'fa-solid fa-circle-check';
+        break;
       case 'loading':
         iconClassName = 'fa-solid fa-spinner fa-spin-pulse';
         flavor = 'info';

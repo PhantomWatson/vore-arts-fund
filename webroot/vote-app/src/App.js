@@ -7,6 +7,7 @@ import SortStep from "./SortStep";
 import StepsHeader from "./StepsHeader";
 import SelectStepSubmit from "./SelectStepSubmit";
 import Alert from "./Alert";
+import VoteConfirmation from "./VoteConfirmation";
 
 const App = () => {
   const [applications, setApplications] = useState(null);
@@ -90,7 +91,7 @@ const App = () => {
       setCurrentStep('submit');
     } else {
       alert(
-        'Sorry, but an error is preventing your vote from being submitted. ' +
+        'Sorry, but an error is preventing your votes from being submitted. ' +
         'Please try again, or contact an administrator for assistance.'
       );
     }
@@ -180,11 +181,7 @@ const App = () => {
                 </>
               }
               {currentStep === 'submit' &&
-                <>
-                  <p>
-                    Submit
-                  </p>
-                </>
+                <VoteConfirmation />
               }
             </>
           }
