@@ -16,7 +16,6 @@ const App = () => {
   const [allVotesAreCast, setAllVotesAreCast] = useState(false);
   const [approvedApplications, setApprovedApplications] = useState([]);
   const [sortedApplications, setSortedApplications] = useState([]);
-  const [sortingIsFinished, setSortingIsFinished] = useState(false);
   const [submitIsLoading, setSubmitIsLoading] = useState(false);
 
   const handleVote = (applicationId, vote) => {
