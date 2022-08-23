@@ -8,12 +8,9 @@ import StepsHeader from "./StepsHeader";
 import SelectStepSubmit from "./SelectStepSubmit";
 import Alert from "./Alert";
 import VoteConfirmation from "./VoteConfirmation";
+import {useBeforeunload} from "react-beforeunload";
 
 const App = () => {
-  window.onbeforeunload = function () {
-    return 'Are you sure you want to leave before submitting your votes?';
-  }
-
   const [applications, setApplications] = useState(null);
   const [currentStep, setCurrentStep] = useState('select');
   const [errorMsg, setErrorMsg] = useState(null);
@@ -119,6 +116,17 @@ const App = () => {
       setApplications(fetchedApplications);
     }
   }, []);
+
+  // Don't warn about navigating away if voting has already taken place or if no votes can/will be submitted
+  useBeforeunload((event) => {
+    const warnIfNavigatingAway =
+      (applications && applications.length > 0)
+      && !(currentStep === 'submit')
+      && !(allVotesAreCast && approvedApplications.length === 0);
+    if (warnIfNavigatingAway) {
+      return 'Are you sure you want to leave before voting?';
+    }
+  });
 
   return (
     <div id="voter-app">
