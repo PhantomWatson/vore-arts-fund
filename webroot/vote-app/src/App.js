@@ -10,6 +10,10 @@ import Alert from "./Alert";
 import VoteConfirmation from "./VoteConfirmation";
 
 const App = () => {
+  window.onbeforeunload = function () {
+    return 'Are you sure you want to leave before submitting your votes?';
+  }
+
   const [applications, setApplications] = useState(null);
   const [currentStep, setCurrentStep] = useState('select');
   const [errorMsg, setErrorMsg] = useState(null);
@@ -134,50 +138,23 @@ const App = () => {
             <>
               <StepsHeader currentStep={currentStep} />
               {currentStep === 'select' &&
-                <>
-                  <Alert flavor="info">
-                    <span className="vote-step-title">Step one:</span>{' '}
-                    Review each application and either <strong>approve</strong> it{' '}
-                    if you think it should be funded or <strong>reject</strong> it.
-                  </Alert>
-                  <SelectStep applications={applications}
-                              handleVote={handleVote}
-                  />
-                  <SelectStepSubmit
-                    approvedApplications={approvedApplications}
-                    handleSubmitSelectStep={handleSubmitSelectStep}
-                    allVotesAreCast={allVotesAreCast}
-                    submitIsLoading={submitIsLoading}
-                  />
-                </>
+                <SelectStep
+                  applications={applications}
+                  approvedApplications={approvedApplications}
+                  handleVote={handleVote}
+                  handleSubmitSelectStep={handleSubmitSelectStep}
+                  allVotesAreCast={allVotesAreCast}
+                  submitIsLoading={submitIsLoading}
+                />
               }
               {currentStep === 'sort' &&
-                <>
-                  <Alert flavor="info">
-                    <p>
-                      <span className="vote-step-title">Step two:</span> Now that you've <em>selected</em> the{' '}
-                      applications that you want funded, it's time to <em>rank</em> them, with #1 being the{' '}
-                      highest-priority for funding, and #{approvedApplications.length} being the lowest-priority.
-                    </p>
-                    <p>
-                      First, <strong>select the application that you would <em>most</em> like to see funded</strong>{' '}
-                      from this list.
-                    </p>
-                    <p>
-                      Then select your <em>second-</em>favorite application, and so on, until all have been ranked.
-                    </p>
-                    <p>
-                      Once you're finished, you can <strong>drag and drop applications to reorder them</strong>.
-                    </p>
-                  </Alert>
-                  <SortStep
-                    applications={approvedApplications}
-                    handleGoToSelect={handleGoToSelect}
-                    handlePostVotes={handlePostVotes}
-                    setSortedApplications={setSortedApplications}
-                    submitIsLoading={submitIsLoading}
-                  />
-                </>
+                <SortStep
+                  applications={approvedApplications}
+                  handleGoToSelect={handleGoToSelect}
+                  handlePostVotes={handlePostVotes}
+                  setSortedApplications={setSortedApplications}
+                  submitIsLoading={submitIsLoading}
+                />
               }
               {currentStep === 'submit' &&
                 <VoteConfirmation />

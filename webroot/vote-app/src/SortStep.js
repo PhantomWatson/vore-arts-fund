@@ -3,6 +3,8 @@ import ApplicationSummary from './ApplicationSummary';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useEffect, useState } from 'react';
 import Button from "react-bootstrap/Button";
+import Alert from "./Alert";
+import * as React from "react";
 
 const SortStep = (props) => {
   const [sortedApplications, setSortedApplications] = useState([]);
@@ -161,8 +163,29 @@ const SortStep = (props) => {
     </div>
   );
 
+  const alert = (
+    <Alert flavor="info">
+      <p>
+        <span className="vote-step-title">Step two:</span> Now that you've <em>selected</em> the{' '}
+        applications that you want funded, it's time to <em>rank</em> them, with #1 being the{' '}
+        highest-priority for funding, and #{props.applications.length} being the lowest-priority.
+      </p>
+      <p>
+        First, <strong>select the application that you would <em>most</em> like to see funded</strong>{' '}
+        from this list.
+      </p>
+      <p>
+        Then select your <em>second-</em>favorite application, and so on, until all have been ranked.
+      </p>
+      <p>
+        Once you're finished, you can <strong>drag and drop applications to reorder them</strong>.
+      </p>
+    </Alert>
+  );
+
   return (
     <>
+      {alert}
       {unsortedList}
       {sortedList}
       {navButtons}
