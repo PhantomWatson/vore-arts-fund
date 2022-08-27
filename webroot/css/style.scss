@@ -801,6 +801,12 @@ body {
     }
 }
 
+.vote-application {
+    h2 {
+        font-size: 1.2em;
+    }
+}
+
 .vote-application-list {
     @extend .table;
 

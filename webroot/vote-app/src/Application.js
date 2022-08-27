@@ -64,25 +64,30 @@ const Application = (props) => {
 
           <Modal.Body>
             <p>
-              Description: {currencyFormatter.format(props.application.amount_requested) + ' '}
-              requested by {props.application.user.name}
+              <strong>Category:</strong> {props.application.category.name}
             </p>
             <p>
-              Category: {props.application.category.name}
+              {currencyFormatter.format(props.application.amount_requested) + ' '}
+              is being requested by {props.application.user.name}
             </p>
-            <p>
-              {props.application.description}
-            </p>
+            <section>
+              <h2>
+                Project description
+              </h2>
+              <p>
+                {props.application.description}
+              </p>
+            </section>
             {answers.map((answer, index) => {
               return (
-                <div className="vote-application-qa" key={index}>
-                  <p className="vote-application-q">
+                <section className="vote-application-qa" key={index}>
+                  <h2 className="vote-application-q">
                     {answer.question.question}
-                  </p>
+                  </h2>
                   <p className="vote-application-a">
                     {answer.answer}
                   </p>
-                </div>
+                </section>
               );
             })}
             <div className="image-gallery">
