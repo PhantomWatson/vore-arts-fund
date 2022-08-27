@@ -2,6 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {currencyFormatter} from "./Formatter";
 import {useEffect} from "react";
+import Viewer from "viewerjs";
 
 const Application = (props) => {
   const devMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
