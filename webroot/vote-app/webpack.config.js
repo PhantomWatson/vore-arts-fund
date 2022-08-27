@@ -38,7 +38,9 @@ module.exports = function (env) {
         extensions: [".js", ".jsx", ".json"],
       },
       plugins: [
-        new CleanWebpackPlugin(),
+        // If building for production, delete all files in dist folder before rebuilding
+        mode === 'production' ? new CleanWebpackPlugin() : () => {},
+
         // Copies files from target to destination folder
         new CopyWebpackPlugin({
           patterns: [
