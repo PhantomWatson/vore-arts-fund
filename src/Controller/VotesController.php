@@ -53,7 +53,7 @@ class VotesController extends AppController
         $hasVoted = $user && $cycle && $this->Votes->hasVoted($user->id, $cycle->id);
         $nextCycle = $fundingCyclesTable->find('nextVoting')->first();
         $showUpcoming = $hasVoted || !$cycle || !$applications;
-        $canVote = $user && !$showUpcoming;
+        $canVote = $user && $user->is_verified && !$showUpcoming;
 
         $this->title(
             $cycle
@@ -76,6 +76,9 @@ class VotesController extends AppController
             'showUpcoming',
             'toLoad',
         ));
+        $this->set([
+            'isVerified' => $user->is_verified,
+        ]);
     }
 
     /**

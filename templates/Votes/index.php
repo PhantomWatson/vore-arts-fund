@@ -8,6 +8,7 @@
  * @var bool $canVote
  * @var bool $hasVoted
  * @var bool $isLoggedIn
+ * @var bool $isVerified
  * @var bool $showUpcoming
  */
 $bundlePathBase = \Cake\Core\Configure::read('debug')
@@ -16,7 +17,7 @@ $bundlePathBase = \Cake\Core\Configure::read('debug')
 ?>
 
 <?php if ($hasVoted): ?>
-    <p class="alert alert-info">
+    <p class="alert alert-success">
         Thank you for voting in this funding cycle!
     </p>
 <?php endif; ?>
@@ -60,6 +61,11 @@ $bundlePathBase = \Cake\Core\Configure::read('debug')
                 ]
             ) ?>
             to vote.
+        </p>
+    <?php elseif (!$isVerified): ?>
+        <p class="alert alert-warning">
+            Before you can vote, you must first
+            <?= $this->Html->linkFromPath('verify your phone number', 'Users::verify') ?>.
         </p>
     <?php endif; ?>
 <?php endif; ?>
