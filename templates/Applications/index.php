@@ -13,7 +13,7 @@ $updateWhen = [
 ];
 $withdrawWhen = [
     Application::STATUS_UNDER_REVIEW,
-    Application::STATUS_VOTING
+    Application::STATUS_ACCEPTED,
 ];
 ?>
 

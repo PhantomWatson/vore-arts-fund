@@ -25,7 +25,7 @@ class VotesController extends ApiController
      * Allows unauthenticated votes, assigned to an arbitrary user
      * @var bool
      */
-    private bool $testingMode = false;
+    private bool $testingMode = true;
 
     /**
      * beforeFilter callback method

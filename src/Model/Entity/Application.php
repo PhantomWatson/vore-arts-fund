@@ -40,7 +40,6 @@ class Application extends Entity
     const STATUS_ACCEPTED = 2;
     const STATUS_REJECTED = 3;
     const STATUS_REVISION_REQUESTED = 4;
-    const STATUS_VOTING = 5;
     const STATUS_AWARDED = 6;
     const STATUS_NOT_AWARDED = 7;
     const STATUS_WITHDRAWN = 8;
@@ -53,7 +52,7 @@ class Application extends Entity
     public function isViewable(): bool
     {
         $viewableStatuses = [
-            Application::STATUS_VOTING,
+            Application::STATUS_ACCEPTED,
             Application::STATUS_AWARDED,
             Application::STATUS_NOT_AWARDED,
         ];
@@ -87,7 +86,6 @@ class Application extends Entity
             self::STATUS_ACCEPTED           => 'Accepted',
             self::STATUS_REJECTED           => 'Rejected',
             self::STATUS_REVISION_REQUESTED => 'Revision Requested',
-            self::STATUS_VOTING             => 'Voting',
             self::STATUS_AWARDED            => 'Awarded',
             self::STATUS_NOT_AWARDED        => 'Not Awarded',
             self::STATUS_WITHDRAWN          => 'Withdrawn',
@@ -117,11 +115,6 @@ class Application extends Entity
                     self::STATUS_WITHDRAWN,
                 ];
             case self::STATUS_ACCEPTED:
-                return [
-                    self::STATUS_VOTING,
-                    self::STATUS_WITHDRAWN,
-                ];
-            case self::STATUS_VOTING:
                 return [
                     self::STATUS_AWARDED,
                     self::STATUS_NOT_AWARDED,
