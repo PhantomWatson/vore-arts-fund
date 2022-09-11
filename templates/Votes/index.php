@@ -23,7 +23,7 @@ $bundlePathBase = \Cake\Core\Configure::read('debug')
 <?php endif; ?>
 
 <?php if ($cycle): ?>
-    <div class="alert alert-info">
+    <div>
         <?php if ($applications): ?>
             <p>
                 Voting is underway for the applicants in this funding cycle! Here are the steps:
