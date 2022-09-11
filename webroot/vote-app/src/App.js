@@ -1,14 +1,13 @@
-import "./App.css";
+import './App.css';
 import * as React from 'react';
-import API from "./API.js";
-import SelectStep from "./SelectStep";
-import {useEffect, useState} from "react";
-import SortStep from "./SortStep";
-import StepsHeader from "./StepsHeader";
-import SelectStepSubmit from "./SelectStepSubmit";
-import Alert from "./Alert";
-import VoteConfirmation from "./VoteConfirmation";
-import {useBeforeunload} from "react-beforeunload";
+import API from './API.js';
+import SelectStep from './SelectStep';
+import {useEffect, useState} from 'react';
+import SortStep from './SortStep';
+import StepsHeader from './StepsHeader';
+import Alert from './Alert';
+import VoteConfirmation from './VoteConfirmation';
+import {useBeforeunload} from 'react-beforeunload';
 
 const App = () => {
   const [applications, setApplications] = useState(null);
