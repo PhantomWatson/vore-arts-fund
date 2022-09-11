@@ -11554,4 +11554,9 @@ main {
   margin-top: 1em;
 }
 
+nav.navbar {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
 /*# sourceMappingURL=style.css.map */
