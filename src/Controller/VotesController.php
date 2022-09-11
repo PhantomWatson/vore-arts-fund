@@ -30,11 +30,11 @@ class VotesController extends AppController
     /**
      * Votes index page
      *
-     * @return void
+     * @return Response|null
      */
-    public function index()
+    public function index($fundingCycleId = null)
     {
-        // Get current cycle and applications
+        // Get specified cycle, or the only current cycle, or prompt user to select a cycle
         /**
          * @var FundingCyclesTable $fundingCyclesTable
          * @var FundingCycle|null $cycle
@@ -42,7 +42,22 @@ class VotesController extends AppController
          * @var User|null $user
          */
         $fundingCyclesTable = $this->fetchTable('FundingCycles');
-        $cycle = $fundingCyclesTable->find('currentVoting')->first();
+        $cyclesCurrentlyVoting = $fundingCyclesTable->find('currentVoting');
+        $this->set(compact('cyclesCurrentlyVoting'));
+        if ($fundingCycleId) {
+            try {
+                $cycle = $fundingCyclesTable->get($fundingCycleId);
+            } catch (\Cake\Datasource\Exception\RecordNotFoundException $e) {
+                $this->Flash->error("Sorry, we couldn't find funding cycle #$fundingCycleId.");
+                return $this->redirect(['action' => 'index']);
+            }
+        } elseif ($cyclesCurrentlyVoting->count() > 1) {
+            $this->set('title', 'Select funding cycle');
+            return $this->render('chooseCycle');
+        } else {
+            $cycle = $cyclesCurrentlyVoting->first();
+        }
+
         $applications = $cycle
             ? $this->fetchTable('Applications')
                 ->find('forVoting', ['funding_cycle_id' => $cycle->id])
@@ -79,6 +94,8 @@ class VotesController extends AppController
         $this->set([
             'isVerified' => $user->is_verified,
         ]);
+
+        return null;
     }
 
     /**

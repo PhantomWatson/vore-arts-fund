@@ -48,6 +48,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
     // Votes
     $builder->connect('/submit', 'Votes::submit');
     $builder->connect('/vote', 'Votes::index');
+    $builder->connect('/vote/:id', 'Votes::index')
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);
 
     // Users
     $builder->connect('/forgot-password', 'Users::forgotPassword');
