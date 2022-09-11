@@ -82,63 +82,6 @@ class VotesController extends AppController
     }
 
     /**
-     * @return \Cake\Http\Response|null
-     */
-    public function submit(): ?Response
-    {
-        $this->set([
-            'applications' => $this->fetchTable('Applications')
-                ->find()
-                ->where(['status_id' => 5])
-                ->all()
-                ->toArray(),
-            'title' => 'Vote',
-        ]);
-
-        $now = date('Y-m-d H:i:s');
-        $fundingCycle = $this->fetchTable('FundingCycles')
-            ->find()
-            ->where([
-                'FundingCycles.application_begin <=' => $now,
-                'FundingCycles.application_end >=' => $now,
-            ])
-            ->select(['FundingCycles.id'])
-            ->first();
-
-        if (!$this->request->is('post')) {
-            return null;
-        }
-
-        $data = $this->request->getData();
-        $keys = array_keys($data);
-
-        $success = false;
-        $votesTable = $this->fetchTable('Votes');
-        foreach ($keys as $key) {
-            /** @var \App\Model\Entity\Vote $voteEntry */
-            $voteEntry = $votesTable->newEmptyEntity();
-            $user = $this->request->getAttribute('identity');
-            $voteEntry->user_id = $user ? $user->id : null;
-            $voteEntry->application_id = $key;
-            $voteEntry->funding_cycle_id = $fundingCycle->id;
-            $voteEntry->weight = 1;
-            if (!$votesTable->save($voteEntry)) {
-                break;
-            }
-            $success = true;
-        }
-        if ($success) {
-            $this->Flash->success(__('Your votes have successfully been submitted.'));
-
-            return $this->redirect('/');
-        }
-
-        $this->Flash->error(__('Your votes could not be submitted.'));
-
-        return $this->redirect(['action' => 'index']);
-    }
-
-    /**
      * Return the names of the JS and CSS files that need to be loaded
      *
      * @return array[]
