@@ -68,11 +68,15 @@ $bundlePathBase = \Cake\Core\Configure::read('debug')
             <?= $this->Html->linkFromPath('verify your phone number', 'Users::verify') ?>.
         </p>
     <?php endif; ?>
+
+    <script>
+        window.fundingCycleId = <?= json_encode($cycle->id) ?>;
+    </script>
 <?php endif; ?>
 
 <?php if ($canVote): ?>
-    <?php $this->Html->script("/viewerjs/viewer.min.js", ['block' => 'script']); ?>
-    <?php $this->Html->css("/viewerjs/viewer.min.css", ['block' => true]); ?>
+    <?php $this->Html->script('/viewerjs/viewer.min.js', ['block' => 'script']); ?>
+    <?php $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]); ?>
     <div id="root"></div>
     <?php foreach ($toLoad['js'] as $file): ?>
         <?= $this->Html->script("/vote-app/dist/$file") ?>

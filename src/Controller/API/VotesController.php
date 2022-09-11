@@ -64,6 +64,14 @@ class VotesController extends ApiController
         if (!($data['applications'] ?? false)) {
             throw new BadRequestException('No votes were submitted in your request.');
         }
+        if (!isset($data['fundingCycleId'])) {
+            throw new BadRequestException('Funding cycle ID was missing from data.');
+        }
+        /** @var FundingCyclesTable $fundingCyclesTable */
+        $fundingCyclesTable = $this->fetchTable('FundingCycles');
+        if (!$fundingCyclesTable->exists(['id' => $data['fundingCycleId']])) {
+            throw new BadRequestException("Funding cycle #{$data['fundingCycleId']} was not found.");
+        }
 
         if ($this->testingMode) {
             $userId = 1;
@@ -79,10 +87,8 @@ class VotesController extends ApiController
             }
         }
 
-        /** @var FundingCyclesTable $fundingCyclesTable */
-        $fundingCyclesTable = $this->fetchTable('FundingCycles');
         /** @var FundingCycle $fundingCycle */
-        $fundingCycle = $fundingCyclesTable->find('currentVoting')->first();
+        $fundingCycleId = $data['fundingCycleId'];
         $applicationCount = count($data['applications']);
         $applicationsTable = $this->fetchTable('Applications');
         foreach ($data['applications'] as $i => $application) {
@@ -90,14 +96,14 @@ class VotesController extends ApiController
             $vote = $this->Votes->newEmptyEntity();
             $vote->user_id = $userId;
             $vote->application_id = $application['id'];
-            $vote->funding_cycle_id = $fundingCycle->id;
+            $vote->funding_cycle_id = $fundingCycleId;
             $rank = $i + 1;
             $vote->weight = Vote::calculateWeight($rank, $applicationCount);
 
             // Verify that application is a valid voting target
             $valid = $applicationsTable->exists([
                 'Applications.id' => $application['id'],
-                'Applications.funding_cycle_id' => $fundingCycle->id,
+                'Applications.funding_cycle_id' => $fundingCycleId,
                 'Applications.status_id' => Application::STATUS_ACCEPTED,
             ]);
             if (!$valid) {

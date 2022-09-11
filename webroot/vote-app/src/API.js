@@ -26,6 +26,7 @@ class API {
   }
 
   static async postVotes(data) {
+    data.fundingCycleId = window.fundingCycleId;
     const isDevMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
     const urlBase = isDevMode ? 'http://vore.test:9000' : '';
     const url = urlBase + '/api/votes';
