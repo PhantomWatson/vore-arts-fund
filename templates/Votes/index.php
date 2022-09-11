@@ -87,7 +87,7 @@ $bundlePathBase = \Cake\Core\Configure::read('debug')
 <?php endif; ?>
 
 <?php if ($showUpcoming): ?>
-    <p class="alert alert-info">
+    <p>
         <?php if ($nextCycle): ?>
             Voting for the <?= $nextCycle->name ?> applicants begins on
             <strong><?= $nextCycle->vote_begin->format('F j, Y') ?></strong>. See you then!
