@@ -17,6 +17,7 @@ const App = () => {
   const [approvedApplications, setApprovedApplications] = useState([]);
   const [sortedApplications, setSortedApplications] = useState([]);
   const [submitIsLoading, setSubmitIsLoading] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   const handleVote = (applicationId, vote) => {
     // Update the selected application's vote
@@ -30,6 +31,7 @@ const App = () => {
     if (!applicationIsFound) {
       console.log(`Application #${applicationId} not found`);
     }
+    setHasInteracted(true);
     setApplications(applications);
 
     // Update list of approved applications
@@ -116,10 +118,15 @@ const App = () => {
     }
   }, []);
 
-  // Don't warn about navigating away if voting has already taken place or if no votes can/will be submitted
+  /* Don't warn about navigating away if
+   * - voting has already taken place
+   * - no interaction has taken place
+   * - or if no votes can/will be submitted
+   */
   useBeforeunload((event) => {
     const warnIfNavigatingAway =
       (applications && applications.length > 0)
+      && hasInteracted
       && !(currentStep === 'submit')
       && !(allVotesAreCast && approvedApplications.length === 0);
     if (warnIfNavigatingAway) {
