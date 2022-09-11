@@ -79,9 +79,16 @@ const App = () => {
   const handlePostVotes = async (sortedApplications) => {
     let success = false;
     setSubmitIsLoading(true);
+
+    // Only submit application IDs
+    let applicationIds = [];
+    sortedApplications.forEach(application => {
+      applicationIds.push(application.id);
+    });
+
     try {
       success = await API.postVotes({
-        applications: sortedApplications
+        applications: applicationIds
       });
     } catch(error) {
       console.error('Error:', error);

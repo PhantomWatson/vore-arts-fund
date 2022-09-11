@@ -91,24 +91,24 @@ class VotesController extends ApiController
         $fundingCycleId = $data['fundingCycleId'];
         $applicationCount = count($data['applications']);
         $applicationsTable = $this->fetchTable('Applications');
-        foreach ($data['applications'] as $i => $application) {
+        foreach ($data['applications'] as $i => $applicationId) {
             /** @var \App\Model\Entity\Vote $vote */
             $vote = $this->Votes->newEmptyEntity();
             $vote->user_id = $userId;
-            $vote->application_id = $application['id'];
+            $vote->application_id = $applicationId;
             $vote->funding_cycle_id = $fundingCycleId;
             $rank = $i + 1;
             $vote->weight = Vote::calculateWeight($rank, $applicationCount);
 
             // Verify that application is a valid voting target
             $valid = $applicationsTable->exists([
-                'Applications.id' => $application['id'],
+                'Applications.id' => $applicationId,
                 'Applications.funding_cycle_id' => $fundingCycleId,
                 'Applications.status_id' => Application::STATUS_ACCEPTED,
             ]);
             if (!$valid) {
                 throw new BadRequestException(
-                    "Application #{$application['id']} either does not exist or cannot currently be voted on."
+                    "Application #{$applicationId} either does not exist or cannot currently be voted on."
                 );
             }
 
