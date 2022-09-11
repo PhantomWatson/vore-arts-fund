@@ -36,12 +36,12 @@ $title = $title ?? $this->fetch('title');
 <body>
     <?= $this->element('navbar') ?>
     <?= $this->Flash->render() ?>
-    <?= $this->title() ?>
-    <div class="container clearfix">
+    <main class="container clearfix">
+        <?= $this->title() ?>
         <?= $this->fetch('content') ?>
         <footer>
             <?= $this->fetch('footer') ?>
         </footer>
-    </div>
+    </main>
 </body>
 </html>
