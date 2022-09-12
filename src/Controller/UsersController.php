@@ -110,12 +110,10 @@ class UsersController extends AppController
                 if (Configure::read('enablePhoneVerification')) {
                     $this->sendVerificationText((string)$user->phone);
                     return $this->redirect(['action' => 'verify']);
-                } else {
-                    return $this->redirect(['controller' => 'pages', 'action' => 'home']);
                 }
-            } else {
-                $this->Flash->error('There was an error registering your account');
+                return $this->redirect(['controller' => 'pages', 'action' => 'home']);
             }
+            $this->Flash->error('There was an error registering your account');
         }
         $this->set([
             'title' => 'Register an Account',
@@ -156,14 +154,14 @@ class UsersController extends AppController
         $authToken = Configure::read('twilio_auth_token');
         $twilio = new Client($accountSid, $authToken);
         $serviceSid = Configure::read('twilio_service_sid');
-        $verification_check = $twilio
+        $verificationCheck = $twilio
             ->verify
             ->v2
             ->services($serviceSid)
             ->verificationChecks
             ->create($code, ['to' => '+1' . $phone]);
 
-        return $verification_check->status == 'approved';
+        return $verificationCheck->status == 'approved';
     }
 
     /**
