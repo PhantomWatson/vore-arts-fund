@@ -97,7 +97,7 @@ class UsersController extends AppController
         $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-            $data['phone'] = preg_replace('/[^0-9]/', '', $data['phone']);
+            $data['phone'] = User::cleanPhone($data['phone']);
 
             $user = $this->Users->patchEntity($user, $data);
             // admins should only be assignable from the database itself, new accounts always default to 0
@@ -134,7 +134,7 @@ class UsersController extends AppController
      */
     public function sendVerificationText(string $phone)
     {
-        $phone = preg_replace('/[^0-9]/', '', $phone);
+        $phone = User::cleanPhone($phone);
         $accountSid = Configure::read('twilio_account_sid');
         $authToken = Configure::read('twilio_auth_token');
         $twilio = new Client($accountSid, $authToken);
@@ -413,10 +413,13 @@ class UsersController extends AppController
     public function changeAccountInfo(): ?Response
     {
         $this->title('Update Account Info');
+        $user = $this->request->getAttribute('identity');
+
+        // The identity stored in $user isn't an entity and can't use used in the form
+        $this->set(['user' => $this->Users->get($user->id)]);
 
         if ($this->request->is('post')) {
-            $user = $this->request->getAttribute('identity');
-
+            // Update password
             $currentPassword = $this->request->getData('current_password');
             $passwordIsCorrect = (new DefaultPasswordHasher())->check($currentPassword, $user->password);
             if (!$passwordIsCorrect) {

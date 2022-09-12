@@ -75,4 +75,15 @@ class User extends Entity
 
         return $password;
     }
+
+    /**
+     * Strips out non-numeric strings from a phone number
+     *
+     * @param string $phone
+     * @return string
+     */
+    public static function cleanPhone(string $phone)
+    {
+        return preg_replace('/[^0-9]/', '', $phone);
+    }
 }
