@@ -1,9 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\User $user
  */
-$isAdmin = $user->is_admin;
 ?>
 
 <div class="users form">
