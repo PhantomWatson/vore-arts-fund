@@ -30,6 +30,70 @@ $this->Html->css('/filepond/filepond-plugin-image-preview.css', ['block' => true
     <?= $this->Form->create($application, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>
         <legend>
+            Rules
+        </legend>
+        To apply, you must assert that all of these are true.
+        <ul>
+            <li>
+                You
+                <ul>
+                    <li>
+                        I am a resident of Muncie, Indiana.
+                    </li>
+                    <li>
+                        I have never been disqualified from receiving the Vore Arts Fund (VAF) grants for violating its rules, nor am I
+                        representing an organization that has been thus disqualified.
+                    </li>
+                    <li>
+                        I have not contributed more than $5,000 to the VAF.
+                    </li>
+                    <li>
+                        I am not a manager (current director or officer) of the VAF nor a representative of any entity
+                        owned or controlled by a manager.
+                    </li>
+                    <li>
+                        I am not a close family member of a substantial contributor or manager of the VAF.
+                    </li>
+                    <li>
+                        I understand that if this loan is fully or partially forgiven, the forgiven portion must be
+                        reported to the IRS as taxable income.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Your project
+                <ul>
+                    <li>
+                        The project for which I am applying for funding ("this project") does not support nor oppose any
+                        political candidates.
+                    </li>
+                    <li>
+                        This project will result in the creation, presentation, performance, or teaching of visual art, music,
+                        or performing arts.
+                    </li>
+                    <li>
+                        This project is expected to generate enough money to fully repay the loan awarded to it within a year of
+                        receiving that funding.
+                    </li>
+                    <li>
+                        This project does not violate any laws, nor is it antagonistic toward any marginalized group of people.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                I agree to submit reports about the status of the project, at least annually and upon its completion.
+            </li>
+        </ul>
+        <div class="form-check required">
+            <input class="form-check-input" type="checkbox" value="" id="agree-checkbox" required="required">
+            <label class="form-check-label" for="agree-checkbox">
+                I agree
+            </label>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>
             Project
         </legend>
         <?= $this->Form->control('title', [
