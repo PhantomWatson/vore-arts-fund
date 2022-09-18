@@ -892,6 +892,13 @@ body {
 
 }
 
+.application-view {
+    .no-answer {
+        color: red;
+        font-weight: bold;
+    }
+}
+
 main {
     margin-top: 1em;
 }

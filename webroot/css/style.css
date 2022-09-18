@@ -11550,6 +11550,11 @@ body {
   font-weight: bold;
 }
 
+.application-view .no-answer {
+  color: red;
+  font-weight: bold;
+}
+
 main {
   margin-top: 1em;
 }

@@ -56,18 +56,21 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 </section>
 
 <?php foreach ($questions as $question): ?>
+    <?php
+        $answer = Hash::filter($application->answers, function ($answer) use ($question) {
+            return $answer->question_id == $question->id;
+        });
+    ?>
     <section class="application-view">
         <h3>
             <?= $question->question ?>
         </h3>
-        <p>
-            <?php
-                $answer = Hash::filter($application->answers, function ($answer) use ($question) {
-                    return $answer->question_id == $question->id;
-                });
-                $answer = current($answer);
-                echo $answer->answer;
-            ?>
+        <p class="<?= !$answer || !current($answer)->answer ? 'no-answer' : null ?>">
+            <?php if ($answer): ?>
+                <?= current($answer)->answer ?>
+            <?php else: ?>
+                No answer
+            <?php endif; ?>
         </p>
     </section>
 <?php endforeach; ?>
