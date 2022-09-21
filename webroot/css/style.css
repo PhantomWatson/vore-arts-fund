@@ -11429,7 +11429,7 @@ body {
 }
 
 #review-action-column > section {
-  margin-bottom: 2em;
+  margin-bottom: 2rem;
 }
 #review-action-column .form-group.textarea {
   margin-bottom: 0.5em;
@@ -11442,7 +11442,7 @@ body {
   background-color: #F7F7F2;
   border: 1px solid #ddd;
   border-radius: 1em;
-  margin-bottom: 1em;
+  margin-bottom: 2rem;
   padding: 1em;
 }
 #review-notes section p {
@@ -11552,6 +11552,10 @@ nav.navbar {
 #funding-cycle-selector {
   display: inline;
   width: inherit;
+}
+
+section.account {
+  margin-top: 2rem;
 }
 
 /*# sourceMappingURL=style.css.map */

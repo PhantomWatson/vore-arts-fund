@@ -1,6 +1,7 @@
 $brand-red: #D33C44;
 $link-light-blue: #1798A5;
 $link-hover-blue: #15848F;
+$section-spacer: 2rem;
 
 /* Bootstrap overrides */
 $primary: #184002;
@@ -668,7 +669,7 @@ form {
 
 #home {
     section {
-        margin: 2rem 0;
+        margin: $section-spacer 0;
     }
 }
 
@@ -750,7 +751,7 @@ body {
 
 #review-action-column {
     > section {
-        margin-bottom: 2em;
+        margin-bottom: $section-spacer;
     }
 
     .form-group.textarea {
@@ -765,7 +766,7 @@ body {
         background-color: $light;
         border: 1px solid #ddd;
         border-radius: 1em;
-        margin-bottom: 1em;
+        margin-bottom: $section-spacer;
         padding: 1em;
 
         p {
@@ -920,4 +921,8 @@ nav.navbar {
 
 #funding-cycle-selector {
     @include inline-select;
+}
+
+section.account {
+    margin-top: $section-spacer;
 }
