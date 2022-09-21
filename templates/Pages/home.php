@@ -27,40 +27,42 @@
         </div>
     </section>
 
-    <section>
-        <h1>
-            <?php if ($fundingCycle): ?>
-                <?= $fundingCycle->name ?> Funding Cycle
-            <?php else: ?>
-                Applications Not Currently Accepted
+    <section class="card">
+        <div class="card-body">
+            <h1>
+                <?php if ($fundingCycle): ?>
+                    <?= $fundingCycle->name ?> Funding Cycle
+                <?php else: ?>
+                    Applications Not Currently Accepted
+                <?php endif; ?>
+            </h1>
+
+            <?php if ($fundingCycleIsCurrent): ?>
+                <p>
+                    <?= $this->Html->link(
+                        'Apply for funding',
+                        [
+                            'controller' => 'Applications',
+                            'action' => 'apply',
+                        ],
+                        ['class' => 'btn btn-primary']
+                    ) ?>
+                </p>
             <?php endif; ?>
-        </h1>
 
-        <?php if ($fundingCycleIsCurrent): ?>
+            <?= $this->element('FundingCycles/info_table') ?>
+
             <p>
+                Visit the
                 <?= $this->Html->link(
-                    'Apply for funding',
+                    'Funding Cycles',
                     [
-                        'controller' => 'Applications',
-                        'action' => 'apply',
-                    ],
-                    ['class' => 'btn btn-primary']
+                        'controller' => 'FundingCycles',
+                        'action' => 'index',
+                    ]
                 ) ?>
+                page for more information about upcoming opportunities to apply for funding.
             </p>
-        <?php endif; ?>
-
-        <?= $this->element('FundingCycles/info_table') ?>
-
-        <p>
-            Visit the
-            <?= $this->Html->link(
-                'Funding Cycles',
-                [
-                    'controller' => 'FundingCycles',
-                    'action' => 'index',
-                ]
-            ) ?>
-            page for more information about upcoming opportunities to apply for funding.
-        </p>
+        </div>
     </section>
 </div>

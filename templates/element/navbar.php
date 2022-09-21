@@ -7,7 +7,7 @@
  * @var bool $isVerified
  */
 ?>
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #BA0C2F">
+<nav class="navbar navbar-expand-lg navbar-dark">
     <a class="navbar-brand" href="/">Vore Arts Fund</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

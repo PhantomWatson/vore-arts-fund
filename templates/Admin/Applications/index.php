@@ -10,7 +10,7 @@
     <p>
         <label for="funding-cycle-selector">
             Funding cycle:
-            <select id="funding-cycle-selector">
+            <select id="funding-cycle-selector" class="form-select">
                 <?php foreach ($fundingCycles as $fundingCycle): ?>
                     <option value="<?= $fundingCycle->id ?>" <?= $fundingCycleId == $fundingCycle->id ? 'selected' : null ?>>
                         #<?= $fundingCycle->id ?>: <?= $fundingCycle->name ?>

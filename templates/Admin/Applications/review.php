@@ -26,8 +26,8 @@
     <div class="col-md-6">
         <?= $this->element('../Applications/view') ?>
     </div>
-    <div class="col-md-6" id="review-action-column">
-        <section>
+    <div class="col-md-6 card" id="review-action-column">
+        <section class="card-body">
             <h3>
                 Status: <?= $application->status_name ?>
             </h3>
@@ -48,7 +48,7 @@
             <?php endif; ?>
         </section>
 
-        <section>
+        <section class="card-body">
             <h3>
                 Notes
             </h3>
