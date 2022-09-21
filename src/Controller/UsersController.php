@@ -385,22 +385,14 @@ class UsersController extends AppController
     /**
      * "My Account" page
      *
-     * @return null
+     * @return void
      */
     public function account()
     {
         /** @var User $user */
         $user = $this->Authentication->getIdentity()->getOriginalData();
-        $applications = TableRegistry::getTableLocator()
-             ->get('Applications')
-             ->find()
-             ->where(['user_id' => $user->id])
-             ->all()
-             ->toArray();
-        $title = 'Account';
-        $this->set(compact('user', 'applications', 'title'));
-
-        return null;
+        $this->set(compact('user'));
+        $this->title('Account');
     }
 
     /**
