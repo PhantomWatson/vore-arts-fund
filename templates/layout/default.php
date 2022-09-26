@@ -31,17 +31,18 @@ $title = $title ?? $this->fetch('title');
             integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
     </script>
     <script src="/js/bootstrap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 </head>
 <body>
     <?= $this->element('navbar') ?>
-    <?= $this->Flash->render() ?>
     <main class="container clearfix">
+        <?= $this->Flash->render() ?>
         <?= $this->title() ?>
         <?= $this->fetch('content') ?>
         <footer>
             <?= $this->fetch('footer') ?>
         </footer>
     </main>
+    <script src="/js/main.js"></script>
 </body>
 </html>

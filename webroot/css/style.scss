@@ -1,10 +1,7 @@
-$brand-red: #D33C44;
-$link-light-blue: #1798A5;
-$link-hover-blue: #15848F;
 $section-spacer: 2rem;
 
 /* Bootstrap overrides */
-$primary: #184002;
+$primary: #1A5B11;
 $secondary: #E4E6C3;
 $info: #00b0bd;
 $success: #09a600;
@@ -17,14 +14,16 @@ $body-color: $dark;
 $navbar-dark-color: $light;
 $navbar-dark-hover-color: #fff;
 $navbar-dark-active-color: #fff;
-$card-bg: #f0f1da;
+$card-bg: #fff;
 $card-border-radius: 0.5em;
 $card-spacer-x: 1em;
 $card-spacer-y: 1em;
-$btn-border-radius: 2px;
+$btn-border-radius: 5px;
 $input-btn-padding-y: .5rem;
 $input-btn-padding-x: 1.5rem;
 $border-radius: 0.2em;
+$font-family-sans-serif: "Open Sans", sans-serif;
+$headings-font-family: "Raleway", sans-serif;
 
 @import "../../vendor/twbs/bootstrap/scss/bootstrap.scss";
 
@@ -38,28 +37,8 @@ a.disabled {
     pointer-events: none;
 }
 
-a {
-    color: $link-light-blue;
-
-    &:hover {
-        color: $link-hover-blue;
-    }
-}
-
-.side-nav {
-    li {
-        a:not(.button) {
-            color: $link-hover-blue;
-
-            &:hover {
-                color: $link-hover-blue;
-            }
-        }
-    }
-}
-
 legend {
-    color: $link-hover-blue;
+    color: $link-hover-color;
 }
 
 .row {
@@ -67,12 +46,12 @@ legend {
 }
 
 .actions.columns {
-    border-left: 5px solid $link-hover-blue;
+    border-left: 5px solid $link-hover-color;
     margin-top: 1rem;
     padding: 32px 20px;
 
     h3 {
-        color: $link-hover-blue;
+        color: $link-hover-color;
     }
 }
 
@@ -414,7 +393,7 @@ pre {
 
 .side-nav {
     li.heading {
-        color: $link-light-blue;
+        color: $primary;
         font-size: 0.875rem;
         font-weight: bold;
         padding: 0.4375rem 0.875rem;
@@ -437,14 +416,14 @@ pre {
 
 fieldset {
     background-color: $card-bg;
-    border: 1px solid $dark;
+    border: 1px solid $primary;
     border-radius: 1rem;
     margin: 1.125rem 0;
     padding: 1.25rem;
 
     legend {
         color: $dark;
-        border-bottom: 2px solid $dark;
+        border-bottom: 2px solid $primary;
         line-height: 2rem;
         margin-bottom: 1rem;
         width: 100%;
@@ -527,7 +506,7 @@ div.message {
 
     th {
         border: none;
-        color: $link-light-blue;
+        color: $primary;
         font-size: 0.875rem;
         padding: 0.5625rem 0.625rem;
         text-align: left;
@@ -910,19 +889,272 @@ body {
 }
 
 main {
-    margin-top: 1em;
+    padding-top: 100px;
 }
 
-nav.navbar {
-    background-color: $primary;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
+$theme-link-color: #16507b;
+$theme-link-hover-color: #2487ce;
+$theme-mobile-nav-toggle: #124265;
+
+#header {
+    background: #fff;
+    border-bottom: 1px solid #e6f2fb;
+    padding: 15px 0;
+    transition: all 0.5s;
+    z-index: 997;
+
+    &.header-scrolled {
+        border-color: #fff;
+        box-shadow: 0 2px 15px rgba(18, 66, 101, 0.08);
+    }
+
+    .logo {
+        font-family: "Poppins", sans-serif;
+        font-size: 28px;
+        font-weight: 300;
+        letter-spacing: 0.5px;
+        line-height: 1;
+        margin: 0;
+        padding: 0;
+
+        a {
+            color: $theme-link-color;
+        }
+    }
+}
+
+.navbar {
+    padding: 0;
+
+    ul {
+        align-items: center;
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        position: relative;
+    }
+
+    a,
+    a:focus {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 1.25em;
+        transition: 0.3s;
+        white-space: nowrap;
+
+        i {
+            font-size: 12px;
+            line-height: 0;
+            margin-left: 5px;
+        }
+    }
+
+    a:hover,
+    .active,
+    .active:focus,
+    li:hover > a {
+        color: $theme-link-hover-color;
+    }
+
+    .dropdown {
+        ul {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 0 30px rgba(127, 137, 161, 0.25);
+            display: block;
+            left: 14px;
+            margin: 0;
+            opacity: 0;
+            padding: 10px 0;
+            position: absolute;
+            top: calc(100% + 30px);
+            transition: 0.3s;
+            visibility: hidden;
+            z-index: 99;
+
+            li {
+                min-width: 200px;
+            }
+
+            a {
+                padding: 10px 20px;
+                text-transform: none;
+
+                i {
+                    font-size: 12px;
+                }
+            }
+
+            a:hover,
+            .active:hover,
+            li:hover>a {
+                color: $theme-link-hover-color;
+            }
+        }
+
+        &:hover > ul {
+            opacity: 1;
+            top: 100%;
+            visibility: visible;
+        }
+
+        .dropdown ul {
+            top: 0;
+            left: calc(100% - 30px);
+            visibility: hidden;
+        }
+
+        .dropdown:hover > ul {
+            opacity: 1;
+            top: 0;
+            left: 100%;
+            visibility: visible;
+        }
+    }
+
+    .mobile-nav-toggle {
+        color: $body-color;
+        cursor: pointer;
+        display: none;
+        font-size: 28px;
+        line-height: 0;
+        transition: 0.5s;
+
+        &.bi-x {
+            color: #fff;
+        }
+    }
+
+    &:not(.navbar-mobile) {
+        #navbar-cta {
+            @extend .btn, .btn-primary;
+        }
+    }
+}
+
+@media (max-width: 1366px) {
+    .navbar .dropdown .dropdown ul {
+        left: -90%;
+    }
+
+    .navbar .dropdown .dropdown:hover>ul {
+        left: -100%;
+    }
+}
+
+@media (max-width: 991px) {
+    .mobile-nav-toggle {
+        display: block !important;
+    }
+
+    .navbar ul {
+        display: none;
+    }
+}
+
+.navbar-mobile {
+    background: rgba(0, 0, 0, 0.2);
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    position: fixed;
+    right: 0;
+    top: 0;
+    transition: 0.3s;
+    z-index: 999;
+
+    .mobile-nav-toggle {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    ul {
+        display: block;
+        position: absolute;
+        top: 55px;
+        right: 15px;
+        bottom: 15px;
+        left: 15px;
+        padding: 10px 0;
+        background-color: #fff;
+        overflow-y: auto;
+        transition: 0.3s;
+    }
+
+    a,
+    a:focus {
+        padding: 10px 20px;
+        font-size: 15px;
+        color: $theme-mobile-nav-toggle;
+    }
+
+    a:hover,
+    .active,
+    li:hover>a {
+        color: $theme-link-hover-color;
+    }
+
+    .dropdown {
+        ul {
+            position: static;
+            display: none;
+            margin: 10px 20px;
+            padding: 10px 0;
+            z-index: 99;
+            opacity: 1;
+            visibility: visible;
+            background: #fff;
+            box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+
+            li {
+                min-width: 200px;
+            }
+
+            a {
+                padding: 10px 20px;
+
+                i {
+                    font-size: 12px;
+                }
+            }
+
+            a:hover,
+            .active:hover,
+            li:hover>a {
+                color: $theme-link-hover-color;
+            }
+        }
+
+        > .dropdown-active {
+            display: block;
+        }
+    }
 }
 
 #funding-cycle-selector {
     @include inline-select;
 }
 
-section.account {
-    margin-top: $section-spacer;
+section {
+    &.account,
+    &.funding-cycles {
+        margin-top: $section-spacer;
+    }
+}
+
+section.funding-cycles {
+    th {
+        white-space: nowrap;
+        width: 1%;
+    }
+}
+
+.btn-primary {
+    color: #fff !important;
 }
