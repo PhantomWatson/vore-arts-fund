@@ -50,7 +50,16 @@ $withdrawWhen = [
             <?php foreach ($applications as $application): ?>
                 <tr>
                     <td>
-                        <?= $application->title ?>
+                        <?= $this->Html->link(
+                            $application->title,
+                            [
+                                'controller' => 'Applications',
+                                'action' => 'viewMy',
+                                'id' => $application->id,
+                                '?' => ['back' => Router::url()],
+                            ],
+                            ['title' => 'View application']
+                        ) ?>
                     </td>
                     <td>
                         <?= $application->status_name ?>
@@ -81,18 +90,6 @@ $withdrawWhen = [
                                 ['class' => 'btn btn-secondary']
                             ) ?>
                         <?php endif; ?>
-                        <?= $this->Html->link(
-                            'View',
-                            [
-                                'controller' => 'Applications',
-                                'action' => 'viewMy',
-                                'id' => $application->id,
-                                '?' => [
-                                    'back' => Router::url()
-                                ]
-                            ],
-                            ['class' => 'btn btn-secondary']
-                        ) ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
