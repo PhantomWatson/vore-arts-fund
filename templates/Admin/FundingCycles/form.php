@@ -16,23 +16,24 @@
  */
 ?>
 
-<div class="alert alert-info">
-    <p>
-        Funding cycles should begin on midnight of their first day and end on 11:59pm of their last day. If resubmitting
-        a rejected application is allowed, the resubmit deadline should be set to sometime between the application
-        deadline and the beginning of voting.
-    </p>
+<div class="card">
+    <div class="card-body">
+        <p>
+            Funding cycles should begin on midnight of their first day and end on 11:59pm of their last day. If resubmitting
+            a rejected application is allowed, the resubmit deadline should be set to sometime between the application
+            deadline and the beginning of voting.
+        </p>
 
-    <table class="table table-bordered" id="cycles-chart">
-        <thead>
+        <table class="table table-bordered" id="cycles-chart">
+            <thead>
             <tr>
                 <th>Cycle</th>
                 <?php foreach (explode(' ', 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec') as $month): ?>
                     <th><?= $month ?></th>
                 <?php endforeach; ?>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr class="spring">
                 <th>Spring</th>
                 <td>App</td>
@@ -68,52 +69,53 @@
                 <td>Rev</td>
                 <td>Vote</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <p>
-        <label for="wizard-checkbox">
-            <input type="checkbox" id="wizard-checkbox" /> Use wizard
-        </label>
-    </p>
+        <p>
+            <label for="wizard-checkbox">
+                <input type="checkbox" id="wizard-checkbox" /> Use wizard
+            </label>
+        </p>
 
-    <div id="wizard-container" style="display: none;">
-        <form id="wizard-form" class="row row-cols-lg-auto align-items-center">
-            <div class="col-12">
-                <select id="wizard-year" class="form-control">
-                    <option value="">
-                        Year
-                    </option>
-                    <?php for ($year = date('Y'); $year <= date('Y') + 2; $year++): ?>
-                        <option value="<?= $year ?>">
-                            <?= $year ?>
+        <div id="wizard-container" style="display: none;">
+            <form id="wizard-form" class="row row-cols-lg-auto align-items-center">
+                <div class="col-12">
+                    <select id="wizard-year" class="form-control">
+                        <option value="">
+                            Year
                         </option>
-                    <?php endfor; ?>
-                </select>
-            </div>
-            <div class="col-12">
-                <select id="wizard-quarter" class="form-control">
-                    <option value="">
-                        Quarter
-                    </option>
-                    <option value="1">
-                        Spring
-                    </option>
-                    <option value="2">
-                        Summer
-                    </option>
-                    <option value="3">
-                        Fall
-                    </option>
-                    <option value="4">
-                        Winter
-                    </option>
-                </select>
-            </div>
-            <div class="col-12">
-                <input type="submit" class="btn btn-primary" />
-            </div>
-        </form>
+                        <?php for ($year = date('Y'); $year <= date('Y') + 2; $year++): ?>
+                            <option value="<?= $year ?>">
+                                <?= $year ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <select id="wizard-quarter" class="form-control">
+                        <option value="">
+                            Quarter
+                        </option>
+                        <option value="1">
+                            Spring
+                        </option>
+                        <option value="2">
+                            Summer
+                        </option>
+                        <option value="3">
+                            Fall
+                        </option>
+                        <option value="4">
+                            Winter
+                        </option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <input type="submit" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
