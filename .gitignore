@@ -54,3 +54,6 @@ bin/cake
 
 # Application directories
 /webroot/img/applications
+
+# Other
+/webroot/sample
