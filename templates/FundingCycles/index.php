@@ -10,7 +10,7 @@
         Recipients are decided and funding is disbursed shortly after each funding cycle's voting deadline.
     </p>
     <?php foreach ($fundingCycles as $fundingCycle): ?>
-        <section>
+        <section class="funding-cycles">
             <h2>
                 <?= $fundingCycle->name ?>
             </h2>
