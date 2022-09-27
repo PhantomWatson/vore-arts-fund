@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Event\MailListener;
 use App\Model\Entity\Application;
 use App\Model\Entity\User;
+use Cake\Event\Event;
 use Cake\Http\Response;
 
 /**
@@ -56,6 +58,10 @@ class ApplicationsController extends AdminController
      */
     public function review()
     {
+        // Activate event listener
+        $mailListener = new MailListener();
+        $this->getEventManager()->on($mailListener);
+
         $applicationId = $this->request->getParam('id');
         $application = $this->Applications->getForViewing($applicationId);
         if (!$application) {
@@ -72,6 +78,7 @@ class ApplicationsController extends AdminController
                 $application->status_id = (int)$data['status_id'];
                 if ($this->Applications->save($application)) {
                     $this->Flash->success('Status updated');
+                    $this->dispatchStatusChangeEvent($application);
                 } else {
                     $this->Flash->error('Error updating status');
                 }
@@ -119,5 +126,27 @@ class ApplicationsController extends AdminController
         $this->title('Application: ' . $application->title);
 
         return null;
+    }
+
+    /**
+     * @param Application $application
+     * @return void
+     */
+    private function dispatchStatusChangeEvent(Application $application)
+    {
+        switch ($application->status_id) {
+            case Application::STATUS_ACCEPTED:
+                $event = new Event('Application.accepted', $application);
+                break;
+            case Application::STATUS_REVISION_REQUESTED:
+                $event = new Event('Application.revisionRequested', $application);
+                break;
+            case Application::STATUS_REJECTED:
+                $event = new Event('Application.rejected', $application);
+                break;
+            default;
+                return;
+        }
+        $this->getEventManager()->dispatch($event);
     }
 }
