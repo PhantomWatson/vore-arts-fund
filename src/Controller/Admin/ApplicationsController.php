@@ -120,24 +120,4 @@ class ApplicationsController extends AdminController
 
         return null;
     }
-
-    /**
-     * Page for changing the status of an application
-     *
-     * @return void
-     */
-    public function setStatus()
-    {
-        $id = $this->request->getParam('id');
-
-        if ($this->request->is('post')) {
-            $application = $this->Applications->get($id);
-            $application = $this->Applications->patchEntity($application, $this->request->getData());
-            if ($this->Applications->save($application)) {
-                $this->Flash->success(__('Successfully updated application status'));
-            } else {
-                $this->Flash->error(__('Error updating application status'));
-            }
-        }
-    }
 }
