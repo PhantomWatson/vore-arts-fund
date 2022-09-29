@@ -4,6 +4,8 @@ namespace App\Event;
 
 use App\Model\Entity\Application;
 use App\Model\Entity\User;
+use App\Model\Table\FundingCyclesTable;
+use App\Model\Table\UsersTable;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
@@ -16,11 +18,17 @@ class MailListener implements EventListenerInterface
     /** @var Mailer */
     private Mailer $mailer;
     public static string $subjectPrefix = 'Vore Arts Fund - ';
+    private UsersTable $usersTable;
+    private FundingCyclesTable $fundingCyclesTable;
 
     public function __construct()
     {
         $this->mailer = new Mailer('default');
-        $this->mailer->setFrom(Configure::read('noReplyEmail'), 'Vore Arts Fund');
+        $this->mailer
+            ->setFrom(Configure::read('noReplyEmail'), 'Vore Arts Fund')
+            ->setEmailFormat('both');
+        $this->usersTable = TableRegistry::getTableLocator()->get('Users');
+        $this->fundingCyclesTable = TableRegistry::getTableLocator()->get('FundingCycles');
     }
 
     /**
@@ -45,7 +53,7 @@ class MailListener implements EventListenerInterface
      * @param Application $application
      * @return bool
      */
-    private function setApplicantRecipient(Application $application)
+    private function setApplicantRecipient(Application $application): bool
     {
         $recipient = $this->getRecipientFromApplication($application);
         if (!$recipient) {
@@ -70,10 +78,17 @@ class MailListener implements EventListenerInterface
 
     public function mailApplicationAccepted(Event $event, Application $application)
     {
-        $this->mailer->setSubject(self::$subjectPrefix . 'Application Accepted');
         if (!$this->setApplicantRecipient($application)) {
             return;
         }
+        $user = $this->usersTable->get($application->user_id);
+        $fundingCycle = $this->fundingCyclesTable->get($application->funding_cycle_id);
+        $this->mailer
+            ->setSubject(self::$subjectPrefix . 'Application Accepted')
+            ->setViewVars(compact('application', 'fundingCycle', 'user'));
+        $this->mailer->viewBuilder()
+            ->setTemplate('application_accepted');
+        $this->mailer->deliver();
     }
 
     public function mailApplicationRevisionRequested(Event $event, Application $application)
