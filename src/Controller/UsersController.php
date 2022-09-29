@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Event\MailListener;
 use App\Model\Entity\User;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\Core\Configure;
@@ -10,7 +11,7 @@ use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
 use Cake\Mailer\Mailer;
-use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 use Twilio\Rest\Client;
 
 /**
@@ -297,14 +298,18 @@ class UsersController extends AppController
     {
         if (!empty($user)) {
             $email = new Mailer();
-            $subject = 'Password Reset Request - DO NOT REPLY';
+            $url = Router::url([
+                'controller' => 'Users',
+                'action' => 'resetPasswordToken',
+                $user->reset_password_token,
+            ], true);
             $email
                 ->setTo($user->email)
-                ->setSubject($subject)
-                ->setReplyTo('noreply@voreartsfund.org')
-                ->setFrom('noreply@voreartsfund.org')
-                ->setEmailFormat('html')
-                ->setViewVars(['User' => $user, 'subject' => $subject])
+                ->setSubject(MailListener::$subjectPrefix . 'Password Reset Request')
+                ->setReplyTo(Configure::read('noReplyEmail'))
+                ->setFrom(Configure::read('noReplyEmail'), 'Vore Arts Fund')
+                ->setEmailFormat('both')
+                ->setViewVars(compact('user', 'url'))
                 ->viewBuilder()
                 ->setTemplate('reset_password_request');
             $email->send();
@@ -324,16 +329,16 @@ class UsersController extends AppController
     private function __sendPasswordChangedEmail($id = null): bool
     {
         if (!empty($id)) {
-            $User = $this->Users->get($id);
+            $user = $this->Users->get($id);
             $email = new Mailer();
-            $subject = 'Password Changed - DO NOT REPLY';
+            $supportEmail = Configure::read('supportEmail');
             $email
-                ->setTo($User->email)
-                ->setSubject($subject)
-                ->setReplyTo('noreply@voreartsfund.org')
-                ->setFrom('noreply@voreartsfund.org', 'Do Not Reply')
+                ->setTo($user->email)
+                ->setSubject(MailListener::$subjectPrefix . 'Password Changed')
+                ->setReplyTo(Configure::read('noReplyEmail'))
+                ->setFrom(Configure::read('noReplyEmail'), 'Vore Arts Fund')
                 ->setEmailFormat('both')
-                ->setViewVars(['User' => $User, 'subject' => $subject])
+                ->setViewVars(compact('user', 'supportEmail'))
                 ->viewBuilder()
                 ->setTemplate('password_reset_success');
             $email->send();

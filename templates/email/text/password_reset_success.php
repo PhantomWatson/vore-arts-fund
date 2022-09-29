@@ -1,13 +1,12 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\User $User
+ * @var \App\Model\Entity\User $user
+ * @var string $supportEmail
  */
 ?>
-Dear <?= $User->name ?>,
+<?= $user->name ?>,
 
-Your password has been changed successfully.
+Your Vore Arts Fund password has been successfully changed.
 
-If you did not change your password, please contact us immediately.
-
-Thanks and have a nice day!
+If you did not ask for your password to be changed, please contact us immediately at <?= $supportEmail ?>.
