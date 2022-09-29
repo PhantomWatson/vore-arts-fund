@@ -10,12 +10,13 @@ use Cake\ORM\Entity;
  * User Entity
  *
  * @property int $id
- * @property string $name
- * @property string $email
- * @property string $password
- * @property int $phone
  * @property bool $is_admin
  * @property bool $is_verified
+ * @property int $phone
+ * @property string $email
+ * @property string $name
+ * @property string $password
+ * @property string|null $reset_password_token
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
