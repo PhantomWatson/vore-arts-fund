@@ -12,6 +12,7 @@ use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 
 class MailListener implements EventListenerInterface
 {
@@ -91,12 +92,24 @@ class MailListener implements EventListenerInterface
         $this->mailer->deliver();
     }
 
-    public function mailApplicationRevisionRequested(Event $event, Application $application)
+    public function mailApplicationRevisionRequested(Event $event, Application $application, string $note)
     {
-        $this->mailer->setSubject(self::$subjectPrefix . 'Revision Requested');
         if (!$this->setApplicantRecipient($application)) {
             return;
         }
+        $user = $this->usersTable->get($application->user_id);
+        $fundingCycle = $this->fundingCyclesTable->get($application->funding_cycle_id);
+        $url = Router::url([
+            'controller' => 'Applications',
+            'action' => 'edit',
+            'id' => $application->id,
+        ], true);
+        $this->mailer
+            ->setSubject(self::$subjectPrefix . 'Revision Requested')
+            ->setViewVars(compact('application', 'fundingCycle', 'user', 'note', 'url'));
+        $this->mailer->viewBuilder()
+            ->setTemplate('application_revision_requested');
+        $this->mailer->deliver();
     }
 
     public function mailApplicationRejected(Event $event, Application $application)
