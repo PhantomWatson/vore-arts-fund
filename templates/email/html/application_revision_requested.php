@@ -2,14 +2,14 @@
 /**
  * @var \App\Model\Entity\Application $application
  * @var \App\Model\Entity\FundingCycle $fundingCycle
- * @var \App\Model\Entity\User $user
  * @var \App\View\AppView $this
  * @var string $note
  * @var string $url
+ * @var string $userName
  */
 ?>
 <p>
-    <?= $user->name ?>,
+    <?= $userName ?>,
 </p>
 
 <p>

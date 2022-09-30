@@ -1,13 +1,13 @@
 <?php
 /**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\User $user
  * @var \App\Model\Entity\Application $application
  * @var \App\Model\Entity\FundingCycle $fundingCycle
+ * @var \App\View\AppView $this
+ * @var string $userName
  */
 ?>
 <p>
-    Congratulations, <?= $user->name ?>! Your application for funding for <strong><?= $application->title ?></strong>
+    Congratulations, <?= $userName ?>! Your application for funding for <strong><?= $application->title ?></strong>
     was accepted. However, your application needs to be voted on by the public before we can award funding.
 </p>
 

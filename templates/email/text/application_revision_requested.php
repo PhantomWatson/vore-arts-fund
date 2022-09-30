@@ -2,13 +2,13 @@
 /**
  * @var \App\Model\Entity\Application $application
  * @var \App\Model\Entity\FundingCycle $fundingCycle
- * @var \App\Model\Entity\User $user
  * @var \App\View\AppView $this
  * @var string $note
  * @var string $url
+ * @var string $userName
  */
 ?>
-<?= $user->name ?>,
+<?= $userName ?>,
 
 Before we can accept your application for funding for <?= $application->title ?>, we need it to be revised. Here are the details:
 

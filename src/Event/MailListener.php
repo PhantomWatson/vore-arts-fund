@@ -38,11 +38,9 @@ class MailListener implements EventListenerInterface
      */
     private function getRecipientFromApplication(Application $application)
     {
-        $usersTable = TableRegistry::getTableLocator()->get('Users');
-
         try {
             /** @var User $user */
-            $user = $usersTable->get($application->user_id ?? false);
+            $user = $this->usersTable->get($application->user_id ?? false);
             return [$user->email, $user->name];
         } catch (\Cake\Datasource\Exception\RecordNotFoundException $e) {
             Log::error("Application #{$application->id} does not have a valid user ID (#$application->user_id)");
@@ -61,7 +59,10 @@ class MailListener implements EventListenerInterface
             return false;
         }
         list($email, $name) = $recipient;
-        $this->mailer->setTo($email, $name);
+        $this->mailer
+            ->setTo($email, $name)
+            ->setViewVars(['userName' => $name]);
+
 
         return true;
     }
@@ -82,11 +83,10 @@ class MailListener implements EventListenerInterface
         if (!$this->setApplicantRecipient($application)) {
             return;
         }
-        $user = $this->usersTable->get($application->user_id);
         $fundingCycle = $this->fundingCyclesTable->get($application->funding_cycle_id);
         $this->mailer
             ->setSubject(self::$subjectPrefix . 'Application Accepted')
-            ->setViewVars(compact('application', 'fundingCycle', 'user'));
+            ->setViewVars(compact('application', 'fundingCycle'));
         $this->mailer->viewBuilder()
             ->setTemplate('application_accepted');
         $this->mailer->deliver();
@@ -97,7 +97,6 @@ class MailListener implements EventListenerInterface
         if (!$this->setApplicantRecipient($application)) {
             return;
         }
-        $user = $this->usersTable->get($application->user_id);
         $fundingCycle = $this->fundingCyclesTable->get($application->funding_cycle_id);
         $url = Router::url([
             'controller' => 'Applications',
@@ -106,13 +105,13 @@ class MailListener implements EventListenerInterface
         ], true);
         $this->mailer
             ->setSubject(self::$subjectPrefix . 'Revision Requested')
-            ->setViewVars(compact('application', 'fundingCycle', 'user', 'note', 'url'));
+            ->setViewVars(compact('application', 'fundingCycle', 'note', 'url'));
         $this->mailer->viewBuilder()
             ->setTemplate('application_revision_requested');
         $this->mailer->deliver();
     }
 
-    public function mailApplicationRejected(Event $event, Application $application)
+    public function mailApplicationRejected(Event $event, Application $application, string $note)
     {
         $this->mailer->setSubject(self::$subjectPrefix . 'Application Rejected');
         if (!$this->setApplicantRecipient($application)) {
