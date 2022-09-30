@@ -7,8 +7,8 @@
  */
 ?>
 <p>
-    Congratulations, <?= $user->name ?>! Your application for funding for <?= $application->title ?> was accepted. However,
-    your application needs to be voted on by the public before we can award funding.
+    Congratulations, <?= $user->name ?>! Your application for funding for <strong><?= $application->title ?></strong>
+    was accepted. However, your application needs to be voted on by the public before we can award funding.
 </p>
 
 <p>
