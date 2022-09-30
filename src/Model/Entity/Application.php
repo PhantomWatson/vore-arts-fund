@@ -84,7 +84,7 @@ class Application extends Entity
             self::STATUS_DRAFT              => 'Draft',
             self::STATUS_UNDER_REVIEW       => 'Under Review',
             self::STATUS_ACCEPTED           => 'Accepted',
-            self::STATUS_REJECTED           => 'Rejected',
+            self::STATUS_REJECTED           => 'Not Accepted',
             self::STATUS_REVISION_REQUESTED => 'Revision Requested',
             self::STATUS_AWARDED            => 'Awarded',
             self::STATUS_NOT_AWARDED        => 'Not Awarded',
