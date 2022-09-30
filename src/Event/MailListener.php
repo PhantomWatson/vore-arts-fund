@@ -125,12 +125,30 @@ class MailListener implements EventListenerInterface
         $this->mailer->deliver();
     }
 
-    public function mailApplicationFunded(Event $event, Application $application)
+    public function mailApplicationFunded(Event $event, Application $application, int $amount)
     {
-        $this->mailer->setSubject(self::$subjectPrefix . 'Application Funded');
         if (!$this->setApplicantRecipient($application)) {
             return;
         }
+        $fundingCycle = $this->fundingCyclesTable->get($application->funding_cycle_id);
+        $supportEmail = Configure::read('supportEmail');
+        $myApplicationsUrl = Router::url([
+            'prefix' => false,
+            'controller' => 'Applications',
+            'action' => 'index'
+        ], true);
+        $this->mailer
+            ->setSubject(self::$subjectPrefix . 'Application Funded')
+            ->setViewVars(compact(
+                'amount',
+                'application',
+                'fundingCycle',
+                'myApplicationsUrl',
+                'supportEmail',
+            ));
+        $this->mailer->viewBuilder()
+            ->setTemplate('application_funded');
+        $this->mailer->deliver();
     }
 
     public function mailApplicationNotFunded(Event $event, Application $application)
