@@ -180,4 +180,19 @@ class FundingCyclesTable extends Table
             ->where(['FundingCycles.vote_begin >' => $now])
             ->orderAsc('FundingCycles.vote_begin');
     }
+
+    /**
+     * Modifies a query to return the funding cycle with the soonest future application deadline
+     *
+     * @param \Cake\ORM\Query $query
+     * @return \Cake\ORM\Query
+     */
+    public function findNextApplication(Query $query)
+    {
+        $now = date('Y-m-d H:i:s');
+
+        return $query
+            ->where(['FundingCycles.application_end >' => $now])
+            ->orderAsc('FundingCycles.application_end');
+    }
 }

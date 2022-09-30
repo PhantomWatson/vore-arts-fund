@@ -113,10 +113,16 @@ class MailListener implements EventListenerInterface
 
     public function mailApplicationRejected(Event $event, Application $application, string $note)
     {
-        $this->mailer->setSubject(self::$subjectPrefix . 'Application Rejected');
         if (!$this->setApplicantRecipient($application)) {
             return;
         }
+        $fundingCycle = $this->fundingCyclesTable->find('nextApplication')->first();
+        $this->mailer
+            ->setSubject(self::$subjectPrefix . 'Application Not Accepted')
+            ->setViewVars(compact('application', 'note', 'fundingCycle'));
+        $this->mailer->viewBuilder()
+            ->setTemplate('application_rejected');
+        $this->mailer->deliver();
     }
 
     public function mailApplicationFunded(Event $event, Application $application)
