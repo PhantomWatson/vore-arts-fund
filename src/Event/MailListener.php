@@ -183,11 +183,12 @@ class MailListener implements EventListenerInterface
             $email,
             [
                 'application' => $application,
+                'fundingCycle' => $this->fundingCyclesTable->find('nextApplication')->first(),
                 'userName' => $name,
             ],
             [
                 'subject' => self::$subjectPrefix . 'Application Not Funded',
-                //'template' => 'application_not_funded',
+                'template' => 'application_not_funded',
             ],
         );
     }
