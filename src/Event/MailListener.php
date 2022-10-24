@@ -9,10 +9,12 @@ use App\Model\Table\UsersTable;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
+use Cake\Http\Exception\InternalErrorException;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
+use EmailQueue\EmailQueue;
 
 class MailListener implements EventListenerInterface
 {
@@ -48,25 +50,6 @@ class MailListener implements EventListenerInterface
         }
     }
 
-    /**
-     * @param Application $application
-     * @return bool
-     */
-    private function setApplicantRecipient(Application $application): bool
-    {
-        $recipient = $this->getRecipientFromApplication($application);
-        if (!$recipient) {
-            return false;
-        }
-        list($email, $name) = $recipient;
-        $this->mailer
-            ->setTo($email, $name)
-            ->setViewVars(['userName' => $name]);
-
-
-        return true;
-    }
-
     public function implementedEvents(): array
     {
         return [
@@ -78,84 +61,134 @@ class MailListener implements EventListenerInterface
         ];
     }
 
+    /**
+     * @param Event $event
+     * @param Application $application
+     * @return void
+     * @throws InternalErrorException
+     */
     public function mailApplicationAccepted(Event $event, Application $application)
     {
-        if (!$this->setApplicantRecipient($application)) {
-            return;
-        }
-        $fundingCycle = $this->fundingCyclesTable->get($application->funding_cycle_id);
-        $this->mailer
-            ->setSubject(self::$subjectPrefix . 'Application Accepted')
-            ->setViewVars(compact('application', 'fundingCycle'));
-        $this->mailer->viewBuilder()
-            ->setTemplate('application_accepted');
-        $this->mailer->deliver();
+        list($email, $name) = $this->getRecipientFromApplication($application);
+        EmailQueue::enqueue(
+            $email,
+            [
+                'application' => $application,
+                'fundingCycle' => $this->fundingCyclesTable->get($application->funding_cycle_id),
+                'userName' => $name,
+            ],
+            [
+                'subject' => self::$subjectPrefix . 'Application Accepted',
+                'template' => 'application_accepted',
+            ]
+        );
     }
 
+    /**
+     * @param Event $event
+     * @param Application $application
+     * @param string $note
+     * @return void
+     * @throws InternalErrorException
+     */
     public function mailApplicationRevisionRequested(Event $event, Application $application, string $note)
     {
-        if (!$this->setApplicantRecipient($application)) {
-            return;
-        }
-        $fundingCycle = $this->fundingCyclesTable->get($application->funding_cycle_id);
-        $url = Router::url([
-            'controller' => 'Applications',
-            'action' => 'edit',
-            'id' => $application->id,
-        ], true);
-        $this->mailer
-            ->setSubject(self::$subjectPrefix . 'Revision Requested')
-            ->setViewVars(compact('application', 'fundingCycle', 'note', 'url'));
-        $this->mailer->viewBuilder()
-            ->setTemplate('application_revision_requested');
-        $this->mailer->deliver();
+        list($email, $name) = $this->getRecipientFromApplication($application);
+        EmailQueue::enqueue(
+            $email,
+            [
+                'application' => $application,
+                'fundingCycle' => $this->fundingCyclesTable->get($application->funding_cycle_id),
+                'note' => $note,
+                'url' => Router::url([
+                    'controller' => 'Applications',
+                    'action' => 'edit',
+                    'id' => $application->id,
+                ], true),
+                'userName' => $name,
+            ],
+            [
+                'subject' => self::$subjectPrefix . 'Revision Requested',
+                'template' => 'application_revision_requested',
+            ],
+        );
     }
 
+    /**
+     * @param Event $event
+     * @param Application $application
+     * @param string $note
+     * @return void
+     * @throws InternalErrorException
+     */
     public function mailApplicationRejected(Event $event, Application $application, string $note)
     {
-        if (!$this->setApplicantRecipient($application)) {
-            return;
-        }
-        $fundingCycle = $this->fundingCyclesTable->find('nextApplication')->first();
-        $this->mailer
-            ->setSubject(self::$subjectPrefix . 'Application Not Accepted')
-            ->setViewVars(compact('application', 'note', 'fundingCycle'));
-        $this->mailer->viewBuilder()
-            ->setTemplate('application_rejected');
-        $this->mailer->deliver();
+        list($email, $name) = $this->getRecipientFromApplication($application);
+        EmailQueue::enqueue(
+            $email,
+            [
+                'application' => $application,
+                'fundingCycle' => $this->fundingCyclesTable->find('nextApplication')->first(),
+                'note' => $note,
+                'userName' => $name,
+            ],
+            [
+                'subject' => self::$subjectPrefix . 'Application Not Accepted',
+                'template' => 'application_rejected',
+            ],
+        );
     }
 
+    /**
+     * @param Event $event
+     * @param Application $application
+     * @param int $amount
+     * @return void
+     * @throws InternalErrorException
+     */
     public function mailApplicationFunded(Event $event, Application $application, int $amount)
     {
-        if (!$this->setApplicantRecipient($application)) {
-            return;
-        }
-        $fundingCycle = $this->fundingCyclesTable->get($application->funding_cycle_id);
-        $supportEmail = Configure::read('supportEmail');
-        $myApplicationsUrl = Router::url([
-            'prefix' => false,
-            'controller' => 'Applications',
-            'action' => 'index'
-        ], true);
-        $this->mailer
-            ->setSubject(self::$subjectPrefix . 'Application Funded')
-            ->setViewVars(compact(
-                'amount',
-                'application',
-                'fundingCycle',
-                'myApplicationsUrl',
-                'supportEmail',
-            ));
-        $this->mailer->viewBuilder()
-            ->setTemplate('application_funded');
-        $this->mailer->deliver();
+        list($email, $name) = $this->getRecipientFromApplication($application);
+        EmailQueue::enqueue(
+            $email,
+            [
+                'amount' => $amount,
+                'application' => $application,
+                'fundingCycle' => $this->fundingCyclesTable->get($application->funding_cycle_id),
+                'myApplicationsUrl' => Router::url([
+                    'prefix' => false,
+                    'controller' => 'Applications',
+                    'action' => 'index'
+                ], true),
+                'supportEmail' => Configure::read('supportEmail'),
+                'userName' => $name,
+            ],
+            [
+                'subject' => self::$subjectPrefix . 'Application Funded',
+                'template' => 'application_funded',
+            ],
+        );
     }
 
+    /**
+     * @param Event $event
+     * @param Application $application
+     * @return void
+     * @throws InternalErrorException
+     */
     public function mailApplicationNotFunded(Event $event, Application $application)
     {
-        $this->mailer->setSubject(self::$subjectPrefix . 'Application Not Funded');
-        if (!$this->setApplicantRecipient($application)) {
-            return;
-        }
+        list($email, $name) = $this->getRecipientFromApplication($application);
+        EmailQueue::enqueue(
+            $email,
+            [
+                'application' => $application,
+                'userName' => $name,
+            ],
+            [
+                'subject' => self::$subjectPrefix . 'Application Not Funded',
+                //'template' => 'application_not_funded',
+            ],
+        );
     }
 }
