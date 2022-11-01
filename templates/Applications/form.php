@@ -110,21 +110,23 @@ $this->Html->css('/filepond/filepond-plugin-image-preview.css', ['block' => true
             ['empty' => true, 'required' => true]
         ) ?>
 
-        <div class="form-group select required">
-            <label for="description">
-                Description of project
-            </label>
-            <?= $this->Form->textarea(
-                'description',
-                [
-                    'id' => 'description',
-                    'required' => true,
-                    'type' => 'textarea',
-                ]
-            ) ?>
-            <p class="footnote">
-                What are you trying to accomplish?
-            </p>
+        <div class="input-with-footnote">
+            <div class="form-group select required">
+                <label for="description">
+                    Description of project
+                </label>
+                <?= $this->Form->textarea(
+                    'description',
+                    [
+                        'id' => 'description',
+                        'required' => true,
+                        'type' => 'textarea',
+                    ]
+                ) ?>
+                <p class="footnote">
+                    What are you trying to accomplish?
+                </p>
+            </div>
         </div>
 
         <?php foreach ($questions as $i => $question): ?>
@@ -173,13 +175,15 @@ $this->Html->css('/filepond/filepond-plugin-image-preview.css', ['block' => true
                 'formGroup' => '{{label}}{{input}}',
             ]); ?>
         </div>
-        <div class="form-group required accept-partial">
-            <?= $this->Form->label('accept-partial-payout-0', 'Would you accept a partial payout?') ?>
-            <?= $this->Form->radio('accept_partial_payout', ['Yes', 'No'], ['required' => true]) ?>
-            <p class="footnote">
-                We may not have the budget to pay out this full amount. Would you still like to be considered for a
-                smaller amount?
-            </p>
+        <div class="input-with-footnote">
+            <div class="form-group required accept-partial">
+                <?= $this->Form->label('accept-partial-payout-0', 'Would you accept a partial payout?') ?>
+                <?= $this->Form->radio('accept_partial_payout', ['Yes', 'No'], ['required' => true]) ?>
+                <p class="footnote">
+                    We may not have the budget to pay out this full amount. Would you still like to be considered for a
+                    smaller amount?
+                </p>
+            </div>
         </div>
     </fieldset>
 
