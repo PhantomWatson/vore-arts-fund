@@ -117,6 +117,16 @@ class ApplicationsTable extends Table
             ->integer('status_id')
             ->inList('status_id', array_keys(Application::getStatuses()), 'Invalid status');
 
+        // Actually saved to the users table, but integrated into the application form
+        $validator
+            ->scalar('address')
+            ->maxLength('address', 50)
+            ->notEmptyString('address');
+        $validator
+            ->scalar('zipcode')
+            ->maxLength('zipcode', 10)
+            ->notEmptyString('zipcode');
+
         return $validator;
     }
 

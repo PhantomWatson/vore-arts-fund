@@ -3,6 +3,7 @@
  * @var \App\Model\Entity\Application $application
  * @var \App\Model\Entity\FundingCycle $fundingCycle
  * @var \App\Model\Entity\Question[] $questions
+ * @var \App\Model\Entity\User $user
  * @var \App\View\AppView $this
  * @var string $deadline
  * @var string $fromNow
@@ -11,6 +12,7 @@
 
 $this->Html->css('/filepond/filepond.css', ['block' => true]);
 $this->Html->css('/filepond/filepond-plugin-image-preview.css', ['block' => true]);
+$defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
 ?>
 
 <p class="alert alert-info">
@@ -204,6 +206,47 @@ $this->Html->css('/filepond/filepond-plugin-image-preview.css', ['block' => true
             ]) ?>
         </div>
     </fieldset>
+
+    <fieldset>
+        <legend>
+            Mailing address
+        </legend>
+        <p>
+            <?php if ($application->address && $application->zipcode): ?>
+                Please confirm that your mailing address is still correct, and update it if needed.
+                Note that this must be a Muncie address.
+            <?php else: ?>
+                Before you apply for funding, we need to know your mailing address so we'll know where to send your
+                check. Note that this must be a Muncie address.
+            <?php endif; ?>
+        </p>
+
+        <div class="form-group required">
+            <label for="amount-requested">
+                Street address
+            </label>
+            <?php $this->Form->setTemplates([
+                'formGroup' => '{{input}}',
+                'inputContainer' => '{{content}}',
+            ]); ?>
+            <div class="input-group mb-3">
+                <?= $this->Form->control(
+                    'address',
+                    [
+                        'placeholder' => '123 N. Example Blvd.',
+                        'required' => true,
+                    ]
+                ) ?>
+                <span class="input-group-text" id="address-postfix">, Muncie, IN</span>
+            </div>
+            <?php $this->Form->setTemplates([
+                'formGroup' => $defaultFormTemplate['formGroup'],
+                'inputContainer' => $defaultFormTemplate['inputContainer'],
+            ]); ?>
+        </div>
+        <?= $this->Form->control('zipcode', ['label' => 'ZIP code']) ?>
+    </fieldset>
+
     <?= $this->Form->submit(
         'Save for later',
         [

@@ -101,6 +101,16 @@ class UsersTable extends Table
             ->requirePresence('is_verified', 'create')
             ->notEmptyString('is_verified');
 
+        $validator
+            ->scalar('address')
+            ->maxLength('address', 50)
+            ->notEmptyString('address');
+
+        $validator
+            ->scalar('zipcode')
+            ->maxLength('zipcode', 10)
+            ->notEmptyString('zipcode');
+
         return $validator;
     }
 

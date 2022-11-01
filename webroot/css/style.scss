@@ -632,7 +632,8 @@ table td {
 }
 
 .input-with-footnote {
-    .form-group {
+    .form-group,
+    .input-group {
         margin-bottom: 0;
     }
 
@@ -1185,4 +1186,8 @@ section.funding-cycles {
 
 .alert-info {
     background-color: $card-bg;
+}
+
+#address-postfix {
+    padding-left: 0;
 }

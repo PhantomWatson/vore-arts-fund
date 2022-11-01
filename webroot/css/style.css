@@ -11370,7 +11370,8 @@ table td {
   margin-bottom: 2em;
 }
 
-.input-with-footnote .form-group {
+.input-with-footnote .form-group,
+.input-with-footnote .input-group {
   margin-bottom: 0;
 }
 .input-with-footnote .footnote {
@@ -11789,6 +11790,10 @@ section.funding-cycles th {
 
 .alert-info {
   background-color: #fff;
+}
+
+#address-postfix {
+  padding-left: 0;
 }
 
 /*# sourceMappingURL=style.css.map */

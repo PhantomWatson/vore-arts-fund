@@ -9,6 +9,7 @@ use App\Model\Entity\Image;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
+use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\Utility\Security;
 use Exception;
@@ -89,9 +90,8 @@ class ApplicationsController extends AppController
         }
 
         // Show nonstandard error message and redirect if unauthenticated
-        /** @var \App\Model\Entity\User|null $user */
-        $user = $this->Authentication->getIdentity();
-        if (!$user) {
+        $identity = $this->Authentication->getIdentity();
+        if (!$identity) {
             $this->Flash->error('You\'ll need to register an account or log in before applying.');
             return $this->redirect(['controller' => 'Users', 'action' => 'register']);
         }
@@ -102,17 +102,23 @@ class ApplicationsController extends AppController
         $this->setApplicationVars();
         $this->setFromNow($fundingCycle->application_end);
 
+        $userId = $identity->getIdentifier();
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $user = $usersTable->get($userId);
+
         // Process form
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $application = $this->Applications->newEntity($data, ['associated' => ['Answers']]);
-            $application->user_id = $user->id;
+            $application->user_id = $userId;
             $application->funding_cycle_id = $fundingCycle->id;
-            if ($this->processForm($application, $data)) {
+            if ($this->processApplication($application, $data)) {
                 return $this->redirect(['action' => 'index']);
             }
         } else {
             $application = $this->Applications->newEmptyEntity();
+            $application->address = $user->address;
+            $application->zipcode = $user->zipcode;
         }
 
         $this->set(compact('application'));
@@ -121,12 +127,39 @@ class ApplicationsController extends AppController
     }
 
     /**
+     * @param array $data
+     * @return bool
+     */
+    private function processAddressUpdate(array $data): bool
+    {
+        $identity = $this->Authentication->getIdentity();
+        $userId = $identity->getIdentifier();
+        $usersTable = TableRegistry::getTableLocator()->get('Users');
+        $user = $usersTable->get($userId);
+        $usersTable->patchEntity($user, $data);
+        if (!$usersTable->save($user)) {
+            $this->Flash->error(
+                'There was an error saving your address. Please correct any errors, try again, ' .
+                'and contact us if you need assistance.'
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * @param Application $application
      * @param array $data
      * @return bool
      */
-    private function processForm($application, $data): bool
+    private function processApplication($application, $data): bool
     {
+        $addressData = ['address' => $data['address'], 'zipcode' => $data['zipcode']];
+        if (!$this->processAddressUpdate($addressData)) {
+            return false;
+        }
+
         if ($application->id) {
             $data = $this->applyApplicationIdToAnswers($data, $application->id);
         }
@@ -331,9 +364,16 @@ class ApplicationsController extends AppController
                 $application->status_id = Application::STATUS_UNDER_REVIEW;
             }
 
-            if ($this->processForm($application, $data)) {
+            if ($this->processApplication($application, $data)) {
                 return $this->redirect(['action' => 'index']);
             }
+        } else {
+            $identity = $this->Authentication->getIdentity();
+            $userId = $identity->getIdentifier();
+            $usersTable = TableRegistry::getTableLocator()->get('Users');
+            $user = $usersTable->get($userId);
+            $application->address = $user->address;
+            $application->zipcode = $user->zipcode;
         }
 
         $this->set(compact('application'));

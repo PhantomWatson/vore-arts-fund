@@ -13,9 +13,11 @@ use Cake\ORM\Entity;
  * @property bool $is_admin
  * @property bool $is_verified
  * @property int $phone
+ * @property string $address
  * @property string $email
  * @property string $name
  * @property string $password
+ * @property string $zipcode
  * @property string|null $reset_password_token
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
@@ -51,6 +53,8 @@ class User extends Entity
         'votes' => true,
         'reset_password_token' => true,
         'token_created_date' => true,
+        'address' => true,
+        'zipcode' => true,
     ];
 
     /**

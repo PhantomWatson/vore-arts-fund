@@ -17,6 +17,7 @@ return [
     ',
     //<label class="custom-file-label" for="customFile">Choose file</label>
     'submitContainer' => '{{content}}',
+    'formGroup' => '{{label}}{{input}}',
 
     /* defaults
     'button' => '<button{{attrs}}>{{text}}</button>',
@@ -31,7 +32,6 @@ return [
     'fieldset' => '<fieldset{{attrs}}>{{content}}</fieldset>',
     'formStart' => '<form{{attrs}}>',
     'formEnd' => '</form>',
-    'formGroup' => '{{label}}{{input}}',
     'hiddenBlock' => '<div style="display:none;">{{content}}</div>',
     'input' => '<input type="{{type}}" name="{{name}}"{{attrs}}>',
     'inputSubmit' => '<input type="{{type}}"{{attrs}}>',
