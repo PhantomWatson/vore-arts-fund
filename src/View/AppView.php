@@ -15,6 +15,7 @@ declare(strict_types=1);
  */
 namespace App\View;
 
+use App\View\Helper\ImageHelper;
 use Cake\View\View;
 
 /**
@@ -23,6 +24,7 @@ use Cake\View\View;
  * Your application's default view class
  *
  * @link https://book.cakephp.org/4/en/views.html#the-app-view
+ * @property ImageHelper $Image
  */
 class AppView extends View
 {
@@ -40,6 +42,7 @@ class AppView extends View
         $this->loadHelper('Form', [
             'templates' => 'bootstrap_form',
         ]);
+        $this->loadHelper('Image');
     }
 
     /**

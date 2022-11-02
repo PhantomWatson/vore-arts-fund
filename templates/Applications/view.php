@@ -38,9 +38,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
         </h3>
         <div class="image-gallery">
             <?php foreach ($application->images as $image): ?>
-                <img src="/img/applications/<?= Image::THUMB_PREFIX ?><?= $image->filename ?>"
-                     alt="<?= $image->caption ?>" class="img-thumbnail" title="Click to open full-size image"
-                     data-full="/img/applications/<?= $image->filename ?>" />
+                <?= $this->Image->thumb($image) ?>
             <?php endforeach; ?>
         </div>
     </section>
@@ -75,5 +73,4 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
     </section>
 <?php endforeach; ?>
 
-<script src="/viewerjs/viewer.min.js"></script>
-<script src="/js/image-viewer.js"></script>
+<?= $this->Image->initViewer() ?>
