@@ -87,7 +87,9 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
             </li>
         </ul>
         <div class="form-check required">
-            <input class="form-check-input" type="checkbox" value="" id="agree-checkbox" required="required">
+            <input class="form-check-input" type="checkbox" value="" id="agree-checkbox" required="required"
+                <?= $application->isNew() ? '' : 'checked="checked"' ?>
+            >
             <label class="form-check-label" for="agree-checkbox">
                 I agree
             </label>
