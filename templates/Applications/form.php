@@ -12,6 +12,7 @@
 
 $this->Html->css('/filepond/filepond.css', ['block' => true]);
 $this->Html->css('/filepond/filepond-plugin-image-preview.css', ['block' => true]);
+$this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
 ?>
 
@@ -43,7 +44,8 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                         I am a resident of Muncie, Indiana.
                     </li>
                     <li>
-                        I have never been disqualified from receiving the Vore Arts Fund (VAF) grants for violating its rules, nor am I
+                        I have never been disqualified from receiving the Vore Arts Fund (VAF) grants for violating its
+                        rules, nor am I
                         representing an organization that has been thus disqualified.
                     </li>
                     <li>
@@ -70,15 +72,18 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                         political candidates.
                     </li>
                     <li>
-                        This project will result in the creation, presentation, performance, or teaching of visual art, music,
+                        This project will result in the creation, presentation, performance, or teaching of visual art,
+                        music,
                         or performing arts.
                     </li>
                     <li>
-                        This project is expected to generate enough money to fully repay the loan awarded to it within a year of
+                        This project is expected to generate enough money to fully repay the loan awarded to it within a
+                        year of
                         receiving that funding.
                     </li>
                     <li>
-                        This project does not violate any laws, nor is it antagonistic toward any marginalized group of people.
+                        This project does not violate any laws, nor is it antagonistic toward any marginalized group of
+                        people.
                     </li>
                 </ul>
             </li>
@@ -207,6 +212,33 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                 'multiple' => true,
             ]) ?>
         </div>
+        <table class="image-gallery table" id="form-images">
+            <thead>
+                <tr>
+                    <td>
+                        Delete
+                    </td>
+                    <td>
+                        Image
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($application->images as $image): ?>
+                    <tr>
+                        <td class="delete">
+                            <button class="btn btn-link" type="button" data-image-id="<?= $image->id ?>">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                            <input type="hidden" name="delete-image[<?= $image->id ?>]" value="0" />
+                        </td>
+                        <td>
+                            <?= $this->Image->thumb($image) ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </fieldset>
 
     <fieldset>
@@ -303,7 +335,6 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
 
             // Validation
             acceptedFileTypes: ['image/*'],
-            fileValidateTypeLabelExpectedTypes: 'Duh',
             labelFileTypeNotAllowed: 'Only images can be uploaded here',
 
             // Resizing
@@ -328,3 +359,5 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
         },
     );
 </script>
+
+<?= $this->Image->initViewer() ?>
