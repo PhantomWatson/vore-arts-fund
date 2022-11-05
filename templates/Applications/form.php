@@ -215,22 +215,23 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
         <table class="image-gallery table" id="form-images">
             <thead>
                 <tr>
-                    <td>
-                        Delete
-                    </td>
-                    <td>
+                    <th>
+                        Delete?
+                    </th>
+                    <th>
                         Image
-                    </td>
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($application->images as $image): ?>
                     <tr>
                         <td class="delete">
-                            <button class="btn btn-link" type="button" data-image-id="<?= $image->id ?>">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                            <input type="hidden" name="delete-image[<?= $image->id ?>]" value="0" />
+                            <label class="visually-hidden" for="delete-image-<?= $image->id ?>">
+                                Delete this image
+                            </label>
+                            <input type="checkbox" name="delete-image[]" value="<?= $image->id ?>"
+                                   id="delete-image-<?= $image->id ?>" />
                         </td>
                         <td>
                             <?= $this->Image->thumb($image) ?>

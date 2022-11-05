@@ -1191,3 +1191,17 @@ section.funding-cycles {
 #address-postfix {
     padding-left: 0;
 }
+
+#form-images {
+    margin: auto;
+    width: auto;
+
+    th {
+        text-align: center;
+    }
+
+    td {
+        text-align: center;
+        vertical-align: middle;
+    }
+}

@@ -157,7 +157,13 @@ class ApplicationsTable extends Table
         return $this
             ->find()
             ->where(['Applications.id' => $applicationId])
-            ->contain(['FundingCycles', 'Answers'])
+            ->contain([
+                'Answers',
+                'FundingCycles',
+                'Images' => function (Query $q) {
+                    return $q->orderDesc('weight');
+                },
+            ])
             ->first();
     }
 

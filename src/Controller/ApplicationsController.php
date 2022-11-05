@@ -199,6 +199,23 @@ class ApplicationsController extends AppController
             }
         }
 
+        // Delete images
+        foreach ($data['delete-image'] ?? [] as $imageId) {
+            if (!$this->Images->exists(['id' => $imageId])) {
+                continue;
+            }
+            $image = $this->Images->get($imageId);
+            $thumbFilename = Image::THUMB_PREFIX . $image->filename;
+            $path = WWW_ROOT . 'img' . DS . 'applications' . DS;
+            if (file_exists($path . $image->filename)) {
+                unlink($path . $image->filename);
+            }
+            if (file_exists($path . $thumbFilename)) {
+                unlink($path . $thumbFilename);
+            }
+            $this->Images->delete($image);
+        }
+
         return !$hasErrors;
     }
 
