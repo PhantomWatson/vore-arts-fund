@@ -175,8 +175,12 @@ class ApplicationsController extends AppController
             $hasErrors = true;
         }
 
-        // Process images
+        // Process new images
         foreach ($data['filepond'] ?? [] as $imageEncoded) {
+            if (!is_string($imageEncoded)) {
+                continue;
+            }
+
             /** @var \stdClass $imageFilenames */
             $imageFilenames = json_decode($imageEncoded);
             if (!($imageFilenames->full ?? false) || !($imageFilenames->thumb ?? false)) {
