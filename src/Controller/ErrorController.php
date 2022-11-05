@@ -17,11 +17,11 @@ class ErrorController extends AppController
      * Initialization hook method.
      *
      * @return void
-     * @throws \Exception
      */
     public function initialize(): void
     {
         parent::initialize();
+        $this->loadComponent('RequestHandler');
     }
 
     /**
@@ -41,7 +41,7 @@ class ErrorController extends AppController
      * @param \Cake\Event\EventInterface $event Event.
      * @return \Cake\Http\Response|null|void
      */
-    public function beforeRender(EventInterface $event): ?Response
+    public function beforeRender(EventInterface $event)
     {
         parent::beforeRender($event);
 
@@ -54,7 +54,7 @@ class ErrorController extends AppController
      * @param \Cake\Event\EventInterface $event Event.
      * @return \Cake\Http\Response|null|void
      */
-    public function afterFilter(EventInterface $event): ?Response
+    public function afterFilter(EventInterface $event)
     {
         parent::afterFilter($event);
     }
