@@ -38,17 +38,17 @@ $routes->scope('/', function (RouteBuilder $builder) {
 
     // Applications
     $builder->connect('/my-applications', 'Applications::index');
-    $builder->connect('/my-applications/:id', 'Applications::viewMy');
-    $builder->connect('/my-applications/edit/:id', 'Applications::edit');
-    $builder->connect('/my-applications/delete/:id', 'Applications::delete');
-    $builder->connect('/my-applications/withdraw/:id', 'Applications::withdraw');
-    $builder->connect('/application/:id', 'Applications::view');
+    $builder->connect('/my-applications/{id}', 'Applications::viewMy');
+    $builder->connect('/my-applications/edit/{id}', 'Applications::edit');
+    $builder->connect('/my-applications/delete/{id}', 'Applications::delete');
+    $builder->connect('/my-applications/withdraw/{id}', 'Applications::withdraw');
+    $builder->connect('/application/{id}', 'Applications::view');
     $builder->connect('/apply', 'Applications::apply');
 
     // Votes
     $builder->connect('/submit', 'Votes::submit');
     $builder->connect('/vote', 'Votes::index');
-    $builder->connect('/vote/:id', 'Votes::index')
+    $builder->connect('/vote/{id}', 'Votes::index')
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
 
@@ -76,12 +76,12 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
     // Funding cycles
     $builder->connect('/funding-cycles', 'FundingCycles::index');
     $builder->connect('/funding-cycles/add', 'FundingCycles::add');
-    $builder->connect('/funding-cycles/edit/:id', 'FundingCycles::edit');
+    $builder->connect('/funding-cycles/edit/{id}', 'FundingCycles::edit');
 
     // Applications
     $builder->connect('/applications', 'Applications::index');
     $builder->connect(
-        '/applications/:id',
+        '/applications/{id}',
         [
             'controller' => 'Applications',
             'action' => 'index',
@@ -89,8 +89,8 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
     )
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
-    $builder->connect('/applications/review/:id', 'Applications::review');
-    $builder->connect('/applications/set-status/:id', 'Applications::setStatus');
+    $builder->connect('/applications/review/{id}', 'Applications::review');
+    $builder->connect('/applications/set-status/{id}', 'Applications::setStatus');
 
     $builder->fallbacks(DashedRoute::class);
 });
