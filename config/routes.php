@@ -29,41 +29,40 @@ $routes->setRouteClass(DashedRoute::class);
 
 $routes->scope('/', function (RouteBuilder $builder) {
     // Pages
-    $builder->connect('/', 'Pages::home');
-    $builder->connect('/about', 'Pages::about');
-    $builder->connect('/contact', 'Pages::contact');
-    $builder->connect('/pages/*', 'Pages::display');
-    $builder->connect('/privacy', 'Pages::privacy');
-    $builder->connect('/terms', 'Pages::terms');
+    $builder->connect('/', ['controller' => 'Pages', 'action' => 'home']);
+    $builder->connect('/about', ['controller' => 'Pages', 'action' => 'about']);
+    $builder->connect('/contact', ['controller' => 'Pages', 'action' => 'contact']);
+    $builder->connect('/privacy', ['controller' => 'Pages', 'action' => 'privacy']);
+    $builder->connect('/terms', ['controller' => 'Pages', 'action' => 'terms']);
 
     // Applications
-    $builder->connect('/my-applications', 'Applications::index');
-    $builder->connect('/my-applications/:id', 'Applications::viewMy');
-    $builder->connect('/my-applications/edit/:id', 'Applications::edit');
-    $builder->connect('/my-applications/delete/:id', 'Applications::delete');
-    $builder->connect('/my-applications/withdraw/:id', 'Applications::withdraw');
-    $builder->connect('/application/:id', 'Applications::view');
-    $builder->connect('/apply', 'Applications::apply');
+    $builder->connect('/my-applications', ['controller' => 'Applications', 'action' => 'index']);
+    $builder->connect('/my-applications/{id}', ['controller' => 'Applications', 'action' => 'viewMy']);
+    $builder->connect('/my-applications/edit/{id}', ['controller' => 'Applications', 'action' => 'edit']);
+    $builder->connect('/my-applications/delete/{id}', ['controller' => 'Applications', 'action' => 'delete']);
+    $builder->connect('/my-applications/withdraw/{id}', ['controller' => 'Applications', 'action' => 'withdraw']);
+    $builder->connect('/application/{id}', ['controller' => 'Applications', 'action' => 'view']);
+    $builder->connect('/apply', ['controller' => 'Applications', 'action' => 'apply']);
 
     // Votes
-    $builder->connect('/submit', 'Votes::submit');
-    $builder->connect('/vote', 'Votes::index');
-    $builder->connect('/vote/:id', 'Votes::index')
+    $builder->connect('/submit', ['controller' => 'Votes', 'action' => 'submit']);
+    $builder->connect('/vote', ['controller' => 'Votes', 'action' => 'index']);
+    $builder->connect('/vote/{id}', ['controller' => 'Votes', 'action' => 'index'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
 
     // Users
-    $builder->connect('/forgot-password', 'Users::forgotPassword');
-    $builder->connect('/login', 'Users::login');
-    $builder->connect('/logout', 'Users::logout');
-    $builder->connect('/account', 'Users::account');
-    $builder->connect('/account/update', 'Users::changeAccountInfo');
-    $builder->connect('/register', 'Users::register');
-    $builder->connect('/verify', 'Users::verify');
-    $builder->connect('/verify/resend', 'Users::verifyResend');
+    $builder->connect('/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword']);
+    $builder->connect('/login', ['controller' => 'Users', 'action' => 'login']);
+    $builder->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
+    $builder->connect('/account', ['controller' => 'Users', 'action' => 'account']);
+    $builder->connect('/account/update', ['controller' => 'Users', 'action' => 'changeAccountInfo']);
+    $builder->connect('/register', ['controller' => 'Users', 'action' => 'register']);
+    $builder->connect('/verify', ['controller' => 'Users', 'action' => 'verify']);
+    $builder->connect('/verify/resend', ['controller' => 'Users', 'action' => 'verifyResend']);
 
     // Funding Cycles
-    $builder->connect('/funding-cycles', 'FundingCycles::index');
+    $builder->connect('/funding-cycles', ['controller' => 'FundingCycles', 'action' => 'index']);
 
     $builder->fallbacks(DashedRoute::class);
 });
@@ -71,26 +70,20 @@ $routes->scope('/', function (RouteBuilder $builder) {
 // Admin Routes
 $routes->prefix('admin', function (RouteBuilder $builder) {
     // Admin
-    $builder->connect('/', 'Admin::index');
+    $builder->connect('/', ['controller' => 'Admin', 'action' => 'index']);
 
     // Funding cycles
-    $builder->connect('/funding-cycles', 'FundingCycles::index');
-    $builder->connect('/funding-cycles/add', 'FundingCycles::add');
-    $builder->connect('/funding-cycles/edit/:id', 'FundingCycles::edit');
+    $builder->connect('/funding-cycles', ['controller' => 'FundingCycles', 'action' => 'index']);
+    $builder->connect('/funding-cycles/add', ['controller' => 'FundingCycles', 'action' => 'add']);
+    $builder->connect('/funding-cycles/edit/{id}', ['controller' => 'FundingCycles', 'action' => 'edit']);
 
     // Applications
-    $builder->connect('/applications', 'Applications::index');
-    $builder->connect(
-        '/applications/:id',
-        [
-            'controller' => 'Applications',
-            'action' => 'index',
-        ]
-    )
+    $builder->connect('/applications', ['controller' => 'Applications', 'action' => 'index']);
+    $builder->connect('/applications/{id}', ['controller' => 'Applications', 'action' => 'index'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
-    $builder->connect('/applications/review/:id', 'Applications::review');
-    $builder->connect('/applications/set-status/:id', 'Applications::setStatus');
+    $builder->connect('/applications/review/{id}', ['controller' => 'Applications', 'action' => 'review']);
+    $builder->connect('/applications/set-status/{id}', ['controller' => 'Applications', 'action' => 'setStatus']);
 
     $builder->fallbacks(DashedRoute::class);
 });
