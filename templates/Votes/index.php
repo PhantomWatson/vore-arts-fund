@@ -38,7 +38,7 @@ $bundlePathBase = \Cake\Core\Configure::read('debug')
     <?php elseif (!$isVerified): ?>
         <p class="alert alert-warning">
             Before you can vote, you must first
-            <?= $this->Html->linkFromPath('verify your phone number', 'Users::verify') ?>.
+            <?= $this->Html->link('verify your phone number', ['controller' => 'Users', 'action' => 'verify']) ?>.
         </p>
     <?php endif; ?>
 
