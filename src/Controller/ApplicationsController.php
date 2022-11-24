@@ -370,7 +370,7 @@ class ApplicationsController extends AppController
         }
 
         // Set up view vars
-        $this->title('Resubmit');
+        $this->title('Update and Submit');
         $this->viewBuilder()->setTemplate('form');
         $this->setFromNow($application->getSubmitDeadline());
         $this->setApplicationVars();
