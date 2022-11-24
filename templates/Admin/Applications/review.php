@@ -25,6 +25,26 @@
 <div class="row">
     <div class="col-md-6">
         <?= $this->element('../Applications/view') ?>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>
+                        Accept partial payout?
+                    </th>
+                    <td>
+                        <?= $application->accept_partial_payout ? 'Yes' : 'No' ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Make check out to
+                    </th>
+                    <td>
+                        <?= $application->check_name ?: '<span class="no-answer">No answer</span>' ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="col-md-6 card" id="review-action-column">
         <section class="card-body">

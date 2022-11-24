@@ -902,15 +902,9 @@ body {
     font-weight: bold;
 }
 
-.application-summary {
-
-}
-
-.application-view {
-    .no-answer {
-        color: $danger;
-        font-weight: bold;
-    }
+.no-answer {
+    color: $danger;
+    font-weight: bold;
 }
 
 main {
