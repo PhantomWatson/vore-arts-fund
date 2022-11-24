@@ -198,7 +198,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
 
     <fieldset>
         <legend>
-            Image
+            Images
         </legend>
         <div class="form-group">
             <?= $this->Form->label(
