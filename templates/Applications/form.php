@@ -33,7 +33,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
     <?= $this->Form->create($application, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>
         <legend>
-            Rules
+            Eligibility
         </legend>
         To apply, you must assert that all of these are true.
         <ul>
@@ -57,10 +57,6 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                     </li>
                     <li>
                         I am not a close family member of a substantial contributor or manager of the VAF.
-                    </li>
-                    <li>
-                        I understand that if this loan is fully or partially forgiven, the forgiven portion must be
-                        reported to the IRS as taxable income.
                     </li>
                 </ul>
             </li>
@@ -87,16 +83,42 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                     </li>
                 </ul>
             </li>
+        </ul>
+        <div class="form-check required">
+            <input class="form-check-input" type="checkbox" value="" id="eligibility-agree-checkbox" required="required"
+                <?= $application->isNew() ? '' : 'checked="checked"' ?>
+            >
+            <label class="form-check-label" for="eligibility-agree-checkbox">
+                This project and I are eligible for funding
+            </label>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>
+            Loan Terms
+        </legend>
+
+        <ul>
             <li>
-                I agree to submit reports about the status of the project, at least annually and upon its completion.
+                This loan can be repaid via check, made out to Vore Arts Fund, Inc. and mailed to PO Box 1604, Muncie,
+                IN, 47308.
+            </li>
+            <li>
+                If this loan is fully or partially forgiven, the forgiven portion must be reported to the IRS as
+                taxable income.
+            </li>
+            <li>
+                Reports about the status of this project must be submitted at least annually and upon its completion.
+                A form is provided on this website for submitting these reports.
             </li>
         </ul>
         <div class="form-check required">
-            <input class="form-check-input" type="checkbox" value="" id="agree-checkbox" required="required"
+            <input class="form-check-input" type="checkbox" value="" id="loan-terms-agree-checkbox" required="required"
                 <?= $application->isNew() ? '' : 'checked="checked"' ?>
             >
-            <label class="form-check-label" for="agree-checkbox">
-                I agree
+            <label class="form-check-label" for="loan-terms-agree-checkbox">
+                I understand
             </label>
         </div>
     </fieldset>
