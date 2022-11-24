@@ -117,6 +117,12 @@ class ApplicationsTable extends Table
             ->integer('status_id')
             ->inList('status_id', array_keys(Application::getStatuses()), 'Invalid status');
 
+        $validator
+            ->scalar('check_name')
+            ->maxLength('check_name', 50)
+            ->notEmptyString('check_name')
+            ->requirePresence('check_name');
+
         // Actually saved to the users table, but integrated into the application form
         $validator
             ->scalar('address')

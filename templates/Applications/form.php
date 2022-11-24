@@ -203,9 +203,13 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                 <span class="input-group-text">.00</span>
             </div>
             <?php $this->Form->setTemplates([
-                'formGroup' => '{{label}}{{input}}',
+                'formGroup' => $defaultFormTemplate['formGroup'],
+                'inputContainer' => $defaultFormTemplate['inputContainer'],
             ]); ?>
         </div>
+
+        <?= $this->Form->control('check_name', ['label' => 'Who should the check should be made out to?']) ?>
+
         <div class="input-with-footnote">
             <div class="form-group required accept-partial">
                 <?= $this->Form->label('accept-partial-payout-0', 'Would you accept a partial payout?') ?>

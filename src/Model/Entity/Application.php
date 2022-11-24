@@ -19,6 +19,7 @@ use Cake\ORM\Entity;
  * @property int $amount_requested
  * @property bool $accept_partial_payout
  * @property int $funding_cycle_id
+ * @property string $check_name
  * @property int $status_id
  * @property string $status_name
  * @property \Cake\I18n\FrozenTime $created
@@ -162,6 +163,7 @@ class Application extends Entity
         'category' => true,
         'answers' => true,
         'images' => true,
+        'check_name' => true,
         '*' => false,
     ];
 

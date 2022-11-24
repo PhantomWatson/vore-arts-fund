@@ -116,9 +116,11 @@ class ApplicationsController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
         } else {
+            /** @var Application $application */
             $application = $this->Applications->newEmptyEntity();
             $application->address = $user->address;
             $application->zipcode = $user->zipcode;
+            $application->check_name = $user->name;
         }
 
         $this->set(compact('application'));
