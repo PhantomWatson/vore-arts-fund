@@ -18,18 +18,15 @@ use EmailQueue\EmailQueue;
 
 class MailListener implements EventListenerInterface
 {
-    /** @var Mailer */
-    private Mailer $mailer;
-    public static string $subjectPrefix = 'Vore Arts Fund - ';
-    private UsersTable $usersTable;
     private FundingCyclesTable $fundingCyclesTable;
+    private UsersTable $usersTable;
+    private string $fromEmail;
+    private string $fromName = 'Vore Arts Fund';
+    public static string $subjectPrefix = 'Vore Arts Fund - ';
 
     public function __construct()
     {
-        $this->mailer = new Mailer('default');
-        $this->mailer
-            ->setFrom(Configure::read('noReplyEmail'), 'Vore Arts Fund')
-            ->setEmailFormat('both');
+        $this->fromEmail = Configure::read('noReplyEmail');
         $this->usersTable = TableRegistry::getTableLocator()->get('Users');
         $this->fundingCyclesTable = TableRegistry::getTableLocator()->get('FundingCycles');
     }
@@ -80,6 +77,8 @@ class MailListener implements EventListenerInterface
             [
                 'subject' => self::$subjectPrefix . 'Application Accepted',
                 'template' => 'application_accepted',
+                'from_name' => $this->fromName,
+                'from_email' => $this->fromEmail,
             ]
         );
     }
@@ -110,6 +109,8 @@ class MailListener implements EventListenerInterface
             [
                 'subject' => self::$subjectPrefix . 'Revision Requested',
                 'template' => 'application_revision_requested',
+                'from_name' => $this->fromName,
+                'from_email' => $this->fromEmail,
             ],
         );
     }
@@ -135,6 +136,8 @@ class MailListener implements EventListenerInterface
             [
                 'subject' => self::$subjectPrefix . 'Application Not Accepted',
                 'template' => 'application_rejected',
+                'from_name' => $this->fromName,
+                'from_email' => $this->fromEmail,
             ],
         );
     }
@@ -166,6 +169,8 @@ class MailListener implements EventListenerInterface
             [
                 'subject' => self::$subjectPrefix . 'Application Funded',
                 'template' => 'application_funded',
+                'from_name' => $this->fromName,
+                'from_email' => $this->fromEmail,
             ],
         );
     }
@@ -189,6 +194,8 @@ class MailListener implements EventListenerInterface
             [
                 'subject' => self::$subjectPrefix . 'Application Not Funded',
                 'template' => 'application_not_funded',
+                'from_name' => $this->fromName,
+                'from_email' => $this->fromEmail,
             ],
         );
     }

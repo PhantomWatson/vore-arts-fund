@@ -136,13 +136,13 @@ class ApplicationsController extends AdminController
     {
         switch ($application->status_id) {
             case Application::STATUS_ACCEPTED:
-                $event = new Event('Application.accepted', $application);
+                $event = new Event('Application.accepted', $this, compact('application'));
                 break;
             case Application::STATUS_REVISION_REQUESTED:
-                $event = new Event('Application.revisionRequested', $application);
+                $event = new Event('Application.revisionRequested', $this, compact('application'));
                 break;
             case Application::STATUS_REJECTED:
-                $event = new Event('Application.rejected', $application);
+                $event = new Event('Application.rejected', $this, compact('application'));
                 break;
             default;
                 return;

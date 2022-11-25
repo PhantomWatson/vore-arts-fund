@@ -30,6 +30,9 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 <p>
     <strong>Funding cycle:</strong> <?= $application->funding_cycle->name ?>
 </p>
+<p>
+    <strong>Amount requested:</strong> $<?= number_format($application->amount_requested) ?>
+</p>
 
 <?php if ($application->images): ?>
     <section class="application-view">
