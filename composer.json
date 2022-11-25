@@ -1,7 +1,7 @@
 {
-    "name": "ballstatecber/vore-arts-fund",
+    "name": "phantomwatson/vore-arts-fund",
     "description": "Vore Arts Fund",
-    "homepage": "https://github.com/BallStateCBER/vore-arts-fund",
+    "homepage": "https://github.com/PhantomWatson/vore-arts-fund",
     "type": "project",
     "license": "MIT",
     "require": {
