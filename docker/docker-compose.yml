@@ -100,6 +100,7 @@ services:
       - MYSQL_ROOT_USER=${MYSQL_ROOT_USER}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     restart: ${RESTART}
+    dns: 8.8.8.8
 
   phpmyadmin:
     image: phpmyadmin
