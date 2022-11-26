@@ -92,7 +92,7 @@ class VotesController extends AppController
             'toLoad',
         ));
         $this->set([
-            'isVerified' => $user->is_verified,
+            'isVerified' => $user ? $user->is_verified : false,
         ]);
 
         return null;
