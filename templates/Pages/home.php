@@ -33,36 +33,43 @@
                 <?php if ($fundingCycle): ?>
                     <?= $fundingCycle->name ?> Funding Cycle
                 <?php else: ?>
-                    Applications Not Currently Accepted
+                    Applications not currently being accepted
                 <?php endif; ?>
             </h1>
 
-            <?php if ($fundingCycleIsCurrent): ?>
+            <?php if ($fundingCycle): ?>
+                <?php if ($fundingCycleIsCurrent): ?>
+                    <p>
+                        <?= $this->Html->link(
+                            'Apply for funding',
+                            [
+                                'controller' => 'Applications',
+                                'action' => 'apply',
+                            ],
+                            ['class' => 'btn btn-primary']
+                        ) ?>
+                    </p>
+                <?php endif; ?>
+
+                <?= $this->element('FundingCycles/info_table') ?>
+
                 <p>
+                    Visit the
                     <?= $this->Html->link(
-                        'Apply for funding',
+                        'Funding Cycles',
                         [
-                            'controller' => 'Applications',
-                            'action' => 'apply',
-                        ],
-                        ['class' => 'btn btn-primary']
+                            'controller' => 'FundingCycles',
+                            'action' => 'index',
+                        ]
                     ) ?>
+                    page for more information about upcoming opportunities to apply for funding.
+                </p>
+            <?php else: ?>
+                <p>
+                    We're not currently accepting applications, but please check back later for opportunities to apply
+                    for funding or to cast your votes in an upcoming funding cycle.
                 </p>
             <?php endif; ?>
-
-            <?= $this->element('FundingCycles/info_table') ?>
-
-            <p>
-                Visit the
-                <?= $this->Html->link(
-                    'Funding Cycles',
-                    [
-                        'controller' => 'FundingCycles',
-                        'action' => 'index',
-                    ]
-                ) ?>
-                page for more information about upcoming opportunities to apply for funding.
-            </p>
         </div>
     </section>
 </div>
