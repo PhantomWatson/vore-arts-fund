@@ -436,10 +436,16 @@ pre {
     }
 }
 
-fieldset {
+.bordered-section {
     background-color: $card-bg;
     border: 1px solid $primary;
     border-radius: 1rem;
+    margin-bottom: $section-spacer;
+    padding: 1em;
+}
+
+fieldset {
+    @extend .bordered-section;
     margin: 1.125rem 0;
     padding: 1.25rem;
 
@@ -589,6 +595,25 @@ div.message {
 table td {
     vertical-align: top;
     word-break: break-all;
+}
+
+.my-applications__application {
+    th,
+    td {
+        vertical-align: middle;
+    }
+    th,
+    td:nth-child(2)
+    {
+        white-space: nowrap;
+        width: 1%;
+    }
+    tr:last-child {
+        td,
+        th {
+            border-width: 0;
+        }
+    }
 }
 
 .credits {
@@ -767,11 +792,7 @@ body {
     margin-top: 1em;
 
     section {
-        background-color: $light;
-        border: 1px solid #ddd;
-        border-radius: 1em;
-        margin-bottom: $section-spacer;
-        padding: 1em;
+        @extend .bordered-section;
 
         p {
             margin-bottom: 0;

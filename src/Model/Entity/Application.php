@@ -33,6 +33,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Note[] $notes
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Vote[] $votes
+ * @property \App\Model\Entity\Report[] $reports
  */
 class Application extends Entity
 {

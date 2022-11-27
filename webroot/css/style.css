@@ -11199,10 +11199,15 @@ pre {
   width: 100%;
 }
 
-fieldset {
+.bordered-section, #review-notes section, fieldset {
   background-color: #fff;
   border: 1px solid #1A5B11;
   border-radius: 1rem;
+  margin-bottom: 2rem;
+  padding: 1em;
+}
+
+fieldset {
   margin: 1.125rem 0;
   padding: 1.25rem;
 }
@@ -11338,6 +11343,20 @@ table td {
   word-break: break-all;
 }
 
+.my-applications__application th,
+.my-applications__application td {
+  vertical-align: middle;
+}
+.my-applications__application th,
+.my-applications__application td:nth-child(2) {
+  white-space: nowrap;
+  width: 1%;
+}
+.my-applications__application tr:last-child td,
+.my-applications__application tr:last-child th {
+  border-width: 0;
+}
+
 .credits {
   margin-bottom: 3em;
   max-width: 20em;
@@ -11467,13 +11486,6 @@ body {
 
 #review-notes {
   margin-top: 1em;
-}
-#review-notes section {
-  background-color: #F7F7F2;
-  border: 1px solid #ddd;
-  border-radius: 1em;
-  margin-bottom: 2rem;
-  padding: 1em;
 }
 #review-notes section p {
   margin-bottom: 0;

@@ -294,20 +294,6 @@ class ApplicationsController extends AppController
     }
 
     /**
-     * Returns TRUE if the current user owns the specified application
-     *
-     * @param int $applicationId
-     * @return bool
-     */
-    private function isOwnApplication($applicationId): bool
-    {
-        /** @var \App\Model\Entity\User $user */
-        $user = $this->Authentication->getIdentity();
-
-        return $this->Applications->exists(['id' => $applicationId, 'user_id' => $user->id]);
-    }
-
-    /**
      * @return \Cake\Http\Response|null
      */
     private function _view()
@@ -430,7 +416,7 @@ class ApplicationsController extends AppController
             ->find()
             ->where(['user_id' => $user->id])
             ->orderDesc('Applications.created')
-            ->contain(['FundingCycles'])
+            ->contain(['FundingCycles', 'Reports'])
             ->all();
         $this->set(compact('applications'));
     }

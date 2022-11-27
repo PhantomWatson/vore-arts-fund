@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
+use Cake\ORM\TableRegistry;
 use Cake\View\JsonView;
 
 /**
@@ -87,5 +90,25 @@ class AppController extends Controller
     public function viewClasses(): array
     {
         return [JsonView::class];
+    }
+
+    /**
+     * Returns TRUE if the current user owns the specified application
+     *
+     * @param int $applicationId
+     * @return bool
+     */
+    protected function isOwnApplication($applicationId): bool
+    {
+        if (!$applicationId) {
+            return false;
+        }
+
+        /** @var \App\Model\Entity\User $user */
+        $user = $this->Authentication->getIdentity();
+
+        $applicationsTable = TableRegistry::getTableLocator()->get('Applications');
+
+        return $applicationsTable->exists(['id' => $applicationId, 'user_id' => $user->id]);
     }
 }

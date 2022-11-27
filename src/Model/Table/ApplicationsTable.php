@@ -21,6 +21,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\MessagesTable&\Cake\ORM\Association\HasMany $Messages
  * @property \App\Model\Table\NotesTable&\Cake\ORM\Association\HasMany $Notes
  * @property \App\Model\Table\VotesTable&\Cake\ORM\Association\HasMany $Votes
+ * @property \App\Model\Table\ReportsTable&\Cake\ORM\Association\HasMany $Reports
  * @method Application get($primaryKey, $options = [])
  * @method Application newEntity(array $data, array $options = [])
  * @method Application[] newEntities(array $data, array $options = [])
@@ -75,6 +76,9 @@ class ApplicationsTable extends Table
             'foreignKey' => 'application_id',
         ]);
         $this->hasMany('Answers', [
+            'foreignKey' => 'application_id',
+        ]);
+        $this->hasMany('Reports', [
             'foreignKey' => 'application_id',
         ]);
     }
@@ -158,7 +162,7 @@ class ApplicationsTable extends Table
      * @param int $applicationId
      * @return EntityInterface|Application|null
      */
-    public function getForForm($applicationId)
+    protected function getForForm($applicationId)
     {
         return $this
             ->find()
