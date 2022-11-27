@@ -11823,4 +11823,8 @@ section.funding-cycles th {
   vertical-align: middle;
 }
 
+p:last-child {
+  margin-bottom: 0;
+}
+
 /*# sourceMappingURL=style.css.map */
