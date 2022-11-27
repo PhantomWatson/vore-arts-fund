@@ -1,16 +1,27 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         0.10.0
- * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
  */
+$supportEmail = \Cake\Core\Configure::read('supportEmail');
 ?>
+
+<p>
+    If you have a <strong>question</strong> or <strong>feedback</strong> about the Vore Arts Fund
+    or would like to report a <strong>problem with the website</strong>, please email
+    <a href="mailto:<?= $supportEmail ?>"><?= $supportEmail ?></a>.
+</p>
+
+<p>
+    <strong>Written correspondence</strong> can be sent to PO Box 1604, Muncie, IN, 47308.
+</p>
+
+<p>
+    If you're <strong>seeking a loan</strong> to support your commercial art project, you can
+    <?= $this->Html->link(
+        'apply for funding through our website',
+        [
+            'controller' => 'Applications',
+            'action' => 'apply',
+        ],
+    ) ?>.
+</p>
