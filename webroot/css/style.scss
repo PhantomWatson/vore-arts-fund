@@ -47,8 +47,6 @@ $tooltip-margin: 0;
 
 @import "../../vendor/twbs/bootstrap/scss/bootstrap.scss";
 
-
-
 @mixin inline-select {
     display: inline;
     width: inherit;
@@ -1222,4 +1220,31 @@ section.funding-cycles {
 
 p:last-child {
     margin-bottom: 0;
+}
+
+footer {
+    @extend .border-top;
+    border-top: 1px solid;
+    color: $text-muted;
+    font-size: 90%;
+    padding-top: 0.9em;
+    margin-top: 5em;
+    text-align: center;
+
+    p {
+        margin-bottom: 0.9em;
+    }
+
+    ul {
+        @extend .list-unstyled;
+    }
+
+    li {
+        display: inline-block;
+        margin: 0 1em;
+    }
+
+    a {
+        text-decoration: none;
+    }
 }

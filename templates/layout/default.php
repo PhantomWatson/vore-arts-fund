@@ -39,9 +39,7 @@ $title = $title ?? $this->fetch('title');
         <?= $this->Flash->render() ?>
         <?= $this->title() ?>
         <?= $this->fetch('content') ?>
-        <footer>
-            <?= $this->fetch('footer') ?>
-        </footer>
+        <?= $this->element('footer') ?>
     </main>
     <script src="/js/main.js"></script>
 </body>

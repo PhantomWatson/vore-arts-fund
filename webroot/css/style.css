@@ -553,7 +553,7 @@ progress {
   }
 }
 
-.list-unstyled, #vote-steps {
+.list-unstyled, footer ul, #vote-steps {
   padding-left: 0;
   list-style: none;
 }
@@ -7211,7 +7211,7 @@ fieldset:disabled .vote-rank button,
   border: 0 !important;
 }
 
-.border-top {
+.border-top, footer {
   border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
 }
 
@@ -11825,6 +11825,25 @@ section.funding-cycles th {
 
 p:last-child {
   margin-bottom: 0;
+}
+
+footer {
+  border-top: 1px solid;
+  color: #6c757d;
+  font-size: 90%;
+  padding-top: 0.9em;
+  margin-top: 5em;
+  text-align: center;
+}
+footer p {
+  margin-bottom: 0.9em;
+}
+footer li {
+  display: inline-block;
+  margin: 0 1em;
+}
+footer a {
+  text-decoration: none;
 }
 
 /*# sourceMappingURL=style.css.map */
