@@ -35,55 +35,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
         <legend>
             Eligibility
         </legend>
-        To apply, you must assert that all of these are true.
-        <ul>
-            <li>
-                You
-                <ul>
-                    <li>
-                        I am a resident of Muncie, Indiana.
-                    </li>
-                    <li>
-                        I have never been disqualified from receiving the Vore Arts Fund (VAF) grants for violating its
-                        rules, nor am I
-                        representing an organization that has been thus disqualified.
-                    </li>
-                    <li>
-                        I have not contributed more than $5,000 to the VAF.
-                    </li>
-                    <li>
-                        I am not a manager (current director or officer) of the VAF nor a representative of any entity
-                        owned or controlled by a manager.
-                    </li>
-                    <li>
-                        I am not a close family member of a substantial contributor or manager of the VAF.
-                    </li>
-                </ul>
-            </li>
-            <li>
-                Your project
-                <ul>
-                    <li>
-                        The project for which I am applying for funding ("this project") does not support nor oppose any
-                        political candidates.
-                    </li>
-                    <li>
-                        This project will result in the creation, presentation, performance, or teaching of visual art,
-                        music,
-                        or performing arts.
-                    </li>
-                    <li>
-                        This project is expected to generate enough money to fully repay the loan awarded to it within a
-                        year of
-                        receiving that funding.
-                    </li>
-                    <li>
-                        This project does not violate any laws, nor is it antagonistic toward any marginalized group of
-                        people.
-                    </li>
-                </ul>
-            </li>
-        </ul>
+        <?= $this->element('eligibility') ?>
         <div class="form-check required">
             <input class="form-check-input" type="checkbox" value="" id="eligibility-agree-checkbox" required="required"
                 <?= $application->isNew() ? '' : 'checked="checked"' ?>
@@ -99,20 +51,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
             Loan Terms
         </legend>
 
-        <ul>
-            <li>
-                This loan can be repaid via check, made out to Vore Arts Fund, Inc. and mailed to PO Box 1604, Muncie,
-                IN, 47308.
-            </li>
-            <li>
-                If this loan is fully or partially forgiven, the forgiven portion must be reported to the IRS as
-                taxable income.
-            </li>
-            <li>
-                Reports about the status of this project must be submitted at least annually and upon its completion.
-                A form is provided on this website for submitting these reports.
-            </li>
-        </ul>
+        <?= $this->element('loan_terms') ?>
         <div class="form-check required">
             <input class="form-check-input" type="checkbox" value="" id="loan-terms-agree-checkbox" required="required"
                 <?= $application->isNew() ? '' : 'checked="checked"' ?>
@@ -238,34 +177,36 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                 'multiple' => true,
             ]) ?>
         </div>
-        <table class="image-gallery table" id="form-images">
-            <thead>
-                <tr>
-                    <th>
-                        Delete?
-                    </th>
-                    <th>
-                        Image
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($application->images as $image): ?>
+        <?php if ($application->images): ?>
+            <table class="image-gallery table" id="form-images">
+                <thead>
                     <tr>
-                        <td class="delete">
-                            <label class="visually-hidden" for="delete-image-<?= $image->id ?>">
-                                Delete this image
-                            </label>
-                            <input type="checkbox" name="delete-image[]" value="<?= $image->id ?>"
-                                   id="delete-image-<?= $image->id ?>" />
-                        </td>
-                        <td>
-                            <?= $this->Image->thumb($image) ?>
-                        </td>
+                        <th>
+                            Delete?
+                        </th>
+                        <th>
+                            Image
+                        </th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($application->images as $image): ?>
+                        <tr>
+                            <td class="delete">
+                                <label class="visually-hidden" for="delete-image-<?= $image->id ?>">
+                                    Delete this image
+                                </label>
+                                <input type="checkbox" name="delete-image[]" value="<?= $image->id ?>"
+                                       id="delete-image-<?= $image->id ?>" />
+                            </td>
+                            <td>
+                                <?= $this->Image->thumb($image) ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
     </fieldset>
 
     <fieldset>
