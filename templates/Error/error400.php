@@ -17,25 +17,29 @@ if (Configure::read('debug')) :
     $this->assign('templateName', 'error400.php');
 
     $this->start('file');
-    ?>
-    <?php if (!empty($error->queryString)) : ?>
-    <p class="notice">
-        <strong>SQL Query: </strong>
-        <?= h($error->queryString) ?>
-    </p>
-<?php endif; ?>
-    <?php if (!empty($error->params)) : ?>
-    <strong>SQL Query Params: </strong>
-    <?php Debugger::dump($error->params) ?>
-<?php endif; ?>
-    <?= $this->element('auto_table_warning') ?>
-    <?php
-
-    $this->end();
-endif;
 ?>
+    <?php if (!empty($error->queryString)) : ?>
+        <p class="notice">
+            <strong>SQL Query: </strong>
+            <?= h($error->queryString) ?>
+        </p>
+    <?php endif; ?>
+    <?php if (!empty($error->params)) : ?>
+        <strong>SQL Query Params: </strong>
+        <?php Debugger::dump($error->params) ?>
+    <?php endif; ?>
+    <?= $this->element('auto_table_warning') ?>
+    <?php $this->end(); ?>
+<?php endif; ?>
+
 <h2><?= h($message) ?></h2>
-<p class="error">
-    <strong><?= __d('cake', 'Error') ?>: </strong>
-    <?= __d('cake', 'The requested address {0} was not found on this server.', "<strong>'{$url}'</strong>") ?>
+
+<p class="alert alert-danger">
+    Sorry, but that page wasn't found. Please <a href="/contact">contact us</a> if you need assistance.
 </p>
+
+<?= $this->Html->link(
+    'Back',
+    'javascript:history.back()',
+    ['class' => 'btn btn-primary']
+) ?>
