@@ -11366,6 +11366,7 @@ table td {
 .credits div {
   border-bottom: 1px dashed #AAA;
   clear: both;
+  padding-bottom: 2px;
 }
 .credits dt {
   display: inline;
@@ -11846,7 +11847,7 @@ footer a {
   text-decoration: none;
 }
 
-article.about {
+#about article {
   margin-bottom: 3em;
 }
 

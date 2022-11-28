@@ -621,6 +621,7 @@ table td {
     div {
         border-bottom: 1px dashed #AAA;
         clear: both;
+        padding-bottom: 2px;
     }
 
     dt {
@@ -1247,8 +1248,10 @@ footer {
     }
 }
 
-article.about {
-    margin-bottom: 3em;
+#about {
+    article {
+        margin-bottom: 3em;
+    }
 }
 
 #terms,
