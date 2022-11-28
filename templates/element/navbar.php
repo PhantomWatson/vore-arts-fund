@@ -19,6 +19,13 @@
                 </li>
                 <li>
                     <?= $this->Html->link(
+                        'About',
+                        ['controller' => 'Pages', 'action' => 'about', 'prefix' => false],
+                        ['class' => 'nav-link']
+                    ) ?>
+                </li>
+                <li>
+                    <?= $this->Html->link(
                         'Vote',
                         ['controller' => 'Votes', 'action' => 'index', 'prefix' => false],
                         ['class' => 'nav-link']
