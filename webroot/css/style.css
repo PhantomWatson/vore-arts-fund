@@ -7227,7 +7227,9 @@ fieldset:disabled .vote-rank button,
   border-right: 0 !important;
 }
 
-.border-bottom {
+.border-bottom, #terms h1, #terms .h1,
+#privacy h1,
+#privacy .h1 {
   border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
 }
 
@@ -11366,7 +11368,6 @@ table td {
   clear: both;
 }
 .credits dt {
-  background-color: #FFF;
   display: inline;
   font-weight: bold;
   margin-bottom: -3px;
@@ -11375,7 +11376,6 @@ table td {
   top: 4px;
 }
 .credits dd {
-  background-color: #FFF;
   color: #555;
   float: right;
   padding-left: 5px;
@@ -11844,6 +11844,24 @@ footer li {
 }
 footer a {
   text-decoration: none;
+}
+
+article.about {
+  margin-bottom: 3em;
+}
+
+#terms section,
+#privacy section {
+  margin-bottom: 3em;
+}
+#terms section section,
+#privacy section section {
+  padding-left: 1em;
+}
+#terms h1, #terms .h1,
+#privacy h1,
+#privacy .h1 {
+  margin-bottom: 1em;
 }
 
 /*# sourceMappingURL=style.css.map */

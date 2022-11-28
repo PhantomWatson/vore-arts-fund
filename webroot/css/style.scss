@@ -624,7 +624,6 @@ table td {
     }
 
     dt {
-        background-color: #FFF;
         display: inline;
         font-weight: bold;
         margin-bottom: -3px;
@@ -634,7 +633,6 @@ table td {
     }
 
     dd {
-        background-color: #FFF;
         color: #555;
         float: right;
         padding-left: 5px;
@@ -1246,5 +1244,24 @@ footer {
 
     a {
         text-decoration: none;
+    }
+}
+
+article.about {
+    margin-bottom: 3em;
+}
+
+#terms,
+#privacy {
+    section {
+        margin-bottom: 3em;
+
+        section {
+            padding-left: 1em;
+        }
+    }
+    h1 {
+        @extend .border-bottom;
+        margin-bottom: 1em;
     }
 }

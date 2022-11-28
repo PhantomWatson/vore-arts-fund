@@ -118,7 +118,7 @@ class PagesController extends AppController
      */
     public function privacy()
     {
-        $this->title('Privacy');
+        $this->title('Privacy Policy');
     }
 
     /**
