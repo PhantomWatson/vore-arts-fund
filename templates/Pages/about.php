@@ -28,9 +28,26 @@
         <p>
             By absorbing the financial risk inherent in arts-related projects with up-front costs, this program makes it
             easier for artists, educators, performers, and promoters to improve the quality-of-place of our community.
-            By distributing loans instead of grants and targeting for-profit projects, this program can operate without
+            By distributing loans and targeting for-profit projects, this program can sustain itself without
             depending on an ongoing fundraising effort. In the future, we hope to grow it to also distribute grants to
             support noncommercial art endeavors, such as public murals, free performances, and free art classes.
+        </p>
+    </article>
+
+    <article>
+        <h2>
+            Where did the name come from?
+        </h2>
+        <img src="/img/phil.jpg" alt="Photo of Phil Vore" title="Phil Vore" />
+        <p>
+            Phil Vore served as a director on the boards of the Full Circle Arts Co-op and the Muncie Arts and Culture
+            Council from 2007 until his death in 2017, and during that time he championed the idea that such nonprofits
+            must prove their worth to the community by directly and materially supporting artists. Whenever our focus
+            would stray too far from our real purpose, Phil would remind us that we needed to be spending our time
+            identifying and fulfilling the needs of the artists who help make our community beautiful, interesting,
+            entertaining, and enlightening, or else we're just wasting our own time and resources. It is in the memory
+            of our friend Phil and the practical, straightforward, and meaningful approach to supporting the arts that
+            he insisted upon that we have named this project.
         </p>
     </article>
 

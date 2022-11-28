@@ -11850,6 +11850,12 @@ footer a {
 #about article {
   margin-bottom: 3em;
 }
+#about img {
+  float: right;
+  margin-bottom: 1em;
+  margin-left: 1em;
+  max-width: 300px;
+}
 
 #terms section,
 #privacy section {

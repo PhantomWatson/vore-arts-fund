@@ -88,7 +88,7 @@ class PagesController extends AppController
      */
     public function about()
     {
-        $this->title('About');
+        $this->title('About the Vore Arts Fund');
     }
 
     /**
