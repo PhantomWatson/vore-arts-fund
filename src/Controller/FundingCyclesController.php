@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Event\EventInterface;
+use Cake\ORM\Query;
 
 /**
  * FundingCycles Controller
@@ -29,6 +30,14 @@ class FundingCyclesController extends AppController
     {
         $fundingCycles = $this->FundingCycles
             ->find('currentAndFuture')
+            ->contain([
+                'Applications' => function (Query $q) {
+                    return $q->select([
+                        'Applications.funding_cycle_id',
+                        'Applications.status_id'
+                    ]);
+                }
+            ])
             ->orderAsc('application_end')
             ->all();
 

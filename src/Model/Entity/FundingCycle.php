@@ -119,4 +119,48 @@ class FundingCycle extends Entity
     {
         return $time ? $time->setTimezone(\App\Application::LOCAL_TIMEZONE) : null;
     }
+
+    /**
+     * Returns an array with counts for submitted, accepted, and awarded applications,
+     * or NULL if no applications have been received
+     *
+     * @return int[]|null
+     */
+    public function getApplicationSummary()
+    {
+        if (!$this->applications ?? false) {
+            return null;
+        }
+        $retval = [
+            'submitted' => 0,
+            'accepted' => 0,
+            'awarded' => 0,
+        ];
+        foreach ($this->applications as $application) {
+            switch ($application->status_id) {
+                // Submitted
+                case Application::STATUS_UNDER_REVIEW:
+                case Application::STATUS_ACCEPTED:
+                case Application::STATUS_REJECTED:
+                case Application::STATUS_REVISION_REQUESTED:
+                case Application::STATUS_AWARDED:
+                case Application::STATUS_NOT_AWARDED:
+                    $retval['submitted']++;
+                    break;
+            }
+            switch ($application->status_id) {
+                // Accepted
+                case Application::STATUS_ACCEPTED:
+                case Application::STATUS_AWARDED:
+                case Application::STATUS_NOT_AWARDED:
+                    $retval['accepted']++;
+                    break;
+            }
+            if ($application->status_id === Application::STATUS_AWARDED) {
+                $retval['awarded']++;
+            }
+        }
+
+        return $retval;
+    }
 }
