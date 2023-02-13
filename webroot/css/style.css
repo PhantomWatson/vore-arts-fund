@@ -11204,7 +11204,7 @@ pre {
 .bordered-section, #review-notes section, fieldset {
   background-color: #fff;
   border: 1px solid #1A5B11;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   margin-bottom: 2rem;
   padding: 1em;
 }
