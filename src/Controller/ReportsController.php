@@ -136,9 +136,6 @@ class ReportsController extends AppController
      */
     public function application($applicationId = null): void
     {
-        if (!$this->isOwnApplication($applicationId)) {
-            throw new NotFoundException();
-        }
         $reports = $this->Reports
             ->find()
             ->where(['Reports.application_id' => $applicationId])
@@ -146,5 +143,8 @@ class ReportsController extends AppController
             ->contain(['Applications'])
             ->all();
         $this->set(compact('reports'));
+        $applicationsTable = TableRegistry::getTableLocator()->get('Applications');
+        $application = $applicationsTable->get($applicationId);
+        $this->title('Reports for ' . $application->title);
     }
 }

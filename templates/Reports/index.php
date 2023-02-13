@@ -1,52 +1,17 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\Report> $reports
+ * @var iterable<\App\Model\Entity\Report>|\Cake\ORM\ResultSet $reports
  */
 ?>
-<div class="reports index content">
-    <?= $this->Html->link(__('New Report'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Reports') ?></h3>
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('user_id') ?></th>
-                    <th><?= $this->Paginator->sort('application_id') ?></th>
-                    <th><?= $this->Paginator->sort('is_final') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($reports as $report): ?>
-                <tr>
-                    <td><?= $this->Number->format($report->id) ?></td>
-                    <td><?= $report->has('user') ? $this->Html->link($report->user->name, ['controller' => 'Users', 'action' => 'view', $report->user->id]) : '' ?></td>
-                    <td><?= $report->has('application') ? $this->Html->link($report->application->title, ['controller' => 'Applications', 'action' => 'view', $report->application->id]) : '' ?></td>
-                    <td><?= h($report->is_final) ?></td>
-                    <td><?= h($report->created) ?></td>
-                    <td><?= h($report->modified) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $report->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $report->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $report->id], ['confirm' => __('Are you sure you want to delete # {0}?', $report->id)]) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
-    </div>
+<div class="reports">
+    <?php if (count($reports) === 0): ?>
+        <p class="alert alert-info">
+            No reports have been submitted for any applications yet.
+        </p>
+    <?php else: ?>
+        <?php foreach ($reports as $report): ?>
+            <?= $this->element('report', compact('report')) ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </div>

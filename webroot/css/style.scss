@@ -1275,3 +1275,13 @@ footer {
         margin-bottom: 1em;
     }
 }
+
+.report {
+    .final {
+        color: $danger;
+        font-weight: bold;
+        font-size: 1.3em;
+        float: right;
+        text-transform: uppercase;
+    }
+}

@@ -57,7 +57,18 @@ $reportWhen = [
                         <?= $application->status_name ?>
                     </td>
                     <td>
-                        <?= count($application->reports) ?>
+                        <?php if (count($application->reports)): ?>
+                            <?= $this->Html->link(
+                                count($application->reports),
+                                [
+                                    'controller' => 'Reports',
+                                    'action' => 'application',
+                                    $application->id,
+                                ]
+                            ) ?>
+                        <?php else: ?>
+                            <?= count($application->reports) ?>
+                        <?php endif; ?>
                     </td>
                     <td>
                         <?= $this->Html->link(

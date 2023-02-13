@@ -11871,4 +11871,12 @@ footer a {
   margin-bottom: 1em;
 }
 
+.report .final {
+  color: #e30125;
+  font-weight: bold;
+  font-size: 1.3em;
+  float: right;
+  text-transform: uppercase;
+}
+
 /*# sourceMappingURL=style.css.map */
