@@ -21,18 +21,42 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
     ) ?>
 <?php endif; ?>
 
-<p>
-    <strong>Applicant:</strong> <?= $application->user->name ?>
-</p>
-<p>
-    <strong>Category:</strong> <?= $application->category->name ?>
-</p>
-<p>
-    <strong>Funding cycle:</strong> <?= $this->element('FundingCycles/link', ['fundingCycle' => $application->funding_cycle]) ?>
-</p>
-<p>
-    <strong>Amount requested:</strong> $<?= number_format($application->amount_requested) ?>
-</p>
+<table class="table w-auto">
+    <tbody>
+        <tr>
+            <th>
+                Applicant
+            </th>
+            <td>
+                <?= $application->user->name ?>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Category
+            </th>
+            <td>
+                <?= $application->category->name ?>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Funding cycle
+            </th>
+            <td>
+                <?= $this->element('FundingCycles/link', ['fundingCycle' => $application->funding_cycle]) ?>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Amount requested
+            </th>
+            <td>
+                $<?= number_format($application->amount_requested) ?>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 <?php if ($application->images): ?>
     <section class="application-view">
