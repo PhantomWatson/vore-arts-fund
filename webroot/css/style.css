@@ -11609,6 +11609,9 @@ main {
 #header .logo a {
   color: #16507b;
 }
+#header > .container, #header > #voter-app {
+  overflow: visible;
+}
 
 .navbar {
   padding: 0;

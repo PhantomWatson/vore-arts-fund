@@ -958,6 +958,10 @@ $theme-mobile-nav-toggle: #124265;
             color: $theme-link-color;
         }
     }
+
+    > .container {
+        overflow: visible;
+    }
 }
 
 .navbar {

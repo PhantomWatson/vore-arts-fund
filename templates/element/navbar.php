@@ -41,27 +41,73 @@
                             ) ?>
                         </li>
                     <?php endif; ?>
-                    <li>
+                    <li class="nav-item dropdown">
                         <?= $this->Html->link(
                             'Account',
                             ['controller' => 'Users', 'action' => 'account', 'prefix' => false],
-                            ['class' => 'nav-link']
+                            ['class' => 'nav-link dropdown-toggle', 'data-bs-toggle' => 'dropdown']
                         ) ?>
-                    </li>
-                    <li>
-                        <?= $this->Html->link(
-                            'Log Out',
-                            ['controller' => 'Users', 'action' => 'logout', 'prefix' => false],
-                            ['class' => 'nav-link']
-                        ) ?>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <?= $this->Html->link(
+                                    'Account',
+                                    ['controller' => 'Users', 'action' => 'account', 'prefix' => false],
+                                    ['class' => 'dropdown-item']
+                                ) ?>
+                            </li>
+                            <li>
+                                <?= $this->Html->link(
+                                    'Log out',
+                                    ['controller' => 'Users', 'action' => 'logout', 'prefix' => false],
+                                    ['class' => 'dropdown-item']
+                                ) ?>
+                            </li>
+                        </ul>
                     </li>
                     <?php if ($isAdmin): ?>
                         <li>
-                            <?= $this->Html->link(
-                                'Admin',
-                                ['controller' => 'Admin', 'action' => 'index', 'prefix' => 'Admin'],
-                                ['class' => 'nav-link']
-                            ) ?>
+                            <li class="nav-item dropdown">
+                                <?= $this->Html->link(
+                                    'Admin',
+                                    ['controller' => 'Admin', 'action' => 'index', 'prefix' => 'Admin'],
+                                    ['class' => 'nav-link dropdown-toggle', 'data-bs-toggle' => 'dropdown']
+                                ) ?>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <?= $this->Html->link(
+                                            'Applications',
+                                            [
+                                                'prefix' => 'Admin',
+                                                'controller' => 'Applications',
+                                                'action' => 'index',
+                                            ],
+                                            ['class' => 'dropdown-item']
+                                        ) ?>
+                                    </li>
+                                    <li>
+                                        <?= $this->Html->link(
+                                            'Funding Cycles',
+                                            [
+                                                'prefix' => 'Admin',
+                                                'controller' => 'FundingCycles',
+                                                'action' => 'index',
+                                            ],
+                                            ['class' => 'dropdown-item']
+                                        ) ?>
+                                    </li>
+                                    <li>
+                                        <?= $this->Html->link(
+                                            'Questions',
+                                            [
+                                                'prefix' => 'Admin',
+                                                'controller' => 'Questions',
+                                                'action' => 'index',
+                                            ],
+                                            ['class' => 'dropdown-item']
+                                        ) ?>
+                                    </li>
+                                </ul>
+                            </li>
                         </li>
                     <?php endif; ?>
                     <?php if (!$isVerified): ?>
