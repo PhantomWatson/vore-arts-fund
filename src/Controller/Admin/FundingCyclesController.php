@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 
 use App\Application;
 use App\Model\Entity\FundingCycle;
+use Cake\Event\EventInterface;
 use Cake\I18n\FrozenTime;
 
 /**
@@ -16,6 +17,12 @@ use Cake\I18n\FrozenTime;
 
 class FundingCyclesController extends AdminController
 {
+    public function beforeFilter(EventInterface $event): void
+    {
+        parent::beforeFilter($event);
+        $this->addControllerBreadcrumb('Funding Cycles');
+    }
+
     /**
      * Funding cycles index page
      *

@@ -5,10 +5,6 @@
  */
 ?>
 
-<p>
-    <?= $this->Html->link('Back to questions', ['action' => 'index'], ['class' => 'btn btn-secondary']) ?>
-</p>
-
 <?= $this->Form->create($question) ?>
 <fieldset>
     <?php

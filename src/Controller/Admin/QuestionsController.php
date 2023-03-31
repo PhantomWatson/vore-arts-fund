@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 
 use App\Model\Entity\Question;
 use Cake\Datasource\ResultSetInterface;
+use Cake\Event\EventInterface;
 
 /**
  * Questions Controller
@@ -14,6 +15,12 @@ use Cake\Datasource\ResultSetInterface;
  */
 class QuestionsController extends AdminController
 {
+    public function beforeFilter(EventInterface $event): void
+    {
+        parent::beforeFilter($event);
+        $this->addControllerBreadcrumb('Application Questions');
+    }
+
     /**
      * Index method
      *
