@@ -43,7 +43,24 @@ class FundingCyclesController extends AppController
 
         $this->set([
             'fundingCycles' => $fundingCycles,
-            'title' => 'Funding Cycles'
+            'title' => 'Funding Cycles',
+        ]);
+    }
+
+    /**
+     * Shows a single Funding Cycle
+     *
+     * @param int $id FundingCycle ID
+     * @return void
+     */
+    public function view(): void
+    {
+        $id = $this->request->getParam('id');
+        $fundingCycle = $this->FundingCycles->get($id);
+
+        $this->set([
+            'fundingCycle' => $fundingCycle,
+            'title' => $fundingCycle->name . ' Funding Cycle',
         ]);
     }
 }

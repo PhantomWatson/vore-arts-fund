@@ -28,7 +28,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
     <strong>Category:</strong> <?= $application->category->name ?>
 </p>
 <p>
-    <strong>Funding cycle:</strong> <?= $application->funding_cycle->name ?>
+    <strong>Funding cycle:</strong> <?= $this->element('FundingCycles/link', ['fundingCycle' => $application->funding_cycle]) ?>
 </p>
 <p>
     <strong>Amount requested:</strong> $<?= number_format($application->amount_requested) ?>

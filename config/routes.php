@@ -63,6 +63,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
 
     // Funding Cycles
     $builder->connect('/funding-cycles', ['controller' => 'FundingCycles', 'action' => 'index']);
+    $builder->connect('/funding-cycle/{id}', ['controller' => 'FundingCycles', 'action' => 'view']);
 
     $builder->fallbacks(DashedRoute::class);
 });

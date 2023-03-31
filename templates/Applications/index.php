@@ -51,7 +51,7 @@ $reportWhen = [
                     <td>
                         <?= $application->created->format('F j, Y') ?>
                         <br />
-                        <?= $application->funding_cycle->name ?> funding cycle
+                        <?= $this->element('FundingCycles/link', ['fundingCycle' => $application->funding_cycle]) ?>
                     </td>
                     <td>
                         <?= $application->status_name ?>
