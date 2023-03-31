@@ -22,6 +22,7 @@
 <?= $this->Html->link(
     'Back',
     [
+        'prefix' => false,
         'controller' => 'Users',
         'action' => 'account',
     ],

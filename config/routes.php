@@ -36,11 +36,6 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/terms', ['controller' => 'Pages', 'action' => 'terms']);
 
     // Applications
-    $builder->connect('/my-applications', ['controller' => 'Applications', 'action' => 'index']);
-    $builder->connect('/my-applications/{id}', ['controller' => 'Applications', 'action' => 'viewMy']);
-    $builder->connect('/my-applications/edit/{id}', ['controller' => 'Applications', 'action' => 'edit']);
-    $builder->connect('/my-applications/delete/{id}', ['controller' => 'Applications', 'action' => 'delete']);
-    $builder->connect('/my-applications/withdraw/{id}', ['controller' => 'Applications', 'action' => 'withdraw']);
     $builder->connect('/application/{id}', ['controller' => 'Applications', 'action' => 'view']);
     $builder->connect('/apply', ['controller' => 'Applications', 'action' => 'apply']);
 
@@ -68,7 +63,16 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->fallbacks(DashedRoute::class);
 });
 
-// Admin Routes
+// "My Foo" routes
+$routes->prefix('my', function (RouteBuilder $builder) {
+    $builder->connect('/applications', ['controller' => 'Applications', 'action' => 'index']);
+    $builder->connect('/applications/{id}', ['controller' => 'Applications', 'action' => 'viewMy']);
+    $builder->connect('/applications/edit/{id}', ['controller' => 'Applications', 'action' => 'edit']);
+    $builder->connect('/applications/delete/{id}', ['controller' => 'Applications', 'action' => 'delete']);
+    $builder->connect('/applications/withdraw/{id}', ['controller' => 'Applications', 'action' => 'withdraw']);
+});
+
+// Admin routes
 $routes->prefix('admin', function (RouteBuilder $builder) {
     // Admin
     $builder->connect('/', ['controller' => 'Admin', 'action' => 'index']);

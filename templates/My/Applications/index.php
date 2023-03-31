@@ -24,6 +24,7 @@ $reportWhen = [
     <?= $this->Html->link(
         'Submit a new application for funding',
         [
+            'prefix' => false,
             'controller' => 'Applications',
             'action' => 'apply',
         ],
@@ -61,6 +62,7 @@ $reportWhen = [
                             <?= $this->Html->link(
                                 count($application->reports),
                                 [
+                                    'prefix' => false,
                                     'controller' => 'Reports',
                                     'action' => 'application',
                                     $application->id,
@@ -77,7 +79,6 @@ $reportWhen = [
                                 'controller' => 'Applications',
                                 'action' => 'viewMy',
                                 'id' => $application->id,
-                                '?' => ['back' => Router::url()],
                             ],
                             ['title' => 'View application', 'class' => 'btn btn-secondary']
                         ) ?>
@@ -107,6 +108,7 @@ $reportWhen = [
                             <?= $this->Html->link(
                                 'Submit report',
                                 [
+                                    'prefix' => false,
                                     'controller' => 'Reports',
                                     'action' => 'submit',
                                     $application->id,

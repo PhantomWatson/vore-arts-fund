@@ -17,11 +17,12 @@
 
 <?= $this->Form->create() ?>
 
-<h4> Are you sure you want to withdraw? </h4>
+<h4>Are you sure you want to delete your application?</h4>
 <?= $this->Form->submit(__('Yes'), ['class' => 'btn btn-primary']) ?>
 <?= $this->Html->link(
     'Back',
     [
+        'prefix' => false,
         'controller' => 'Users',
         'action' => 'account',
     ],

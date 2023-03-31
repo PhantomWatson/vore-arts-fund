@@ -162,7 +162,7 @@ class ApplicationsTable extends Table
      * @param int $applicationId
      * @return EntityInterface|Application|null
      */
-    protected function getForForm($applicationId)
+    public function getForForm($applicationId)
     {
         return $this
             ->find()

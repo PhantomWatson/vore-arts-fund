@@ -32,7 +32,6 @@ class ApplicationsController extends AppController
         $this->Images = $this->fetchTable('Images');
 
         $this->Authentication->allowUnauthenticated(['apply']);
-        $this->addControllerBreadcrumb('Applications');
     }
 
     /**
@@ -40,7 +39,7 @@ class ApplicationsController extends AppController
      *
      * @param FrozenTime $deadline
      */
-    private function setFromNow($deadline)
+    protected function setFromNow($deadline)
     {
         // Set times to 00:00 to make "days from now" math easier
         $deadline = $deadline->setTime(0, 0, 0, 0);
@@ -66,9 +65,6 @@ class ApplicationsController extends AppController
      * Page for submitting an application
      *
      * @return \Cake\Http\Response|null
-     * @throws \Cake\Http\Exception\ForbiddenException When a directory traversal attempt.
-     * @throws \Cake\Http\Exception\NotFoundException When the view file could not
-     *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
     public function apply(): ?Response
     {
@@ -156,7 +152,7 @@ class ApplicationsController extends AppController
      * @param array $data
      * @return bool
      */
-    private function processApplication($application, $data): bool
+    protected function processApplication($application, $data): bool
     {
         $addressData = ['address' => $data['address'], 'zipcode' => $data['zipcode']];
         if (!$this->processAddressUpdate($addressData)) {
@@ -279,25 +275,9 @@ class ApplicationsController extends AppController
     }
 
     /**
-     * Page for viewing one's own application
-     *
      * @return \Cake\Http\Response|null
      */
-    public function viewMy(): ?Response
-    {
-        $applicationId = $this->request->getParam('id');
-        if (!$this->isOwnApplication($applicationId)) {
-            $this->Flash->error('Sorry, but that application is not available to view');
-            return $this->redirect('/');
-        }
-
-        return $this->_view();
-    }
-
-    /**
-     * @return \Cake\Http\Response|null
-     */
-    private function _view()
+    protected function _view()
     {
         $applicationId = $this->request->getParam('id');
         if (!$this->Applications->exists(['Applications.id' => $applicationId])) {
@@ -312,7 +292,7 @@ class ApplicationsController extends AppController
             'back' => $this->getRequest()->getQuery('back'),
             'questions' => $questionsTable->find('forApplication')->toArray(),
         ]);
-        $this->viewBuilder()->setTemplate('view');
+        $this->viewBuilder()->setTemplate('/Applications/view');
         $this->title('Application: ' . $application->title);
 
         $this->setCurrentBreadcrumb($application->title);
@@ -321,120 +301,16 @@ class ApplicationsController extends AppController
     }
 
     /**
-     * Page for withdrawing an application from consideration
-     *
-     * @return void
-     */
-    public function withdraw()
-    {
-        $id = $this->request->getParam('id');
-        $application = $this->Applications->find()->where(['id' => $id])->first();
-        if ($this->request->is('post')) {
-            $application = $this->Applications->patchEntity($application, ['status_id' => Application::STATUS_WITHDRAWN]);
-            if ($this->Applications->save($application)) {
-                $this->Flash->success('Application withdrawn.');
-            }
-        }
-        $this->set(['title' => 'Withdraw']);
-    }
-
-    /**
-     * Page for updating a draft or (re)submitting an application
-     *
-     * @return \Cake\Http\Response|null
-     */
-    public function edit(): ?Response
-    {
-        // Confirm application exists
-        $applicationId = $this->request->getParam('id');
-        if (!$this->isOwnApplication($applicationId)) {
-            $this->Flash->error('That application was not found');
-            return $this->redirect('/');
-        }
-
-        // Confirm application can be updated
-        /** @var Application $application */
-        $application = $this->Applications->getForForm($applicationId);
-        if (!$application->isUpdatable()) {
-            $this->Flash->error('That application cannot currently be updated.');
-            return $this->redirect('/');
-        }
-
-        // Set up view vars
-        $this->title('Update and Submit');
-        $this->viewBuilder()->setTemplate('form');
-        $this->setFromNow($application->getSubmitDeadline());
-        $this->setApplicationVars();
-
-        // Process form
-        if ($this->request->is('put')) {
-            $data = $this->request->getData();
-
-            // If saving, status doesn't change. Otherwise, it's submitted for review.
-            $savingToDraft = isset($data['save']);
-            if (!$savingToDraft) {
-                $application->status_id = Application::STATUS_UNDER_REVIEW;
-            }
-
-            if ($this->processApplication($application, $data)) {
-                return $this->redirect(['action' => 'index']);
-            }
-        } else {
-            $identity = $this->Authentication->getIdentity();
-            $userId = $identity->getIdentifier();
-            $usersTable = TableRegistry::getTableLocator()->get('Users');
-            $user = $usersTable->get($userId);
-            $application->address = $user->address;
-            $application->zipcode = $user->zipcode;
-        }
-
-        $this->set(compact('application'));
-
-        return null;
-    }
-
-    /**
-     * Page for removing an application
-     *
-     * @return void
-     */
-    public function delete()
-    {
-        $id = $this->request->getParam('id');
-        $application = $this->Applications->find()->where(['id' => $id])->first();
-        if ($this->request->is('delete')) {
-            if ($this->Applications->delete($application)) {
-                $this->Flash->success('Application has been deleted');
-            }
-        }
-        $this->title('Delete');
-    }
-
-    public function index()
-    {
-        $this->title('My Applications');
-        /** @var \App\Model\Entity\User $user */
-        $user = $this->Authentication->getIdentity();
-        $applications = $this->Applications
-            ->find()
-            ->where(['user_id' => $user->id])
-            ->orderDesc('Applications.created')
-            ->contain(['FundingCycles', 'Reports'])
-            ->all();
-        $this->set(compact('applications'));
-    }
-
-    /**
      * Sets view variables needed by the application form
      *
      * @return void
      */
-    private function setApplicationVars()
+    protected function setApplicationVars()
     {
         /** @var FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->find('current')->first();
         $categories = $this->Categories->getOrdered();
-        $deadline = $fundingCycle->application_end->format('F j, Y');
+        $deadline = $fundingCycle?->application_end->format('F j, Y');
         $questionsTable = $this->fetchTable('Questions');
         $questions = $questionsTable->find('forApplication')->toArray();
         $this->set(compact('categories', 'fundingCycle', 'deadline', 'questions'));

@@ -36,7 +36,7 @@
                         <li>
                             <?= $this->Html->link(
                                 'My Applications',
-                                ['controller' => 'Applications', 'action' => 'index', 'prefix' => false],
+                                ['prefix' => 'My', 'controller' => 'Applications', 'action' => 'index'],
                                 ['class' => 'nav-link']
                             ) ?>
                         </li>

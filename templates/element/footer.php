@@ -18,6 +18,7 @@ $links = [
                 <?= $this->Html->link(
                     $label,
                     [
+                        'prefix' => false,
                         'controller' => 'Pages',
                         'action' => $action,
                     ]

@@ -23,6 +23,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
     <?= $this->Html->link(
         'Funding Cycles',
         [
+            'prefix' => false,
             'controller' => 'FundingCycles',
             'action' => 'index',
         ]
