@@ -16,6 +16,7 @@ class AdminController extends AppController
     public function index()
     {
         $this->title('Admin Dashboard');
+        $this->setCurrentBreadcrumb('Admin');
     }
 
     /**
@@ -32,5 +33,6 @@ class AdminController extends AppController
         if (!($user->is_admin ?? false)) {
             throw new ForbiddenException();
         }
+        $this->addBreadcrumb('Admin', ['controller' => 'Admin', 'action' => 'index']);
     }
 }

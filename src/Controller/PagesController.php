@@ -89,6 +89,7 @@ class PagesController extends AppController
     public function about()
     {
         $this->title('About the Vore Arts Fund');
+        $this->setCurrentBreadcrumb('About');
     }
 
     /**

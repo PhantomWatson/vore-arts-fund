@@ -10,18 +10,6 @@
  */
 ?>
 
-<p>
-    <?= $this->Html->link(
-        'Back',
-        [
-            'prefix' => 'Admin',
-            'controller' => 'Applications',
-            'action' => 'index',
-        ],
-        ['class' => 'btn btn-secondary']
-    ) ?>
-</p>
-
 <div class="row">
     <div class="col-md-6">
         <?= $this->element('../Applications/view') ?>

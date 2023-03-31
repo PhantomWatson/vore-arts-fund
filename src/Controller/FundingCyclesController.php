@@ -19,6 +19,7 @@ class FundingCyclesController extends AppController
     {
         parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated(['index']);
+        $this->addControllerBreadcrumb('Funding Cycles');
     }
 
     /**
@@ -62,5 +63,6 @@ class FundingCyclesController extends AppController
             'fundingCycle' => $fundingCycle,
             'title' => $fundingCycle->name . ' Funding Cycle',
         ]);
+        $this->setCurrentBreadcrumb($fundingCycle->name);
     }
 }

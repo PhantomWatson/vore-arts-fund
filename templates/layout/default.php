@@ -1,6 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var array $breadcrumbs
+ * @var string $currentBreadcrumb
  */
 
 $title = $title ?? $this->fetch('title');
@@ -37,6 +39,7 @@ $title = $title ?? $this->fetch('title');
     <?= $this->element('navbar') ?>
     <main class="container clearfix">
         <?= $this->Flash->render() ?>
+        <?= $this->element('breadcrumbs', compact('breadcrumbs', 'currentBreadcrumb', 'title')) ?>
         <?= $this->title() ?>
         <?= $this->fetch('content') ?>
         <?= $this->element('footer') ?>

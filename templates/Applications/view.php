@@ -13,14 +13,6 @@ use Cake\Utility\Hash;
 $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 ?>
 
-<?php if ($back): ?>
-    <?= $this->Html->link(
-        'Back',
-        $back,
-        ['class' => 'btn btn-secondary']
-    ) ?>
-<?php endif; ?>
-
 <table class="table w-auto">
     <tbody>
         <tr>

@@ -32,6 +32,7 @@ class ApplicationsController extends AppController
         $this->Images = $this->fetchTable('Images');
 
         $this->Authentication->allowUnauthenticated(['apply']);
+        $this->addControllerBreadcrumb('Applications');
     }
 
     /**
@@ -313,6 +314,8 @@ class ApplicationsController extends AppController
         ]);
         $this->viewBuilder()->setTemplate('view');
         $this->title('Application: ' . $application->title);
+
+        $this->setCurrentBreadcrumb($application->title);
 
         return null;
     }

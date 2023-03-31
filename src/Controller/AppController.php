@@ -21,6 +21,9 @@ use Cake\View\JsonView;
  */
 class AppController extends Controller
 {
+    protected array $breadcrumbs;
+    protected string $currentBreadcrumb = '';
+
     /**
      * Initialization hook method.
      *
@@ -56,6 +59,8 @@ class AppController extends Controller
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
+
+        $this->addBreadcrumb('Home', '/');
 
         /** @var \App\Model\Entity\User|null $user */
         $user = $this->Authentication->getIdentity();
@@ -110,5 +115,51 @@ class AppController extends Controller
         $applicationsTable = TableRegistry::getTableLocator()->get('Applications');
 
         return $applicationsTable->exists(['id' => $applicationId, 'user_id' => $user->id]);
+    }
+
+    /**
+     * @param string $title
+     * @param array|string $url
+     * @return void
+     */
+    protected function addBreadcrumb($title, $url)
+    {
+        $this->breadcrumbs[] = [$title, $url];
+    }
+
+    /**
+     * Used for adding a breadcrumb to be applied to all pages under this controller
+     *
+     * @param $title
+     * @return void
+     */
+    protected function addControllerBreadcrumb($title)
+    {
+        $this->addBreadcrumb(
+            $title,
+            [
+                'prefix' => $this->request->getParam('prefix'),
+                'controller' => $this->name,
+                'action' => 'index'
+            ]
+        );
+    }
+
+    /**
+     * @param string $title
+     * @return void
+     */
+    protected function setCurrentBreadcrumb($title)
+    {
+        $this->currentBreadcrumb = $title;
+    }
+
+    public function beforeRender(EventInterface $event)
+    {
+        parent::beforeRender($event);
+        $this->set([
+            'breadcrumbs' => $this->breadcrumbs,
+            'currentBreadcrumb' => $this->currentBreadcrumb,
+        ]);
     }
 }

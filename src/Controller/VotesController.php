@@ -70,6 +70,7 @@ class VotesController extends AppController
         $showUpcoming = $hasVoted || !$cycle || !$applications;
         $canVote = $user && $user->is_verified && !$showUpcoming;
 
+        $this->setCurrentBreadcrumb('Vote');
         $this->title(
             $cycle
                 ? 'Vote: ' . $cycle->name

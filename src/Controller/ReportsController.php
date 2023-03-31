@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Event\EventInterface;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
@@ -16,6 +17,12 @@ use Cake\Routing\Router;
  */
 class ReportsController extends AppController
 {
+    public function beforeFilter(EventInterface $event): void
+    {
+        parent::beforeFilter($event);
+        $this->setCurrentBreadcrumb('Reports');
+    }
+
     /**
      * Index method
      *

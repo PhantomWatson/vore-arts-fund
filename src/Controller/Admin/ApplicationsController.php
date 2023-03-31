@@ -7,6 +7,7 @@ use App\Event\MailListener;
 use App\Model\Entity\Application;
 use App\Model\Entity\User;
 use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\Http\Response;
 
 /**
@@ -20,6 +21,12 @@ use Cake\Http\Response;
 
 class ApplicationsController extends AdminController
 {
+    public function beforeFilter(EventInterface $event): void
+    {
+        parent::beforeFilter($event);
+        $this->addControllerBreadcrumb('Applications');
+    }
+
     /**
      * Applications index page
      *
@@ -124,6 +131,7 @@ class ApplicationsController extends AdminController
             'statusOptions',
         ));
         $this->title('Application: ' . $application->title);
+        $this->setCurrentBreadcrumb($application->title);
 
         return null;
     }
