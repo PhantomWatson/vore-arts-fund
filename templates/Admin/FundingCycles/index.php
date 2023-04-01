@@ -24,7 +24,7 @@ $dateFormat = 'MMM d, YYYY';
         <h2>
             <?= ucwords($group) ?>
         </h2>
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Application Dates</th>
