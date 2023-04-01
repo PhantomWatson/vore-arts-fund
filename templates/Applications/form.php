@@ -34,15 +34,36 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
     <?= $this->Form->create($application, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>
         <legend>
-            Eligibility
+            Applicant Eligibility
         </legend>
-        <?= $this->element('eligibility') ?>
+        <p>
+            To apply for funding, you must attest that the applicant
+        </p>
+        <?= $this->element('eligibility_applicant') ?>
         <div class="form-check required">
-            <input class="form-check-input" type="checkbox" value="" id="eligibility-agree-checkbox" required="required"
+            <input class="form-check-input" type="checkbox" value="" id="eligibility-applicant-agree-checkbox" required="required"
                 <?= $application->isNew() ? '' : 'checked="checked"' ?>
             >
-            <label class="form-check-label" for="eligibility-agree-checkbox">
-                I am eligible to apply, and this project qualifies for funding
+            <label class="form-check-label" for="eligibility-applicant-agree-checkbox">
+                I am eligible to apply
+            </label>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>
+            Project Eligibility
+        </legend>
+        <p>
+            To apply for funding, you must attest that the project for which funding is requested
+        </p>
+        <?= $this->element('eligibility_project') ?>
+        <div class="form-check required">
+            <input class="form-check-input" type="checkbox" value="" id="eligibility-project-agree-checkbox" required="required"
+                <?= $application->isNew() ? '' : 'checked="checked"' ?>
+            >
+            <label class="form-check-label" for="eligibility-project-agree-checkbox">
+                This project qualifies for funding
             </label>
         </div>
     </fieldset>
@@ -58,7 +79,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                 <?= $application->isNew() ? '' : 'checked="checked"' ?>
             >
             <label class="form-check-label" for="loan-terms-agree-checkbox">
-                I understand
+                I agree to these terms
             </label>
         </div>
     </fieldset>
