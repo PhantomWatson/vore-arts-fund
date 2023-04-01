@@ -92,6 +92,19 @@ $reportWhen = [
                                 ],
                                 ['class' => 'btn btn-secondary']
                             ) ?>
+                            <?= $this->Form->postLink(
+                                'Delete',
+                                [
+                                    'prefix' => 'My',
+                                    'controller' => 'Applications',
+                                    'action' => 'delete',
+                                    'id' => $application->id,
+                                ],
+                                [
+                                    'class' => 'btn btn-secondary',
+                                    'confirm' => 'Are you sure you want to delete this application?'
+                                ]
+                            ) ?>
                         <?php endif; ?>
                         <?php if (in_array($application->status_id, $withdrawWhen)): ?>
                             <?= $this->Html->link(
