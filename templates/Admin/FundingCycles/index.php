@@ -20,15 +20,16 @@ $dateFormat = 'MMM d, YYYY';
 
 <?php foreach (['current', 'future', 'past'] as $group): ?>
     <?php if (!count($fundingCycles[$group])) continue; ?>
-    <section>
+    <section class="funding-cycles">
         <h2>
             <?= ucwords($group) ?>
         </h2>
         <table class="table">
             <thead>
                 <tr>
-                    <th>Application Dates</th>
-                    <th>Voting Dates</th>
+                    <th>Cycle</th>
+                    <th>Application Period</th>
+                    <th>Voting Period</th>
                     <th>Funding Available</th>
                     <th></th>
                 </tr>
@@ -36,16 +37,23 @@ $dateFormat = 'MMM d, YYYY';
             <tbody>
                 <?php foreach ($fundingCycles[$group] as $fundingCycle): ?>
                     <tr>
-                        <td><?= sprintf(
+                        <td>
+                            <?= $fundingCycle->name ?>
+                        </td>
+                        <td>
+                            <?= sprintf(
                                 '%s to %s',
                                 $fundingCycle['application_begin']->i18nFormat($dateFormat),
                                 $fundingCycle['application_end']->i18nFormat($dateFormat)
-                            ) ?></td>
-                        <td><?= sprintf(
+                            ) ?>
+                        </td>
+                        <td>
+                            <?= sprintf(
                                 '%s to %s',
                                 $fundingCycle['vote_begin']->i18nFormat($dateFormat),
                                 $fundingCycle['vote_end']->i18nFormat($dateFormat)
-                            ) ?></td>
+                            ) ?>
+                        </td>
                         <td>
                             $<?= number_format($fundingCycle['funding_available']) ?>
                         </td>
