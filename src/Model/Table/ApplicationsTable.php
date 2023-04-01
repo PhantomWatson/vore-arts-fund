@@ -73,10 +73,11 @@ class ApplicationsTable extends Table
             'foreignKey' => 'application_id',
         ]);
         $this->hasMany('Votes', [
-            'foreignKey' => 'application_id',
+            'foreignKey' => 'application_id'
         ]);
         $this->hasMany('Answers', [
             'foreignKey' => 'application_id',
+            'dependent' => true,
         ]);
         $this->hasMany('Reports', [
             'foreignKey' => 'application_id',
