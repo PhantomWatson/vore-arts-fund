@@ -42,7 +42,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                 <?= $application->isNew() ? '' : 'checked="checked"' ?>
             >
             <label class="form-check-label" for="eligibility-agree-checkbox">
-                This project and I are eligible for funding
+                I am eligible to apply, and this project qualifies for funding
             </label>
         </div>
     </fieldset>
