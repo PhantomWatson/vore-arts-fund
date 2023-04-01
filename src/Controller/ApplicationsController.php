@@ -110,7 +110,11 @@ class ApplicationsController extends AppController
             $application->user_id = $userId;
             $application->funding_cycle_id = $fundingCycle->id;
             if ($this->processApplication($application, $data)) {
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect([
+                    'prefix' => 'My',
+                    'controller' => 'Applications',
+                    'action' => 'index'
+                ]);
             }
         } else {
             /** @var Application $application */
