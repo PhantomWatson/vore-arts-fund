@@ -124,13 +124,13 @@ class ApplicationsController extends BaseApplicationsController
     public function delete()
     {
         $id = $this->request->getParam('id');
-        $application = $this->Applications->find()->where(['id' => $id])->first();
-        if ($this->request->is('delete')) {
-            if ($this->Applications->delete($application)) {
-                $this->Flash->success('Application has been deleted');
-            }
+        $application = $this->Applications->get($id);
+        if ($this->request->is(['delete', 'post']) && $this->Applications->delete($application)) {
+            $this->Flash->success('Application has been deleted');
+        } else {
+            $this->Flash->error('There was an error deleting that application');
         }
-        $this->title('Delete');
+        return $this->redirect($this->referer());
     }
 
     public function index()
