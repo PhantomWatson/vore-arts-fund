@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\Application;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
@@ -20,7 +21,7 @@ class ReportsController extends AppController
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
-        $this->setCurrentBreadcrumb('Reports');
+        $this->addControllerBreadcrumb();
     }
 
     /**
@@ -50,8 +51,26 @@ class ReportsController extends AppController
         $report = $this->Reports->get($id, [
             'contain' => ['Users', 'Applications'],
         ]);
+        $this->addBreadcrumbForApplication($report->application);
+        $this->setCurrentBreadcrumb($report->created->format('F j, Y'));
 
         $this->set(compact('report'));
+    }
+
+    /**
+     * @param Application $application
+     * @return void
+     */
+    private function addBreadcrumbForApplication(Application $application): void
+    {
+        $this->addBreadcrumb(
+            $application->title,
+            [
+                'controller' => 'Reports',
+                'action' => 'application',
+                'id' => $application->id,
+            ]
+        );
     }
 
     /**
@@ -88,19 +107,22 @@ class ReportsController extends AppController
         $this->set(compact('report', 'application'));
         $this->viewBuilder()->setTemplate('form');
         $this->title('Submit report for ' . $application->title);
+
+        $this->addBreadcrumbForApplication($application);
+        $this->setCurrentBreadcrumb('Submit');
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Report id.
+     * @param string|null $reportId Report id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($reportId = null)
     {
-        $report = $this->Reports->get($id, [
-            'contain' => [],
+        $report = $this->Reports->get($reportId, [
+            'contain' => ['Applications'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $report = $this->Reports->patchEntity($report, $this->request->getData());
@@ -115,6 +137,16 @@ class ReportsController extends AppController
         $applications = $this->Reports->Applications->find('list', ['limit' => 200])->all();
         $this->set(compact('report', 'users', 'applications'));
         $this->viewBuilder()->setTemplate('form');
+
+        $this->addBreadcrumbForApplication($report->application);
+        $this->addBreadcrumb(
+            $report->created->format('F j, Y'),
+            [
+                'action' => 'view',
+                'id' => $reportId,
+            ]
+        );
+        $this->setCurrentBreadcrumb('Edit');
     }
 
     /**
@@ -152,6 +184,8 @@ class ReportsController extends AppController
         $this->set(compact('reports'));
         $applicationsTable = TableRegistry::getTableLocator()->get('Applications');
         $application = $applicationsTable->get($applicationId);
-        $this->title('Reports for ' . $application->title);
+        $this->title($application->title);
+
+        $this->setCurrentBreadcrumb($application->title);
     }
 }

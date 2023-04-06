@@ -60,16 +60,35 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/funding-cycles', ['controller' => 'FundingCycles', 'action' => 'index']);
     $builder->connect('/funding-cycle/{id}', ['controller' => 'FundingCycles', 'action' => 'view']);
 
+    // Reports
+    $builder->connect('/report/:id', ['controller' => 'Reports', 'action' => 'view'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);
+    $builder->connect('/reports/for-application/:id', ['controller' => 'Reports', 'action' => 'application'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);
+    $builder->connect('/reports/submit/:id', ['controller' => 'Reports', 'action' => 'submit'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);
+
     $builder->fallbacks(DashedRoute::class);
 });
 
 // "My Foo" routes
 $routes->prefix('my', function (RouteBuilder $builder) {
     $builder->connect('/applications', ['controller' => 'Applications', 'action' => 'index']);
-    $builder->connect('/applications/{id}', ['controller' => 'Applications', 'action' => 'viewMy']);
-    $builder->connect('/applications/edit/{id}', ['controller' => 'Applications', 'action' => 'edit']);
-    $builder->connect('/applications/delete/{id}', ['controller' => 'Applications', 'action' => 'delete']);
-    $builder->connect('/applications/withdraw/{id}', ['controller' => 'Applications', 'action' => 'withdraw']);
+    $builder->connect('/applications/{id}', ['controller' => 'Applications', 'action' => 'view'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);
+    $builder->connect('/applications/edit/{id}', ['controller' => 'Applications', 'action' => 'edit'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);;
+    $builder->connect('/applications/delete/{id}', ['controller' => 'Applications', 'action' => 'delete'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);;
+    $builder->connect('/applications/withdraw/{id}', ['controller' => 'Applications', 'action' => 'withdraw'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);;
 });
 
 // Admin routes
