@@ -32,7 +32,7 @@ class ApplicationsController extends BaseApplicationsController
      *
      * @return \Cake\Http\Response|null
      */
-    public function viewMy(): ?Response
+    public function view(): ?Response
     {
         $applicationId = $this->request->getParam('id');
         if (!$this->isOwnApplication($applicationId)) {
