@@ -133,8 +133,12 @@ class AppController extends Controller
      * @param $title
      * @return void
      */
-    protected function addControllerBreadcrumb($title)
+    protected function addControllerBreadcrumb($title = null)
     {
+        if (!$title) {
+            $title = $this->name;
+        }
+
         $this->addBreadcrumb(
             $title,
             [

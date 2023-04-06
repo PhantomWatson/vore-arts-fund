@@ -24,7 +24,7 @@ class ApplicationsController extends AdminController
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
-        $this->addControllerBreadcrumb('Applications');
+        $this->addControllerBreadcrumb();
     }
 
     /**
