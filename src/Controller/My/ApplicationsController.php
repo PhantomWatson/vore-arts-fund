@@ -119,7 +119,7 @@ class ApplicationsController extends BaseApplicationsController
     /**
      * Page for removing an application
      *
-     * @return void
+     * @return Response
      */
     public function delete()
     {
