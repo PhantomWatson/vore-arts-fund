@@ -33,7 +33,7 @@ $reportWhen = [
 </p>
 
 <?php if ($applications->count()): ?>
-    <table class="table">
+    <table class="table" id="my-applications">
         <thead>
             <tr>
                 <th>Project</th>
@@ -73,62 +73,84 @@ $reportWhen = [
                         <?php endif; ?>
                     </td>
                     <td>
-                        <?= $this->Html->link(
-                            'View',
-                            [
-                                'controller' => 'Applications',
-                                'action' => 'viewMy',
-                                'id' => $application->id,
-                            ],
-                            ['title' => 'View application', 'class' => 'btn btn-secondary']
-                        ) ?>
-                        <?php if (in_array($application->status_id, $updateWhen)): ?>
-                            <?= $this->Html->link(
-                                'Update / Submit',
-                                [
-                                    'controller' => 'Applications',
-                                    'action' => 'edit',
-                                    'id' => $application->id,
-                                ],
-                                ['class' => 'btn btn-secondary']
-                            ) ?>
-                            <?= $this->Form->postLink(
-                                'Delete',
-                                [
-                                    'prefix' => 'My',
-                                    'controller' => 'Applications',
-                                    'action' => 'delete',
-                                    'id' => $application->id,
-                                ],
-                                [
-                                    'class' => 'btn btn-secondary',
-                                    'confirm' => 'Are you sure you want to delete this application?'
-                                ]
-                            ) ?>
-                        <?php endif; ?>
-                        <?php if (in_array($application->status_id, $withdrawWhen)): ?>
-                            <?= $this->Html->link(
-                                'Withdraw',
-                                [
-                                    'controller' => 'Applications',
-                                    'action' => 'withdraw',
-                                    'id' => $application->id,
-                                ],
-                                ['class' => 'btn btn-secondary']
-                            ) ?>
-                        <?php endif; ?>
-                        <?php if (in_array($application->status_id, $reportWhen)): ?>
-                            <?= $this->Html->link(
-                                'Submit report',
-                                [
-                                    'prefix' => false,
-                                    'controller' => 'Reports',
-                                    'action' => 'submit',
-                                    $application->id,
-                                ],
-                                ['class' => 'btn btn-secondary']
-                            ) ?>
-                        <?php endif; ?>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Actions
+                            </button>
+
+                            <ul class="dropdown-menu">
+                                <?= $this->Html->link(
+                                    '<i class="fa-solid fa-eye"></i> View application',
+                                    [
+                                        'controller' => 'Applications',
+                                        'action' => 'viewMy',
+                                        'id' => $application->id,
+                                    ],
+                                    [
+                                        'class' => 'dropdown-item',
+                                        'escape' => false
+                                    ]
+                                ) ?>
+                                <?php if (in_array($application->status_id, $updateWhen)): ?>
+                                    <?= $this->Html->link(
+                                        '<i class="fa-solid fa-pencil"></i> Update / Submit',
+                                        [
+                                            'controller' => 'Applications',
+                                            'action' => 'edit',
+                                            'id' => $application->id,
+                                        ],
+                                        [
+                                            'class' => 'dropdown-item',
+                                            'escape' => false
+                                        ]
+                                    ) ?>
+                                    <?= $this->Form->postLink(
+                                        '<i class="fa-solid fa-trash"></i> Delete',
+                                        [
+                                            'prefix' => 'My',
+                                            'controller' => 'Applications',
+                                            'action' => 'delete',
+                                            'id' => $application->id,
+                                        ],
+                                        [
+                                            'class' => 'dropdown-item',
+                                            'confirm' => 'Are you sure you want to delete this application?',
+                                            'escape' => false
+                                        ]
+                                    ) ?>
+                                <?php endif; ?>
+                                <?php if (in_array($application->status_id, $withdrawWhen)): ?>
+                                    <?= $this->Html->link(
+                                        '<i class="fa-solid fa-ban"></i> Withdraw',
+                                        [
+                                            'controller' => 'Applications',
+                                            'action' => 'withdraw',
+                                            'id' => $application->id,
+                                        ],
+                                        [
+                                            'class' => 'dropdown-item',
+                                            'escape' => false
+                                        ]
+                                    ) ?>
+                                <?php endif; ?>
+                                <?php if (in_array($application->status_id, $reportWhen)): ?>
+                                    <?= $this->Html->link(
+                                        '<i class="fa-solid fa-file-lines"></i> Submit report',
+                                        [
+                                            'prefix' => false,
+                                            'controller' => 'Reports',
+                                            'action' => 'submit',
+                                            $application->id,
+                                        ],
+                                        [
+                                            'class' => 'dropdown-item',
+                                            'escape' => false
+                                        ]
+                                    ) ?>
+                                <?php endif; ?>
+
+                            </ul>
+                        </div>
                     </td>
                 </tr>
             <?php endforeach; ?>

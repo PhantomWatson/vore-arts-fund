@@ -11886,4 +11886,9 @@ footer a {
   margin: 2em 0;
 }
 
+#my-applications .dropdown-item i {
+  margin-right: 0.25em;
+  width: 1.5em;
+}
+
 /*# sourceMappingURL=style.css.map */
