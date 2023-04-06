@@ -51,7 +51,7 @@ $reportWhen = [
                             $application->title,
                             [
                                 'controller' => 'Applications',
-                                'action' => 'viewMy',
+                                'action' => 'view',
                                 'id' => $application->id,
                             ],
                         ) ?>
@@ -90,7 +90,7 @@ $reportWhen = [
                                     '<i class="fa-solid fa-eye"></i> View application',
                                     [
                                         'controller' => 'Applications',
-                                        'action' => 'viewMy',
+                                        'action' => 'view',
                                         'id' => $application->id,
                                     ],
                                     [
