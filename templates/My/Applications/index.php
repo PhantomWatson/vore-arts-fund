@@ -47,7 +47,14 @@ $reportWhen = [
             <?php foreach ($applications as $application): ?>
                 <tr>
                     <td>
-                        <?= $application->title ?>
+                        <?= $this->Html->link(
+                            $application->title,
+                            [
+                                'controller' => 'Applications',
+                                'action' => 'viewMy',
+                                'id' => $application->id,
+                            ],
+                        ) ?>
                     </td>
                     <td>
                         <?= $application->created->format('F j, Y') ?>
