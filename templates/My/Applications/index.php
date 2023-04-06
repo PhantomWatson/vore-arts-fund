@@ -148,6 +148,21 @@ $reportWhen = [
                                         ]
                                     ) ?>
                                 <?php endif; ?>
+                                <?php if (count($application->reports)): ?>
+                                    <?= $this->Html->link(
+                                        '<i class="fa-solid fa-file-lines"></i> View reports',
+                                        [
+                                            'prefix' => false,
+                                            'controller' => 'Reports',
+                                            'action' => 'application',
+                                            $application->id,
+                                        ],
+                                        [
+                                            'class' => 'dropdown-item',
+                                            'escape' => false
+                                        ]
+                                    ) ?>
+                                <?php endif; ?>
 
                             </ul>
                         </div>
