@@ -15,6 +15,15 @@
     </h2>
     <p class="date">
         <?= $report->created->format('F j, Y') ?>
+        &nbsp; - &nbsp;
+        <?= $this->Html->link(
+            'Go to project',
+            [
+                'controller' => 'Applications',
+                'action' => 'view',
+                'id' => $report->application->id,
+            ],
+        ) ?>
     </p>
     <div class="body">
         <?= nl2br($report->body) ?>
