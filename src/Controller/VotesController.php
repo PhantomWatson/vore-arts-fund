@@ -73,7 +73,7 @@ class VotesController extends AppController
         $this->setCurrentBreadcrumb('Vote');
         $this->title(
             $cycle
-                ? 'Vote: ' . $cycle->name
+                ? 'Vote on Funding Applications'
                 : (
                     $nextCycle
                         ? 'Voting begins ' . $nextCycle->vote_begin->format('F j, Y')
