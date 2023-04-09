@@ -11483,7 +11483,7 @@ body {
   width: auto;
 }
 
-#review-action-column > section {
+#review-action-column section {
   margin-bottom: 2rem;
 }
 #review-action-column .form-group.textarea {
