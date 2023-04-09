@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\Model\Entity\Application[] $applications
+ * @var \App\Model\Entity\FundingCycle[] $cyclesCurrentlyVoting
  * @var \App\Model\Entity\FundingCycle|null $cycle
  * @var \App\Model\Entity\FundingCycle|null $nextCycle
  * @var \App\View\AppView $this
@@ -47,32 +48,32 @@ $bundlePathBase = \Cake\Core\Configure::read('debug')
     </script>
 <?php endif; ?>
 
+<?php if (!$applications): ?>
+    <p>
+        Unfortunately, there are no applications to vote on in this funding cycle.
+    </p>
+<?php endif; ?>
+
 <?php if ($canVote): ?>
     <div>
-        <?php if ($applications): ?>
-            <p>
-                Voting is underway for the applicants in this funding cycle! Here are the steps:
-            </p>
-            <ol>
-                <li>
-                    <strong>Select</strong> all of the applications that you think should be funded.
-                </li>
-                <li>
-                    <strong>Rank</strong> those applications from highest-priority to lowest-priority.
-                </li>
-                <li>
-                    <strong>Submit</strong> your vote!
-                </li>
-            </ol>
-            <p>
-                The deadline to cast your votes is
-                <strong><?= $cycle->vote_end->format('F j, Y') ?></strong>.
-            </p>
-        <?php else: ?>
-            <p>
-                Unfortunately, there are no applications to vote on in this funding cycle.
-            </p>
-        <?php endif; ?>
+        <p>
+            Voting is underway for the applicants in this funding cycle! Here are the steps:
+        </p>
+        <ol>
+            <li>
+                <strong>Select</strong> all of the applications that you think should be funded.
+            </li>
+            <li>
+                <strong>Rank</strong> those applications from highest-priority to lowest-priority.
+            </li>
+            <li>
+                <strong>Submit</strong> your vote!
+            </li>
+        </ol>
+        <p>
+            The deadline to cast your votes is
+            <strong><?= $cycle->vote_end->format('F j, Y') ?></strong>.
+        </p>
     </div>
 
     <?php $this->Html->script('/viewerjs/viewer.min.js', ['block' => 'script']); ?>

@@ -68,7 +68,7 @@ class VotesController extends AppController
         $hasVoted = $user && $cycle && $this->Votes->hasVoted($user->id, $cycle->id);
         $nextCycle = $fundingCyclesTable->find('nextVoting')->first();
         $showUpcoming = $hasVoted || !$cycle || !$applications;
-        $canVote = $user && $user->is_verified && !$showUpcoming;
+        $canVote = $user && $user->is_verified && !$showUpcoming && $applications;
 
         $this->setCurrentBreadcrumb('Vote');
         $this->title(
