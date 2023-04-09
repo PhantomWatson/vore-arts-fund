@@ -5,7 +5,6 @@ namespace App\Controller;
 
 use App\Model\Entity\Application;
 use Cake\Event\EventInterface;
-use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
@@ -27,7 +26,6 @@ class ReportsController extends AppController
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
-        $this->addControllerBreadcrumb();
     }
 
     /**
@@ -40,6 +38,7 @@ class ReportsController extends AppController
         $reports = $this->paginate($this->Reports);
 
         $this->set(compact('reports'));
+        $this->addControllerBreadcrumb();
     }
 
     /**
@@ -55,6 +54,15 @@ class ReportsController extends AppController
             'contain' => ['Users', 'Applications'],
         ]);
         $this->addBreadcrumbForApplication($report->application);
+        $this->addBreadcrumb(
+            'Reports',
+            [
+                'prefix' => false,
+                'controller' => 'Reports',
+                'action' => 'application',
+                $report->application->id,
+            ]
+        );
         $this->setCurrentBreadcrumb($report->created->format('F j, Y'));
 
         $this->set(compact('report'));
@@ -189,6 +197,7 @@ class ReportsController extends AppController
         $application = $applicationsTable->get($applicationId);
         $this->title($application->title);
 
-        $this->setCurrentBreadcrumb($application->title);
+        $this->addBreadcrumbForApplication($application);
+        $this->setCurrentBreadcrumb('Reports');
     }
 }
