@@ -166,4 +166,39 @@ class AppController extends Controller
             'currentBreadcrumb' => $this->currentBreadcrumb,
         ]);
     }
+
+    /**
+     * Return the names of the JS and CSS files that need to be loaded for a React app
+     *
+     * @return array[]
+     */
+    protected function getAppFiles($dir): array
+    {
+        $retval = [
+            'js' => [],
+            'css' => [],
+        ];
+        $dist = WWW_ROOT . $dir . DS . 'dist';
+
+        $files = is_dir($dist) ? scandir($dist) : false;
+        if ($files) {
+            foreach ($files as $file) {
+                if (preg_match('/\.bundle\.js$/', $file) === 1) {
+                    $retval['js'][] = $file;
+                }
+            }
+        }
+
+        $stylesDir = $dist . DS . 'styles';
+        $files = is_dir($stylesDir) ? scandir($stylesDir) : false;
+        if ($files) {
+            foreach ($files as $file) {
+                if (preg_match('/\.css$/', $file) === 1) {
+                    $retval['css'][] = $file;
+                }
+            }
+        }
+
+        return $retval;
+    }
 }

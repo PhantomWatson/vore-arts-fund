@@ -81,7 +81,7 @@ class VotesController extends AppController
                 )
         );
 
-        $toLoad = $this->getVoteAppFiles();
+        $toLoad = $this->getAppFiles('vote-app');
 
         $this->set(compact(
             'applications',
@@ -97,33 +97,5 @@ class VotesController extends AppController
         ]);
 
         return null;
-    }
-
-    /**
-     * Return the names of the JS and CSS files that need to be loaded
-     *
-     * @return array[]
-     */
-    private function getVoteAppFiles(): array
-    {
-        $retval = [
-            'js' => [],
-            'css' => [],
-        ];
-        $dist = WWW_ROOT . 'vote-app' . DS . 'dist';
-        $files = scandir($dist);
-        foreach ($files as $file) {
-            if (preg_match('/\.bundle\.js$/', $file) === 1) {
-                $retval['js'][] = $file;
-            }
-        }
-        $files = scandir($dist . DS . 'styles');
-        foreach ($files as $file) {
-            if (preg_match('/\.css$/', $file) === 1) {
-                $retval['css'][] = $file;
-            }
-        }
-
-        return $retval;
     }
 }

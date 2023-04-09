@@ -79,12 +79,7 @@ $bundlePathBase = \Cake\Core\Configure::read('debug')
     <?php $this->Html->script('/viewerjs/viewer.min.js', ['block' => 'script']); ?>
     <?php $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]); ?>
     <div id="root"></div>
-    <?php foreach ($toLoad['js'] as $file): ?>
-        <?= $this->Html->script("/vote-app/dist/$file") ?>
-    <?php endforeach; ?>
-    <?php foreach ($toLoad['css'] as $file): ?>
-        <?php $this->Html->css("/vote-app/dist/styles/$file", ['block' => true]); ?>
-    <?php endforeach; ?>
+    <?= $this->element('load_app_files', ['dir' => 'vote-app']) ?>
 <?php endif; ?>
 
 <?php if ($showUpcoming): ?>
