@@ -18,6 +18,12 @@ use Cake\Routing\Router;
  */
 class ReportsController extends AppController
 {
+    public $paginate = [
+        'contain' => ['Users', 'Applications'],
+        'limit' => 10,
+        'order' => ['Reports.created' => 'desc'],
+    ];
+
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
@@ -31,9 +37,6 @@ class ReportsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Users', 'Applications'],
-        ];
         $reports = $this->paginate($this->Reports);
 
         $this->set(compact('reports'));

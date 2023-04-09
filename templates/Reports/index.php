@@ -10,8 +10,12 @@
             No reports have been submitted for any applications yet.
         </p>
     <?php else: ?>
+        <?= $this->element('pagination') ?>
+
         <?php foreach ($reports as $report): ?>
             <?= $this->element('report', compact('report')) ?>
         <?php endforeach; ?>
+
+        <?= $this->element('pagination') ?>
     <?php endif; ?>
 </div>

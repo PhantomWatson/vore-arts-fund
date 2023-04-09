@@ -10948,29 +10948,34 @@ legend {
   color: #fff;
 }
 
+div.pagination {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+ul.pagination {
+  margin: 1em auto;
+}
+ul.pagination li {
+  padding: 0 0.5em;
+}
 ul.pagination li a {
+  border-radius: 5px;
   color: rgba(0, 0, 0, 0.54);
+  padding: 0.25em;
+  text-decoration: none;
 }
 ul.pagination li.active a {
-  background-color: #DCE47E;
+  background-color: #1A5B11;
   color: #FFF;
   cursor: default;
   font-weight: bold;
 }
+ul.pagination li.next.disabled, ul.pagination li.prev.disabled {
+  visibility: hidden;
+}
 ul.pagination .disabled:hover a {
   background: none;
-}
-
-.paginator {
-  text-align: center;
-}
-.paginator ul.pagination li {
-  display: inline-block;
-  float: none;
-}
-.paginator p {
-  color: rgba(0, 0, 0, 0.54);
-  text-align: right;
 }
 
 .asc:after {

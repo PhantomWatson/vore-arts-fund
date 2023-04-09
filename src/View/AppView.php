@@ -43,6 +43,7 @@ class AppView extends View
             'templates' => 'bootstrap_form',
         ]);
         $this->loadHelper('Image');
+        $this->loadHelper('Paginator', ['templates' => 'bootstrap_pagination']);
     }
 
     /**

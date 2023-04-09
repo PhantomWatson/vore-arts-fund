@@ -118,18 +118,37 @@ legend {
     }
 }
 
+div.pagination {
+    font-size: 1.5em;
+    text-align: center;
+}
+
 ul.pagination {
+    margin: 1em auto;
+
     li {
+        padding: 0 0.5em;
+
         a {
+            border-radius: 5px;
             color: rgba(0, 0, 0, 0.54);
+            padding: 0.25em;
+            text-decoration: none;
         }
 
         &.active {
             a {
-                background-color: #DCE47E;
+                background-color: $primary;
                 color: #FFF;
                 cursor: default;
                 font-weight: bold;
+            }
+        }
+
+        &.next,
+        &.prev {
+            &.disabled {
+                visibility: hidden;
             }
         }
     }
@@ -138,22 +157,6 @@ ul.pagination {
         a {
             background: none;
         }
-    }
-}
-
-.paginator {
-    text-align: center;
-
-    ul.pagination {
-        li {
-            display: inline-block;
-            float: none;
-        }
-    }
-
-    p {
-        color: rgba(0, 0, 0, 0.54);
-        text-align: right;
     }
 }
 
