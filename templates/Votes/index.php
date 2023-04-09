@@ -12,9 +12,6 @@
  * @var bool $isVerified
  * @var bool $showUpcoming
  */
-$bundlePathBase = \Cake\Core\Configure::read('debug')
-    ? 'http://vore.test:8081/vote-app/dist'
-    : '';
 ?>
 
 <?php if ($hasVoted): ?>
