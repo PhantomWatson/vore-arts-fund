@@ -193,6 +193,9 @@ class ApplicationsTable extends Table
                     'FundingCycles',
                     'Images',
                     'Users',
+                    'Reports' => function (Query $query) {
+                        return $query->select(['id', 'application_id']);
+                    }
                 ]
             ]
         );

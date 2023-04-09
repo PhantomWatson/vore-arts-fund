@@ -47,6 +47,26 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                 $<?= number_format($application->amount_requested) ?>
             </td>
         </tr>
+        <tr>
+            <th>
+                Reports
+            </th>
+            <td>
+                <?php if (count($application->reports)): ?>
+                    <?= $this->Html->link(
+                        count($application->reports) . ' (view)',
+                        [
+                            'prefix' => false,
+                            'controller' => 'Reports',
+                            'action' => 'application',
+                            $application->id,
+                        ]
+                    ) ?>
+                <?php else: ?>
+                    None
+                <?php endif; ?>
+            </td>
+        </tr>
     </tbody>
 </table>
 
