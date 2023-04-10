@@ -95,6 +95,23 @@ class Application extends Entity
     }
 
     /**
+     * @return string[]
+     */
+    public static function getStatusActions(): array
+    {
+        return [
+            self::STATUS_DRAFT              => 'Save as a draft',
+            self::STATUS_UNDER_REVIEW       => 'Submit for review',
+            self::STATUS_ACCEPTED           => 'Accept',
+            self::STATUS_REJECTED           => 'Reject',
+            self::STATUS_REVISION_REQUESTED => 'Request revision',
+            self::STATUS_AWARDED            => 'Award',
+            self::STATUS_NOT_AWARDED        => 'Decline to award',
+            self::STATUS_WITHDRAWN          => 'Withdraw',
+        ];
+    }
+
+    /**
      * Takes a current status and returns an array of valid statuses that this application can be changed to
      *
      * @param int $currentStatusId

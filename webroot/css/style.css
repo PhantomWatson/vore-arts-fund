@@ -11479,6 +11479,7 @@ body {
 
 #change-status {
   display: inline-block;
+  margin-bottom: 0.5em;
   vertical-align: middle;
   width: auto;
 }
@@ -11488,6 +11489,9 @@ body {
 }
 #review-action-column .form-group.textarea {
   margin-bottom: 0.5em;
+}
+#review-action-column input[type=submit] {
+  vertical-align: top;
 }
 
 #review-notes {

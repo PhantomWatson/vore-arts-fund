@@ -106,12 +106,8 @@ class ApplicationsController extends AdminController
             }
         }
 
-        $statuses = Application::getStatuses();
-        $validStatuses = Application::getValidStatusOptions($application->status_id);
-        $statusOptions = [];
-        foreach ($validStatuses as $statusId) {
-            $statusOptions[$statusId] = $statuses[$statusId];
-        }
+        $statusActions = Application::getStatusActions();
+        $validStatusIds = Application::getValidStatusOptions($application->status_id);
 
         // Set view vars
         $questionsTable = $this->fetchTable('Questions');
@@ -123,12 +119,15 @@ class ApplicationsController extends AdminController
             ->orderDesc('Notes.created')
             ->all();
         $newNote = $notesTable->newEmptyEntity();
+        $toLoad = $this->getAppFiles('review');
         $this->set(compact(
+            'statusActions',
             'application',
             'newNote',
             'notes',
             'questions',
-            'statusOptions',
+            'toLoad',
+            'validStatusIds'
         ));
         $this->title('Application: ' . $application->title);
         $this->setCurrentBreadcrumb($application->title);

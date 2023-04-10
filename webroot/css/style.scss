@@ -774,6 +774,7 @@ body {
 
 #change-status {
     display: inline-block;
+    margin-bottom: 0.5em;
     vertical-align: middle;
     width: auto;
 }
@@ -785,6 +786,10 @@ body {
 
     .form-group.textarea {
         margin-bottom: 0.5em;
+    }
+
+    input[type="submit"] {
+        vertical-align: top;
     }
 }
 
