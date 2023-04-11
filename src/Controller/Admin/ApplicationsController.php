@@ -101,7 +101,7 @@ class ApplicationsController extends AdminController
                 if ($notesTable->save($note)) {
                     $this->Flash->success('Note added');
                 } else {
-                    $this->Flash->error('Error adding note');
+                    $this->Flash->error('Error adding note. Details: ' . print_r($note->getErrors(), true));
                 }
             }
         }

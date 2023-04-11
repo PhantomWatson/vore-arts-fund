@@ -42,59 +42,18 @@ function getActionName($statusId, array $statusActions): string
     </div>
     <div class="col-md-6 card" id="review-action-column">
         <div class="card-body">
-            <div id="root"></div>
             <section>
                 <h3>
                     Status: <?= $application->status_name ?>
                 </h3>
-                <div class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Actions
-                    </button>
-                    <ul class="dropdown-menu" id="review-actions">
-                        <li>
-                            <a class="dropdown-item" href="#" id="review-action-note" data-action="note">
-                                Add note
-                            </a>
-                        </li>
-                        <?php foreach ($validStatusIds as $statusId): ?>
-                            <li>
-                                <a class="dropdown-item" href="#" data-status-id="<?= $statusId ?>" data-action="changeStatus">
-                                    <?= getActionName($statusId, $statusActions) ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-                <?= $this->Form->create($application) ?>
-                <?= $this->Form->control(
-                    'note',
-                    [
-                        'id' => 'revision-requested-note',
-                        'label' => 'What update are you requesting?',
-                        'required' => true,
-                        'type' => 'textarea',
-                    ]
-                ) ?>
-                <?= $this->Form->submit('Update status', ['class' => 'btn btn-primary']) ?>
-                <?= $this->Form->end() ?>
+                <div id="root"></div>
             </section>
 
-            <section>
-                <h3>
-                    Notes
-                </h3>
-                <?= $this->Form->create($newNote) ?>
-                <?= $this->Form->control(
-                    'body',
-                    [
-                        'type' => 'textarea',
-                        'label' => false,
-                    ]
-                ) ?>
-                <?= $this->Form->submit('Add note', ['class' => 'btn btn-primary']) ?>
-                <?= $this->Form->end() ?>
-                <?php if (!$notes->isEmpty()): ?>
+            <?php if (!$notes->isEmpty()): ?>
+                <section>
+                    <h3>
+                        Notes
+                    </h3>
                     <div id="review-notes">
                         <?php foreach ($notes as $note): ?>
                             <section>
@@ -110,8 +69,8 @@ function getActionName($statusId, array $statusActions): string
                             </section>
                         <?php endforeach; ?>
                     </div>
-                <?php endif; ?>
-            </section>
+                </section>
+            <?php endif; ?>
         </div>
     </div>
 </div>

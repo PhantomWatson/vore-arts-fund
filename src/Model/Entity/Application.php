@@ -100,14 +100,14 @@ class Application extends Entity
     public static function getStatusActions(): array
     {
         return [
-            self::STATUS_DRAFT              => 'Save as a draft',
-            self::STATUS_UNDER_REVIEW       => 'Submit for review',
-            self::STATUS_ACCEPTED           => 'Accept',
-            self::STATUS_REJECTED           => 'Reject',
+            self::STATUS_DRAFT              => 'Save this application as a draft',
+            self::STATUS_UNDER_REVIEW       => 'Submit  this application for review',
+            self::STATUS_ACCEPTED           => 'Accept this application',
+            self::STATUS_REJECTED           => 'Reject this application',
             self::STATUS_REVISION_REQUESTED => 'Request revision',
-            self::STATUS_AWARDED            => 'Award',
-            self::STATUS_NOT_AWARDED        => 'Decline to award',
-            self::STATUS_WITHDRAWN          => 'Withdraw',
+            self::STATUS_AWARDED            => 'Award funding to this application',
+            self::STATUS_NOT_AWARDED        => 'Decline to award funding to this application',
+            self::STATUS_WITHDRAWN          => 'Withdraw this application',
         ];
     }
 

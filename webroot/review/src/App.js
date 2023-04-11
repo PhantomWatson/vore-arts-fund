@@ -25,11 +25,30 @@ const App = () => {
 
   const addNote = () => {
     setSelectedAction('note');
+    setSelectedStatusId(null);
   };
+
+  const submitStatusChange = (statusId) => {
+    const formId = 'submit-status-change';
+    document.body.innerHTML += '<form id="' + formId + '" method="post"><input type="hidden" name="status_id" value="' + statusId + '"></form>';
+    document.getElementById(formId).submit();
+  };
+
+  const statusChangeRequiresNote = (statusId) => noteNeeded.indexOf(statusId) === -1;
 
   const changeStatus = (statusId) => {
     setSelectedAction('change status');
     setSelectedStatusId(statusId);
+
+    // Submit
+    if (statusChangeRequiresNote(statusId)) {
+      const action = statusActions['' + statusId].toLowerCase();
+      if (confirm('Are you sure you want to ' + action + '?')) {
+        submitStatusChange(statusId);
+
+        return;
+      }
+    }
   };
 
   const Menu = () => (
@@ -70,19 +89,36 @@ const App = () => {
   );
 
   const NoteSection = () => {
-    return (<span>Note</span>);
+    return (
+      <>
+        <div className="form-group textarea required mt-3">
+          <label htmlFor="status-change-note" className="form-label">
+            {selectedStatusId === null && "Note"}
+            {selectedStatusId === 3 && "Reason for rejection"}
+            {selectedStatusId === 4 && "What should the applicant add/change?"}
+          </label>
+          <textarea className="form-control"
+                    id="status-change-note"
+                    required="required"
+                    aria-required="true"
+                    rows="5"
+                    name="body">
+          </textarea>
+        </div>
+        <button type="submit" className="btn btn-primary">
+          {selectedStatusId === null && "Add note"}
+          {selectedStatusId === 3 && "Reject application"}
+          {selectedStatusId === 4 && "Request revision"}
+        </button>
+      </>
+    );
   };
 
   const ChangeStatusSection = () => {
-    const noteIsNeeded = noteNeeded.indexOf(selectedStatusId) !== -1;
-
     return (
       <div>
-        Change Status to {selectedStatusId}
-        {noteIsNeeded &&
-          <span>
-            Note is needed
-          </span>
+        {statusChangeRequiresNote(selectedStatusId) &&
+          <NoteSection />
         }
       </div>
     );
@@ -91,12 +127,14 @@ const App = () => {
   return (
     <>
       <Menu />
-      {selectedAction === 'note' &&
-        <NoteSection />
-      }
-      {selectedAction === 'change status' &&
-        <ChangeStatusSection statusId={selectedStatusId} />
-      }
+      <form method="post">
+        {selectedAction === 'note' &&
+          <NoteSection />
+        }
+        {selectedAction === 'change status' &&
+          <ChangeStatusSection statusId={selectedStatusId} />
+        }
+      </form>
     </>
   );
 };
