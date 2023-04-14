@@ -78,6 +78,9 @@ class ApplicationsController extends AdminController
 
         $notesTable = $this->fetchTable('Notes');
         if (!$this->request->is('get')) {
+            // Assume save was successful unless if an error is encountered
+            $successfullySaved = true;
+
             $data = $this->request->getData();
 
             // Updating status
@@ -88,6 +91,7 @@ class ApplicationsController extends AdminController
                     $this->dispatchStatusChangeEvent($application);
                 } else {
                     $this->Flash->error('Error updating status');
+                    $successfullySaved = false;
                 }
             }
 
@@ -102,7 +106,13 @@ class ApplicationsController extends AdminController
                     $this->Flash->success('Note added');
                 } else {
                     $this->Flash->error('Error adding note. Details: ' . print_r($note->getErrors(), true));
+                    $successfullySaved = false;
                 }
+            }
+
+            // POST/Redirect/GET pattern
+            if ($successfullySaved) {
+                return $this->redirect(['action' => 'review']);
             }
         }
 
