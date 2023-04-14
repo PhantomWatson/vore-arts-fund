@@ -112,7 +112,10 @@ class ApplicationsController extends AdminController
 
             // POST/Redirect/GET pattern
             if ($successfullySaved) {
-                return $this->redirect(['action' => 'review']);
+                return $this->redirect([
+                    'action' => 'review',
+                    'id' => $applicationId,
+                ]);
             }
         }
 
