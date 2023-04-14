@@ -1,24 +1,29 @@
 import * as React from 'react';
 import {useState} from 'react';
 
+/**
+ * Review interface
+ *
+ * draft: 0,
+ * submit: 1,
+ * accept: 2,
+ * reject: 3,
+ * requestRevision: 4,
+ * award: 6,
+ * declineToAward: 7,
+ * withdraw: 8,
+ *
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const App = () => {
   const statusActions = window.statusActions;
   const validStatusIds = window.validStatusIds;
   const [selectedAction, setSelectedAction] = useState(null);
   const [selectedStatusId, setSelectedStatusId] = useState(null);
-  const actions = {
-    draft: 0,
-    submit: 1,
-    accept: 2,
-    reject: 3,
-    requestRevision: 4,
-    award: 6,
-    declineToAward: 7,
-    withdraw: 8,
-  };
   const noteNeeded = [
-    3,
-    4,
+    3, // Reject
+    4, // Request revision
   ];
 
   const getActionName = (statusId) => statusActions['' + statusId];
@@ -28,27 +33,37 @@ const App = () => {
     setSelectedStatusId(null);
   };
 
+  const reset = () => {
+    setSelectedAction(null);
+    setSelectedStatusId(null);
+  }
+
   const submitStatusChange = (statusId) => {
     const formId = 'submit-status-change';
     document.body.innerHTML += '<form id="' + formId + '" method="post"><input type="hidden" name="status_id" value="' + statusId + '"></form>';
     document.getElementById(formId).submit();
   };
 
-  const statusChangeRequiresNote = (statusId) => noteNeeded.indexOf(statusId) === -1;
+  const statusChangeRequiresNote = (statusId) => noteNeeded.indexOf(statusId) !== -1;
 
   const changeStatus = (statusId) => {
     setSelectedAction('change status');
     setSelectedStatusId(statusId);
 
-    // Submit
+    // Show form
     if (statusChangeRequiresNote(statusId)) {
-      const action = statusActions['' + statusId].toLowerCase();
-      if (confirm('Are you sure you want to ' + action + '?')) {
-        submitStatusChange(statusId);
-
-        return;
-      }
+      return;
     }
+
+    // Submit
+    const action = statusActions['' + statusId].toLowerCase();
+    if (confirm('Are you sure you want to ' + action + '?')) {
+      submitStatusChange(statusId);
+
+      return;
+    }
+
+    reset();
   };
 
   const Menu = () => (
@@ -74,7 +89,6 @@ const App = () => {
           <li key={statusId}>
             <button className="dropdown-item"
                     data-status-id={statusId}
-                    data-action="changeStatus"
                     type="button"
                     onClick={() => {
                       changeStatus(statusId)
@@ -140,32 +154,3 @@ const App = () => {
 };
 
 export default App;
-
-/*
-const selectedAction = null;
-
-function selectAction(action, statusId) {
-
-}
-
-const actionLinks = document.querySelectorAll('#review-actions a');
-actionLinks.forEach(function (actionLink) {
-  actionLink.addEventListener('click', () => {
-    selectAction(actionLink.dataset.action, actionLink.dataset.statusId);
-  });
-});
-const revReqNoteField = document.getElementById('revision-requested-note');
-const revReqNoteContainer = revReqNoteField.parentElement;
-const statusChangeField = document.getElementById('change-status');
-const toggleNoteField = () => {
-  if (parseInt(statusChangeField.value) === actions.requestRevision) {
-    statusChangeField.required = true;
-    revReqNoteContainer.style.display = 'block';
-  } else {
-    statusChangeField.required = false;
-    revReqNoteContainer.style.display = 'none';
-  }
-}
-document.getElementById('change-status').addEventListener('change', () => {toggleNoteField();});
-toggleNoteField();
-*/
