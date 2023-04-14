@@ -57,14 +57,11 @@ function getActionName($statusId, array $statusActions): string
                     <div id="review-notes">
                         <?php foreach ($notes as $note): ?>
                             <section>
-                                <h4>
-                                    <?= $note->user->name ?>
-                                </h4>
                                 <p>
                                     <?= nl2br($note->body) ?>
                                 </p>
                                 <p class="date">
-                                    <?= $note->created->format('F j, Y') ?>
+                                    <?= $note->user->name ?> - <?= $note->created->format('F j, Y') ?>
                                 </p>
                             </section>
                         <?php endforeach; ?>
