@@ -148,6 +148,7 @@ const App = () => {
         {selectedAction === 'change status' &&
           <ChangeStatusSection statusId={selectedStatusId} />
         }
+        <input type="hidden" name="status_id" value={selectedStatusId} />
       </form>
     </>
   );
