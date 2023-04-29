@@ -57,3 +57,7 @@ bin/cake
 
 # Other
 /webroot/sample
+
+# Dist files for React projects
+/webroot/vote-app/dist/*
+/webroot/review/dist/*
