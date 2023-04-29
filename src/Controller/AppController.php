@@ -180,21 +180,27 @@ class AppController extends Controller
         ];
         $dist = WWW_ROOT . $dir . DS . 'dist';
 
-        $files = is_dir($dist) ? scandir($dist) : false;
-        if ($files) {
-            foreach ($files as $file) {
-                if (preg_match('/\.bundle\.js$/', $file) === 1) {
-                    $retval['js'][] = $file;
+        // JS
+        if ($_GET['webpack-dev'] ?? false) {
+            $retval['js'][] = 'http://' . $_GET['webpack-dev'] . '/main.bundle.js';
+        } else {
+            $files = is_dir($dist) ? scandir($dist) : false;
+            if ($files) {
+                foreach ($files as $file) {
+                    if (preg_match('/\.bundle\.js$/', $file) === 1) {
+                        $retval['js'][] = "/$dir/dist/$file";
+                    }
                 }
             }
         }
 
+        // CSS
         $stylesDir = $dist . DS . 'styles';
         $files = is_dir($stylesDir) ? scandir($stylesDir) : false;
         if ($files) {
             foreach ($files as $file) {
                 if (preg_match('/\.css$/', $file) === 1) {
-                    $retval['css'][] = $file;
+                    $retval['css'][] = "/$dir/dist/styles$file";
                 }
             }
         }

@@ -5,8 +5,8 @@
  * @var string $dir
  */
 foreach ($toLoad['js'] as $file) {
-    echo $this->Html->script("/$dir/dist/$file");
+    echo $this->Html->script($file);
 }
 foreach ($toLoad['css'] as $file) {
-    $this->Html->css("/$dir/dist/styles/$file", ['block' => true]);
+    $this->Html->css($file, ['block' => true]);
 }
