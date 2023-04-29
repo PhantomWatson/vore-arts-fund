@@ -83,12 +83,14 @@ class ApplicationsController extends AdminController
 
             $data = $this->request->getData();
 
+            $noteBody = $data['body'] ?? null;
+
             // Updating status
             if ($data['status_id'] ?? false) {
                 $application->status_id = (int)$data['status_id'];
                 if ($this->Applications->save($application)) {
                     $this->Flash->success('Status updated');
-                    $this->dispatchStatusChangeEvent($application);
+                    $this->dispatchStatusChangeEvent($application, $noteBody);
                 } else {
                     $this->Flash->error('Error updating status');
                     $successfullySaved = false;
@@ -96,7 +98,7 @@ class ApplicationsController extends AdminController
             }
 
             // Adding note
-            if ($data['body'] ?? false) {
+            if ($noteBody) {
                 /** @var User $user */
                 $user = $this->Authentication->getIdentity();
                 $data['user_id'] = $user->id;
@@ -150,19 +152,20 @@ class ApplicationsController extends AdminController
 
     /**
      * @param Application $application
+     * @param string|null $noteBody
      * @return void
      */
-    private function dispatchStatusChangeEvent(Application $application)
+    private function dispatchStatusChangeEvent(Application $application, ?string $noteBody)
     {
         switch ($application->status_id) {
             case Application::STATUS_ACCEPTED:
                 $event = new Event('Application.accepted', $this, compact('application'));
                 break;
             case Application::STATUS_REVISION_REQUESTED:
-                $event = new Event('Application.revisionRequested', $this, compact('application'));
+                $event = new Event('Application.revisionRequested', $this, compact('application', 'noteBody'));
                 break;
             case Application::STATUS_REJECTED:
-                $event = new Event('Application.rejected', $this, compact('application'));
+                $event = new Event('Application.rejected', $this, compact('application', 'noteBody'));
                 break;
             default;
                 return;
