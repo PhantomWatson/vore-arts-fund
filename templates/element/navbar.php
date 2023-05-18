@@ -31,6 +31,13 @@
                         ['class' => 'nav-link']
                     ) ?>
                 </li>
+                <li>
+                    <?= $this->Html->link(
+                        'Donate',
+                        ['controller' => 'Donate', 'action' => 'index', 'prefix' => false],
+                        ['class' => 'nav-link']
+                    ) ?>
+                </li>
                 <?php if ($isLoggedIn): ?>
                     <?php if ($hasApplications): ?>
                         <li>

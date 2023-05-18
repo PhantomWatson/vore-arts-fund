@@ -11900,4 +11900,21 @@ footer a {
   width: 1.5em;
 }
 
+#donate-index .input-group-text {
+  padding: 0.5rem;
+}
+#donate-index input[type=number] {
+  max-width: 200px;
+}
+
+#checkout .loading-indicator {
+  display: block;
+  font-size: 300%;
+  text-align: center;
+}
+
+#payment-form #submit {
+  margin-top: 1em;
+}
+
 /*# sourceMappingURL=style.css.map */

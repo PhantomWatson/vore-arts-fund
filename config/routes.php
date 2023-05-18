@@ -113,6 +113,7 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
 });
 
 $routes->prefix('api', function (RouteBuilder $builder) {
-    $builder->connect('/applications/*', ['controller' => 'Applications']);
-    $builder->connect('/votes/*', ['controller' => 'Votes']);
+    $builder->connect('/applications/{action}', ['controller' => 'Applications']);
+    $builder->connect('/votes/{action}', ['controller' => 'Votes']);
+    $builder->connect('/stripe/{action}', ['controller' => 'Stripe']);
 });
