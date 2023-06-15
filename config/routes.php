@@ -116,4 +116,5 @@ $routes->prefix('api', function (RouteBuilder $builder) {
     $builder->connect('/applications/{action}', ['controller' => 'Applications']);
     $builder->connect('/votes/{action}', ['controller' => 'Votes']);
     $builder->connect('/stripe/{action}', ['controller' => 'Stripe']);
+    $builder->connect('/transactions/{action}', ['controller' => 'Transactions']);
 });
