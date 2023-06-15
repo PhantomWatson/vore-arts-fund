@@ -19,6 +19,8 @@ class DonateController extends AppController
         parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated([
             'index',
+            'payment',
+            'complete',
         ]);
     }
 
