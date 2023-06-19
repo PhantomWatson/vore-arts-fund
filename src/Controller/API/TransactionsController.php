@@ -18,8 +18,6 @@ use Cake\Log\Log;
 use Stripe\StripeClient;
 
 /**
- * ApplicationsController
- *
  * @property \App\Model\Table\TransactionsTable $Transactions
  */
 class TransactionsController extends ApiController

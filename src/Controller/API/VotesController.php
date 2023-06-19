@@ -15,8 +15,6 @@ use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\MethodNotAllowedException;
 
 /**
- * ApplicationsController
- *
  * @property \App\Model\Table\VotesTable $Votes
  */
 class VotesController extends ApiController

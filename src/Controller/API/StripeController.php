@@ -19,8 +19,6 @@ use Stripe\PaymentIntent;
 use Stripe\Stripe;
 
 /**
- * ApplicationsController
- *
  * @property \App\Model\Table\VotesTable $Votes
  */
 class StripeController extends ApiController
