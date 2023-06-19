@@ -14,7 +14,8 @@ use App\View\AppView;
             <li>
                 Loans
                 <ol>
-                    <li><a href="#eligibility">Loan eligibility</a></li>
+                    <li><a href="#applicant-eligibility">Applicant eligibility</a></li>
+                    <li><a href="#project-eligibility">Project eligibility</a></li>
                     <li><a href="#loan-terms">Loan terms</a></li>
                 </ol>
             </li>
@@ -42,10 +43,22 @@ use App\View\AppView;
     <section>
         <h1>Loans</h1>
         <section>
-            <h2 id="eligibility">
-                Loan eligibility
+            <h2 id="applicant-eligibility">
+                Applicant Eligibility
             </h2>
-            <?= $this->element('eligibility') ?>
+            <p>
+                To apply for funding, you must attest that the applicant
+            </p>
+            <?= $this->element('eligibility_applicant') ?>
+        </section>
+        <section>
+            <h2 id="project-eligibility">
+                Project Eligibility
+            </h2>
+            <p>
+                To apply for funding, you must attest that the project for which funding is requested
+            </p>
+            <?= $this->element('eligibility_project') ?>
         </section>
 
         <section>
