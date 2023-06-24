@@ -1334,3 +1334,11 @@ footer {
         margin-top: 1em;
     }
 }
+
+.vr-notice-success {
+    @extend .alert, .alert-success, .mb-3;
+}
+
+.vr-notice-failure {
+    @extend .alert, .alert-warning, .mb-3;
+}

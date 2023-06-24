@@ -4696,7 +4696,7 @@ fieldset:disabled .vote-rank button,
   top: -1px;
 }
 
-.alert {
+.alert, .vr-notice-failure, .vr-notice-success {
   --bs-alert-bg: transparent;
   --bs-alert-padding-x: 1rem;
   --bs-alert-padding-y: 1rem;
@@ -4751,12 +4751,12 @@ fieldset:disabled .vote-rank button,
   color: #494a3e;
 }
 
-.alert-success {
+.alert-success, .vr-notice-success {
   --bs-alert-color: #056400;
   --bs-alert-bg: #ceedcc;
   --bs-alert-border-color: #b5e4b3;
 }
-.alert-success .alert-link {
+.alert-success .alert-link, .vr-notice-success .alert-link {
   color: #045000;
 }
 
@@ -4769,12 +4769,12 @@ fieldset:disabled .vote-rank button,
   color: #00555a;
 }
 
-.alert-warning {
+.alert-warning, .vr-notice-failure {
   --bs-alert-color: #634e00;
   --bs-alert-bg: #fef3cc;
   --bs-alert-border-color: #fdedb3;
 }
-.alert-warning .alert-link {
+.alert-warning .alert-link, .vr-notice-failure .alert-link {
   color: #4f3e00;
 }
 
@@ -7732,7 +7732,7 @@ fieldset:disabled .vote-rank button,
   margin-bottom: 0.5rem !important;
 }
 
-.mb-3 {
+.mb-3, .vr-notice-failure, .vr-notice-success {
   margin-bottom: 1rem !important;
 }
 
