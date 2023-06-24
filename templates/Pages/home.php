@@ -30,7 +30,7 @@
             </section>
         </div>
         <div class="col-sm-4">
-            <section class="card" style="height: 100%;">
+            <section class="card">
                 <div class="card-body">
                     <h1 class="card-title">
                         Mailing list
