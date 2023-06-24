@@ -21,7 +21,7 @@ use Cake\View\JsonView;
  */
 class AppController extends Controller
 {
-    protected array $breadcrumbs;
+    protected array $breadcrumbs = [];
     protected string $currentBreadcrumb = '';
 
     /**
