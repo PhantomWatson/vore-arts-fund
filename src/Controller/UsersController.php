@@ -8,6 +8,7 @@ use App\Model\Entity\User;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
 use Cake\Mailer\Mailer;
@@ -131,10 +132,14 @@ class UsersController extends AppController
      * @param string $phone Phone number
      * @return void
      * @throws \Twilio\Exceptions\TwilioException
+     * @throws BadRequestException
      */
     public function sendVerificationText(string $phone)
     {
         $phone = User::cleanPhone($phone);
+        if (!$phone) {
+            throw new BadRequestException('Invalid or missing phone number');
+        }
         $accountSid = Configure::read('twilio_account_sid');
         $authToken = Configure::read('twilio_auth_token');
         $twilio = new Client($accountSid, $authToken);
