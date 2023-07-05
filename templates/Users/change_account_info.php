@@ -10,7 +10,7 @@
     <fieldset>
         <?= $this->Form->control('email') ?>
         <?= $this->Form->control('name') ?>
-        <?= $this->Form->control('phone') ?>
+        <?= $this->element('phone_input') ?>
         <?= $this->Form->control('current password') ?>
         <?= $this->Form->control('new password') ?>
     </fieldset>
