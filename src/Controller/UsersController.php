@@ -132,7 +132,7 @@ class UsersController extends AppController
             'title' => 'Register an Account',
             'user' => $user
         ]);
-
+form
         return null;
     }
 
