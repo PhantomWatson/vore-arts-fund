@@ -88,10 +88,6 @@ class UsersTable extends Table
             ->notEmptyString('password');
 
         $validator
-            ->requirePresence('phone', 'create')
-            ->notEmptyString('phone');
-
-        $validator
             ->boolean('is_admin')
             ->requirePresence('is_admin', 'create')
             ->notEmptyString('is_admin');
