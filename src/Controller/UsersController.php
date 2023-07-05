@@ -98,26 +98,36 @@ class UsersController extends AppController
     public function register(): ?Response
     {
         $user = $this->Users->newEmptyEntity();
+
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $data['phone'] = User::cleanPhone($data['phone']);
-
             $user = $this->Users->patchEntity($user, $data);
+
             // admins should only be assignable from the database itself, new accounts always default to 0
             $user->is_admin = 0;
             // is_verified will later be assigned based on text verification API, see verify() below
             $user->is_verified = 0;
+
             if ($this->Users->save($user)) {
-                $this->Flash->success('Your account has been registered');
                 $this->Authentication->setIdentity($user);
-                if (Configure::read('enablePhoneVerification')) {
+                if (Configure::read('enablePhoneVerification') && $user->phone) {
                     $this->sendVerificationText((string)$user->phone);
+                    $this->Flash->success(
+                        'Your account has been registered. ' .
+                        'Check for a text message containing your registration verification code.'
+                    );
                     return $this->redirect(['action' => 'verify']);
                 }
+                $this->Flash->success('Your account has been registered.');
                 return $this->redirect(['controller' => 'pages', 'action' => 'home']);
             }
-            $this->Flash->error('There was an error registering your account');
+
+            $this->Flash->error(
+                'There was an error registering your account. Details: ' . print_r($user->getErrors(), true)
+            );
         }
+
         $this->set([
             'title' => 'Register an Account',
             'user' => $user
