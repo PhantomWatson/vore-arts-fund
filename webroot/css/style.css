@@ -11419,6 +11419,10 @@ table td {
 .apply label {
   font-weight: bold;
 }
+.apply fieldset .form-group:last-child,
+.apply fieldset .footnote {
+  margin-bottom: 0;
+}
 
 form .footnote {
   margin-bottom: 0;

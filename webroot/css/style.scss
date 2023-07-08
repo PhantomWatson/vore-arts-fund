@@ -688,6 +688,13 @@ table td {
     label {
         font-weight: bold;
     }
+
+    fieldset {
+        .form-group:last-child,
+        .footnote {
+            margin-bottom: 0;
+        }
+    }
 }
 
 form {
