@@ -198,6 +198,10 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                 'type' => 'file',
                 'multiple' => true,
             ]) ?>
+            <p>
+                Sexually explicit or disturbingly violent imagery may not be included in an application and may result
+                in disqualification.
+            </p>
         </div>
         <?php if ($application->images): ?>
             <table class="image-gallery table" id="form-images">
