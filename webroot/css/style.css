@@ -11900,11 +11900,31 @@ footer a {
   width: 1.5em;
 }
 
+#donate-index .input-group {
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+  min-width: 150px;
+  width: auto;
+}
 #donate-index .input-group-text {
   padding: 0.5rem;
 }
 #donate-index input[type=number] {
   max-width: 200px;
+}
+#donate-index .col {
+  margin-top: 0.5rem;
+}
+#donate-index .col > p {
+  margin-bottom: 0;
+}
+
+.row--donate .col {
+  display: flex;
+}
+
+.card--donate {
+  margin-bottom: 1rem;
 }
 
 #checkout .loading-indicator {
