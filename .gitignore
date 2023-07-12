@@ -5,6 +5,7 @@
 /config/.env.production
 /config/.env.staging
 /config/app_local.*
+/config/app_local_*
 /logs/*
 /tmp/*
 
@@ -57,6 +58,7 @@ bin/cake
 
 # Other
 /webroot/sample
+/config/environment.php
 
 # Dist files for React projects
 /webroot/vote-app/dist/*
