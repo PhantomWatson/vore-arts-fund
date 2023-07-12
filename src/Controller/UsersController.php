@@ -42,7 +42,6 @@ class UsersController extends AppController
             'resetPasswordToken',
             'verify',
         ]);
-        $this->addControllerBreadcrumb('Account');
     }
 
     /**
@@ -144,7 +143,7 @@ class UsersController extends AppController
      * @throws \Twilio\Exceptions\TwilioException
      * @throws BadRequestException
      */
-    public function sendVerificationText(string $phone)
+    private function sendVerificationText(string $phone)
     {
         $phone = User::cleanPhone($phone);
         if (!$phone) {
@@ -169,7 +168,7 @@ class UsersController extends AppController
      * @return bool
      * @throws \Twilio\Exceptions\TwilioException
      */
-    public function validate(string $phone, string $code): bool
+    private function validate(string $phone, string $code): bool
     {
         $accountSid = Configure::read('twilio_account_sid');
         $authToken = Configure::read('twilio_auth_token');
@@ -418,6 +417,8 @@ class UsersController extends AppController
         $user = $this->Authentication->getIdentity()->getOriginalData();
         $this->set(compact('user'));
         $this->title('Account');
+
+        $this->addBreadcrumb('Account', ['action' => 'account']);
     }
 
     /**
@@ -427,6 +428,7 @@ class UsersController extends AppController
      */
     public function changeAccountInfo(): ?Response
     {
+        $this->addBreadcrumb('Account', ['action' => 'account']);
         $this->title('Update Account Info');
         $user = $this->request->getAttribute('identity');
 
