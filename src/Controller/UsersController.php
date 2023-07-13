@@ -148,23 +148,34 @@ class UsersController extends AppController
      * @throws \Twilio\Exceptions\TwilioException
      * @throws BadRequestException
      */
-    private function sendVerificationText(string $phone)
+    private function sendVerificationText(string $phone): void
     {
         $phone = User::cleanPhone($phone);
+        $errorMsg = 'A verification code could not be sent to the provided phone number. ' .
+            'In your account settings, please check your phone number and make sure it\'s correct, ' .
+            'then request a verification code.';
         if (!$phone) {
-            throw new BadRequestException('Invalid or missing phone number');
+            $this->Flash->error($errorMsg);
+            return;
         }
+
         Log::write('debug', 'Sending verification message');
         $accountSid = Configure::read('twilio_account_sid');
         $authToken = Configure::read('twilio_auth_token');
         $twilio = new Client($accountSid, $authToken);
         $serviceSid = Configure::read('twilio_service_sid');
-        $twilio->verify->v2->services($serviceSid)->verifications->create(
-            '+1' . $phone,
-            'sms',
-            ['customFriendlyName' => 'Vore Arts Fund'],
-        );
-        Log::write('debug', 'Sent');
+        try {
+            $twilio->verify->v2->services($serviceSid)->verifications->create(
+                '+1' . $phone,
+                'sms',
+                ['customFriendlyName' => 'Vore Arts Fund'],
+            );
+            Log::write('debug', 'Sent');
+        } catch (\Exception $e) {
+            Log::write('error', 'Exception thrown when trying to send verification text: ' . $e->getMessage());
+            Log::write('error', $e->getTraceAsString());
+            $this->Flash->error($errorMsg . ' Details: ' . $e->getMessage());
+        }
     }
 
     /**
