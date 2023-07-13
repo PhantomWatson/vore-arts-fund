@@ -182,10 +182,12 @@ ul.pagination {
     }
 }
 
+label {
+    font-weight: bold;
+}
+
 .required {
     > label {
-        font-weight: bold;
-
         &:after {
             content: ' *';
             color: #C3232D;
@@ -684,10 +686,6 @@ table td {
                 }
             }
         }
-    }
-
-    label {
-        font-weight: bold;
     }
 
     fieldset {
