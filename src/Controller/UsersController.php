@@ -115,15 +115,16 @@ class UsersController extends AppController
                     'Account registered. Verification enabled: '
                     . (Configure::read('enablePhoneVerification') ? 'yes' : 'no') . '. Phone: ' . $user->phone
                 );
-                if (Configure::read('enablePhoneVerification') && $user->phone) {
-                    $textSent = $this->sendVerificationText((string)$user->phone);
+                $successMsg = 'Your account has been registered.';
+                $shouldVerifyPhone = Configure::read('enablePhoneVerification') && $user->phone;
+                $didSendCode = $this->sendVerificationText((string)$user->phone);
+                if ($shouldVerifyPhone && $didSendCode) {
                     $this->Flash->success(
-                        'Your account has been registered. ' .
-                        ($textSent ? 'Check for a text message containing your registration verification code.' : '')
+                        "$successMsg Check for a text message containing your registration verification code."
                     );
                     return $this->redirect(['action' => 'verify']);
                 }
-                $this->Flash->success('Your account has been registered.');
+                $this->Flash->success($successMsg);
                 return $this->redirect(['controller' => 'pages', 'action' => 'home']);
             }
 
