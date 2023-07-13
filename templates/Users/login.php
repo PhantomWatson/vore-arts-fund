@@ -17,7 +17,6 @@
         </div>
     </fieldset>
     <?= $this->Form->submit(__('Login'), ['class' => 'btn btn-primary']) ?>
-    <?= $this->Form->end() ?>
     <?= $this->Html->link(
         'Forgot Password?',
         [
@@ -26,4 +25,16 @@
         ],
         ['class' => 'btn btn-secondary']
     ) ?>
+    <?= $this->Form->end() ?>
+
+    <p>
+        Don't have an account yet?
+        <?= $this->Html->link(
+            'Register an account',
+            [
+                'controller' => 'Users',
+                'action' => 'register',
+            ],
+        ) ?>
+    </p>
 </div>
