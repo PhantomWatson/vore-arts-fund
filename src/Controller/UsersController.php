@@ -116,10 +116,10 @@ class UsersController extends AppController
                     . (Configure::read('enablePhoneVerification') ? 'yes' : 'no') . '. Phone: ' . $user->phone
                 );
                 if (Configure::read('enablePhoneVerification') && $user->phone) {
-                    $this->sendVerificationText((string)$user->phone);
+                    $textSent = $this->sendVerificationText((string)$user->phone);
                     $this->Flash->success(
                         'Your account has been registered. ' .
-                        'Check for a text message containing your registration verification code.'
+                        ($textSent ? 'Check for a text message containing your registration verification code.' : '')
                     );
                     return $this->redirect(['action' => 'verify']);
                 }
@@ -144,11 +144,11 @@ class UsersController extends AppController
      * Sends a verification text message
      *
      * @param string $phone Phone number
-     * @return void
+     * @return bool
      * @throws \Twilio\Exceptions\TwilioException
      * @throws BadRequestException
      */
-    private function sendVerificationText(string $phone): void
+    private function sendVerificationText(string $phone): bool
     {
         $phone = User::cleanPhone($phone);
         $errorMsg = 'A verification code could not be sent to the provided phone number. ' .
@@ -156,7 +156,7 @@ class UsersController extends AppController
             'then request a verification code.';
         if (!$phone) {
             $this->Flash->error($errorMsg);
-            return;
+            return false;
         }
 
         Log::write('debug', 'Sending verification message');
@@ -175,7 +175,10 @@ class UsersController extends AppController
             Log::write('error', 'Exception thrown when trying to send verification text: ' . $e->getMessage());
             Log::write('error', $e->getTraceAsString());
             $this->Flash->error($errorMsg . ' Details: ' . $e->getMessage());
+            return false;
         }
+
+        return true;
     }
 
     /**
