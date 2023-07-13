@@ -8,7 +8,14 @@
 
 <div class="users form" id="register-form">
     <p>
-        Register an account in order to vote or to submit applications for funding
+        You'll need to register an account in order to vote or to submit applications for funding.
+        Already have an account? <?= $this->Html->link(
+            'Log in',
+            [
+                'controller' => 'Users',
+                'action' => 'login',
+            ],
+        ) ?>
     </p>
     <?= $this->Form->create($user) ?>
     <fieldset>
