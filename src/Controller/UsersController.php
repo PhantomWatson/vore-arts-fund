@@ -11,6 +11,7 @@ use Cake\Event\EventInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
+use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Cake\Routing\Router;
 use Twilio\Rest\Client;
@@ -110,6 +111,10 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                 $this->Authentication->setIdentity($user);
+                Log::write('debug',
+                    'Account registered. Verification enabled: '
+                    . (Configure::read('enablePhoneVerification') ? 'yes' : 'no') . '. Phone: ' . $user->phone
+                );
                 if (Configure::read('enablePhoneVerification') && $user->phone) {
                     $this->sendVerificationText((string)$user->phone);
                     $this->Flash->success(
@@ -149,6 +154,7 @@ class UsersController extends AppController
         if (!$phone) {
             throw new BadRequestException('Invalid or missing phone number');
         }
+        Log::write('debug', 'Sending verification message');
         $accountSid = Configure::read('twilio_account_sid');
         $authToken = Configure::read('twilio_auth_token');
         $twilio = new Client($accountSid, $authToken);
@@ -158,6 +164,7 @@ class UsersController extends AppController
             'sms',
             ['customFriendlyName' => 'Vore Arts Fund'],
         );
+        Log::write('debug', 'Sent');
     }
 
     /**
