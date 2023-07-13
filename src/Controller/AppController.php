@@ -50,9 +50,6 @@ class AppController extends Controller
     }
 
     /**
-     * The following function lists the pages accessible to visitors
-     * who are not logged into a User account
-     *
      * @param \Cake\Event\EventInterface $event Event object
      * @return \Cake\Http\Response|void|null
      */
