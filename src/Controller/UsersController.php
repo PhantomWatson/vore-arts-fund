@@ -169,7 +169,6 @@ class UsersController extends AppController
             $twilio->verify->v2->services($serviceSid)->verifications->create(
                 '+1' . $phone,
                 'sms',
-                ['customFriendlyName' => 'Vore Arts Fund'],
             );
             Log::write('debug', 'Sent');
         } catch (\Exception $e) {
