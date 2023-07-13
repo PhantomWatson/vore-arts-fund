@@ -160,7 +160,7 @@ class UsersController extends AppController
             return false;
         }
 
-        Log::write('debug', 'Sending verification message');
+        Log::write('debug', 'Attempting to send verification message to ' . $phone);
         $accountSid = Configure::read('twilio_account_sid');
         $authToken = Configure::read('twilio_auth_token');
         $twilio = new Client($accountSid, $authToken);
