@@ -165,6 +165,7 @@ class UsersController extends AppController
         $authToken = Configure::read('twilio_auth_token');
         $twilio = new Client($accountSid, $authToken);
         $serviceSid = Configure::read('twilio_service_sid');
+        Log::write('debug', print_r(compact('accountSid', 'authToken', 'serviceSid'), true));
         try {
             $twilio->verify->v2->services($serviceSid)->verifications->create(
                 '+1' . $phone,
