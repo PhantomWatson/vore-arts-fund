@@ -6,8 +6,8 @@
         'placeholder' => 'Cell number with area code, e.g. 765-123-4567'
     ]) ?>
     <p class="footnote">
-        We only use this to verify your account and prevent multi-account abuse. Submitting your phone number
-        is optional, but required if you wish to vote on applications. By submitting your phone number, you
-        consent to receive a verification code via text message.
+        <strong>This is optional</strong>, but a verified phone number is required in order to vote on applications.
+        We only use this your phone number to verify your account and prevent multi-account abuse.
+        By submitting your phone number, you consent to receive a verification code via text message.
     </p>
 </div>
