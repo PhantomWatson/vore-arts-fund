@@ -58,7 +58,15 @@ class AppController extends Controller
         parent::beforeFilter($event);
 
         $this->addBreadcrumb('Home', '/');
+    }
 
+    /**
+     * Sets view vars needed globally (e.g. for the navbar)
+     *
+     * @return void
+     */
+    protected function setGlobalViewVars(): void
+    {
         /** @var \App\Model\Entity\User|null $user */
         $user = $this->Authentication->getIdentity();
         $isLoggedIn = (bool)$user;
@@ -72,7 +80,7 @@ class AppController extends Controller
             'isLoggedIn',
             'isVerified',
         ));
-    }
+}
 
     /**
      * Sets the page title
@@ -162,6 +170,7 @@ class AppController extends Controller
             'breadcrumbs' => $this->breadcrumbs,
             'currentBreadcrumb' => $this->currentBreadcrumb,
         ]);
+        $this->setGlobalViewVars();
     }
 
     /**
