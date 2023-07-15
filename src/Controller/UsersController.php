@@ -167,11 +167,16 @@ class UsersController extends AppController
         $serviceSid = Configure::read('twilio_service_sid');
         Log::write('debug', print_r(compact('accountSid', 'authToken', 'serviceSid'), true));
         try {
-            $twilio->verify->v2->services($serviceSid)->verifications->create(
-                '+1' . $phone,
-                'sms',
-            );
-            Log::write('debug', 'Sent');
+            $verification = $twilio
+                ->verify
+                ->v2
+                ->services($serviceSid)
+                ->verifications
+                ->create(
+                    '+1' . $phone,
+                    'sms',
+                );
+            Log::write('debug', print_r($verification, true));
         } catch (\Exception $e) {
             Log::write('error', 'Exception thrown when trying to send verification text: ' . $e->getMessage());
             Log::write('error', $e->getTraceAsString());
