@@ -120,6 +120,7 @@ class UsersTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['email'], 'This email address is already registered'));
+        $rules->add($rules->isUnique(['phone'], 'This phone number is already in use'));
 
         return $rules;
     }
