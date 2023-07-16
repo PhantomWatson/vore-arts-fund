@@ -91,4 +91,16 @@ class User extends Entity
     {
         return preg_replace('/[^0-9]/', '', $phone);
     }
+
+    protected function _setPhone($phone)
+    {
+        $phone = self::cleanPhone($phone);
+
+        $phoneUpdated = $phone != $this->phone;
+        if ($phoneUpdated) {
+            $this->is_verified = false;
+        }
+
+        return $phone;
+    }
 }
