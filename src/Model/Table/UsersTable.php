@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\User;
+use Cake\Core\Configure;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -119,8 +121,23 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+
+        $rules->add(
+            function (User $user) {
+                $phone = User::cleanPhone((string)$user->phone);
+                if ($phone === Configure::read('testPhoneNumber')) {
+                    return true;
+                }
+                return !$this->exists(['phone' => $phone]);
+            },
+            'uniquePhoneNumber',
+            [
+                'errorField' => 'phone',
+                'message' => 'This phone number is already in use'
+            ]
+        );
+
         $rules->add($rules->isUnique(['email'], 'This email address is already registered'));
-        $rules->add($rules->isUnique(['phone'], 'This phone number is already in use'));
 
         return $rules;
     }
