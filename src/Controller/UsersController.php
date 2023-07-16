@@ -461,37 +461,37 @@ class UsersController extends AppController
     {
         $this->addBreadcrumb('Account', ['action' => 'account']);
         $this->title('Update Account Info');
-        $user = $this->request->getAttribute('identity');
+        $userIdentity = $this->request->getAttribute('identity');
+        $userEntity = $this->Users->get($userIdentity->id);
+        $this->set(['user' => $userEntity]);
 
-        // The identity stored in $user isn't an entity and can't use used in the form
-        $this->set(['user' => $this->Users->get($user->id)]);
-
-        if ($this->request->is('post')) {
+        if ($this->request->is(['post', 'put'])) {
             // Update password
-            $currentPassword = $this->request->getData('current_password');
-            $passwordIsCorrect = (new DefaultPasswordHasher())->check($currentPassword, $user->password);
-            if (!$passwordIsCorrect) {
-                $this->Flash->error(
-                    'Unable to update account information. ' .
+            $newPassword = $this->request->getData('new_password');
+            if ($newPassword) {
+                $currentPassword = $this->request->getData('current_password');
+                $passwordIsCorrect = (new DefaultPasswordHasher())->check($currentPassword, $userEntity->password);
+                if (!$passwordIsCorrect) {
+                    $this->Flash->error(
+                        'Unable to update account information. ' .
                         'Please make sure that your current password has been entered and is correct'
-                );
+                    );
 
-                return null;
+                    return null;
+                }
+
+                $userEntity = $this->Users->patchEntity($userEntity, ['password' => $newPassword]);
             }
 
             // Update user entity
-            $fields = ['email', 'name', 'phone'];
-            foreach ($fields as $field) {
-                if ($this->request->getData($field)) {
-                    $user = $this->Users->patchEntity($user, [$field => $this->request->getData($field)]);
-                }
-            }
-            if ($this->request->getData('new_password')) {
-                $user = $this->Users->patchEntity($user, ['password' => $this->request->getData('new_password')]);
-            }
+            $userEntity = $this->Users->patchEntity(
+                $userEntity,
+                $this->request->getData(),
+                ['fields' => ['email', 'name', 'phone']]
+            );
 
             // Save changes
-            if ($this->Users->save($user)) {
+            if ($this->Users->save($userEntity)) {
                 $this->Flash->success('Changes saved');
             } else {
                 $this->Flash->error(
