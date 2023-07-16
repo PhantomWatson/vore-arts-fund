@@ -133,6 +133,9 @@ class UsersController extends AppController
             );
         }
 
+        // Clear password field
+        $this->request = $this->request->withData('password', '');
+
         $this->set([
             'title' => 'Register an Account',
             'user' => $user
