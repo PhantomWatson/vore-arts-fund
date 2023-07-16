@@ -129,7 +129,8 @@ class UsersController extends AppController
             }
 
             $this->Flash->error(
-                'There was an error registering your account. Details: ' . print_r($user->getErrors(), true)
+                'There was an error registering your account. ' .
+                'Look for details below, and contact us if you need assistance.'
             );
         }
 
