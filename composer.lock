@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "662079da0f286d3773beeca480f53d5c",
+    "content-hash": "feac44361df3f1b0b354e325edecb787",
     "packages": [
         {
             "name": "cakephp/authentication",
@@ -2354,16 +2354,16 @@
         },
         {
             "name": "twilio/sdk",
-            "version": "6.43.3",
+            "version": "7.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:twilio/twilio-php.git",
-                "reference": "9619630098a6846e89b0caa162589879be6749a5"
+                "reference": "c5c25509391a7369d8fc89e27cb177967c9dff83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/9619630098a6846e89b0caa162589879be6749a5",
-                "reference": "9619630098a6846e89b0caa162589879be6749a5",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/c5c25509391a7369d8fc89e27cb177967c9dff83",
+                "reference": "c5c25509391a7369d8fc89e27cb177967c9dff83",
                 "shasum": ""
             },
             "require": {
@@ -2371,7 +2371,7 @@
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^6.3 || ^7.0",
-                "phpunit/phpunit": ">=7.0"
+                "phpunit/phpunit": ">=7.0 < 10"
             },
             "suggest": {
                 "guzzlehttp/guzzle": "An HTTP client to execute the API requests"
@@ -2399,7 +2399,7 @@
                 "sms",
                 "twilio"
             ],
-            "time": "2022-11-16T20:10:35+00:00"
+            "time": "2023-06-15T07:36:24+00:00"
         }
     ],
     "packages-dev": [
