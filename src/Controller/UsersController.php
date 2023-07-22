@@ -179,6 +179,7 @@ class UsersController extends AppController
                 ->create(
                     '+1' . $phone,
                     'sms',
+                    ['customFriendlyName' => 'Vore Arts Fund'],
                 );
             Log::write('debug', print_r($verification, true));
         } catch (\Exception $e) {
