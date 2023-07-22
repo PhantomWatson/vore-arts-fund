@@ -11,7 +11,6 @@ use Cake\Event\EventInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
-use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Cake\Routing\Router;
 use Twilio\Rest\Client;
@@ -111,10 +110,6 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                 $this->Authentication->setIdentity($user);
-                Log::write('debug',
-                    'Account registered. Verification enabled: '
-                    . (Configure::read('enablePhoneVerification') ? 'yes' : 'no') . '. Phone: ' . $user->phone
-                );
                 $successMsg = 'Your account has been registered.';
                 $shouldVerifyPhone = Configure::read('enablePhoneVerification') && $user->phone;
                 $didSendCode = $this->sendVerificationText((string)$user->phone);
@@ -164,12 +159,10 @@ class UsersController extends AppController
             return false;
         }
 
-        Log::write('debug', 'Attempting to send verification message to ' . $phone);
         $accountSid = Configure::read('twilio_account_sid');
         $authToken = Configure::read('twilio_auth_token');
         $twilio = new Client($accountSid, $authToken);
         $serviceSid = Configure::read('twilio_service_sid');
-        Log::write('debug', print_r(compact('accountSid', 'authToken', 'serviceSid'), true));
         try {
             $verification = $twilio
                 ->verify
@@ -181,10 +174,7 @@ class UsersController extends AppController
                     'sms',
                     //['customFriendlyName' => 'Vore Arts Fund'],
                 );
-            Log::write('debug', print_r($verification, true));
         } catch (\Exception $e) {
-            Log::write('error', 'Exception thrown when trying to send verification text: ' . $e->getMessage());
-            Log::write('error', $e->getTraceAsString());
             $this->Flash->error($errorMsg . ' Details: ' . $e->getMessage());
             return false;
         }
