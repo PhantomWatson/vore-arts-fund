@@ -84,12 +84,12 @@ class User extends Entity
     /**
      * Strips out non-numeric strings from a phone number
      *
-     * @param string $phone
+     * @param string|int $phone
      * @return string
      */
-    public static function cleanPhone(string $phone)
+    public static function cleanPhone($phone)
     {
-        return preg_replace('/[^0-9]/', '', $phone);
+        return preg_replace('/[^0-9]/', '', (string)$phone);
     }
 
     protected function _setPhone($phone)
