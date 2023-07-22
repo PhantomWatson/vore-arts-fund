@@ -418,9 +418,10 @@ class UsersController extends AppController
             if ($this->validate((string)$user->phone, $data['code'])) {
                 $this->Users->patchEntity($user, ['is_verified' => 1]);
                 $this->Users->save($user);
+                $this->Flash->success('Your phone number is now verified');
                 $this->redirect(['action' => 'account']);
             } else {
-                $this->Flash->error(__('Error verifying phone'));
+                $this->Flash->error('Error verifying phone number');
             }
         }
 
