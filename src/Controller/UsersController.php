@@ -211,7 +211,10 @@ class UsersController extends AppController
             ->v2
             ->services($serviceSid)
             ->verificationChecks
-            ->create($code, ['to' => '+1' . $phone]);
+            ->create([
+                'to' => '+1' . $phone,
+                'code' => $code,
+            ]);
 
         return $verificationCheck->status == 'approved';
     }
