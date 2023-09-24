@@ -172,7 +172,6 @@ class UsersController extends AppController
                 ->create(
                     '+1' . $phone,
                     'sms',
-                    //['customFriendlyName' => 'Vore Arts Fund'],
                 );
         } catch (\Exception $e) {
             $this->Flash->error($errorMsg . ' Details: ' . $e->getMessage());
