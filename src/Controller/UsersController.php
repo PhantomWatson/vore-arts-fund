@@ -412,9 +412,11 @@ class UsersController extends AppController
                 $this->Flash->success('Your phone number is now verified');
                 $this->redirect(['action' => 'account']);
             } else {
+                $verifyUrl = Router::url(['controller' => 'Users', 'action' => 'verify', 'prefix' => false]);
                 $this->Flash->error(
                     'Error verifying phone number. ' .
-                    'If the verification code was sent more than ten minutes ago, then it has expired, ' . 'and you\'ll need to get a new code.'
+                    'If the verification code was sent more than ten minutes ago, then it has expired, ' .
+                    'and you\'ll need to request a new code.'
                 );
             }
         }
@@ -425,15 +427,28 @@ class UsersController extends AppController
     }
 
     /**
-     * Page for resending a verification email
+     * Action for resending a verification email
      *
-     * @return null
+     * @return Response
+     * @throws \Twilio\Exceptions\TwilioException
      */
     public function verifyResend()
     {
-        $this->title('Verify Resend');
+        if ($this->getRequest()->is('post')) {
+            /** @var \App\Model\Entity\User|null $user */
+            $user = $this->Authentication->getIdentity();
+            if ($this->sendVerificationText((string)$user->phone)) {
+                $this->Flash->success($this->verificationCodeSentMsg);
+                return $this->redirect(['action' => 'verify']);
+            }
+            $this->Flash->error(
+                'There was an error sending a new verification code to your phone. ' .
+                'Please try again, and <a href="/contact">contact us</a> if you need assistance.',
+                ['escape' => false]
+            );
+        }
 
-        return null;
+        return $this->redirect(['action' => 'verify']);
     }
 
     /**
