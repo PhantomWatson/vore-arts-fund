@@ -12,7 +12,7 @@ use Cake\ORM\Entity;
  * @property int $type
  * @property int|null $amount Amount in cents
  * @property int|null $application_id Application for loans, loan repayments, or canceled checks
- * @property string $meta
+ * @property string $meta Check number, donor name, Stripe meta dump
  * @property \Cake\I18n\FrozenTime $created
  *
  * @property \App\Model\Entity\Application $application
