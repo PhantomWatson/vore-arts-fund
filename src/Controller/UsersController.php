@@ -25,6 +25,10 @@ use Twilio\Rest\Client;
  */
 class UsersController extends AppController
 {
+    private string $verificationCodeSentMsg =
+        'Check for a text message containing your registration verification code. ' .
+        'This code will be valid for the next 10 minutes.';
+
     /**
      * beforeFilter callback method
      *
@@ -114,9 +118,7 @@ class UsersController extends AppController
                 $shouldVerifyPhone = Configure::read('enablePhoneVerification') && $user->phone;
                 $didSendCode = $this->sendVerificationText((string)$user->phone);
                 if ($shouldVerifyPhone && $didSendCode) {
-                    $this->Flash->success(
-                        "$successMsg Check for a text message containing your registration verification code."
-                    );
+                    $this->Flash->success($successMsg . $this->verificationCodeSentMsg);
                     return $this->redirect(['action' => 'verify']);
                 }
                 $this->Flash->success($successMsg);
