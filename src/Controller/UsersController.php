@@ -246,14 +246,15 @@ class UsersController extends AppController
                 return $this->redirect(['action' => 'forgotPassword']);
             } else {
                 $user = $this->__generatePasswordToken($user);
-                if ($this->Users->save($user) && $this->__sendForgotPasswordEmail($user)) {
-                    $this->Flash->success(
-                        'Password reset instructions have been sent to your email address. ' .
-                        'You have 24 hours to complete the request.'
-                    );
+                $this->Users->save($user);
+                $this->Authentication->setIdentity($user);
+                $this->__sendForgotPasswordEmail($user);
+                $this->Flash->success(
+                    'Password reset instructions have been sent to your email address. ' .
+                    'You have 24 hours to complete the request.'
+                );
 
-                    return $this->redirect(['action' => 'login']);
-                }
+                return $this->redirect(['action' => 'login']);
             }
         }
 
@@ -287,6 +288,7 @@ class UsersController extends AppController
             ];
             $user = $this->Users->patchEntity($user, $data);
             if ($this->Users->save($user)) {
+                $this->Authentication->setIdentity($user);
                 $this->__sendPasswordChangedEmail($user->id);
                 $this->Flash->success('Your password was changed successfully. Please log in to continue');
 
@@ -415,6 +417,7 @@ class UsersController extends AppController
             if ($this->validate((string)$user->phone, $data['code'])) {
                 $this->Users->patchEntity($user, ['is_verified' => 1]);
                 $this->Users->save($user);
+                $this->Authentication->setIdentity($user);
                 $this->Flash->success('Your phone number is now verified');
                 $this->redirect(['action' => 'account']);
             } else {
@@ -512,6 +515,7 @@ class UsersController extends AppController
 
             // Save changes
             if ($this->Users->save($userEntity)) {
+                $this->Authentication->setIdentity($userEntity);
                 $this->Flash->success('Changes saved');
             } else {
                 $this->Flash->error(

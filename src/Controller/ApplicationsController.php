@@ -147,6 +147,7 @@ class ApplicationsController extends AppController
             );
             return false;
         }
+        $this->Authentication->setIdentity($user);
 
         return true;
     }
