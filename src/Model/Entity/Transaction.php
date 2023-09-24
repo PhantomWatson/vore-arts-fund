@@ -10,7 +10,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $type
- * @property int|null $amount
+ * @property int|null $amount Amount in cents
  * @property int|null $application_id
  * @property string $meta
  * @property \Cake\I18n\FrozenTime $created
