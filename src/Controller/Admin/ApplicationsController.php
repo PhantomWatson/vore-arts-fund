@@ -99,9 +99,8 @@ class ApplicationsController extends AdminController
 
             // Adding note
             if ($noteBody) {
-                /** @var User $user */
-                $user = $this->Authentication->getIdentity();
-                $data['user_id'] = $user->id;
+                $user = $this->getAuthUser();
+                $data['user_id'] = $user?->id;
                 $data['application_id'] = $applicationId;
                 $note = $notesTable->newEntity($data);
                 if ($notesTable->save($note)) {

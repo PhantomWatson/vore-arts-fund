@@ -28,8 +28,7 @@ class AdminController extends AppController
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
-        /** @var User|null $user */
-        $user = $this->Authentication->getIdentity();
+        $user = $this->getAuthUser();
         if (!($user->is_admin ?? false)) {
             throw new ForbiddenException();
         }

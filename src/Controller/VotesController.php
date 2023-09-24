@@ -64,7 +64,7 @@ class VotesController extends AppController
                 ->all()
                 ->toArray()
             : [];
-        $user = $this->Authentication->getIdentity();
+        $user = $this->getAuthUser();
         $hasVoted = $user && $cycle && $this->Votes->hasVoted($user->id, $cycle->id);
         $nextCycle = $fundingCyclesTable->find('nextVoting')->first();
         $showUpcoming = $hasVoted || !$cycle || !$applications;

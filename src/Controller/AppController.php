@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\User;
 use Cake\Controller\Controller;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventInterface;
@@ -67,8 +68,7 @@ class AppController extends Controller
      */
     protected function setGlobalViewVars(): void
     {
-        /** @var \App\Model\Entity\User|null $user */
-        $user = $this->Authentication->getIdentity();
+        $user = $this->getAuthUser();
         $isLoggedIn = (bool)$user;
         $isAdmin = $user->is_admin ?? false;
         $applicationsTable = $this->getTableLocator()->get('Applications');
@@ -112,12 +112,11 @@ class AppController extends Controller
             return false;
         }
 
-        /** @var \App\Model\Entity\User $user */
-        $user = $this->Authentication->getIdentity();
+        $user = $this->getAuthUser();
 
         $applicationsTable = TableRegistry::getTableLocator()->get('Applications');
 
-        return $applicationsTable->exists(['id' => $applicationId, 'user_id' => $user->id]);
+        return $applicationsTable->exists(['id' => $applicationId, 'user_id' => $user?->id]);
     }
 
     /**
@@ -210,5 +209,13 @@ class AppController extends Controller
         }
 
         return $retval;
+    }
+
+    /**
+     * @return User|null
+     */
+    protected function getAuthUser()
+    {
+        return $this->Authentication->getIdentity()?->getOriginalData();
     }
 }

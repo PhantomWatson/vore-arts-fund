@@ -95,8 +95,7 @@ class ReportsController extends AppController
             throw new NotFoundException();
         }
         $report = $this->Reports->newEmptyEntity();
-        /** @var \App\Model\Entity\User $user */
-        $user = $this->Authentication->getIdentity();
+        $user = $this->getAuthUser();
         $report->user_id = $user->id;
         $report->application_id = $applicationId;
         if ($this->request->is('post')) {

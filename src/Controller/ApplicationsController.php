@@ -99,15 +99,13 @@ class ApplicationsController extends AppController
         $this->setApplicationVars();
         $this->setFromNow($fundingCycle->application_end);
 
-        $userId = $identity->getIdentifier();
-        $usersTable = TableRegistry::getTableLocator()->get('Users');
-        $user = $usersTable->get($userId);
+        $user = $this->getAuthUser();
 
         // Process form
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $application = $this->Applications->newEntity($data, ['associated' => ['Answers']]);
-            $application->user_id = $userId;
+            $application->user_id = $user->id;
             $application->funding_cycle_id = $fundingCycle->id;
             if ($this->processApplication($application, $data)) {
                 return $this->redirect([
@@ -135,10 +133,9 @@ class ApplicationsController extends AppController
      */
     private function processAddressUpdate(array $data): bool
     {
-        $identity = $this->Authentication->getIdentity();
-        $userId = $identity->getIdentifier();
+        $user = $this->getAuthUser();
         $usersTable = TableRegistry::getTableLocator()->get('Users');
-        $user = $usersTable->get($userId);
+
         $usersTable->patchEntity($user, $data);
         if (!$usersTable->save($user)) {
             $this->Flash->error(

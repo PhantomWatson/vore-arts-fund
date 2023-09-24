@@ -74,10 +74,9 @@ class VotesController extends ApiController
         if ($this->testingMode) {
             $userId = 1;
         } else {
-            /** @var User $user */
-            $user = $this->request->getAttribute('identity');
-            $userId = $user->id ?? false;
-            if ($userId === false) {
+            $user = $this->getAuthUser();
+            $userId = $user?->id;
+            if (!$userId) {
                 throw new ForbiddenException('You must be logged in to vote');
             }
             if (!$user->is_verified) {

@@ -103,10 +103,7 @@ class ApplicationsController extends BaseApplicationsController
                 return $this->redirect(['action' => 'index']);
             }
         } else {
-            $identity = $this->Authentication->getIdentity();
-            $userId = $identity->getIdentifier();
-            $usersTable = TableRegistry::getTableLocator()->get('Users');
-            $user = $usersTable->get($userId);
+            $user = $this->getAuthUser();
             $application->address = $user->address;
             $application->zipcode = $user->zipcode;
         }
@@ -136,8 +133,7 @@ class ApplicationsController extends BaseApplicationsController
     public function index()
     {
         $this->title('My Applications');
-        /** @var \App\Model\Entity\User $user */
-        $user = $this->Authentication->getIdentity();
+        $user = $this->getAuthUser();
         $applications = $this->Applications
             ->find()
             ->where(['user_id' => $user->id])

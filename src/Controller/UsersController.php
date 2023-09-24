@@ -404,8 +404,7 @@ class UsersController extends AppController
      */
     public function verify()
     {
-        /** @var User $user */
-        $user = $this->Authentication->getIdentity()->getOriginalData();
+        $user = $this->getAuthUser();
 
         if ($user->is_verified) {
             $this->Flash->success('Your phone number has already been verified');
@@ -444,8 +443,7 @@ class UsersController extends AppController
     public function verifyResend()
     {
         if ($this->getRequest()->is('post')) {
-            /** @var \App\Model\Entity\User|null $user */
-            $user = $this->Authentication->getIdentity();
+            $user = $this->getAuthUser();
             if ($this->sendVerificationText((string)$user->phone)) {
                 $this->Flash->success($this->verificationCodeSentMsg);
                 return $this->redirect(['action' => 'verify']);
@@ -467,8 +465,7 @@ class UsersController extends AppController
      */
     public function account()
     {
-        /** @var User $user */
-        $user = $this->Authentication->getIdentity()->getOriginalData();
+        $user = $this->getAuthUser();
         $this->set(compact('user'));
         $this->title('Account');
 
@@ -484,16 +481,15 @@ class UsersController extends AppController
     {
         $this->addBreadcrumb('Account', ['action' => 'account']);
         $this->title('Update Account Info');
-        $userIdentity = $this->request->getAttribute('identity');
-        $userEntity = $this->Users->get($userIdentity->id);
-        $this->set(['user' => $userEntity]);
+        $user = $this->getAuthUser();
+        $this->set(['user' => $user]);
 
         if ($this->request->is(['post', 'put'])) {
             // Update password
             $newPassword = $this->request->getData('new_password');
             if ($newPassword) {
                 $currentPassword = $this->request->getData('current_password');
-                $passwordIsCorrect = (new DefaultPasswordHasher())->check($currentPassword, $userEntity->password);
+                $passwordIsCorrect = (new DefaultPasswordHasher())->check($currentPassword, $user->password);
                 if (!$passwordIsCorrect) {
                     $this->Flash->error(
                         'Unable to update account information. ' .
@@ -503,19 +499,19 @@ class UsersController extends AppController
                     return null;
                 }
 
-                $userEntity = $this->Users->patchEntity($userEntity, ['password' => $newPassword]);
+                $user = $this->Users->patchEntity($user, ['password' => $newPassword]);
             }
 
             // Update user entity
-            $userEntity = $this->Users->patchEntity(
-                $userEntity,
+            $user = $this->Users->patchEntity(
+                $user,
                 $this->request->getData(),
                 ['fields' => ['email', 'name', 'phone']]
             );
 
             // Save changes
-            if ($this->Users->save($userEntity)) {
-                $this->Authentication->setIdentity($userEntity);
+            if ($this->Users->save($user)) {
+                $this->Authentication->setIdentity($user);
                 $this->Flash->success('Changes saved');
             } else {
                 $this->Flash->error(
