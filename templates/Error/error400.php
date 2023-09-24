@@ -1,12 +1,13 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\Database\StatementInterface $error
+ * @var \Cake\Database\StatementInterface|HttpException $error
  * @var string $message
  * @var string $url
  */
 use Cake\Core\Configure;
 use Cake\Error\Debugger;
+use Cake\Http\Exception\HttpException;
 
 $this->layout = 'error';
 
@@ -35,7 +36,24 @@ if (Configure::read('debug')) :
 <h2><?= h($message) ?></h2>
 
 <p class="alert alert-danger">
-    Sorry, but that page wasn't found. Please <a href="/contact">contact us</a> if you need assistance.
+    <?php if ($error->getCode() == 401): ?>
+        Please
+        <?= $this->Html->link(
+            'log in',
+            [
+                'controller' => 'Users',
+                'action' => 'login',
+            ],
+        ) ?>
+        to continue.
+    <?php elseif ($error->getCode() == 403): ?>
+        Sorry, but you don't have access to that page. You might be logged into the wrong account.
+        Please <a href="/contact">contact us</a> if you need assistance.
+    <?php elseif ($error->getCode() == 404): ?>
+        Sorry, but that page wasn't found. Please <a href="/contact">contact us</a> if you need assistance.
+    <?php else: ?>
+        There was an error loading that page. Please <a href="/contact">contact us</a> if you need assistance.
+    <?php endif; ?>
 </p>
 
 <?= $this->Html->link(
