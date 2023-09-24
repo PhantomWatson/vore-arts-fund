@@ -402,9 +402,15 @@ class UsersController extends AppController
      */
     public function verify()
     {
+        /** @var User $user */
+        $user = $this->Authentication->getIdentity()->getOriginalData();
+
+        if ($user->is_verified) {
+            $this->Flash->success('Your phone number has already been verified');
+            return $this->redirect(['action' => 'account']);
+        }
+
         if ($this->request->is('post')) {
-            /** @var User $user */
-            $user = $this->Authentication->getIdentity()->getOriginalData();
             $data = $this->request->getData();
             if ($this->validate((string)$user->phone, $data['code'])) {
                 $this->Users->patchEntity($user, ['is_verified' => 1]);
