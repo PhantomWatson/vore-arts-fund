@@ -4,7 +4,6 @@
  * @var bool $hasApplications
  * @var bool $isAdmin
  * @var bool $isLoggedIn
- * @var bool $isVerified
  */
 ?>
 <header id="header" class="fixed-top">
@@ -113,15 +112,6 @@
                                     ) ?>
                                 </li>
                             </ul>
-                        </li>
-                    <?php endif; ?>
-                    <?php if (!$isVerified): ?>
-                        <li>
-                            <?= $this->Html->link(
-                                'Verify',
-                                ['controller' => 'Users', 'action' => 'verify', 'prefix' => false],
-                                ['class' => 'nav-link']
-                            ) ?>
                         </li>
                     <?php endif; ?>
                 <?php else: ?>
