@@ -127,9 +127,9 @@ class PagesController extends AppController
      */
     public function home()
     {
-        $this->loadModel('FundingCycles');
+        $fundingCyclesTable = $this->fetchTable('FundingCycles');
         /** @var \App\Model\Entity\FundingCycle $fundingCycle */
-        $fundingCycle = $this->FundingCycles
+        $fundingCycle = $fundingCyclesTable
             ->find('currentAndFuture')
             ->orderAsc('application_end')
             ->first();
