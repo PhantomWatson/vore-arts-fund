@@ -65,6 +65,7 @@ class TransactionsTable extends Table
         $validator
             ->integer('type')
             ->requirePresence('type', 'create')
+            ->inList('type', array_values(Transaction::getTypes()))
             ->notEmptyString('type');
 
         $validator

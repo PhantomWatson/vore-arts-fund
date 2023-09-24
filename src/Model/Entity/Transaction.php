@@ -20,6 +20,9 @@ use Cake\ORM\Entity;
 class Transaction extends Entity
 {
     public const TYPE_DONATION = 1;
+    public const TYPE_LOAN_REPAYMENT = 2;
+    public const TYPE_LOAN = 3;
+    public const TYPE_CANCELED_CHECK = 4;
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -38,4 +41,14 @@ class Transaction extends Entity
         'created' => true,
         'application' => true,
     ];
+
+    public static function getTypes()
+    {
+        return [
+            'Donation' => self::TYPE_DONATION,
+            'Loan repayment' => self::TYPE_LOAN_REPAYMENT,
+            'Loan' => self::TYPE_LOAN,
+            'Canceled check' => self::TYPE_CANCELED_CHECK,
+        ];
+    }
 }
