@@ -412,7 +412,10 @@ class UsersController extends AppController
                 $this->Flash->success('Your phone number is now verified');
                 $this->redirect(['action' => 'account']);
             } else {
-                $this->Flash->error('Error verifying phone number');
+                $this->Flash->error(
+                    'Error verifying phone number. ' .
+                    'If the verification code was sent more than ten minutes ago, then it has expired, ' . 'and you\'ll need to get a new code.'
+                );
             }
         }
 
