@@ -1,16 +1,16 @@
 <?php
 /**
- * @var \App\Model\Entity\Application[] $applications
+ * @var \App\Model\Entity\Project[] $projects
  */
 ?>
 
 
 <p>
     <?= $this->Html->link(
-        'Applications',
+        'Projects',
         [
             'prefix' => 'Admin',
-            'controller' => 'Applications',
+            'controller' => 'Projects',
             'action' => 'index',
         ],
         ['class' => 'btn btn-secondary']

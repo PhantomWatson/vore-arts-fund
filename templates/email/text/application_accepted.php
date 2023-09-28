@@ -1,12 +1,12 @@
 <?php
 /**
- * @var \App\Model\Entity\Application $application
+ * @var \App\Model\Entity\Project $project
  * @var \App\Model\Entity\FundingCycle $fundingCycle
  * @var \App\View\AppView $this
  * @var string $userName
  */
 ?>
-Congratulations, <?= $userName ?>! Your application for funding for <?= $application->title ?> was accepted. However,
+Congratulations, <?= $userName ?>! Your application for funding for <?= $project->title ?> was accepted. However,
 your application needs to be voted on by the public before we can award funding.
 
 So what comes next? On <?= $fundingCycle->vote_begin->format('F j, Y') ?>, voting will begin for the applications

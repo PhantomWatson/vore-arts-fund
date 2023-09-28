@@ -9,13 +9,13 @@ use Cake\ORM\Entity;
  * Image Entity
  *
  * @property int $id
- * @property int $application_id
+ * @property int $project_id
  * @property string $filename
  * @property int $weight
  * @property string $caption
  * @property \Cake\I18n\FrozenTime $created
  *
- * @property \App\Model\Entity\Application $application
+ * @property \App\Model\Entity\Project $project
  */
 class Image extends Entity
 {
@@ -31,11 +31,11 @@ class Image extends Entity
      * @var array
      */
     protected $_accessible = [
-        'application_id' => true,
+        'project_id' => true,
         'filename' => true,
         'weight' => true,
         'caption' => true,
         'created' => true,
-        'application' => true,
+        'project' => true,
     ];
 }

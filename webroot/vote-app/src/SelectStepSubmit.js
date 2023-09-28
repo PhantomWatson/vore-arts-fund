@@ -5,21 +5,21 @@ import Alert from "./Alert";
 const SelectStepSubmit = (props) => {
   return (
     <>
-      {props.allVotesAreCast && props.approvedApplications.length === 1 &&
+      {props.allVotesAreCast && props.approvedProjects.length === 1 &&
         <Alert flavor="info">
           Since you've only approved <strong>one</strong> application, you'll skip the sorting step and immediately
           submit your vote.
         </Alert>
       }
-      {props.allVotesAreCast && props.approvedApplications.length > 0 &&
+      {props.allVotesAreCast && props.approvedProjects.length > 0 &&
         <div className="vote-footer">
           <Button
             variant="primary"
             size="lg"
             onClick={props.handleSubmitSelectStep}
-            disabled={!props.allVotesAreCast || props.approvedApplications.length === 0 || props.submitIsLoading}
+            disabled={!props.allVotesAreCast || props.approvedProjects.length === 0 || props.submitIsLoading}
           >
-            {props.approvedApplications.length === 1 ? 'Cast votes' : 'Next'}
+            {props.approvedProjects.length === 1 ? 'Cast votes' : 'Next'}
             {props.submitIsLoading &&
               <>
                 {' '}
@@ -29,7 +29,7 @@ const SelectStepSubmit = (props) => {
           </Button>
         </div>
       }
-      {props.allVotesAreCast && props.approvedApplications.length === 0 &&
+      {props.allVotesAreCast && props.approvedProjects.length === 0 &&
         <Alert flavor="warning">
           You must approve at least one application in order to cast a vote.
           If there are no applications that you'd like to approve,

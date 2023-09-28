@@ -22,7 +22,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
- * @property \App\Model\Entity\Application[] $applications
+ * @property \App\Model\Entity\Project[] $projects
  * @property \App\Model\Entity\Message[] $messages
  * @property \App\Model\Entity\Note[] $notes
  * @property \App\Model\Entity\Vote[] $votes
@@ -47,7 +47,7 @@ class User extends Entity
         'is_verified' => true,
         'created' => true,
         'modified' => true,
-        'applications' => true,
+        'projects' => true,
         'messages' => true,
         'notes' => true,
         'votes' => true,

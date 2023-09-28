@@ -2,11 +2,11 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
- * @var Application[] $applications
+ * @var Project[] $projects
  * @var string $title
  */
 
-use App\Model\Entity\Application;
+use App\Model\Entity\Project;
 ?>
 
 <?php if ($user->is_verified): ?>

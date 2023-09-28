@@ -16,7 +16,7 @@ class DashboardController extends AdminController
     {
         $this->title('Admin');
         $this->set([
-            'applications' => TableRegistry::getTableLocator()->get('Applications')->find()->all()->toArray(),
+            'projects' => TableRegistry::getTableLocator()->get('Projects')->find()->all()->toArray(),
         ]);
     }
 }

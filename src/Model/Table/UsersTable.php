@@ -12,7 +12,7 @@ use Cake\Validation\Validator;
 /**
  * Users Model
  *
- * @property \App\Model\Table\ApplicationsTable&\Cake\ORM\Association\HasMany $Applications
+ * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\HasMany $Projects
  * @property \App\Model\Table\MessagesTable&\Cake\ORM\Association\HasMany $Messages
  * @property \App\Model\Table\NotesTable&\Cake\ORM\Association\HasMany $Notes
  * @property \App\Model\Table\VotesTable&\Cake\ORM\Association\HasMany $Votes
@@ -46,7 +46,7 @@ class UsersTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->hasMany('Applications', [
+        $this->hasMany('Projects', [
             'foreignKey' => 'user_id',
         ]);
         $this->hasMany('Messages', [

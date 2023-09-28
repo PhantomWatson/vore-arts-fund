@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\Model\Entity\Application[] $applications
+ * @var \App\Model\Entity\Project[] $projects
  * @var \App\Model\Entity\FundingCycle[] $cyclesCurrentlyVoting
  * @var \App\Model\Entity\FundingCycle|null $cycle
  * @var \App\Model\Entity\FundingCycle|null $nextCycle
@@ -45,7 +45,7 @@
     </script>
 <?php endif; ?>
 
-<?php if (!$applications): ?>
+<?php if (!$projects): ?>
     <p>
         Unfortunately, there are no applications to vote on in this funding cycle.
     </p>

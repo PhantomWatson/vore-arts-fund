@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Model\Entity\Application;
+use App\Model\Entity\Project;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
@@ -18,7 +18,7 @@ use Cake\Routing\Router;
 class ReportsController extends AppController
 {
     public $paginate = [
-        'contain' => ['Users', 'Applications'],
+        'contain' => ['Users', 'Projects'],
         'limit' => 10,
         'order' => ['Reports.created' => 'desc'],
     ];
@@ -51,16 +51,16 @@ class ReportsController extends AppController
     public function view($id = null)
     {
         $report = $this->Reports->get($id, [
-            'contain' => ['Users', 'Applications'],
+            'contain' => ['Users', 'Projects'],
         ]);
-        $this->addBreadcrumbForApplication($report->application);
+        $this->addBreadcrumbForProject($report->project);
         $this->addBreadcrumb(
             'Reports',
             [
                 'prefix' => false,
                 'controller' => 'Reports',
-                'action' => 'application',
-                $report->application->id,
+                'action' => 'project',
+                $report->project->id,
             ]
         );
         $this->setCurrentBreadcrumb($report->created->format('F j, Y'));
@@ -69,17 +69,17 @@ class ReportsController extends AppController
     }
 
     /**
-     * @param Application $application
+     * @param Project $project
      * @return void
      */
-    private function addBreadcrumbForApplication(Application $application): void
+    private function addBreadcrumbForProject(Project $project): void
     {
         $this->addBreadcrumb(
-            $application->title,
+            $project->title,
             [
                 'controller' => 'Reports',
-                'action' => 'application',
-                'id' => $application->id,
+                'action' => 'project',
+                'id' => $project->id,
             ]
         );
     }
@@ -89,22 +89,22 @@ class ReportsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function submit($applicationId = null)
+    public function submit($projectId = null)
     {
-        if (!$this->isOwnApplication($applicationId)) {
+        if (!$this->isOwnProject($projectId)) {
             throw new NotFoundException();
         }
         $report = $this->Reports->newEmptyEntity();
         $user = $this->getAuthUser();
         $report->user_id = $user->id;
-        $report->application_id = $applicationId;
+        $report->project_id = $projectId;
         if ($this->request->is('post')) {
             $report = $this->Reports->patchEntity($report, $this->request->getData());
             if ($this->Reports->save($report)) {
                 $this->Flash->success(__('Report submitted. Thanks for keeping us updated!'));
 
                 $back = $this->request->getQuery('back') ?? Router::url([
-                    'controller' => 'Applications',
+                    'controller' => 'Projects',
                     'action' => 'index',
                 ]);
 
@@ -112,13 +112,13 @@ class ReportsController extends AppController
             }
             $this->Flash->error(__('The report could not be submitted. Please check for errors and try again.'));
         }
-        $applicationsTable = TableRegistry::getTableLocator()->get('Applications');
-        $application = $applicationsTable->get($applicationId);
-        $this->set(compact('report', 'application'));
+        $projectsTable = TableRegistry::getTableLocator()->get('Projects');
+        $project = $projectsTable->get($projectId);
+        $this->set(compact('report', 'project'));
         $this->viewBuilder()->setTemplate('form');
-        $this->title('Submit report for ' . $application->title);
+        $this->title('Submit report for ' . $project->title);
 
-        $this->addBreadcrumbForApplication($application);
+        $this->addBreadcrumbForProject($project);
         $this->setCurrentBreadcrumb('Submit');
     }
 
@@ -132,7 +132,7 @@ class ReportsController extends AppController
     public function edit($reportId = null)
     {
         $report = $this->Reports->get($reportId, [
-            'contain' => ['Applications'],
+            'contain' => ['Projects'],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $report = $this->Reports->patchEntity($report, $this->request->getData());
@@ -144,11 +144,11 @@ class ReportsController extends AppController
             $this->Flash->error(__('The report could not be saved. Please, try again.'));
         }
         $users = $this->Reports->Users->find('list', ['limit' => 200])->all();
-        $applications = $this->Reports->Applications->find('list', ['limit' => 200])->all();
-        $this->set(compact('report', 'users', 'applications'));
+        $projects = $this->Reports->Projects->find('list', ['limit' => 200])->all();
+        $this->set(compact('report', 'users', 'projects'));
         $this->viewBuilder()->setTemplate('form');
 
-        $this->addBreadcrumbForApplication($report->application);
+        $this->addBreadcrumbForProject($report->project);
         $this->addBreadcrumb(
             $report->created->format('F j, Y'),
             [
@@ -180,23 +180,23 @@ class ReportsController extends AppController
     }
 
     /**
-     * @param $applicationId
+     * @param $projectId
      * @return void
      */
-    public function application($applicationId = null): void
+    public function project($projectId = null): void
     {
         $reports = $this->Reports
             ->find()
-            ->where(['Reports.application_id' => $applicationId])
+            ->where(['Reports.project_id' => $projectId])
             ->orderDesc('Reports.created')
-            ->contain(['Applications'])
+            ->contain(['Projects'])
             ->all();
         $this->set(compact('reports'));
-        $applicationsTable = TableRegistry::getTableLocator()->get('Applications');
-        $application = $applicationsTable->get($applicationId);
-        $this->title($application->title);
+        $projectsTable = TableRegistry::getTableLocator()->get('Projects');
+        $project = $projectsTable->get($projectId);
+        $this->title($project->title);
 
-        $this->addBreadcrumbForApplication($application);
+        $this->addBreadcrumbForProject($project);
         $this->setCurrentBreadcrumb('Reports');
     }
 }

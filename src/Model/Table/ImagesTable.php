@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
 /**
  * Images Model
  *
- * @property \App\Model\Table\ApplicationsTable&\Cake\ORM\Association\BelongsTo $Applications
+ * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\BelongsTo $Projects
  * @method \App\Model\Entity\Image get($primaryKey, $options = [])
  * @method \App\Model\Entity\Image newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Image[] newEntities(array $data, array $options = [])
@@ -40,8 +40,8 @@ class ImagesTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Applications', [
-            'foreignKey' => 'application_id',
+        $this->belongsTo('Projects', [
+            'foreignKey' => 'project_id',
             'joinType' => 'INNER',
         ]);
     }
@@ -86,7 +86,7 @@ class ImagesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['application_id'], 'Applications'));
+        $rules->add($rules->existsIn(['project_id'], 'Projects'));
 
         return $rules;
     }

@@ -10,7 +10,7 @@ use Cake\Event\EventInterface;
 use Cake\Http\Response;
 
 /**
- * @property \App\Model\Table\ApplicationsTable $Applications
+ * @property \App\Model\Table\ProjectsTable $Projects
  * @property \App\Model\Table\VotesTable $Votes
  * @property \App\Model\Table\FundingCyclesTable $FundingCycles
  * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
@@ -58,8 +58,8 @@ class VotesController extends AppController
             $cycle = $cyclesCurrentlyVoting->first();
         }
 
-        $applications = $cycle
-            ? $this->fetchTable('Applications')
+        $projects = $cycle
+            ? $this->fetchTable('Projects')
                 ->find('forVoting', ['funding_cycle_id' => $cycle->id])
                 ->all()
                 ->toArray()
@@ -67,8 +67,8 @@ class VotesController extends AppController
         $user = $this->getAuthUser();
         $hasVoted = $user && $cycle && $this->Votes->hasVoted($user->id, $cycle->id);
         $nextCycle = $fundingCyclesTable->find('nextVoting')->first();
-        $showUpcoming = $hasVoted || !$cycle || !$applications;
-        $canVote = $user && $user->is_verified && !$showUpcoming && $applications;
+        $showUpcoming = $hasVoted || !$cycle || !$projects;
+        $canVote = $user && $user->is_verified && !$showUpcoming && $projects;
 
         $this->setCurrentBreadcrumb('Vote');
         $this->title(
@@ -84,7 +84,7 @@ class VotesController extends AppController
         $toLoad = $this->getAppFiles('vote-app');
 
         $this->set(compact(
-            'applications',
+            'projects',
             'canVote',
             'cycle',
             'hasVoted',

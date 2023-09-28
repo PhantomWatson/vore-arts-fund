@@ -53,7 +53,7 @@ namespace PHPSTORM_META {
 	override(
 		\Cake\Datasource\ModelAwareTrait::loadModel(0),
 		map([
-			'Applications' => \App\Model\Table\ApplicationsTable::class,
+			'Projects' => \App\Model\Table\ProjectsTable::class,
 			'Categories' => \App\Model\Table\CategoriesTable::class,
 			'DebugKit.Panels' => \DebugKit\Model\Table\PanelsTable::class,
 			'DebugKit.Requests' => \DebugKit\Model\Table\RequestsTable::class,
@@ -88,7 +88,7 @@ namespace PHPSTORM_META {
 	override(
 		\Cake\ORM\Locator\LocatorInterface::get(0),
 		map([
-			'Applications' => \App\Model\Table\ApplicationsTable::class,
+			'Projects' => \App\Model\Table\ProjectsTable::class,
 			'Categories' => \App\Model\Table\CategoriesTable::class,
 			'DebugKit.Panels' => \DebugKit\Model\Table\PanelsTable::class,
 			'DebugKit.Requests' => \DebugKit\Model\Table\RequestsTable::class,
@@ -116,7 +116,7 @@ namespace PHPSTORM_META {
 	override(
 		\Cake\ORM\Table::belongToMany(0),
 		map([
-			'Applications' => \Cake\ORM\Association\BelongsToMany::class,
+			'Projects' => \Cake\ORM\Association\BelongsToMany::class,
 			'Categories' => \Cake\ORM\Association\BelongsToMany::class,
 			'DebugKit.Panels' => \Cake\ORM\Association\BelongsToMany::class,
 			'DebugKit.Requests' => \Cake\ORM\Association\BelongsToMany::class,
@@ -133,7 +133,7 @@ namespace PHPSTORM_META {
 	override(
 		\Cake\ORM\Table::belongsTo(0),
 		map([
-			'Applications' => \Cake\ORM\Association\BelongsTo::class,
+			'Projects' => \Cake\ORM\Association\BelongsTo::class,
 			'Categories' => \Cake\ORM\Association\BelongsTo::class,
 			'DebugKit.Panels' => \Cake\ORM\Association\BelongsTo::class,
 			'DebugKit.Requests' => \Cake\ORM\Association\BelongsTo::class,
@@ -159,7 +159,7 @@ namespace PHPSTORM_META {
 	override(
 		\Cake\ORM\Table::hasMany(0),
 		map([
-			'Applications' => \Cake\ORM\Association\HasMany::class,
+			'Projects' => \Cake\ORM\Association\HasMany::class,
 			'Categories' => \Cake\ORM\Association\HasMany::class,
 			'DebugKit.Panels' => \Cake\ORM\Association\HasMany::class,
 			'DebugKit.Requests' => \Cake\ORM\Association\HasMany::class,
@@ -176,7 +176,7 @@ namespace PHPSTORM_META {
 	override(
 		\Cake\ORM\Table::hasOne(0),
 		map([
-			'Applications' => \Cake\ORM\Association\HasOne::class,
+			'Projects' => \Cake\ORM\Association\HasOne::class,
 			'Categories' => \Cake\ORM\Association\HasOne::class,
 			'DebugKit.Panels' => \Cake\ORM\Association\HasOne::class,
 			'DebugKit.Requests' => \Cake\ORM\Association\HasOne::class,
@@ -193,7 +193,7 @@ namespace PHPSTORM_META {
 	override(
 		\Cake\ORM\TableRegistry::get(0),
 		map([
-			'Applications' => \App\Model\Table\ApplicationsTable::class,
+			'Projects' => \App\Model\Table\ProjectsTable::class,
 			'Categories' => \App\Model\Table\CategoriesTable::class,
 			'DebugKit.Panels' => \DebugKit\Model\Table\PanelsTable::class,
 			'DebugKit.Requests' => \DebugKit\Model\Table\RequestsTable::class,

@@ -11,7 +11,7 @@
     <?php endif; ?>
     <h2>
         Project Update:
-        <?= $report->application->title ?>
+        <?= $report->projects->title ?>
     </h2>
     <p class="date">
         <?= $report->created->format('F j, Y') ?>
@@ -19,9 +19,9 @@
         <?= $this->Html->link(
             'Go to project',
             [
-                'controller' => 'Applications',
+                'controller' => 'Projects',
                 'action' => 'view',
-                'id' => $report->application->id,
+                'id' => $report->projects->id,
             ],
         ) ?>
     </p>

@@ -2,7 +2,7 @@
 
 namespace App\Event;
 
-use App\Model\Entity\Application;
+use App\Model\Entity\Project;
 use App\Model\Entity\User;
 use App\Model\Table\FundingCyclesTable;
 use App\Model\Table\UsersTable;
@@ -32,17 +32,17 @@ class MailListener implements EventListenerInterface
     }
 
     /**
-     * @param Application $application
+     * @param Project $project
      * @return array|false
      */
-    private function getRecipientFromApplication(Application $application)
+    private function getRecipientFromProject(Project $project)
     {
         try {
             /** @var User $user */
-            $user = $this->usersTable->get($application->user_id ?? false);
+            $user = $this->usersTable->get($project->user_id ?? false);
             return [$user->email, $user->name];
         } catch (\Cake\Datasource\Exception\RecordNotFoundException $e) {
-            Log::error("Application #{$application->id} does not have a valid user ID (#$application->user_id)");
+            Log::error("Project #{$project->id} does not have a valid user ID (#$project->user_id)");
             return false;
         }
     }
@@ -50,28 +50,28 @@ class MailListener implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            'Application.accepted' => 'mailApplicationAccepted',
-            'Application.revisionRequested' => 'mailApplicationRevisionRequested',
-            'Application.rejected' => 'mailApplicationRejected',
-            'Application.funded' => 'mailApplicationFunded',
-            'Application.notFunded' => 'mailApplicationNotFunded',
+            'Project.accepted' => 'mailProjectAccepted',
+            'Project.revisionRequested' => 'mailProjectRevisionRequested',
+            'Project.rejected' => 'mailProjectRejected',
+            'Project.funded' => 'mailProjectFunded',
+            'Project.notFunded' => 'mailProjectNotFunded',
         ];
     }
 
     /**
      * @param Event $event
-     * @param Application $application
+     * @param Project $project
      * @return void
      * @throws InternalErrorException
      */
-    public function mailApplicationAccepted(Event $event, Application $application)
+    public function mailProjectAccepted(Event $event, Project $project)
     {
-        list($email, $name) = $this->getRecipientFromApplication($application);
+        list($email, $name) = $this->getRecipientFromProject($project);
         EmailQueue::enqueue(
             $email,
             [
-                'application' => $application,
-                'fundingCycle' => $this->fundingCyclesTable->get($application->funding_cycle_id),
+                'project' => $project,
+                'fundingCycle' => $this->fundingCyclesTable->get($project->funding_cycle_id),
                 'userName' => $name,
             ],
             [
@@ -85,24 +85,24 @@ class MailListener implements EventListenerInterface
 
     /**
      * @param Event $event
-     * @param Application $application
+     * @param Project $project
      * @param string $note
      * @return void
      * @throws InternalErrorException
      */
-    public function mailApplicationRevisionRequested(Event $event, Application $application, string $note)
+    public function mailProjectRevisionRequested(Event $event, Project $project, string $note)
     {
-        list($email, $name) = $this->getRecipientFromApplication($application);
+        list($email, $name) = $this->getRecipientFromProject($project);
         EmailQueue::enqueue(
             $email,
             [
-                'application' => $application,
-                'fundingCycle' => $this->fundingCyclesTable->get($application->funding_cycle_id),
+                'project' => $project,
+                'fundingCycle' => $this->fundingCyclesTable->get($project->funding_cycle_id),
                 'note' => $note,
                 'url' => Router::url([
-                    'controller' => 'Applications',
+                    'controller' => 'Projects',
                     'action' => 'edit',
-                    'id' => $application->id,
+                    'id' => $project->id,
                 ], true),
                 'userName' => $name,
             ],
@@ -117,19 +117,19 @@ class MailListener implements EventListenerInterface
 
     /**
      * @param Event $event
-     * @param Application $application
+     * @param Project $project
      * @param string $note
      * @return void
      * @throws InternalErrorException
      */
-    public function mailApplicationRejected(Event $event, Application $application, string $note)
+    public function mailProjectRejected(Event $event, Project $project, string $note)
     {
-        list($email, $name) = $this->getRecipientFromApplication($application);
+        list($email, $name) = $this->getRecipientFromProject($project);
         EmailQueue::enqueue(
             $email,
             [
-                'application' => $application,
-                'fundingCycle' => $this->fundingCyclesTable->find('nextApplication')->first(),
+                'project' => $project,
+                'fundingCycle' => $this->fundingCyclesTable->find('nextProject')->first(),
                 'note' => $note,
                 'userName' => $name,
             ],
@@ -144,23 +144,23 @@ class MailListener implements EventListenerInterface
 
     /**
      * @param Event $event
-     * @param Application $application
+     * @param Project $project
      * @param int $amount
      * @return void
      * @throws InternalErrorException
      */
-    public function mailApplicationFunded(Event $event, Application $application, int $amount)
+    public function mailProjectFunded(Event $event, Project $project, int $amount)
     {
-        list($email, $name) = $this->getRecipientFromApplication($application);
+        list($email, $name) = $this->getRecipientFromProject($project);
         EmailQueue::enqueue(
             $email,
             [
                 'amount' => $amount,
-                'application' => $application,
-                'fundingCycle' => $this->fundingCyclesTable->get($application->funding_cycle_id),
-                'myApplicationsUrl' => Router::url([
+                'project' => $project,
+                'fundingCycle' => $this->fundingCyclesTable->get($project->funding_cycle_id),
+                'myProjectsUrl' => Router::url([
                     'prefix' => false,
-                    'controller' => 'Applications',
+                    'controller' => 'Projects',
                     'action' => 'index'
                 ], true),
                 'supportEmail' => Configure::read('supportEmail'),
@@ -177,18 +177,18 @@ class MailListener implements EventListenerInterface
 
     /**
      * @param Event $event
-     * @param Application $application
+     * @param Project $project
      * @return void
      * @throws InternalErrorException
      */
-    public function mailApplicationNotFunded(Event $event, Application $application)
+    public function mailProjectNotFunded(Event $event, Project $project)
     {
-        list($email, $name) = $this->getRecipientFromApplication($application);
+        list($email, $name) = $this->getRecipientFromProject($project);
         EmailQueue::enqueue(
             $email,
             [
-                'application' => $application,
-                'fundingCycle' => $this->fundingCyclesTable->find('nextApplication')->first(),
+                'project' => $project,
+                'fundingCycle' => $this->fundingCyclesTable->find('nextProject')->first(),
                 'userName' => $name,
             ],
             [

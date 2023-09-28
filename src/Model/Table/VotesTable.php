@@ -11,7 +11,7 @@ use Cake\Validation\Validator;
  * Votes Model
  *
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\ApplicationsTable&\Cake\ORM\Association\BelongsTo $Applications
+ * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\BelongsTo $Projects
  * @property \App\Model\Table\FundingCyclesTable&\Cake\ORM\Association\BelongsTo $FundingCycles
  * @method \App\Model\Entity\Vote get($primaryKey, $options = [])
  * @method \App\Model\Entity\Vote newEntity(array $data, array $options = [])
@@ -46,8 +46,8 @@ class VotesTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Applications', [
-            'foreignKey' => 'application_id',
+        $this->belongsTo('Projects', [
+            'foreignKey' => 'project_id',
             'joinType' => 'INNER',
         ]);
         $this->belongsTo('FundingCycles', [
@@ -86,7 +86,7 @@ class VotesTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['application_id'], 'Applications'));
+        $rules->add($rules->existsIn(['project_id'], 'Projects'));
         $rules->add($rules->existsIn(['funding_cycle_id'], 'FundingCycles'));
 
         return $rules;

@@ -13,7 +13,7 @@ use Cake\Validation\Validator;
 /**
  * Transactions Model
  *
- * @property \App\Model\Table\ApplicationsTable&\Cake\ORM\Association\BelongsTo $Applications
+ * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\BelongsTo $Projects
  *
  * @method \App\Model\Entity\Transaction newEmptyEntity()
  * @method \App\Model\Entity\Transaction newEntity(array $data, array $options = [])
@@ -49,8 +49,8 @@ class TransactionsTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Applications', [
-            'foreignKey' => 'application_id',
+        $this->belongsTo('Projects', [
+            'foreignKey' => 'project_id',
         ]);
     }
 
@@ -62,10 +62,12 @@ class TransactionsTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
+        $types = array_keys(Transaction::getTypes());
         $validator
             ->integer('type')
             ->requirePresence('type', 'create')
-            ->inList('type', array_values(Transaction::getTypes()))
+            ->inList('type', $types)
+            ->range('type', [min($types), max($types)])
             ->notEmptyString('type');
 
         $validator
@@ -73,8 +75,8 @@ class TransactionsTable extends Table
             ->allowEmptyString('amount');
 
         $validator
-            ->integer('application_id')
-            ->allowEmptyString('application_id');
+            ->integer('project_id')
+            ->allowEmptyString('project_id');
 
         $validator
             ->scalar('meta')
@@ -93,7 +95,7 @@ class TransactionsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn('application_id', 'Applications'), ['errorField' => 'application_id']);
+        $rules->add($rules->existsIn('project_id', 'Projects'), ['errorField' => 'project_id']);
 
         return $rules;
     }
@@ -102,7 +104,7 @@ class TransactionsTable extends Table
      * Saves a payment
      *
      * Assumes that this is a donation and not a load repayment.
-     * TODO: Check metadata for application_id and update type and application_id as appropriate
+     * TODO: Check metadata for project_id and update type and project_id as appropriate
      *
      * @param \Stripe\Charge $charge
      * @return bool
@@ -112,7 +114,7 @@ class TransactionsTable extends Table
         $transaction = $this->newEntity([
             'amount' => $charge->amount_captured,
             'type' => Transaction::TYPE_DONATION,
-            'application_id' => null,
+            'project_id' => null,
             'meta' => json_encode($charge),
         ]);
         if ($this->save($transaction)) {

@@ -12,7 +12,7 @@ use Cake\Validation\Validator;
  * Reports Model
  *
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\ApplicationsTable&\Cake\ORM\Association\BelongsTo $Applications
+ * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\BelongsTo $Projects
  *
  * @method \App\Model\Entity\Report newEmptyEntity()
  * @method \App\Model\Entity\Report newEntity(array $data, array $options = [])
@@ -52,8 +52,8 @@ class ReportsTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Applications', [
-            'foreignKey' => 'application_id',
+        $this->belongsTo('Projects', [
+            'foreignKey' => 'project_id',
             'joinType' => 'INNER',
         ]);
     }
@@ -77,9 +77,9 @@ class ReportsTable extends Table
             ->notEmptyString('user_id');
 
         $validator
-            ->scalar('application_id')
-            ->maxLength('application_id', 255)
-            ->notEmptyString('application_id');
+            ->scalar('project_id')
+            ->maxLength('project_id', 255)
+            ->notEmptyString('project_id');
 
         $validator
             ->boolean('is_final')
@@ -98,7 +98,7 @@ class ReportsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('user_id', 'Users'), ['errorField' => 'user_id']);
-        $rules->add($rules->existsIn('application_id', 'Applications'), ['errorField' => 'application_id']);
+        $rules->add($rules->existsIn('project_id', 'Projects'), ['errorField' => 'project_id']);
 
         return $rules;
     }

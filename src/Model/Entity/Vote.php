@@ -11,14 +11,14 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $user_id
- * @property int $application_id
+ * @property int $project_id
  * @property int $funding_cycle_id
  * @property int $weight
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Application $application
+ * @property \App\Model\Entity\Project $project
  * @property \App\Model\Entity\FundingCycle $funding_cycle
  */
 class Vote extends Entity
@@ -34,13 +34,13 @@ class Vote extends Entity
      */
     protected $_accessible = [
         'user_id' => true,
-        'application_id' => true,
+        'project_id' => true,
         'funding_cycle_id' => true,
         'weight' => true,
         'created' => true,
         'modified' => true,
         'user' => true,
-        'application' => true,
+        'project' => true,
         'funding_cycle' => true,
     ];
 
@@ -52,16 +52,16 @@ class Vote extends Entity
      * points, respective to how that voter ranked them.
      *
      * @param int $rank Position (1-indexed) that an application was placed at by a voter
-     * @param int $selectedApplicationCount Total count of all applications voted on by a voter
+     * @param int $selectedProjectCount Total count of all applications voted on by a voter
      * @return float|int
      * @throws InternalErrorException
      */
-    public static function calculateWeight(int $rank, int $selectedApplicationCount)
+    public static function calculateWeight(int $rank, int $selectedProjectCount)
     {
-        if ($rank < 1 || $rank > $selectedApplicationCount) {
-            throw new InternalErrorException("Invalid rank: $rank of $selectedApplicationCount");
+        if ($rank < 1 || $rank > $selectedProjectCount) {
+            throw new InternalErrorException("Invalid rank: $rank of $selectedProjectCount");
         }
 
-        return (1 - (($rank - 1) / $selectedApplicationCount));
+        return (1 - (($rank - 1) / $selectedProjectCount));
     }
 }

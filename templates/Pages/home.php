@@ -69,7 +69,7 @@
                                 <?= $this->Html->link(
                                     'Apply for funding',
                                     [
-                                        'controller' => 'Applications',
+                                        'controller' => 'Projects',
                                         'action' => 'apply',
                                     ],
                                     ['class' => 'btn btn-primary']

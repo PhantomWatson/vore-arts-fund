@@ -11,11 +11,11 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $type
  * @property int|null $amount Amount in cents
- * @property int|null $application_id Application for loans, loan repayments, or canceled checks
+ * @property int|null $project_id Project for loans, loan repayments, or canceled checks
  * @property string $meta Check number, donor name, Stripe meta dump
  * @property \Cake\I18n\FrozenTime $created
  *
- * @property \App\Model\Entity\Application $application
+ * @property \App\Model\Entity\Project $project
  */
 class Transaction extends Entity
 {
@@ -36,19 +36,19 @@ class Transaction extends Entity
     protected $_accessible = [
         'type' => true,
         'amount' => true,
-        'application_id' => true,
+        'project_id' => true,
         'meta' => true,
         'created' => true,
-        'application' => true,
+        'project' => true,
     ];
 
     public static function getTypes()
     {
         return [
-            'Donation' => self::TYPE_DONATION,
-            'Loan repayment' => self::TYPE_LOAN_REPAYMENT,
-            'Loan' => self::TYPE_LOAN,
-            'Canceled check' => self::TYPE_CANCELED_CHECK,
+            self::TYPE_DONATION => 'Donation',
+            self::TYPE_LOAN_REPAYMENT => 'Loan repayment',
+            self::TYPE_LOAN => 'Loan',
+            self::TYPE_CANCELED_CHECK => 'Canceled check',
         ];
     }
 }

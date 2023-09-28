@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var bool $hasApplications
+ * @var bool $hasProjects
  * @var bool $isAdmin
  * @var bool $isLoggedIn
  */
@@ -52,11 +52,11 @@
                                     ['class' => 'dropdown-item']
                                 ) ?>
                             </li>
-                            <?php if ($hasApplications): ?>
+                            <?php if ($hasProjects): ?>
                                 <li>
                                     <?= $this->Html->link(
-                                        'My Applications',
-                                        ['prefix' => 'My', 'controller' => 'Applications', 'action' => 'index'],
+                                        'My Projects',
+                                        ['prefix' => 'My', 'controller' => 'Projects', 'action' => 'index'],
                                         ['class' => 'nav-link']
                                     ) ?>
                                 </li>
@@ -80,10 +80,10 @@
                             <ul class="dropdown-menu">
                                 <li>
                                     <?= $this->Html->link(
-                                        'Applications',
+                                        'Projects',
                                         [
                                             'prefix' => 'Admin',
-                                            'controller' => 'Applications',
+                                            'controller' => 'Projects',
                                             'action' => 'index',
                                         ],
                                         ['class' => 'dropdown-item']
@@ -133,7 +133,7 @@
                 <li>
                     <?= $this->Html->link(
                         'Apply',
-                        ['controller' => 'Applications', 'action' => 'apply', 'prefix' => false],
+                        ['controller' => 'Projects', 'action' => 'apply', 'prefix' => false],
                         [
                             'class' => 'nav-link',
                             'id' => 'navbar-cta',

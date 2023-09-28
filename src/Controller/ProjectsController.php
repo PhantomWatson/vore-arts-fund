@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Model\Entity\Application;
+use App\Model\Entity\Project;
 use App\Model\Entity\FundingCycle;
 use App\Model\Entity\Image;
 use Cake\Event\EventInterface;
@@ -15,14 +15,14 @@ use Cake\Utility\Security;
 use Exception;
 
 /**
- * ApplicationsController
+ * ProjectsController
  *
- * @property \App\Model\Table\ApplicationsTable $Applications
+ * @property \App\Model\Table\ProjectsTable $Projects
  * @property \App\Model\Table\CategoriesTable $Categories
  * @property \App\Model\Table\FundingCyclesTable $FundingCycles
  * @property \App\Model\Table\ImagesTable $Images
  */
-class ApplicationsController extends AppController
+class ProjectsController extends AppController
 {
     public function beforeFilter(EventInterface $event): void
     {
@@ -96,7 +96,7 @@ class ApplicationsController extends AppController
         // Set up view vars
         $this->title('Apply for Funding');
         $this->viewBuilder()->setTemplate('form');
-        $this->setApplicationVars();
+        $this->setProjectVars();
         $this->setFromNow($fundingCycle->application_end);
 
         $user = $this->getAuthUser();
@@ -104,25 +104,25 @@ class ApplicationsController extends AppController
         // Process form
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-            $application = $this->Applications->newEntity($data, ['associated' => ['Answers']]);
-            $application->user_id = $user->id;
-            $application->funding_cycle_id = $fundingCycle->id;
-            if ($this->processApplication($application, $data)) {
+            $project = $this->Projects->newEntity($data, ['associated' => ['Answers']]);
+            $project->user_id = $user->id;
+            $project->funding_cycle_id = $fundingCycle->id;
+            if ($this->processProject($project, $data)) {
                 return $this->redirect([
                     'prefix' => 'My',
-                    'controller' => 'Applications',
+                    'controller' => 'Projects',
                     'action' => 'index'
                 ]);
             }
         } else {
-            /** @var Application $application */
-            $application = $this->Applications->newEmptyEntity();
-            $application->address = $user->address;
-            $application->zipcode = $user->zipcode;
-            $application->check_name = $user->name;
+            /** @var Project $project */
+            $project = $this->Projects->newEmptyEntity();
+            $project->address = $user->address;
+            $project->zipcode = $user->zipcode;
+            $project->check_name = $user->name;
         }
 
-        $this->set(compact('application'));
+        $this->set(compact('project'));
 
         return null;
     }
@@ -150,26 +150,26 @@ class ApplicationsController extends AppController
     }
 
     /**
-     * @param Application $application
+     * @param Project $project
      * @param array $data
      * @return bool
      */
-    protected function processApplication($application, $data): bool
+    protected function processProject($project, $data): bool
     {
         $addressData = ['address' => $data['address'], 'zipcode' => $data['zipcode']];
         if (!$this->processAddressUpdate($addressData)) {
             return false;
         }
 
-        if ($application->id) {
-            $data = $this->applyApplicationIdToAnswers($data, $application->id);
+        if ($project->id) {
+            $data = $this->applyProjectIdToAnswers($data, $project->id);
         }
         $savingToDraft = isset($data['save']);
-        $application->status_id = $savingToDraft ? Application::STATUS_DRAFT : Application::STATUS_UNDER_REVIEW;
+        $project->status_id = $savingToDraft ? Project::STATUS_DRAFT : Project::STATUS_UNDER_REVIEW;
         $verb = $savingToDraft ? 'saved' : 'submitted';
         $hasErrors = false;
-        $application = $this->Applications->patchEntity($application, $data, ['associated' => ['Answers']]);
-        if ($this->Applications->save($application)) {
+        $project = $this->Projects->patchEntity($project, $data, ['associated' => ['Answers']]);
+        if ($this->Projects->save($project)) {
             $this->Flash->success("Your application has been $verb.");
         } else {
             $this->Flash->error("Your application could not be $verb.");
@@ -190,7 +190,7 @@ class ApplicationsController extends AppController
 
             /** @var Image $image */
             $image = $this->Images->newEmptyEntity();
-            $image->application_id = $application->id;
+            $image->project_id = $project->id;
             $image->weight = 0;
             $image->filename = $imageFilenames->full;
             if (!$this->Images->save($image)) {
@@ -207,7 +207,7 @@ class ApplicationsController extends AppController
             }
             $image = $this->Images->get($imageId);
             $thumbFilename = Image::THUMB_PREFIX . $image->filename;
-            $path = WWW_ROOT . 'img' . DS . 'applications' . DS;
+            $path = WWW_ROOT . 'img' . DS . 'projects' . DS;
             if (file_exists($path . $image->filename)) {
                 unlink($path . $image->filename);
             }
@@ -222,25 +222,25 @@ class ApplicationsController extends AppController
 
     /**
      * @param \Laminas\Diactoros\UploadedFile $rawImage
-     * @param int $applicationId
+     * @param int $projectId
      * @param string $caption
      * @return \App\Model\Entity\Image|false|null
      */
-    private function processImageUpload($rawImage, $applicationId, $caption)
+    private function processImageUpload($rawImage, $projectId, $caption)
     {
         /** @var \App\Model\Entity\Image $image */
         $image = $this->Images->newEmptyEntity();
-        $image->application_id = $applicationId;
+        $image->project_id = $projectId;
         $image->weight = 0;
         $image->caption = $caption;
         $filenameSplit = explode('.', $rawImage->getClientFilename());
         $image->filename = sprintf(
             '%s-%s.%s',
-            $applicationId,
+            $projectId,
             Security::randomString(10),
             end($filenameSplit)
         );
-        $path = WWW_ROOT . 'img' . DS . 'applications' . DS . $image->filename;
+        $path = WWW_ROOT . 'img' . DS . 'projects' . DS . $image->filename;
         try {
             $rawImage->moveTo($path);
         } catch (Exception $e) {
@@ -261,14 +261,14 @@ class ApplicationsController extends AppController
     public function view(): ?Response
     {
         $id = $this->request->getParam('id');
-        /** @var Application $application */
-        $application = $this->Applications
+        /** @var Project $project */
+        $project = $this->Projects
             ->find()
             ->where(['id' => $id])
             ->contain(['Answers'])
             ->first();
 
-        if (!$application->isViewable()) {
+        if (!$project->isViewable()) {
             $this->Flash->error('Sorry, but that application is not available to view');
             return $this->redirect('/');
         }
@@ -281,23 +281,23 @@ class ApplicationsController extends AppController
      */
     protected function _view()
     {
-        $applicationId = $this->request->getParam('id');
-        if (!$this->Applications->exists(['Applications.id' => $applicationId])) {
+        $projectId = $this->request->getParam('id');
+        if (!$this->Projects->exists(['Projects.id' => $projectId])) {
             $this->Flash->error('Sorry, but that application was not found');
             return $this->redirect('/');
         }
 
-        $application = $this->Applications->getForViewing($applicationId);
+        $project = $this->Projects->getForViewing($projectId);
         $questionsTable = $this->fetchTable('Questions');
         $this->set([
-            'application' => $application,
+            'project' => $project,
             'back' => $this->getRequest()->getQuery('back'),
-            'questions' => $questionsTable->find('forApplication')->toArray(),
+            'questions' => $questionsTable->find('forProject')->toArray(),
         ]);
-        $this->viewBuilder()->setTemplate('/Applications/view');
-        $this->title('Application: ' . $application->title);
+        $this->viewBuilder()->setTemplate('/Projects/view');
+        $this->title('Project: ' . $project->title);
 
-        $this->setCurrentBreadcrumb($application->title);
+        $this->setCurrentBreadcrumb($project->title);
 
         return null;
     }
@@ -307,21 +307,21 @@ class ApplicationsController extends AppController
      *
      * @return void
      */
-    protected function setApplicationVars()
+    protected function setProjectVars()
     {
         /** @var FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->find('current')->first();
         $categories = $this->Categories->getOrdered();
         $deadline = $fundingCycle?->application_end->format('F j, Y');
         $questionsTable = $this->fetchTable('Questions');
-        $questions = $questionsTable->find('forApplication')->toArray();
+        $questions = $questionsTable->find('forProject')->toArray();
         $this->set(compact('categories', 'fundingCycle', 'deadline', 'questions'));
     }
 
-    private function applyApplicationIdToAnswers($data, $applicationId): array
+    private function applyProjectIdToAnswers($data, $projectId): array
     {
         foreach ($data['answers'] as $i => $answer) {
-            $data['answers'][$i]['application_id'] = $applicationId;
+            $data['answers'][$i]['project_id'] = $projectId;
         }
         return $data;
     }

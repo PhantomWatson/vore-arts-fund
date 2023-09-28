@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
 /**
  * FundingCycles Model
  *
- * @property \App\Model\Table\ApplicationsTable&\Cake\ORM\Association\HasMany $Applications
+ * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\HasMany $Projects
  * @property \App\Model\Table\VotesTable&\Cake\ORM\Association\HasMany $Votes
  * @method \App\Model\Entity\FundingCycle get($primaryKey, $options = [])
  * @method \App\Model\Entity\FundingCycle newEntity(array $data, array $options = [])
@@ -41,7 +41,7 @@ class FundingCyclesTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->hasMany('Applications', [
+        $this->hasMany('Projects', [
             'foreignKey' => 'funding_cycle_id',
         ]);
         $this->hasMany('Votes', [
@@ -187,7 +187,7 @@ class FundingCyclesTable extends Table
      * @param \Cake\ORM\Query $query
      * @return \Cake\ORM\Query
      */
-    public function findNextApplication(Query $query)
+    public function findNextProject(Query $query)
     {
         $now = date('Y-m-d H:i:s');
 

@@ -118,7 +118,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
             $action = $request->getParam('action');
             switch ("$controller/$action") {
                 case 'Images/upload':
-                case 'Applications/review': // Because
+                case 'Projects/review': // Because
                     return true;
             }
             return false;

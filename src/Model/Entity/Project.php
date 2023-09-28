@@ -9,7 +9,7 @@ use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 
 /**
- * Application Entity
+ * Project Entity
  *
  * @property int $id
  * @property int $user_id
@@ -35,7 +35,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Vote[] $votes
  * @property \App\Model\Entity\Report[] $reports
  */
-class Application extends Entity
+class Project extends Entity
 {
     const STATUS_DRAFT = 0;
     const STATUS_UNDER_REVIEW = 1;
@@ -47,31 +47,31 @@ class Application extends Entity
     const STATUS_WITHDRAWN = 8;
 
     /**
-     * Returns TRUE if this application can be viewed by the public
+     * Returns TRUE if this project can be viewed by the public
      *
      * @return bool
      */
     public function isViewable(): bool
     {
         $viewableStatuses = [
-            Application::STATUS_ACCEPTED,
-            Application::STATUS_AWARDED,
-            Application::STATUS_NOT_AWARDED,
+            Project::STATUS_ACCEPTED,
+            Project::STATUS_AWARDED,
+            Project::STATUS_NOT_AWARDED,
         ];
 
         return in_array($this->status_id, $viewableStatuses);
     }
 
     /**
-     * Returns TRUE if this application can be updated by the applicant
+     * Returns TRUE if this project can be updated by the applicant
      *
      * @return bool
      */
     public function isUpdatable(): bool
     {
         $updatableStatuses = [
-            Application::STATUS_DRAFT,
-            Application::STATUS_REVISION_REQUESTED,
+            Project::STATUS_DRAFT,
+            Project::STATUS_REVISION_REQUESTED,
         ];
 
         return in_array($this->status_id, $updatableStatuses);
@@ -105,14 +105,14 @@ class Application extends Entity
             self::STATUS_ACCEPTED           => 'Accept this application',
             self::STATUS_REJECTED           => 'Reject this application',
             self::STATUS_REVISION_REQUESTED => 'Request revision',
-            self::STATUS_AWARDED            => 'Award funding to this application',
-            self::STATUS_NOT_AWARDED        => 'Decline to award funding to this application',
+            self::STATUS_AWARDED            => 'Award funding to this project',
+            self::STATUS_NOT_AWARDED        => 'Decline to award funding to this project',
             self::STATUS_WITHDRAWN          => 'Withdraw this application',
         ];
     }
 
     /**
-     * Takes a current status and returns an array of valid statuses that this application can be changed to
+     * Takes a current status and returns an array of valid statuses that this project can be changed to
      *
      * @param int $currentStatusId
      * @return int[]
@@ -206,9 +206,9 @@ class Application extends Entity
     public function getSubmitDeadline(): FrozenTime
     {
         switch ($this->status_id) {
-            case Application::STATUS_DRAFT:
+            case Project::STATUS_DRAFT:
                 return $this->funding_cycle->application_end;
-            case Application::STATUS_REVISION_REQUESTED:
+            case Project::STATUS_REVISION_REQUESTED:
                 return $this->funding_cycle->resubmit_deadline;
             default:
                 throw new BadRequestException('That application cannot currently be updated.');

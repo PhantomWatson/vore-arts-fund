@@ -1,10 +1,10 @@
 <?php
 /**
- * @var \App\Model\Entity\Application $application
+ * @var \App\Model\Entity\Project $project
  * @var \App\Model\Entity\FundingCycle $fundingCycle
  * @var \App\View\AppView $this
  * @var int $amount
- * @var string $myApplicationsUrl
+ * @var string $myProjectsUrl
  * @var string $supportEmail
  * @var string $userName
  */
@@ -12,7 +12,7 @@
 <p>
     Congratulations, <?= $userName ?>! We've tallied the votes for the <?= $fundingCycle->name ?> funding cycle, and
     we're thrilled to tell you that the community ranked your application for funding for
-    <strong><?= $application->title ?></strong> high enough that it was selected to receive a
+    <strong><?= $project->title ?></strong> high enough that it was selected to receive a
     $<?= number_format($amount) ?> loan!
 </p>
 
@@ -32,7 +32,7 @@
 </p>
 
 <p>
-    When you're ready, visit <a href="<?= $myApplicationsUrl ?>"><?= $myApplicationsUrl ?></a> to submit a report. And
+    When you're ready, visit <a href="<?= $myProjectsUrl ?>"><?= $myProjectsUrl ?></a> to submit a report. And
     don't worry; we'll send you a reminder email about this if we haven't heard from you in a while.
 </p>
 

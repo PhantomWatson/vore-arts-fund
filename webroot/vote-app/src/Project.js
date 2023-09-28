@@ -4,7 +4,7 @@ import {currencyFormatter} from "./Formatter";
 import {useEffect} from "react";
 import Viewer from "viewerjs";
 
-const Application = (props) => {
+const Project = (props) => {
   const devMode = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
   const imgBase = devMode ? 'http://vore.test:9000' : '';
   const questionSort = function(a, b) {
@@ -16,13 +16,13 @@ const Application = (props) => {
     }
     return 0;
   }
-  let answers = props.application ? props.application.answers.sort(questionSort) : [];
+  let answers = props.project ? props.project.answers.sort(questionSort) : [];
   const voteYes = () => {
-    props.handleVote(props.application.id, true);
+    props.handleVote(props.project.id, true);
     props.handleClose();
   }
   const voteNo = () => {
-    props.handleVote(props.application.id, false);
+    props.handleVote(props.project.id, false);
     props.handleClose();
   }
 
@@ -54,49 +54,49 @@ const Application = (props) => {
 
   return (
     <>
-      {props.application !== null &&
-        <Modal className="vote-application" show={true} onHide={props.handleClose}>
+      {props.project !== null &&
+        <Modal className="vote-project" show={true} onHide={props.handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>
-              {props.application.title}
+              {props.project.title}
             </Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
             <p>
-              <strong>Category:</strong> {props.application.category.name}
+              <strong>Category:</strong> {props.project.category.name}
             </p>
             <p>
-              {currencyFormatter.format(props.application.amount_requested) + ' '}
-              is being requested by {props.application.user.name}
+              {currencyFormatter.format(props.project.amount_requested) + ' '}
+              is being requested by {props.project.user.name}
             </p>
             <section>
               <h2>
                 Project description
               </h2>
               <p>
-                {props.application.description}
+                {props.project.description}
               </p>
             </section>
             {answers.map((answer, index) => {
               return (
-                <section className="vote-application-qa" key={index}>
-                  <h2 className="vote-application-q">
+                <section className="vote-project-qa" key={index}>
+                  <h2 className="vote-project-q">
                     {answer.question.question}
                   </h2>
-                  <p className="vote-application-a">
+                  <p className="vote-project-a">
                     {answer.answer}
                   </p>
                 </section>
               );
             })}
             <div className="image-gallery">
-              {props.application.images.map((image, index) => {
+              {props.project.images.map((image, index) => {
                 return (
-                  <img src={`${imgBase}/img/applications/thumb_${image.filename}`} key={index}
+                  <img src={`${imgBase}/img/projects/thumb_${image.filename}`} key={index}
                        alt="Image submitted with application" className="img-thumbnail"
                        title="Click to open full-size image"
-                       data-full={`${imgBase}/img/applications/${image.filename}`} />
+                       data-full={`${imgBase}/img/projects/${image.filename}`} />
                 );
               })}
             </div>
@@ -120,4 +120,4 @@ const Application = (props) => {
   );
 };
 
-export default Application;
+export default Project;

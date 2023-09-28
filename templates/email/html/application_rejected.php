@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\Model\Entity\Application $application
+ * @var \App\Model\Entity\Project $project
  * @var \App\Model\Entity\FundingCycle|null $fundingCycle
  * @var \App\View\AppView $this
  * @var string $note
@@ -12,7 +12,7 @@
 </p>
 
 <p>
-    We hate to deliver bad news, but your application for funding for <strong><?= $application->title ?></strong>
+    We hate to deliver bad news, but your application for funding for <strong><?= $project->title ?></strong>
     was not accepted. This is usually due to a project or an applicant not meeting the Vore Arts Fund's eligibility
     requirements. Here's what the reviewer who processed your application said:
 </p>

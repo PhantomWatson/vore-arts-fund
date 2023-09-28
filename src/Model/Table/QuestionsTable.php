@@ -78,12 +78,12 @@ class QuestionsTable extends Table
     }
 
     /**
-     * Modifies a query to return appropriate results for displaying in an application
+     * Modifies a query to return appropriate results for displaying in an project
      *
      * @param \Cake\ORM\Query $query
      * @return \Cake\ORM\Query
      */
-    public function findForApplication(Query $query)
+    public function findForProject(Query $query)
     {
         return $query
             ->where(['enabled' => true])

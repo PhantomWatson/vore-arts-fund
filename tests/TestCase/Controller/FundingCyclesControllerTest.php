@@ -23,7 +23,7 @@ class FundingCyclesControllerTest extends TestCase
      */
     protected $fixtures = [
         'app.FundingCycles',
-        'app.Applications',
+        'app.Projects',
         'app.Votes',
     ];
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\Model\Entity\Application[]|\Cake\ORM\ResultSet $applications
+ * @var \App\Model\Entity\Project[]|\Cake\ORM\ResultSet $projects
  * @var \App\Model\Entity\FundingCycle[]|\Cake\ORM\ResultSet $fundingCycles
  * @var int $fundingCycleId
  */
@@ -23,7 +23,7 @@
         </label>
     </p>
 
-    <?php if (count($applications)): ?>
+    <?php if (count($projects)): ?>
         <table class="table">
             <thead>
                 <tr>
@@ -33,17 +33,17 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($applications as $application): ?>
+                <?php foreach ($projects as $project): ?>
                     <tr>
-                        <td><?= $application->title ?></td>
-                        <td><?= $application->status_name ?></td>
+                        <td><?= $project->title ?></td>
+                        <td><?= $project->status_name ?></td>
                         <td><?= $this->Html->link(
                                 'View',
                                 [
                                     'prefix' => 'Admin',
-                                    'controller' => 'Applications',
+                                    'controller' => 'Projects',
                                     'action' => 'review',
-                                    'id' => $application['id'],
+                                    'id' => $project['id'],
                                 ],
                                 ['class' => 'btn btn-secondary']
                             ) ?></td>
@@ -69,7 +69,7 @@
         document.getElementById('loading-indicator').style.display = 'inline';
         document.location = '<?= \Cake\Routing\Router::url([
             'prefix' => 'Admin',
-            'controller' => 'Applications',
+            'controller' => 'Projects',
             'action' => 'index',
         ]) ?>/' + fundingCycleId;
     });

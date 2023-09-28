@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\Model\Entity\Application $application
+ * @var \App\Model\Entity\Project $project
  * @var \App\Model\Entity\FundingCycle $fundingCycle
  * @var \App\Model\Entity\Question[] $questions
  * @var \App\Model\Entity\User $user
@@ -31,7 +31,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
 </p>
 
 <div class="apply">
-    <?= $this->Form->create($application, ['enctype' => 'multipart/form-data']) ?>
+    <?= $this->Form->create($project, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>
         <legend>
             Applicant Eligibility
@@ -42,7 +42,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
         <?= $this->element('eligibility_applicant') ?>
         <div class="form-check required">
             <input class="form-check-input" type="checkbox" value="" id="eligibility-applicant-agree-checkbox" required="required"
-                <?= $application->isNew() ? '' : 'checked="checked"' ?>
+                <?= $project->isNew() ? '' : 'checked="checked"' ?>
             >
             <label class="form-check-label" for="eligibility-applicant-agree-checkbox">
                 I am eligible to apply
@@ -60,7 +60,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
         <?= $this->element('eligibility_project') ?>
         <div class="form-check required">
             <input class="form-check-input" type="checkbox" value="" id="eligibility-project-agree-checkbox" required="required"
-                <?= $application->isNew() ? '' : 'checked="checked"' ?>
+                <?= $project->isNew() ? '' : 'checked="checked"' ?>
             >
             <label class="form-check-label" for="eligibility-project-agree-checkbox">
                 This project qualifies for funding
@@ -76,7 +76,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
         <?= $this->element('loan_terms') ?>
         <div class="form-check required">
             <input class="form-check-input" type="checkbox" value="" id="loan-terms-agree-checkbox" required="required"
-                <?= $application->isNew() ? '' : 'checked="checked"' ?>
+                <?= $project->isNew() ? '' : 'checked="checked"' ?>
             >
             <label class="form-check-label" for="loan-terms-agree-checkbox">
                 I agree to these terms
@@ -203,7 +203,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                 in disqualification.
             </p>
         </div>
-        <?php if ($application->images): ?>
+        <?php if ($project->images): ?>
             <table class="image-gallery table" id="form-images">
                 <thead>
                     <tr>
@@ -216,7 +216,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($application->images as $image): ?>
+                    <?php foreach ($project->images as $image): ?>
                         <tr>
                             <td class="delete">
                                 <label class="visually-hidden" for="delete-image-<?= $image->id ?>">
@@ -240,7 +240,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
             Mailing address
         </legend>
         <p>
-            <?php if ($application->address && $application->zipcode): ?>
+            <?php if ($project->address && $project->zipcode): ?>
                 Please confirm that your mailing address is still correct, and update it if needed.
                 Note that this must be a Muncie address.
             <?php else: ?>

@@ -8,11 +8,11 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\ApplicationsController Test Case
+ * App\Controller\ProjectsController Test Case
  *
- * @uses \App\Controller\ApplicationsController
+ * @uses \App\Controller\ProjectsController
  */
-class ApplicationsControllerTest extends TestCase
+class ProjectsControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
@@ -22,7 +22,7 @@ class ApplicationsControllerTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.Applications',
+        'app.Projects',
         'app.Users',
         'app.Categories',
         'app.FundingCycles',
@@ -43,9 +43,9 @@ class ApplicationsControllerTest extends TestCase
         $data = [
             'id' => 32,
             'title' => 'Test',
-            'description' => 'Praesent id massa id nisl venenatis 
-            lacinia. Aenean sit amet justo. Morbi ut odio. 
-            Cras mi pede, malesuada in, imperdiet et, commodo 
+            'description' => 'Praesent id massa id nisl venenatis
+            lacinia. Aenean sit amet justo. Morbi ut odio.
+            Cras mi pede, malesuada in, imperdiet et, commodo
             vulputate, justo.',
             'amount_requested' => 555555,
             'accept_partial_payout' => 0,
@@ -65,8 +65,8 @@ class ApplicationsControllerTest extends TestCase
         ]);
         $this->post('/apply', $data);
         $this->assertResponseSuccess();
-        $applicationsTable = TableRegistry::getTableLocator()->get('applications');
-        $query = $applicationsTable->find()->where(['id' => 1]);
+        $projectsTable = TableRegistry::getTableLocator()->get('projects');
+        $query = $projectsTable->find()->where(['id' => 1]);
         $this->assertEquals(1, $query->count());
     }
 
@@ -86,7 +86,7 @@ class ApplicationsControllerTest extends TestCase
                 ],
             ],
         ]);
-        $this->get('/view-application/1');
+        $this->get('/view-project/1');
         $this->assertResponseOk();
     }
 
@@ -100,9 +100,9 @@ class ApplicationsControllerTest extends TestCase
         $data = [
             'id' => 1,
             'title' => 'Test',
-            'description' => 'Praesent id massa id nisl venenatis 
-            lacinia. Aenean sit amet justo. Morbi ut odio. 
-            Cras mi pede, malesuada in, imperdiet et, commodo 
+            'description' => 'Praesent id massa id nisl venenatis
+            lacinia. Aenean sit amet justo. Morbi ut odio.
+            Cras mi pede, malesuada in, imperdiet et, commodo
             vulputate, justo.',
             'amount_requested' => 555555,
             'accept_partial_payout' => 0,
@@ -128,8 +128,8 @@ class ApplicationsControllerTest extends TestCase
         ];
         $this->post('/withdraw/1', $data);
         $this->assertResponseSuccess();
-        $applicationsTable = TableRegistry::getTableLocator()->get('applications');
-        $query = $applicationsTable->find()->where(['status_id' => 8, 'id' => 1]);
+        $projectsTable = TableRegistry::getTableLocator()->get('projects');
+        $query = $projectsTable->find()->where(['status_id' => 8, 'id' => 1]);
         $this->assertEquals(1, $query->count());
     }
 
@@ -143,9 +143,9 @@ class ApplicationsControllerTest extends TestCase
         $data = [
             'id' => 1,
             'title' => 'Test',
-            'description' => 'Praesent id massa id nisl venenatis 
-            lacinia. Aenean sit amet justo. Morbi ut odio. 
-            Cras mi pede, malesuada in, imperdiet et, commodo 
+            'description' => 'Praesent id massa id nisl venenatis
+            lacinia. Aenean sit amet justo. Morbi ut odio.
+            Cras mi pede, malesuada in, imperdiet et, commodo
             vulputate, justo.',
             'amount_requested' => 555555,
             'accept_partial_payout' => 0,
@@ -171,8 +171,8 @@ class ApplicationsControllerTest extends TestCase
         ];
         $this->post('/resubmit/1', $data);
         $this->assertResponseSuccess();
-        $applicationsTable = TableRegistry::getTableLocator()->get('applications');
-        $query = $applicationsTable->find()->where(['status_id' => 9, 'id' => 1]);
+        $projectsTable = TableRegistry::getTableLocator()->get('projects');
+        $query = $projectsTable->find()->where(['status_id' => 9, 'id' => 1]);
         $this->assertEquals(1, $query->count());
     }
 

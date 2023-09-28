@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\Model\Entity\Application $application
+ * @var \App\Model\Entity\Project $project
  * @var \App\Model\Entity\Question[] $questions
  * @var \App\View\AppView $this
  * @var string|null $back
@@ -20,7 +20,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                 Applicant
             </th>
             <td>
-                <?= $application->user->name ?>
+                <?= $project->user->name ?>
             </td>
         </tr>
         <tr>
@@ -28,7 +28,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                 Category
             </th>
             <td>
-                <?= $application->category->name ?>
+                <?= $project->category->name ?>
             </td>
         </tr>
         <tr>
@@ -36,7 +36,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                 Funding cycle
             </th>
             <td>
-                <?= $this->element('FundingCycles/link', ['fundingCycle' => $application->funding_cycle]) ?>
+                <?= $this->element('FundingCycles/link', ['fundingCycle' => $project->funding_cycle]) ?>
             </td>
         </tr>
         <tr>
@@ -44,7 +44,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                 Amount requested
             </th>
             <td>
-                $<?= number_format($application->amount_requested) ?>
+                $<?= number_format($project->amount_requested) ?>
             </td>
         </tr>
         <tr>
@@ -52,14 +52,14 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                 Reports
             </th>
             <td>
-                <?php if (count($application->reports)): ?>
+                <?php if (count($project->reports)): ?>
                     <?= $this->Html->link(
-                        count($application->reports) . ' (view)',
+                        count($project->reports) . ' (view)',
                         [
                             'prefix' => false,
                             'controller' => 'Reports',
-                            'action' => 'application',
-                            $application->id,
+                            'action' => 'projects',
+                            $project->id,
                         ]
                     ) ?>
                 <?php else: ?>
@@ -70,35 +70,35 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
     </tbody>
 </table>
 
-<?php if ($application->images): ?>
-    <section class="application-view">
+<?php if ($project->images): ?>
+    <section class="projects-view">
         <h3 class="visually-hidden">
             Images
         </h3>
         <div class="image-gallery">
-            <?php foreach ($application->images as $image): ?>
+            <?php foreach ($project->images as $image): ?>
                 <?= $this->Image->thumb($image) ?>
             <?php endforeach; ?>
         </div>
     </section>
 <?php endif; ?>
 
-<section class="application-view">
+<section class="projects-view">
     <h3>
         Description
     </h3>
     <p>
-        <?= nl2br($application->description) ?>
+        <?= nl2br($project->description) ?>
     </p>
 </section>
 
 <?php foreach ($questions as $question): ?>
     <?php
-        $answer = Hash::filter($application->answers, function ($answer) use ($question) {
+        $answer = Hash::filter($project->answers, function ($answer) use ($question) {
             return $answer->question_id == $question->id;
         });
     ?>
-    <section class="application-view">
+    <section class="projects-view">
         <h3>
             <?= $question->question ?>
         </h3>

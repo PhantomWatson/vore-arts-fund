@@ -27,8 +27,8 @@ class ImageHelper extends Helper
     public function thumb(Image $image): string
     {
         return sprintf(
-            '<img src="/img/applications/%s%s" alt="%s" class="img-thumbnail" ' .
-                'title="Click to open full-size image" data-full="/img/applications/%s" />',
+            '<img src="/img/projects/%s%s" alt="%s" class="img-thumbnail" ' .
+                'title="Click to open full-size image" data-full="/img/projects/%s" />',
             Image::THUMB_PREFIX,
             $image->filename,
             $image->caption,

@@ -1,19 +1,19 @@
-import Application from "./Application";
+import Project from "./Project";
 import {useState} from "react";
-import ApplicationSummary from "./ApplicationSummary";
-import AlertNoApplications from "./AlertNoApplications";
+import ProjectSummary from "./ProjectSummary";
+import AlertNoProjects from "./AlertNoProjects";
 import Alert from "./Alert";
 import * as React from "react";
 import SelectStepSubmit from "./SelectStepSubmit";
 
 const SelectStep = (props) => {
-  let [selectedApplication, selectApplication] = useState(null);
+  let [selectedProject, selectProject] = useState(null);
   const handleClose = () => {
-    selectApplication(null);
+    selectProject(null);
   };
 
-  if (props.applications.length === 0) {
-    return <AlertNoApplications />;
+  if (props.projects.length === 0) {
+    return <AlertNoProjects />;
   }
 
   const alert = (
@@ -25,30 +25,30 @@ const SelectStep = (props) => {
   );
 
   const table = (
-    <table id="vote-application-select-list" className="vote-application-list">
+    <table id="vote-project-select-list" className="vote-project-list">
       <tbody>
-      {props.applications.map((application, index) => {
+      {props.projects.map((project, index) => {
         return (
           <tr key={index}>
             <td className="vote-actions">
-              {application.vote === null &&
+              {project.vote === null &&
                 <button
                   className="vote-actions-vote"
-                  onClick={() => {selectApplication(application)}}
+                  onClick={() => {selectProject(project)}}
                 >
                   Review
                 </button>
               }
-              {application.vote !== null &&
+              {project.vote !== null &&
                 <>
                   <button
                     className="vote-actions-change-vote"
-                    onClick={() => {selectApplication(application)}}
+                    onClick={() => {selectProject(project)}}
                   >
-                    {application.vote === true &&
+                    {project.vote === true &&
                       <i className="fa-solid fa-thumbs-up"></i>
                     }
-                    {application.vote === false &&
+                    {project.vote === false &&
                       <i className="fa-solid fa-thumbs-down"></i>
                     }
                     <br />
@@ -58,7 +58,7 @@ const SelectStep = (props) => {
               }
             </td>
             <td>
-              <ApplicationSummary application={application} />
+              <ProjectSummary project={project} />
             </td>
           </tr>
         );
@@ -71,9 +71,9 @@ const SelectStep = (props) => {
     <>
       {alert}
       {table}
-      <Application application={selectedApplication} handleClose={handleClose} handleVote={props.handleVote} />
+      <Project project={selectedProject} handleClose={handleClose} handleVote={props.handleVote} />
       <SelectStepSubmit
-        approvedApplications={props.approvedApplications}
+        approvedProjects={props.approvedProjects}
         handleSubmitSelectStep={props.handleSubmitSelectStep}
         allVotesAreCast={props.allVotesAreCast}
         submitIsLoading={props.submitIsLoading}

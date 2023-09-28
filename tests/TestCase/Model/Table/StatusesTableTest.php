@@ -26,7 +26,7 @@ class StatusesTableTest extends TestCase
      */
     public $fixtures = [
         'app.Statuses',
-        'app.Applications',
+        'app.Projects',
     ];
 
     /**

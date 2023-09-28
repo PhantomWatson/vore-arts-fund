@@ -28,7 +28,7 @@ class ImagesController extends AppController
         foreach ($_FILES as $key => $image) {
             $image = $_FILES[$key];
             $filename = $key == 'thumb' ? Image::THUMB_PREFIX . $baseFilename : $baseFilename;
-            $destination = WWW_ROOT . 'img' . DS . 'applications' . DS . $filename;
+            $destination = WWW_ROOT . 'img' . DS . 'projects' . DS . $filename;
             $images[$key] = move_uploaded_file($image['tmp_name'], $destination)
                 ? $filename
                 : false;

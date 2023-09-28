@@ -3,40 +3,40 @@ declare(strict_types=1);
 
 namespace App\Controller\My;
 
-use App\Controller\ApplicationsController as BaseApplicationsController;
-use App\Model\Entity\Application;
+use App\Controller\ProjectsController as BaseProjectsController;
+use App\Model\Entity\Project;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 
 /**
- * ApplicationsController
+ * ProjectsController
  *
- * @property \App\Model\Table\ApplicationsTable $Applications
+ * @property \App\Model\Table\ProjectsTable $Projects
  * @property \App\Model\Table\CategoriesTable $Categories
  * @property \App\Model\Table\FundingCyclesTable $FundingCycles
  * @property \App\Model\Table\ImagesTable $Images
  */
-class ApplicationsController extends BaseApplicationsController
+class ProjectsController extends BaseProjectsController
 {
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
-        $this->Applications = $this->fetchTable('Applications');
+        $this->Projects = $this->fetchTable('Projects');
 
-        $this->addControllerBreadcrumb('My Applications');
+        $this->addControllerBreadcrumb('My Projects');
     }
 
     /**
-     * Page for viewing one's own application
+     * Page for viewing one's own project
      *
      * @return \Cake\Http\Response|null
      */
     public function view(): ?Response
     {
-        $applicationId = $this->request->getParam('id');
-        if (!$this->isOwnApplication($applicationId)) {
-            $this->Flash->error('Sorry, but that application is not available to view');
+        $projectId = $this->request->getParam('id');
+        if (!$this->isOwnProject($projectId)) {
+            $this->Flash->error('Sorry, but that project is not available to view');
             return $this->redirect('/');
         }
 
@@ -51,10 +51,10 @@ class ApplicationsController extends BaseApplicationsController
     public function withdraw()
     {
         $id = $this->request->getParam('id');
-        $application = $this->Applications->find()->where(['id' => $id])->first();
+        $project = $this->Projects->find()->where(['id' => $id])->first();
         if ($this->request->is('post')) {
-            $application = $this->Applications->patchEntity($application, ['status_id' => Application::STATUS_WITHDRAWN]);
-            if ($this->Applications->save($application)) {
+            $project = $this->Projects->patchEntity($project, ['status_id' => Project::STATUS_WITHDRAWN]);
+            if ($this->Projects->save($project)) {
                 $this->Flash->success('Application withdrawn.');
             }
         }
@@ -68,26 +68,26 @@ class ApplicationsController extends BaseApplicationsController
      */
     public function edit(): ?Response
     {
-        // Confirm application exists
-        $applicationId = $this->request->getParam('id');
-        if (!$this->isOwnApplication($applicationId)) {
-            $this->Flash->error('That application was not found');
+        // Confirm project exists
+        $projectId = $this->request->getParam('id');
+        if (!$this->isOwnProject($projectId)) {
+            $this->Flash->error('That project was not found');
             return $this->redirect('/');
         }
 
-        // Confirm application can be updated
-        /** @var Application $application */
-        $application = $this->Applications->getForForm($applicationId);
-        if (!$application->isUpdatable()) {
+        // Confirm project can be updated
+        /** @var Project $project */
+        $project = $this->Projects->getForForm($projectId);
+        if (!$project->isUpdatable()) {
             $this->Flash->error('That application cannot currently be updated.');
             return $this->redirect('/');
         }
 
         // Set up view vars
         $this->title('Update and Submit');
-        $this->viewBuilder()->setTemplate('/Applications/form');
-        $this->setFromNow($application->getSubmitDeadline());
-        $this->setApplicationVars();
+        $this->viewBuilder()->setTemplate('/Projects/form');
+        $this->setFromNow($project->getSubmitDeadline());
+        $this->setProjectVars();
 
         // Process form
         if ($this->request->is('put')) {
@@ -96,19 +96,19 @@ class ApplicationsController extends BaseApplicationsController
             // If saving, status doesn't change. Otherwise, it's submitted for review.
             $savingToDraft = isset($data['save']);
             if (!$savingToDraft) {
-                $application->status_id = Application::STATUS_UNDER_REVIEW;
+                $project->status_id = Project::STATUS_UNDER_REVIEW;
             }
 
-            if ($this->processApplication($application, $data)) {
+            if ($this->processProject($project, $data)) {
                 return $this->redirect(['action' => 'index']);
             }
         } else {
             $user = $this->getAuthUser();
-            $application->address = $user->address;
-            $application->zipcode = $user->zipcode;
+            $project->address = $user->address;
+            $project->zipcode = $user->zipcode;
         }
 
-        $this->set(compact('application'));
+        $this->set(compact('project'));
 
         return null;
     }
@@ -121,8 +121,8 @@ class ApplicationsController extends BaseApplicationsController
     public function delete()
     {
         $id = $this->request->getParam('id');
-        $application = $this->Applications->get($id);
-        if ($this->request->is(['delete', 'post']) && $this->Applications->delete($application)) {
+        $project = $this->Projects->get($id);
+        if ($this->request->is(['delete', 'post']) && $this->Projects->delete($project)) {
             $this->Flash->success('Application has been deleted');
         } else {
             $this->Flash->error('There was an error deleting that application');
@@ -132,14 +132,14 @@ class ApplicationsController extends BaseApplicationsController
 
     public function index()
     {
-        $this->title('My Applications');
+        $this->title('My Projects');
         $user = $this->getAuthUser();
-        $applications = $this->Applications
+        $projects = $this->Projects
             ->find()
             ->where(['user_id' => $user->id])
-            ->orderDesc('Applications.created')
+            ->orderDesc('Projects.created')
             ->contain(['FundingCycles', 'Reports'])
             ->all();
-        $this->set(compact('applications'));
+        $this->set(compact('projects'));
     }
 }

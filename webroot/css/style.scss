@@ -601,7 +601,7 @@ table td {
     word-break: break-all;
 }
 
-.my-applications__application {
+.my-projects__projects {
     th,
     td {
         vertical-align: middle;
@@ -847,13 +847,13 @@ body {
     }
 }
 
-.vote-application {
+.vote-projects {
     h2 {
         font-size: 1.2em;
     }
 }
 
-.vote-application-list {
+.vote-projects-list {
     @extend .table;
 
     .fa-thumbs-up {
@@ -929,7 +929,7 @@ body {
     }
 }
 
-.application-title {
+.projects-title {
     font-size: 1.5em;
     font-weight: bold;
 }
@@ -1304,11 +1304,11 @@ footer {
     }
 }
 
-.application-view {
+.projects-view {
     margin: 2em 0;
 }
 
-#my-applications {
+#my-projects {
     .dropdown-item {
         i {
             margin-right: 0.25em;

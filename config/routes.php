@@ -35,9 +35,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/privacy', ['controller' => 'Pages', 'action' => 'privacy']);
     $builder->connect('/terms', ['controller' => 'Pages', 'action' => 'terms']);
 
-    // Applications
-    $builder->connect('/application/{id}', ['controller' => 'Applications', 'action' => 'view']);
-    $builder->connect('/apply', ['controller' => 'Applications', 'action' => 'apply']);
+    // Projects
+    $builder->connect('/project/{id}', ['controller' => 'Projects', 'action' => 'view']);
+    $builder->connect('/apply', ['controller' => 'Projects', 'action' => 'apply']);
 
     // Votes
     $builder->connect('/submit', ['controller' => 'Votes', 'action' => 'submit']);
@@ -64,7 +64,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/report/:id', ['controller' => 'Reports', 'action' => 'view'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
-    $builder->connect('/reports/for-application/:id', ['controller' => 'Reports', 'action' => 'application'])
+    $builder->connect('/reports/for-project/:id', ['controller' => 'Reports', 'action' => 'project'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
     $builder->connect('/reports/submit/:id', ['controller' => 'Reports', 'action' => 'submit'])
@@ -76,17 +76,17 @@ $routes->scope('/', function (RouteBuilder $builder) {
 
 // "My Foo" routes
 $routes->prefix('my', function (RouteBuilder $builder) {
-    $builder->connect('/applications', ['controller' => 'Applications', 'action' => 'index']);
-    $builder->connect('/applications/{id}', ['controller' => 'Applications', 'action' => 'view'])
+    $builder->connect('/projects', ['controller' => 'Projects', 'action' => 'index']);
+    $builder->connect('/projects/{id}', ['controller' => 'Projects', 'action' => 'view'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
-    $builder->connect('/applications/edit/{id}', ['controller' => 'Applications', 'action' => 'edit'])
+    $builder->connect('/projects/edit/{id}', ['controller' => 'Projects', 'action' => 'edit'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);;
-    $builder->connect('/applications/delete/{id}', ['controller' => 'Applications', 'action' => 'delete'])
+    $builder->connect('/projects/delete/{id}', ['controller' => 'Projects', 'action' => 'delete'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);;
-    $builder->connect('/applications/withdraw/{id}', ['controller' => 'Applications', 'action' => 'withdraw'])
+    $builder->connect('/projects/withdraw/{id}', ['controller' => 'Projects', 'action' => 'withdraw'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);;
 });
@@ -101,19 +101,19 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
     $builder->connect('/funding-cycles/add', ['controller' => 'FundingCycles', 'action' => 'add']);
     $builder->connect('/funding-cycles/edit/{id}', ['controller' => 'FundingCycles', 'action' => 'edit']);
 
-    // Applications
-    $builder->connect('/applications', ['controller' => 'Applications', 'action' => 'index']);
-    $builder->connect('/applications/{id}', ['controller' => 'Applications', 'action' => 'index'])
+    // Projects
+    $builder->connect('/projects', ['controller' => 'Projects', 'action' => 'index']);
+    $builder->connect('/projects/{id}', ['controller' => 'Projects', 'action' => 'index'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
-    $builder->connect('/applications/review/{id}', ['controller' => 'Applications', 'action' => 'review']);
-    $builder->connect('/applications/set-status/{id}', ['controller' => 'Applications', 'action' => 'setStatus']);
+    $builder->connect('/projects/review/{id}', ['controller' => 'Projects', 'action' => 'review']);
+    $builder->connect('/projects/set-status/{id}', ['controller' => 'Projects', 'action' => 'setStatus']);
 
     $builder->fallbacks(DashedRoute::class);
 });
 
 $routes->prefix('api', function (RouteBuilder $builder) {
-    $builder->connect('/applications/{action}', ['controller' => 'Applications']);
+    $builder->connect('/projects/{action}', ['controller' => 'Projects']);
     $builder->connect('/votes/{action}', ['controller' => 'Votes']);
     $builder->connect('/stripe/{action}', ['controller' => 'Stripe']);
     $builder->connect('/transactions/{action}', ['controller' => 'Transactions']);

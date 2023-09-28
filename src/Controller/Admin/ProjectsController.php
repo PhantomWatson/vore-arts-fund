@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Event\MailListener;
-use App\Model\Entity\Application;
+use App\Model\Entity\Project;
 use App\Model\Entity\User;
 use Cake\Event\Event;
 use Cake\Event\EventInterface;
@@ -13,13 +13,13 @@ use Cake\Http\Response;
 /**
  * FundingCyclesController
  *
- * @property \App\Model\Table\ApplicationsTable $Applications
+ * @property \App\Model\Table\ProjectsTable $Projects
  * @property \App\Model\Table\CategoriesTable $Categories
  * @property \App\Model\Table\ImagesTable $Images
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
 
-class ApplicationsController extends AdminController
+class ProjectsController extends AdminController
 {
     public function beforeFilter(EventInterface $event): void
     {
@@ -28,15 +28,15 @@ class ApplicationsController extends AdminController
     }
 
     /**
-     * Applications index page
+     * Projects index page
      *
      * @return void
      */
     public function index($fundingCycleId = null)
     {
-        $this->title('Applications');
+        $this->title('Projects');
         $fundingCyclesTable = $this->fetchTable('FundingCycles');
-        $applications = [];
+        $projects = [];
 
         if (!$fundingCycleId) {
             $currentCycle = $fundingCyclesTable->find('current')->first();
@@ -44,22 +44,22 @@ class ApplicationsController extends AdminController
         }
 
         if ($fundingCycleId) {
-            $applications = $this
-                ->Applications
+            $projects = $this
+                ->Projects
                 ->find()
                 ->where(['funding_cycle_id' => $fundingCycleId])
                 ->all();
         }
 
         $this->set([
-            'applications' => $applications,
+            'projects' => $projects,
             'fundingCycles' => $fundingCyclesTable->find()->orderDesc('application_begin')->all(),
             'fundingCycleId' => $fundingCycleId,
         ]);
     }
 
     /**
-     * Page for reviewing an application
+     * Page for reviewing an project
      *
      * @return Response|null
      */
@@ -69,10 +69,10 @@ class ApplicationsController extends AdminController
         $mailListener = new MailListener();
         $this->getEventManager()->on($mailListener);
 
-        $applicationId = $this->request->getParam('id');
-        $application = $this->Applications->getForViewing($applicationId);
-        if (!$application) {
-            $this->Flash->error('Application not found');
+        $projectId = $this->request->getParam('id');
+        $project = $this->Projects->getForViewing($projectId);
+        if (!$project) {
+            $this->Flash->error('Project not found');
             return $this->redirect(['action' => 'index']);
         }
 
@@ -87,10 +87,10 @@ class ApplicationsController extends AdminController
 
             // Updating status
             if ($data['status_id'] ?? false) {
-                $application->status_id = (int)$data['status_id'];
-                if ($this->Applications->save($application)) {
+                $project->status_id = (int)$data['status_id'];
+                if ($this->Projects->save($project)) {
                     $this->Flash->success('Status updated');
-                    $this->dispatchStatusChangeEvent($application, $noteBody);
+                    $this->dispatchStatusChangeEvent($project, $noteBody);
                 } else {
                     $this->Flash->error('Error updating status');
                     $successfullySaved = false;
@@ -101,7 +101,7 @@ class ApplicationsController extends AdminController
             if ($noteBody) {
                 $user = $this->getAuthUser();
                 $data['user_id'] = $user?->id;
-                $data['application_id'] = $applicationId;
+                $data['project_id'] = $projectId;
                 $note = $notesTable->newEntity($data);
                 if ($notesTable->save($note)) {
                     $this->Flash->success('Note added');
@@ -115,20 +115,20 @@ class ApplicationsController extends AdminController
             if ($successfullySaved) {
                 return $this->redirect([
                     'action' => 'review',
-                    'id' => $applicationId,
+                    'id' => $projectId,
                 ]);
             }
         }
 
-        $statusActions = Application::getStatusActions();
-        $validStatusIds = Application::getValidStatusOptions($application->status_id);
+        $statusActions = Project::getStatusActions();
+        $validStatusIds = Project::getValidStatusOptions($project->status_id);
 
         // Set view vars
         $questionsTable = $this->fetchTable('Questions');
-        $questions = $questionsTable->find('forApplication')->toArray();
+        $questions = $questionsTable->find('forProject')->toArray();
         $notes = $notesTable
             ->find()
-            ->where(['application_id' => $applicationId])
+            ->where(['project_id' => $projectId])
             ->contain(['Users'])
             ->orderDesc('Notes.created')
             ->all();
@@ -136,35 +136,35 @@ class ApplicationsController extends AdminController
         $toLoad = $this->getAppFiles('review');
         $this->set(compact(
             'statusActions',
-            'application',
+            'project',
             'newNote',
             'notes',
             'questions',
             'toLoad',
             'validStatusIds'
         ));
-        $this->title('Application: ' . $application->title);
-        $this->setCurrentBreadcrumb($application->title);
+        $this->title('Project: ' . $project->title);
+        $this->setCurrentBreadcrumb($project->title);
 
         return null;
     }
 
     /**
-     * @param Application $application
+     * @param Project $project
      * @param string|null $noteBody
      * @return void
      */
-    private function dispatchStatusChangeEvent(Application $application, ?string $noteBody)
+    private function dispatchStatusChangeEvent(Project $project, ?string $noteBody)
     {
-        switch ($application->status_id) {
-            case Application::STATUS_ACCEPTED:
-                $event = new Event('Application.accepted', $this, compact('application'));
+        switch ($project->status_id) {
+            case Project::STATUS_ACCEPTED:
+                $event = new Event('Project.accepted', $this, compact('project'));
                 break;
-            case Application::STATUS_REVISION_REQUESTED:
-                $event = new Event('Application.revisionRequested', $this, compact('application', 'noteBody'));
+            case Project::STATUS_REVISION_REQUESTED:
+                $event = new Event('Project.revisionRequested', $this, compact('project', 'noteBody'));
                 break;
-            case Application::STATUS_REJECTED:
-                $event = new Event('Application.rejected', $this, compact('application', 'noteBody'));
+            case Project::STATUS_REJECTED:
+                $event = new Event('Project.rejected', $this, compact('project', 'noteBody'));
                 break;
             default;
                 return;

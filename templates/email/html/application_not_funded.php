@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\Model\Entity\Application $application
+ * @var \App\Model\Entity\Project $project
  * @var \App\Model\Entity\FundingCycle|null $fundingCycle
  * @var \App\View\AppView $this
  * @var string $userName
@@ -11,7 +11,7 @@
 </p>
 
 <p>
-    We hate to deliver bad news, but we won't be able to provide funding for <strong><?= $application->title ?></strong>
+    We hate to deliver bad news, but we won't be able to provide funding for <strong><?= $project->title ?></strong>
     in this funding cycle. When this happens, it's due to us running out of budgeted money after tallying the votes
     and funding the highest-ranked applications. But hey, you can try again in the next funding cycle!
 </p>

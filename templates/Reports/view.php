@@ -23,8 +23,8 @@
                     <td><?= $report->has('user') ? $this->Html->link($report->user->name, ['controller' => 'Users', 'action' => 'view', $report->user->id]) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Application') ?></th>
-                    <td><?= $report->has('application') ? $this->Html->link($report->application->title, ['controller' => 'Applications', 'action' => 'view', $report->application->id]) : '' ?></td>
+                    <th>Project</th>
+                    <td><?= $report->has('projects') ? $this->Html->link($report->projects->title, ['controller' => 'Projects', 'action' => 'view', $report->projects->id]) : '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>

@@ -20,7 +20,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $modified
  * @property string $name
  *
- * @property \App\Model\Entity\Application[] $applications
+ * @property \App\Model\Entity\Project[] $projects
  * @property \App\Model\Entity\Vote[] $votes
  */
 class FundingCycle extends Entity
@@ -51,7 +51,7 @@ class FundingCycle extends Entity
         'funding_available' => true,
         'created' => true,
         'modified' => true,
-        'applications' => true,
+        'projects' => true,
         'votes' => true,
     ];
 
@@ -121,14 +121,14 @@ class FundingCycle extends Entity
     }
 
     /**
-     * Returns an array with counts for submitted, accepted, and awarded applications,
+     * Returns an array with counts for submitted, accepted, and awarded projects,
      * or NULL if no applications have been received
      *
      * @return int[]|null
      */
-    public function getApplicationSummary()
+    public function getProjectsSummary()
     {
-        if (!$this->applications ?? false) {
+        if (!$this->projects ?? false) {
             return null;
         }
         $retval = [
@@ -136,27 +136,27 @@ class FundingCycle extends Entity
             'accepted' => 0,
             'awarded' => 0,
         ];
-        foreach ($this->applications as $application) {
-            switch ($application->status_id) {
+        foreach ($this->projects as $project) {
+            switch ($project->status_id) {
                 // Submitted
-                case Application::STATUS_UNDER_REVIEW:
-                case Application::STATUS_ACCEPTED:
-                case Application::STATUS_REJECTED:
-                case Application::STATUS_REVISION_REQUESTED:
-                case Application::STATUS_AWARDED:
-                case Application::STATUS_NOT_AWARDED:
+                case Project::STATUS_UNDER_REVIEW:
+                case Project::STATUS_ACCEPTED:
+                case Project::STATUS_REJECTED:
+                case Project::STATUS_REVISION_REQUESTED:
+                case Project::STATUS_AWARDED:
+                case Project::STATUS_NOT_AWARDED:
                     $retval['submitted']++;
                     break;
             }
-            switch ($application->status_id) {
+            switch ($project->status_id) {
                 // Accepted
-                case Application::STATUS_ACCEPTED:
-                case Application::STATUS_AWARDED:
-                case Application::STATUS_NOT_AWARDED:
+                case Project::STATUS_ACCEPTED:
+                case Project::STATUS_AWARDED:
+                case Project::STATUS_NOT_AWARDED:
                     $retval['accepted']++;
                     break;
             }
-            if ($application->status_id === Application::STATUS_AWARDED) {
+            if ($project->status_id === Project::STATUS_AWARDED) {
                 $retval['awarded']++;
             }
         }

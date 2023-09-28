@@ -11,13 +11,13 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $body
  * @property string $user_id
- * @property string $application_id
+ * @property string $project_id
  * @property bool $is_final
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Application $application
+ * @property \App\Model\Entity\Project $project
  */
 class Report extends Entity
 {
@@ -33,11 +33,11 @@ class Report extends Entity
     protected $_accessible = [
         'body' => true,
         'user_id' => true,
-        'application_id' => true,
+        'project_id' => true,
         'is_final' => true,
         'created' => true,
         'modified' => true,
         'user' => true,
-        'application' => true,
+        'project' => true,
     ];
 }

@@ -6,18 +6,18 @@ class API {
     return '';
   }
 
-  static async getApplications(setErrorMsg) {
-    //return this.getDummyApplications();
+  static async getProjects(setErrorMsg) {
+    //return this.getDummyProjects();
 
     let retval = null;
-    const url = this.getBasePath() + '/api/applications';
+    const url = this.getBasePath() + '/api/projects';
     const fetchOptions = {
       headers: {'Content-Type': 'application/json'}
     };
     try {
       const response = await fetch(url, fetchOptions);
       const data = await response.json();
-      retval = data.applications;
+      retval = data.projects;
     } catch(error) {
       console.error('Error:', error);
       setErrorMsg(error);
@@ -45,7 +45,7 @@ class API {
     return false;
   }
 
-  static getDummyApplications() {
+  static getDummyProjects() {
     return [
       {
         "accept_partial_payout": true,
@@ -67,7 +67,7 @@ class API {
         "answers": [
           {
             "answer": "dsf",
-            "application_id": 15,
+            "project_id": 15,
             "id": 69,
             "question_id": 1,
             "question": {
@@ -78,7 +78,7 @@ class API {
           },
           {
             "answer": "dfs",
-            "application_id": 15,
+            "project_id": 15,
             "id": 70,
             "question_id": 2,
             "question": {
@@ -89,7 +89,7 @@ class API {
           },
           {
             "answer": "dfs",
-            "application_id": 15,
+            "project_id": 15,
             "id": 71,
             "question_id": 3,
             "question": {
@@ -100,7 +100,7 @@ class API {
           },
           {
             "answer": "fds",
-            "application_id": 15,
+            "project_id": 15,
             "id": 72,
             "question_id": 4,
             "question": {
@@ -131,7 +131,7 @@ class API {
         "answers": [
           {
             "answer": "df",
-            "application_id": 16,
+            "project_id": 16,
             "id": 73,
             "question_id": 1,
             "question": {
@@ -142,7 +142,7 @@ class API {
           },
           {
             "answer": "dsf",
-            "application_id": 16,
+            "project_id": 16,
             "id": 74,
             "question_id": 2,
             "question": {
@@ -153,7 +153,7 @@ class API {
           },
           {
             "answer": "dfs",
-            "application_id": 16,
+            "project_id": 16,
             "id": 75,
             "question_id": 3,
             "question": {
@@ -164,7 +164,7 @@ class API {
           },
           {
             "answer": "sdf",
-            "application_id": 16,
+            "project_id": 16,
             "id": 76,
             "question_id": 4,
             "question": {
@@ -189,19 +189,19 @@ class API {
         },
         "images": [
           {
-            "application_id": 17,
+            "project_id": 17,
             "filename": "dca8059f5b.png",
             "id": 2,
             "weight": 0
           },
           {
-            "application_id": 17,
+            "project_id": 17,
             "filename": "42b6217b66.png",
             "id": 3,
             "weight": 0
           },
           {
-            "application_id": 17,
+            "project_id": 17,
             "filename": "de79b155a1.png",
             "id": 4,
             "weight": 0
@@ -214,7 +214,7 @@ class API {
         "answers": [
           {
             "answer": "df",
-            "application_id": 17,
+            "project_id": 17,
             "id": 77,
             "question_id": 1,
             "question": {
@@ -225,7 +225,7 @@ class API {
           },
           {
             "answer": "dsf",
-            "application_id": 17,
+            "project_id": 17,
             "id": 78,
             "question_id": 2,
             "question": {
@@ -236,7 +236,7 @@ class API {
           },
           {
             "answer": "dfs",
-            "application_id": 17,
+            "project_id": 17,
             "id": 79,
             "question_id": 3,
             "question": {
@@ -247,7 +247,7 @@ class API {
           },
           {
             "answer": "sdf",
-            "application_id": 17,
+            "project_id": 17,
             "id": 80,
             "question_id": 4,
             "question": {
@@ -278,7 +278,7 @@ class API {
         "answers": [
           {
             "answer": "dsg",
-            "application_id": 13,
+            "project_id": 13,
             "id": 61,
             "question_id": 1,
             "question": {
@@ -289,7 +289,7 @@ class API {
           },
           {
             "answer": "gdfs",
-            "application_id": 13,
+            "project_id": 13,
             "id": 62,
             "question_id": 2,
             "question": {
@@ -300,7 +300,7 @@ class API {
           },
           {
             "answer": "dsf",
-            "application_id": 13,
+            "project_id": 13,
             "id": 63,
             "question_id": 3,
             "question": {
@@ -311,7 +311,7 @@ class API {
           },
           {
             "answer": "sdf",
-            "application_id": 13,
+            "project_id": 13,
             "id": 64,
             "question_id": 4,
             "question": {
@@ -342,7 +342,7 @@ class API {
         "answers": [
           {
             "answer": "few",
-            "application_id": 9,
+            "project_id": 9,
             "id": 45,
             "question_id": 1,
             "question": {
@@ -353,7 +353,7 @@ class API {
           },
           {
             "answer": "efw",
-            "application_id": 9,
+            "project_id": 9,
             "id": 46,
             "question_id": 2,
             "question": {
@@ -364,7 +364,7 @@ class API {
           },
           {
             "answer": "ewf",
-            "application_id": 9,
+            "project_id": 9,
             "id": 47,
             "question_id": 3,
             "question": {
@@ -375,7 +375,7 @@ class API {
           },
           {
             "answer": "wef",
-            "application_id": 9,
+            "project_id": 9,
             "id": 48,
             "question_id": 4,
             "question": {
@@ -406,7 +406,7 @@ class API {
         "answers": [
           {
             "answer": "dsf",
-            "application_id": 8,
+            "project_id": 8,
             "id": 41,
             "question_id": 1,
             "question": {
@@ -417,7 +417,7 @@ class API {
           },
           {
             "answer": "dsfg",
-            "application_id": 8,
+            "project_id": 8,
             "id": 42,
             "question_id": 2,
             "question": {
@@ -428,7 +428,7 @@ class API {
           },
           {
             "answer": "dsf",
-            "application_id": 8,
+            "project_id": 8,
             "id": 43,
             "question_id": 3,
             "question": {
@@ -439,7 +439,7 @@ class API {
           },
           {
             "answer": "sdf",
-            "application_id": 8,
+            "project_id": 8,
             "id": 44,
             "question_id": 4,
             "question": {
@@ -489,7 +489,7 @@ class API {
         "answers": [
           {
             "answer": "ds f",
-            "application_id": 10,
+            "project_id": 10,
             "id": 49,
             "question_id": 1,
             "question": {
@@ -500,7 +500,7 @@ class API {
           },
           {
             "answer": "ds f",
-            "application_id": 10,
+            "project_id": 10,
             "id": 50,
             "question_id": 2,
             "question": {
@@ -511,7 +511,7 @@ class API {
           },
           {
             "answer": "ds f",
-            "application_id": 10,
+            "project_id": 10,
             "id": 51,
             "question_id": 3,
             "question": {
@@ -522,7 +522,7 @@ class API {
           },
           {
             "answer": "ds f",
-            "application_id": 10,
+            "project_id": 10,
             "id": 52,
             "question_id": 4,
             "question": {

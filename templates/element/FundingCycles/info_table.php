@@ -35,36 +35,36 @@
             ?>
         </td>
     </tr>
-    <?php $applicationSummary = $fundingCycle->getApplicationSummary(); ?>
-    <?php if ($applicationSummary): ?>
+    <?php $projectSummary = $fundingCycle->getProjectsSummary(); ?>
+    <?php if ($projectSummary): ?>
         <tr>
             <th>
                 Results
             </th>
             <td>
                 <?php
-                    echo $applicationSummary['submitted']
+                    echo $projectSummary['submitted']
                         . ' '
-                        . __n('application', 'applications', $applicationSummary['submitted'])
+                        . __n('application', 'applications', $projectSummary['submitted'])
                         . ' submitted';
-                    if ($applicationSummary['submitted']) {
+                    if ($projectSummary['submitted']) {
                         echo ', ';
-                        echo $applicationSummary['accepted'] == $applicationSummary['submitted']
+                        echo $projectSummary['accepted'] == $projectSummary['submitted']
                             ? 'all'
-                            : $applicationSummary['accepted'];
+                            : $projectSummary['accepted'];
                         echo ' accepted';
                         if (
-                            $applicationSummary['submitted'] != $applicationSummary['accepted']
+                            $projectSummary['submitted'] != $projectSummary['accepted']
                             && $fundingCycle->vote_begin->isFuture()
                         ) {
                             echo ' so far';
                         }
 
-                        if ($applicationSummary['accepted']) {
+                        if ($projectSummary['accepted']) {
                             echo ', ';
-                            echo $applicationSummary['awarded'] == $applicationSummary['submitted']
+                            echo $projectSummary['awarded'] == $projectSummary['submitted']
                                 ? 'all'
-                                : $applicationSummary['awarded'];
+                                : $projectSummary['awarded'];
                             echo ' awarded';
                         }
                     }

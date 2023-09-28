@@ -1733,7 +1733,7 @@ progress {
     --bs-gutter-y: 3rem;
   }
 }
-.table, .vote-application-list {
+.table, .vote-projects-list {
   --bs-table-color: var(--bs-body-color);
   --bs-table-bg: transparent;
   --bs-table-border-color: var(--bs-border-color);
@@ -1750,16 +1750,16 @@ progress {
   vertical-align: top;
   border-color: var(--bs-table-border-color);
 }
-.table > :not(caption) > * > *, .vote-application-list > :not(caption) > * > * {
+.table > :not(caption) > * > *, .vote-projects-list > :not(caption) > * > * {
   padding: 0.5rem 0.5rem;
   background-color: var(--bs-table-bg);
   border-bottom-width: 1px;
   box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
 }
-.table > tbody, .vote-application-list > tbody {
+.table > tbody, .vote-projects-list > tbody {
   vertical-align: inherit;
 }
-.table > thead, .vote-application-list > thead {
+.table > thead, .vote-projects-list > thead {
   vertical-align: bottom;
 }
 
@@ -11351,17 +11351,17 @@ table td {
   word-break: break-all;
 }
 
-.my-applications__application th,
-.my-applications__application td {
+.my-projects__projects th,
+.my-projects__projects td {
   vertical-align: middle;
 }
-.my-applications__application th,
-.my-applications__application td:nth-child(2) {
+.my-projects__projects th,
+.my-projects__projects td:nth-child(2) {
   white-space: nowrap;
   width: 1%;
 }
-.my-applications__application tr:last-child td,
-.my-applications__application tr:last-child th {
+.my-projects__projects tr:last-child td,
+.my-projects__projects tr:last-child th {
   border-width: 0;
 }
 
@@ -11529,14 +11529,14 @@ body {
   color: #1A5B11;
 }
 
-.vote-application h2, .vote-application .h2 {
+.vote-projects h2, .vote-projects .h2 {
   font-size: 1.2em;
 }
 
-.vote-application-list .fa-thumbs-up {
+.vote-projects-list .fa-thumbs-up {
   color: green;
 }
-.vote-application-list .fa-thumbs-down {
+.vote-projects-list .fa-thumbs-down {
   color: red;
 }
 
@@ -11583,7 +11583,7 @@ body {
   background-color: #EEE;
 }
 
-.application-title {
+.projects-title {
   font-size: 1.5em;
   font-weight: bold;
 }
@@ -11893,11 +11893,11 @@ footer a {
   text-transform: uppercase;
 }
 
-.application-view {
+.projects-view {
   margin: 2em 0;
 }
 
-#my-applications .dropdown-item i {
+#my-projects .dropdown-item i {
   margin-right: 0.25em;
   width: 1.5em;
 }

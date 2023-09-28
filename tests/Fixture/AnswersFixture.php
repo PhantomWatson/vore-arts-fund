@@ -20,7 +20,7 @@ class AnswersFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'application_id' => 1,
+                'project_id' => 1,
                 'question_id' => 1,
                 'answer' => 'Lorem ipsum dolor sit amet',
                 'created' => 1654937339,

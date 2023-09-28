@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\Model\Entity\Application $application
+ * @var \App\Model\Entity\Project $project
  * @var \App\Model\Entity\FundingCycle $fundingCycle
  * @var \App\View\AppView $this
  * @var string $note
@@ -10,7 +10,7 @@
 ?>
 <?= $userName ?>,
 
-Before we can accept your application for funding for <?= $application->title ?>, we need it to be revised. Here are the details:
+Before we can accept your application for funding for <?= $project->title ?>, we need it to be revised. Here are the details:
 
 <?= nl2br($note) ?>
 

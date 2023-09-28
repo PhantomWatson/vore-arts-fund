@@ -8,11 +8,11 @@ use Cake\Event\EventInterface;
 use Cake\Http\Exception\MethodNotAllowedException;
 
 /**
- * ApplicationsController
+ * ProjectsController
  *
- * @property \App\Model\Table\ApplicationsTable $Applications
+ * @property \App\Model\Table\ProjectsTable $Projects
  */
-class ApplicationsController extends ApiController
+class ProjectsController extends ApiController
 {
     /**
      * beforeFilter callback method
@@ -29,7 +29,7 @@ class ApplicationsController extends ApiController
     }
 
     /**
-     * GET /api/applications endpoint
+     * GET /api/projects endpoint
      *
      * @return void
      */
@@ -41,11 +41,11 @@ class ApplicationsController extends ApiController
         /** @var FundingCyclesTable $fundingCyclesTable */
         $fundingCyclesTable = $this->fetchTable('FundingCycles');
         $fundingCycle = $fundingCyclesTable->find('currentVoting')->first();
-        $applications = $fundingCycle
-            ? $this->Applications->find('forVoting', ['funding_cycle_id' => $fundingCycle->id])->limit(3)->all()
+        $projects = $fundingCycle
+            ? $this->Projects->find('forVoting', ['funding_cycle_id' => $fundingCycle->id])->limit(3)->all()
             : [];
-        $this->set(compact('applications'));
-        $this->viewBuilder()->setOption('serialize', ['applications']);
+        $this->set(compact('projects'));
+        $this->viewBuilder()->setOption('serialize', ['projects']);
         $this->viewBuilder()->setClassName('Json');
     }
 }

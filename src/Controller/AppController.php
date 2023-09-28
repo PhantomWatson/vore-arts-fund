@@ -71,10 +71,10 @@ class AppController extends Controller
         $user = $this->getAuthUser();
         $isLoggedIn = (bool)$user;
         $isAdmin = $user->is_admin ?? false;
-        $applicationsTable = $this->getTableLocator()->get('Applications');
-        $hasApplications = $user && $applicationsTable->exists(['user_id' => $user->id]);
+        $projectsTable = $this->getTableLocator()->get('Projects');
+        $hasProjects = $user && $projectsTable->exists(['user_id' => $user->id]);
         $this->set(compact(
-            'hasApplications',
+            'hasProjects',
             'isAdmin',
             'isLoggedIn',
         ));
@@ -101,22 +101,22 @@ class AppController extends Controller
     }
 
     /**
-     * Returns TRUE if the current user owns the specified application
+     * Returns TRUE if the current user owns the specified project
      *
-     * @param int $applicationId
+     * @param int $projectId
      * @return bool
      */
-    protected function isOwnApplication($applicationId): bool
+    protected function isOwnProject($projectId): bool
     {
-        if (!$applicationId) {
+        if (!$projectId) {
             return false;
         }
 
         $user = $this->getAuthUser();
 
-        $applicationsTable = TableRegistry::getTableLocator()->get('Applications');
+        $projectsTable = TableRegistry::getTableLocator()->get('Projects');
 
-        return $applicationsTable->exists(['id' => $applicationId, 'user_id' => $user?->id]);
+        return $projectsTable->exists(['id' => $projectId, 'user_id' => $user?->id]);
     }
 
     /**

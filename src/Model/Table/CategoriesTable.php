@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
 /**
  * Categories Model
  *
- * @property \App\Model\Table\ApplicationsTable&\Cake\ORM\Association\HasMany $Applications
+ * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\HasMany $Projects
  * @method \App\Model\Entity\Category get($primaryKey, $options = [])
  * @method \App\Model\Entity\Category newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Category[] newEntities(array $data, array $options = [])
@@ -37,7 +37,7 @@ class CategoriesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->hasMany('Applications', [
+        $this->hasMany('Projects', [
             'foreignKey' => 'category_id',
         ]);
     }

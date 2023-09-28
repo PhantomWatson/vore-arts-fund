@@ -68,7 +68,7 @@ class QuestionsController extends AdminController
         } else {
             $heaviestQuestion = $this
                 ->Questions
-                ->find('forApplication')
+                ->find('forProject')
                 ->last();
             $question->weight = $heaviestQuestion ? $heaviestQuestion->weight + 1 : 0;
         }

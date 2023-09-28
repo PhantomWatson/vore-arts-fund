@@ -27,7 +27,7 @@ class MessagesTableTest extends TestCase
     public $fixtures = [
         'app.Messages',
         'app.Users',
-        'app.Applications',
+        'app.Projects',
     ];
 
     /**

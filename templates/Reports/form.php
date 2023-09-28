@@ -2,14 +2,14 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Report $report
- * @var \App\Model\Entity\Application $application
+ * @var \App\Model\Entity\Project $project
  * @var string|null $back
  */
 
 use Cake\Routing\Router;
 
 $back = $back ?? Router::url([
-    'controller' => 'Applications',
+    'controller' => 'Projects',
     'action' => 'index'
 ]);
 ?>

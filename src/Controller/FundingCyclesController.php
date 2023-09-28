@@ -32,10 +32,10 @@ class FundingCyclesController extends AppController
         $fundingCycles = $this->FundingCycles
             ->find('currentAndFuture')
             ->contain([
-                'Applications' => function (Query $q) {
+                'Projects' => function (Query $q) {
                     return $q->select([
-                        'Applications.funding_cycle_id',
-                        'Applications.status_id'
+                        'Projects.funding_cycle_id',
+                        'Projects.status_id'
                     ]);
                 }
             ])

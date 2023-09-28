@@ -11,7 +11,7 @@ use Cake\Validation\Validator;
  * Messages Model
  *
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
- * @property \App\Model\Table\ApplicationsTable&\Cake\ORM\Association\BelongsTo $Applications
+ * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\BelongsTo $Projects
  * @method \App\Model\Entity\Message get($primaryKey, $options = [])
  * @method \App\Model\Entity\Message newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Message[] newEntities(array $data, array $options = [])
@@ -45,8 +45,8 @@ class MessagesTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsTo('Applications', [
-            'foreignKey' => 'application_id',
+        $this->belongsTo('Projects', [
+            'foreignKey' => 'project_id',
             'joinType' => 'INNER',
         ]);
     }
@@ -87,7 +87,7 @@ class MessagesTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-        $rules->add($rules->existsIn(['application_id'], 'Applications'));
+        $rules->add($rules->existsIn(['project_id'], 'Projects'));
 
         return $rules;
     }

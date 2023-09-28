@@ -27,7 +27,7 @@ class VotesTableTest extends TestCase
     public $fixtures = [
         'app.Votes',
         'app.Users',
-        'app.Applications',
+        'app.Projects',
         'app.FundingCycles',
     ];
 

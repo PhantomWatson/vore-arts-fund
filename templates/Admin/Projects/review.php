@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\Model\Entity\Application $application
+ * @var \App\Model\Entity\Project $project
  * @var \App\Model\Entity\Note $newNote
  * @var \App\Model\Entity\Note[]|\Cake\ORM\ResultSet $notes
  * @var \App\Model\Entity\Question[] $questions
@@ -18,7 +18,7 @@ function getActionName($statusId, array $statusActions): string
 
 <div class="row">
     <div class="col-md-6">
-        <?= $this->element('../Applications/view') ?>
+        <?= $this->element('../Projects/view') ?>
         <table class="table">
             <tbody>
                 <tr>
@@ -26,7 +26,7 @@ function getActionName($statusId, array $statusActions): string
                         Accept partial payout?
                     </th>
                     <td>
-                        <?= $application->accept_partial_payout ? 'Yes' : 'No' ?>
+                        <?= $project->accept_partial_payout ? 'Yes' : 'No' ?>
                     </td>
                 </tr>
                 <tr>
@@ -34,7 +34,7 @@ function getActionName($statusId, array $statusActions): string
                         Make check out to
                     </th>
                     <td>
-                        <?= $application->check_name ?: '<span class="no-answer">No answer</span>' ?>
+                        <?= $project->check_name ?: '<span class="no-answer">No answer</span>' ?>
                     </td>
                 </tr>
             </tbody>
@@ -44,7 +44,7 @@ function getActionName($statusId, array $statusActions): string
         <div class="card-body">
             <section>
                 <h3>
-                    Status: <?= $application->status_name ?>
+                    Status: <?= $project->status_name ?>
                 </h3>
                 <div id="root"></div>
             </section>

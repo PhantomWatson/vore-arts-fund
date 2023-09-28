@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\API;
 
-use App\Model\Entity\Application;
+use App\Model\Entity\Project;
 use App\Model\Entity\FundingCycle;
 use App\Model\Entity\User;
 use App\Model\Entity\Vote;

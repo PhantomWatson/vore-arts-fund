@@ -23,7 +23,7 @@ class ImagesControllerTest extends TestCase
      */
     protected $fixtures = [
         'app.Images',
-        'app.Applications',
+        'app.Projects',
     ];
 
     /**

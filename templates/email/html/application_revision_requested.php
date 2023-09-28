@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\Model\Entity\Application $application
+ * @var \App\Model\Entity\Project $project
  * @var \App\Model\Entity\FundingCycle $fundingCycle
  * @var \App\View\AppView $this
  * @var string $note
@@ -13,7 +13,7 @@
 </p>
 
 <p>
-    Before we can accept your application for funding for <strong><?= $application->title ?></strong>, we need it to be
+    Before we can accept your application for funding for <strong><?= $project->title ?></strong>, we need it to be
     revised. Here are the details:
 </p>
 

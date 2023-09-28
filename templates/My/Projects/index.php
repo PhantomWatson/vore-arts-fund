@@ -1,22 +1,22 @@
 <?php
 /**
- * @var \App\Model\Entity\Application[]|\Cake\ORM\ResultSet $applications
+ * @var \App\Model\Entity\Project[]|\Cake\ORM\ResultSet $projects
  * @var \App\View\AppView $this
  */
 
-use App\Model\Entity\Application;
+use App\Model\Entity\Project;
 use Cake\Routing\Router;
 
 $updateWhen = [
-    Application::STATUS_DRAFT,
-    Application::STATUS_REVISION_REQUESTED,
+    Project::STATUS_DRAFT,
+    Project::STATUS_REVISION_REQUESTED,
 ];
 $withdrawWhen = [
-    Application::STATUS_UNDER_REVIEW,
-    Application::STATUS_ACCEPTED,
+    Project::STATUS_UNDER_REVIEW,
+    Project::STATUS_ACCEPTED,
 ];
 $reportWhen = [
-    Application::STATUS_AWARDED,
+    Project::STATUS_AWARDED,
 ];
 ?>
 
@@ -25,15 +25,15 @@ $reportWhen = [
         'Submit a new application for funding',
         [
             'prefix' => false,
-            'controller' => 'Applications',
+            'controller' => 'Projects',
             'action' => 'apply',
         ],
         ['class' => 'btn btn-primary']
     ) ?>
 </p>
 
-<?php if ($applications->count()): ?>
-    <table class="table" id="my-applications">
+<?php if ($projects->count()): ?>
+    <table class="table" id="my-projects">
         <thead>
             <tr>
                 <th>Project</th>
@@ -44,39 +44,39 @@ $reportWhen = [
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($applications as $application): ?>
+            <?php foreach ($projects as $project): ?>
                 <tr>
                     <td>
                         <?= $this->Html->link(
-                            $application->title,
+                            $project->title,
                             [
-                                'controller' => 'Applications',
+                                'controller' => 'Projects',
                                 'action' => 'view',
-                                'id' => $application->id,
+                                'id' => $project->id,
                             ],
                         ) ?>
                     </td>
                     <td>
-                        <?= $application->created->format('F j, Y') ?>
+                        <?= $project->created->format('F j, Y') ?>
                         <br />
-                        <?= $this->element('FundingCycles/link', ['fundingCycle' => $application->funding_cycle]) ?>
+                        <?= $this->element('FundingCycles/link', ['fundingCycle' => $project->funding_cycle]) ?>
                     </td>
                     <td>
-                        <?= $application->status_name ?>
+                        <?= $project->status_name ?>
                     </td>
                     <td>
-                        <?php if (count($application->reports)): ?>
+                        <?php if (count($project->reports)): ?>
                             <?= $this->Html->link(
-                                count($application->reports),
+                                count($project->reports),
                                 [
                                     'prefix' => false,
                                     'controller' => 'Reports',
-                                    'action' => 'application',
-                                    $application->id,
+                                    'action' => 'projects',
+                                    $project->id,
                                 ]
                             ) ?>
                         <?php else: ?>
-                            <?= count($application->reports) ?>
+                            <?= count($project->reports) ?>
                         <?php endif; ?>
                     </td>
                     <td>
@@ -87,24 +87,24 @@ $reportWhen = [
 
                             <ul class="dropdown-menu">
                                 <?= $this->Html->link(
-                                    '<i class="fa-solid fa-eye"></i> View application',
+                                    '<i class="fa-solid fa-eye"></i> View projects',
                                     [
-                                        'controller' => 'Applications',
+                                        'controller' => 'Projects',
                                         'action' => 'view',
-                                        'id' => $application->id,
+                                        'id' => $project->id,
                                     ],
                                     [
                                         'class' => 'dropdown-item',
                                         'escape' => false
                                     ]
                                 ) ?>
-                                <?php if (in_array($application->status_id, $updateWhen)): ?>
+                                <?php if (in_array($project->status_id, $updateWhen)): ?>
                                     <?= $this->Html->link(
                                         '<i class="fa-solid fa-pencil"></i> Update / Submit',
                                         [
-                                            'controller' => 'Applications',
+                                            'controller' => 'Projects',
                                             'action' => 'edit',
-                                            'id' => $application->id,
+                                            'id' => $project->id,
                                         ],
                                         [
                                             'class' => 'dropdown-item',
@@ -115,9 +115,9 @@ $reportWhen = [
                                         '<i class="fa-solid fa-trash"></i> Delete',
                                         [
                                             'prefix' => 'My',
-                                            'controller' => 'Applications',
+                                            'controller' => 'Projects',
                                             'action' => 'delete',
-                                            'id' => $application->id,
+                                            'id' => $project->id,
                                         ],
                                         [
                                             'class' => 'dropdown-item',
@@ -126,13 +126,13 @@ $reportWhen = [
                                         ]
                                     ) ?>
                                 <?php endif; ?>
-                                <?php if (in_array($application->status_id, $withdrawWhen)): ?>
+                                <?php if (in_array($project->status_id, $withdrawWhen)): ?>
                                     <?= $this->Html->link(
                                         '<i class="fa-solid fa-ban"></i> Withdraw',
                                         [
-                                            'controller' => 'Applications',
+                                            'controller' => 'Projects',
                                             'action' => 'withdraw',
-                                            'id' => $application->id,
+                                            'id' => $project->id,
                                         ],
                                         [
                                             'class' => 'dropdown-item',
@@ -140,14 +140,14 @@ $reportWhen = [
                                         ]
                                     ) ?>
                                 <?php endif; ?>
-                                <?php if (in_array($application->status_id, $reportWhen)): ?>
+                                <?php if (in_array($project->status_id, $reportWhen)): ?>
                                     <?= $this->Html->link(
                                         '<i class="fa-solid fa-file-lines"></i> Submit report',
                                         [
                                             'prefix' => false,
                                             'controller' => 'Reports',
                                             'action' => 'submit',
-                                            $application->id,
+                                            $project->id,
                                         ],
                                         [
                                             'class' => 'dropdown-item',
@@ -155,14 +155,14 @@ $reportWhen = [
                                         ]
                                     ) ?>
                                 <?php endif; ?>
-                                <?php if (count($application->reports)): ?>
+                                <?php if (count($project->reports)): ?>
                                     <?= $this->Html->link(
                                         '<i class="fa-solid fa-file-lines"></i> View reports',
                                         [
                                             'prefix' => false,
                                             'controller' => 'Reports',
-                                            'action' => 'application',
-                                            $application->id,
+                                            'action' => 'projects',
+                                            $project->id,
                                         ],
                                         [
                                             'class' => 'dropdown-item',
@@ -181,6 +181,6 @@ $reportWhen = [
 
 <?php else: ?>
     <p class="alert alert-info">
-        You have not yet submitted any applications for funding.
+        You have not yet submitted any projects for funding.
     </p>
 <?php endif; ?>

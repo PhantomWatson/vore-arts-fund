@@ -1,5 +1,5 @@
-import AlertNoApplications from './AlertNoApplications';
-import ApplicationSummary from './ApplicationSummary';
+import AlertNoProjects from './AlertNoProjects';
+import ProjectSummary from './ProjectSummary';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useEffect, useState } from 'react';
 import Button from "react-bootstrap/Button";
@@ -7,38 +7,38 @@ import Alert from "./Alert";
 import * as React from "react";
 
 const SortStep = (props) => {
-  const [sortedApplications, setSortedApplications] = useState([]);
-  const [unsortedApplications, setUnsortedApplications] = useState(props.applications);
+  const [sortedProjects, setSortedProjects] = useState([]);
+  const [unsortedProjects, setUnsortedProjects] = useState(props.projects);
   const [sortingIsFinished, setSortingIsFinished] = useState(false);
 
-  // Moves application from unsorted to sorted
-  const selectApplication = (application) => {
-    const newSortedApplications = sortedApplications.concat([application]);
-    setSortedApplications(newSortedApplications);
-    const newUnsortedApplications = [];
-    for (let i = 0, length = unsortedApplications.length; i < length; i++) {
-      if (unsortedApplications[i].id === application.id) {
+  // Moves project from unsorted to sorted
+  const selectProject = (project) => {
+    const newSortedProjects = sortedProjects.concat([project]);
+    setSortedProjects(newSortedProjects);
+    const newUnsortedProjects = [];
+    for (let i = 0, length = unsortedProjects.length; i < length; i++) {
+      if (unsortedProjects[i].id === project.id) {
         continue;
       }
-      newUnsortedApplications.push(unsortedApplications[i]);
+      newUnsortedProjects.push(unsortedProjects[i]);
     }
-    setUnsortedApplications(newUnsortedApplications);
+    setUnsortedProjects(newUnsortedProjects);
 
-    if (newUnsortedApplications.length === 0) {
+    if (newUnsortedProjects.length === 0) {
       setSortingIsFinished(true);
 
       // Propagate final sorted list up to parent
-      props.setSortedApplications(newSortedApplications);
+      props.setSortedProjects(newSortedProjects);
     }
   };
 
-  // Avoid leaving a single application in the unsorted array
+  // Avoid leaving a single project in the unsorted array
   useEffect(() => {
-    if (unsortedApplications.length === 1) {
-      const lastApplication = unsortedApplications.pop();
-      selectApplication(lastApplication);
+    if (unsortedProjects.length === 1) {
+      const lastProject = unsortedProjects.pop();
+      selectProject(lastProject);
     }
-  }, [unsortedApplications]);
+  }, [unsortedProjects]);
 
   const onDragEnd = (result) => {
     const { destination, source } = result;
@@ -48,34 +48,34 @@ const SortStep = (props) => {
       return;
     }
 
-    const newSortedApplications = [...sortedApplications];
-    const movedApplication = newSortedApplications[source.index];
-    newSortedApplications.splice(source.index, 1);
-    newSortedApplications.splice(destination.index, 0, movedApplication);
-    setSortedApplications(newSortedApplications);
+    const newSortedProjects = [...sortedProjects];
+    const movedProject = newSortedProjects[source.index];
+    newSortedProjects.splice(source.index, 1);
+    newSortedProjects.splice(destination.index, 0, movedProject);
+    setSortedProjects(newSortedProjects);
 
     // Propagate final sorted list up to parent
-    props.setSortedApplications(newSortedApplications);
+    props.setSortedProjects(newSortedProjects);
   };
 
-  if (props.applications.length === 0) {
-    return <AlertNoApplications />;
+  if (props.projects.length === 0) {
+    return <AlertNoProjects />;
   }
 
-  const unsortedList = unsortedApplications.length > 0 ? (
+  const unsortedList = unsortedProjects.length > 0 ? (
       <>
-        <table className="vote-application-list vote-select-for-sorting">
+        <table className="vote-project-list vote-select-for-sorting">
           <tbody>
-          {unsortedApplications.map((application, index) => {
+          {unsortedProjects.map((project, index) => {
             return (
               <tr key={index}>
                 <td className="vote-actions">
-                  <button className="vote-actions-rank" onClick={() => {selectApplication(application)}}>
-                    Rank #{sortedApplications.length + 1}
+                  <button className="vote-actions-rank" onClick={() => {selectProject(project)}}>
+                    Rank #{sortedProjects.length + 1}
                   </button>
                 </td>
                 <td>
-                  <ApplicationSummary application={application} />
+                  <ProjectSummary project={project} />
                 </td>
               </tr>
             );
@@ -85,21 +85,21 @@ const SortStep = (props) => {
       </>
   ) : '';
 
-  const sortedList = sortedApplications.length > 0 ? (
+  const sortedList = sortedProjects.length > 0 ? (
       <>
         <DragDropContext onDragEnd={onDragEnd}>
-          <table className="vote-application-list vote-sortable-table">
+          <table className="vote-project-list vote-sortable-table">
             <Droppable droppableId="droppable">
               {(provided, snapshot) => (
                 <tbody {...provided.droppableProps}
                        ref={provided.innerRef}
                        className={snapshot.isDraggingOver ? 'is-dragging-over' : ''}
                 >
-                  {sortedApplications.map((application, index) => {
+                  {sortedProjects.map((project, index) => {
                     return (
                       <Draggable
-                        key={application.id}
-                        draggableId={String(application.id)}
+                        key={project.id}
+                        draggableId={String(project.id)}
                         index={index}
                       >
                         {(provided, snapshot) => (
@@ -114,7 +114,7 @@ const SortStep = (props) => {
                               #{index + 1}
                             </td>
                             <td>
-                              <ApplicationSummary application={application} />
+                              <ProjectSummary project={project} />
                             </td>
                           </tr>
                         )}
@@ -147,7 +147,7 @@ const SortStep = (props) => {
           <Button
             variant="primary"
             size="lg"
-            onClick={() => {props.handlePostVotes(sortedApplications)}}
+            onClick={() => {props.handlePostVotes(sortedProjects)}}
             disabled={props.submitIsLoading}
           >
             Submit votes
@@ -168,7 +168,7 @@ const SortStep = (props) => {
       <p>
         <span className="vote-step-title">Step two:</span> Now that you've <em>selected</em> the{' '}
         applications that you want funded, it's time to <em>rank</em> them, with #1 being the{' '}
-        highest-priority for funding, and #{props.applications.length} being the lowest-priority.
+        highest-priority for funding, and #{props.projects.length} being the lowest-priority.
       </p>
       <p>
         First, <strong>select the application that you would <em>most</em> like to see funded</strong>{' '}

@@ -10,12 +10,12 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $user_id
- * @property int $application_id
+ * @property int $project_id
  * @property string $body
  * @property \Cake\I18n\FrozenTime $created
  *
  * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Application $application
+ * @property \App\Model\Entity\Project $project
  */
 class Note extends Entity
 {
@@ -30,10 +30,10 @@ class Note extends Entity
      */
     protected $_accessible = [
         'user_id' => true,
-        'application_id' => true,
+        'project_id' => true,
         'body' => true,
         'created' => true,
         'user' => true,
-        'application' => true,
+        'project' => true,
     ];
 }

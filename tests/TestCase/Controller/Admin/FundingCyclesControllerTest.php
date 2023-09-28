@@ -23,7 +23,7 @@ class FundingCyclesControllerTest extends TestCase
      */
     public $fixtures = [
         'app.FundingCycles',
-        'app.Applications',
+        'app.Projects',
         'app.Votes',
     ];
 

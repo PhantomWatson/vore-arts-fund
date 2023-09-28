@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use App\Model\Entity\Application;
+use App\Model\Entity\Project;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Query;
@@ -12,7 +12,7 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Applications Model
+ * Projects Model
  *
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\BelongsTo $Categories
@@ -22,18 +22,18 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\NotesTable&\Cake\ORM\Association\HasMany $Notes
  * @property \App\Model\Table\VotesTable&\Cake\ORM\Association\HasMany $Votes
  * @property \App\Model\Table\ReportsTable&\Cake\ORM\Association\HasMany $Reports
- * @method Application get($primaryKey, $options = [])
- * @method Application newEntity(array $data, array $options = [])
- * @method Application[] newEntities(array $data, array $options = [])
- * @method Application|false save(EntityInterface $entity, $options = [])
- * @method Application saveOrFail(EntityInterface $entity, $options = [])
- * @method Application patchEntity(EntityInterface $entity, array $data, array $options = [])
- * @method Application[] patchEntities($entities, array $data, array $options = [])
- * @method Application findOrCreate($search, callable $callback = null, $options = [])
+ * @method Project get($primaryKey, $options = [])
+ * @method Project newEntity(array $data, array $options = [])
+ * @method Project[] newEntities(array $data, array $options = [])
+ * @method Project|false save(EntityInterface $entity, $options = [])
+ * @method Project saveOrFail(EntityInterface $entity, $options = [])
+ * @method Project patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method Project[] patchEntities($entities, array $data, array $options = [])
+ * @method Project findOrCreate($search, callable $callback = null, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
- * @method Application[]|ResultSetInterface|false saveMany($entities, $options = [])
+ * @method Project[]|ResultSetInterface|false saveMany($entities, $options = [])
  */
-class ApplicationsTable extends Table
+class ProjectsTable extends Table
 {
     /**
      * Initialize method
@@ -45,7 +45,7 @@ class ApplicationsTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('applications');
+        $this->setTable('projects');
         $this->setDisplayField('title');
         $this->setPrimaryKey('id');
 
@@ -64,23 +64,23 @@ class ApplicationsTable extends Table
             'joinType' => 'INNER',
         ]);
         $this->hasMany('Images', [
-            'foreignKey' => 'application_id',
+            'foreignKey' => 'project_id',
         ]);
         $this->hasMany('Messages', [
-            'foreignKey' => 'application_id',
+            'foreignKey' => 'project_id',
         ]);
         $this->hasMany('Notes', [
-            'foreignKey' => 'application_id',
+            'foreignKey' => 'project_id',
         ]);
         $this->hasMany('Votes', [
-            'foreignKey' => 'application_id'
+            'foreignKey' => 'project_id'
         ]);
         $this->hasMany('Answers', [
-            'foreignKey' => 'application_id',
+            'foreignKey' => 'project_id',
             'dependent' => true,
         ]);
         $this->hasMany('Reports', [
-            'foreignKey' => 'application_id',
+            'foreignKey' => 'project_id',
         ]);
     }
 
@@ -120,7 +120,7 @@ class ApplicationsTable extends Table
 
         $validator
             ->integer('status_id')
-            ->inList('status_id', array_keys(Application::getStatuses()), 'Invalid status');
+            ->inList('status_id', array_keys(Project::getStatuses()), 'Invalid status');
 
         $validator
             ->scalar('check_name')
@@ -128,7 +128,7 @@ class ApplicationsTable extends Table
             ->notEmptyString('check_name')
             ->requirePresence('check_name');
 
-        // Actually saved to the users table, but integrated into the application form
+        // Actually saved to the users table, but integrated into the project form
         $validator
             ->scalar('address')
             ->maxLength('address', 50)
@@ -158,16 +158,16 @@ class ApplicationsTable extends Table
     }
 
     /**
-     * Returns an application entity for the apply/edit form
+     * Returns an project entity for the apply/edit form
      *
-     * @param int $applicationId
-     * @return EntityInterface|Application|null
+     * @param int $projectId
+     * @return EntityInterface|Project|null
      */
-    public function getForForm($applicationId)
+    public function getForForm($projectId)
     {
         return $this
             ->find()
-            ->where(['Applications.id' => $applicationId])
+            ->where(['Projects.id' => $projectId])
             ->contain([
                 'Answers',
                 'FundingCycles',
@@ -179,13 +179,13 @@ class ApplicationsTable extends Table
     }
 
     /**
-     * @param int $applicationId
-     * @return Application
+     * @param int $projectId
+     * @return Project
      */
-    public function getForViewing($applicationId)
+    public function getForViewing($projectId)
     {
         return $this->get(
-            $applicationId,
+            $projectId,
             [
                 'contain' => [
                     'Answers',
@@ -194,7 +194,7 @@ class ApplicationsTable extends Table
                     'Images',
                     'Users',
                     'Reports' => function (Query $query) {
-                        return $query->select(['id', 'application_id']);
+                        return $query->select(['id', 'project_id']);
                     }
                 ]
             ]
@@ -202,7 +202,7 @@ class ApplicationsTable extends Table
     }
 
     /**
-     * Modifies a query to return the votable applications for the specified funding cycle, including only the
+     * Modifies a query to return the votable projects for the specified funding cycle, including only the
      * necessary fields
      *
      * @param \Cake\ORM\Query $query
@@ -213,24 +213,24 @@ class ApplicationsTable extends Table
     {
         return $query
             ->select([
-                'Applications.accept_partial_payout',
-                'Applications.amount_requested',
-                'Applications.category_id',
-                'Applications.description',
-                'Applications.id',
-                'Applications.title',
-                'Applications.user_id',
+                'Projects.accept_partial_payout',
+                'Projects.amount_requested',
+                'Projects.category_id',
+                'Projects.description',
+                'Projects.id',
+                'Projects.title',
+                'Projects.user_id',
             ])
             ->where([
-                'Applications.funding_cycle_id' => $options['funding_cycle_id'],
-                'Applications.status_id' => Application::STATUS_ACCEPTED,
+                'Projects.funding_cycle_id' => $options['funding_cycle_id'],
+                'Projects.status_id' => Project::STATUS_ACCEPTED,
             ])
             ->contain([
                 'Answers' => function (Query $q) {
                     return $q
                         ->select([
                             'Answers.answer',
-                            'Answers.application_id',
+                            'Answers.project_id',
                             'Answers.id',
                             'Answers.question_id',
                         ])
@@ -252,7 +252,7 @@ class ApplicationsTable extends Table
                 },
                 'Images' => function (Query $q) {
                     return $q->select([
-                        'Images.application_id',
+                        'Images.project_id',
                         'Images.filename',
                         'Images.id',
                         'Images.weight',
@@ -265,6 +265,6 @@ class ApplicationsTable extends Table
                     ]);
                 },
             ])
-            ->orderAsc('Applications.title');
+            ->orderAsc('Projects.title');
     }
 }

@@ -20,7 +20,7 @@ $supportEmail = \Cake\Core\Configure::read('supportEmail');
     <?= $this->Html->link(
         'apply for funding through our website',
         [
-            'controller' => 'Applications',
+            'controller' => 'Projects',
             'action' => 'apply',
         ],
     ) ?>.

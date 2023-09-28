@@ -10,43 +10,43 @@ import VoteConfirmation from './VoteConfirmation';
 import {useBeforeunload} from 'react-beforeunload';
 
 const App = () => {
-  const [applications, setApplications] = useState(null);
+  const [projects, setProjects] = useState(null);
   const [currentStep, setCurrentStep] = useState('select');
   const [errorMsg, setErrorMsg] = useState(null);
   const [allVotesAreCast, setAllVotesAreCast] = useState(false);
-  const [approvedApplications, setApprovedApplications] = useState([]);
-  const [sortedApplications, setSortedApplications] = useState([]);
+  const [approvedProjects, setApprovedProjects] = useState([]);
+  const [sortedProjects, setSortedProjects] = useState([]);
   const [submitIsLoading, setSubmitIsLoading] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  const handleVote = (applicationId, vote) => {
-    // Update the selected application's vote
-    let applicationIsFound = false;
-    for (let i = 0, length = applications.length; i < length; i++) {
-      if (applications[i].id === applicationId) {
-        applications[i].vote = vote;
-        applicationIsFound = true;
+  const handleVote = (projectId, vote) => {
+    // Update the selected project's vote
+    let projectIsFound = false;
+    for (let i = 0, length = projects.length; i < length; i++) {
+      if (projects[i].id === projectId) {
+        projects[i].vote = vote;
+        projectIsFound = true;
       }
     }
-    if (!applicationIsFound) {
-      console.log(`Application #${applicationId} not found`);
+    if (!projectIsFound) {
+      console.log(`Project #${projectId} not found`);
     }
     setHasInteracted(true);
-    setApplications(applications);
+    setProjects(projects);
 
-    // Update list of approved applications
+    // Update list of approved projects
     let approved = [];
-    for (let i = 0, length = applications.length; i < length; i++) {
-      if (applications[i].vote) {
-        approved.push(applications[i]);
+    for (let i = 0, length = projects.length; i < length; i++) {
+      if (projects[i].vote) {
+        approved.push(projects[i]);
       }
     }
-    setApprovedApplications(approved);
+    setApprovedProjects(approved);
 
-    // Update whether or not all applications have been voted on
+    // Update whether or not all projects have been voted on
     let pendingVoteFound = false;
-    for (let i = 0, length = applications.length; i < length; i++) {
-      if (applications[i].vote === null) {
+    for (let i = 0, length = projects.length; i < length; i++) {
+      if (projects[i].vote === null) {
         pendingVoteFound = true;
         break;
       }
@@ -60,35 +60,35 @@ const App = () => {
 
   const handleSubmitSelectStep = async () => {
     // Go to sort step
-    if (approvedApplications.length > 1) {
+    if (approvedProjects.length > 1) {
       setCurrentStep('sort');
       return;
     }
 
-    // Or submit if there's only one application approved
-    if (approvedApplications.length === 1) {
-      await handlePostVotes(approvedApplications);
+    // Or submit if there's only one project approved
+    if (approvedProjects.length === 1) {
+      await handlePostVotes(approvedProjects);
     }
 
-    // Or abort with an error if no application was approved
-    if (approvedApplications.length === 0) {
-      throw new Error('Can\'t submit form with no approved applications');
+    // Or abort with an error if no project was approved
+    if (approvedProjects.length === 0) {
+      throw new Error('Can\'t submit form with no approved projects');
     }
   };
 
-  const handlePostVotes = async (sortedApplications) => {
+  const handlePostVotes = async (sortedProjects) => {
     let success = false;
     setSubmitIsLoading(true);
 
-    // Only submit application IDs
-    let applicationIds = [];
-    sortedApplications.forEach(application => {
-      applicationIds.push(application.id);
+    // Only submit project IDs
+    let projectIds = [];
+    sortedProjects.forEach(project => {
+      projectIds.push(project.id);
     });
 
     try {
       success = await API.postVotes({
-        applications: applicationIds
+        projects: projectIds
       });
     } catch(error) {
       console.error('Error:', error);
@@ -105,23 +105,23 @@ const App = () => {
     }
   };
 
-  // Fetch applications and set their vote property to null (no vote cast)
+  // Fetch projects and set their vote property to null (no vote cast)
   useEffect(async () => {
-    let fetchedApplications = await API.getApplications(setErrorMsg);
-    if (fetchedApplications === null) {
+    let fetchedProjects = await API.getProjects(setErrorMsg);
+    if (fetchedProjects === null) {
       if (!errorMsg) {
         setErrorMsg(
-          'Sorry, but there was an error loading the current applications. '
+          'Sorry, but there was an error loading the current projects. '
           + 'Please try again or contact an administrator for assistance.'
         );
       }
     } else {
-      fetchedApplications = fetchedApplications.map((application) => {
-        application.vote = null;
-        application.rank = null;
-        return application;
+      fetchedProjects = fetchedProjects.map((project) => {
+        project.vote = null;
+        project.rank = null;
+        return project;
       });
-      setApplications(fetchedApplications);
+      setProjects(fetchedProjects);
     }
   }, []);
 
@@ -132,10 +132,10 @@ const App = () => {
    */
   useBeforeunload((event) => {
     const warnIfNavigatingAway =
-      (applications && applications.length > 0)
+      (projects && projects.length > 0)
       && hasInteracted
       && !(currentStep === 'submit')
-      && !(allVotesAreCast && approvedApplications.length === 0);
+      && !(allVotesAreCast && approvedProjects.length === 0);
     if (warnIfNavigatingAway) {
       return 'Are you sure you want to leave before voting?';
     }
@@ -150,18 +150,18 @@ const App = () => {
       }
       {!errorMsg &&
         <>
-          {applications === null &&
+          {projects === null &&
             <Alert flavor="loading">
-              Loading applications...
+              Loading projects...
             </Alert>
           }
-          {applications !== null &&
+          {projects !== null &&
             <>
               <StepsHeader currentStep={currentStep} />
               {currentStep === 'select' &&
                 <SelectStep
-                  applications={applications}
-                  approvedApplications={approvedApplications}
+                  projects={projects}
+                  approvedProjects={approvedProjects}
                   handleVote={handleVote}
                   handleSubmitSelectStep={handleSubmitSelectStep}
                   allVotesAreCast={allVotesAreCast}
@@ -170,10 +170,10 @@ const App = () => {
               }
               {currentStep === 'sort' &&
                 <SortStep
-                  applications={approvedApplications}
+                  projects={approvedProjects}
                   handleGoToSelect={handleGoToSelect}
                   handlePostVotes={handlePostVotes}
-                  setSortedApplications={setSortedApplications}
+                  setSortedProjects={setSortedProjects}
                   submitIsLoading={submitIsLoading}
                 />
               }

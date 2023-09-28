@@ -8,11 +8,11 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Controller\Admin\ApplicationsController Test Case
+ * App\Controller\Admin\ProjectsController Test Case
  *
- * @uses \App\Controller\Admin\ApplicationsController
+ * @uses \App\Controller\Admin\ProjectsController
  */
-class ApplicationsControllerTest extends TestCase
+class ProjectsControllerTest extends TestCase
 {
     use IntegrationTestTrait;
 
@@ -22,7 +22,7 @@ class ApplicationsControllerTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.Applications',
+        'app.Projects',
         'app.Users',
         'app.Categories',
         'app.FundingCycles',
@@ -49,7 +49,7 @@ class ApplicationsControllerTest extends TestCase
                 ],
             ],
         ]);
-        $this->get('/admin/applications');
+        $this->get('/admin/projects');
         $this->assertResponseSuccess();
     }
 
@@ -69,7 +69,7 @@ class ApplicationsControllerTest extends TestCase
                 ],
             ],
         ]);
-        $this->get('/admin/applications/review/1');
+        $this->get('/admin/projects/review/1');
         $this->assertResponseSuccess();
     }
 
@@ -92,9 +92,9 @@ class ApplicationsControllerTest extends TestCase
         $data = [
             'status_id' => 7,
         ];
-        $this->post('/admin/applications/set-status/1', $data);
-        $applicationsTable = TableRegistry::getTableLocator()->get('applications');
-        $query = $applicationsTable->find()->where(['id' => 1, 'status_id' => 7]);
+        $this->post('/admin/projects/set-status/1', $data);
+        $projectsTable = TableRegistry::getTableLocator()->get('projects');
+        $query = $projectsTable->find()->where(['id' => 1, 'status_id' => 7]);
         $this->assertEquals(1, $query->count());
     }
 }

@@ -1,6 +1,6 @@
 import Alert from "./Alert";
 
-const AlertNoApplications = () => {
+const AlertNoProjects = () => {
   return (
     <Alert flavor="info">
       Sorry, there are no applications available to vote on at the moment.
@@ -9,4 +9,4 @@ const AlertNoApplications = () => {
   )
 };
 
-export default AlertNoApplications;
+export default AlertNoProjects;

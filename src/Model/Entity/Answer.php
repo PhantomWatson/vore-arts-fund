@@ -9,13 +9,13 @@ use Cake\ORM\Entity;
  * Answer Entity
  *
  * @property int $id
- * @property int $application_id
+ * @property int $project_id
  * @property int $question_id
  * @property string $answer
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
- * @property \App\Model\Entity\Application $application
+ * @property \App\Model\Entity\Project $project
  * @property \App\Model\Entity\Question $question
  */
 class Answer extends Entity
@@ -30,12 +30,12 @@ class Answer extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
-        'application_id' => true,
+        'project_id' => true,
         'question_id' => true,
         'answer' => true,
         'created' => true,
         'modified' => true,
-        'application' => true,
+        'project' => true,
         'question' => true,
     ];
 }
