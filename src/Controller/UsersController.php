@@ -106,16 +106,14 @@ class UsersController extends AppController
             Configure::read('recaptcha.secretKey'),
             new CurlPost(),
         );
-        $hostname = gethostname() ?: 'voreartsfund.org';
-        $resp = $recaptcha->setExpectedHostname($hostname)
-            ->verify($captchaResponse, $this->getRequest()->clientIp());
+
+        $resp = $recaptcha->verify($captchaResponse, $this->getRequest()->clientIp());
         if ($resp->isSuccess()) {
             return true;
         }
 
         $this->Flash->error(
             "Your CAPTCHA response could not be verified. $this->errorTryAgainContactMsg Details: "
-            . "hostname: $hostname, "
             . implode(', ', $resp->getErrorCodes()),
             ['escape' => false]
         );
