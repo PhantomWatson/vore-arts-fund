@@ -101,7 +101,7 @@ class UsersController extends AppController
     {
         $captchaResponse = $_POST['g-recaptcha-response'];
         $recaptcha = new \ReCaptcha\ReCaptcha(Configure::read('recaptcha.secretKey'));
-        $this->Flash->info('Hostname for reCAPTCHA: ' . gethostname() ?: 'voreartsfund.org');
+        $this->Flash->set('Hostname for reCAPTCHA: ' . gethostname() ?: 'voreartsfund.org');
         $resp = $recaptcha->setExpectedHostname(gethostname() ?: 'voreartsfund.org')
             ->verify($captchaResponse, $this->getRequest()->clientIp());
         if ($resp->isSuccess()) {
