@@ -1373,3 +1373,7 @@ footer {
 .vr-notice-failure {
     @extend .alert, .alert-warning, .mb-3;
 }
+
+.g-recaptcha {
+    margin-bottom: 2em;
+}
