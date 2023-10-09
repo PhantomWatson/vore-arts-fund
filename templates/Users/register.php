@@ -4,6 +4,10 @@
  * @var \App\Model\Entity\User $user
  * @var string $title
  */
+$this->append(
+    'script',
+    '<script src="https://www.google.com/recaptcha/api.js" async defer></script>',
+);
 ?>
 
 <div class="users form" id="register-form">
@@ -28,7 +32,8 @@
         <?= $this->Form->control('email', ['type' => 'email']) ?>
         <?= $this->Form->control('password') ?>
         <?= $this->element('phone_input') ?>
+        <div class="g-recaptcha" data-sitekey="<?= \Cake\Core\Configure::read('recaptcha.siteKey') ?>"></div>
+        <?= $this->Form->submit('Register', ['class' => 'btn btn-primary']) ?>
     </fieldset>
-    <?= $this->Form->submit('Register', ['class' => 'btn btn-primary']) ?>
     <?= $this->Form->end() ?>
 </div>

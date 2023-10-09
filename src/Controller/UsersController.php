@@ -93,6 +93,29 @@ class UsersController extends AppController
     }
 
     /**
+     * Checks the reCAPTCHA response, returns a boolean, and displays an error message on failure
+     *
+     * @return bool
+     */
+    public function recaptchaResponseIsValid(): bool
+    {
+        $captchaResponse = $_POST['g-recaptcha-response'];
+        $recaptcha = new \ReCaptcha\ReCaptcha(Configure::read('recaptcha.secretKey'));
+        $resp = $recaptcha->setExpectedHostname(gethostname() ?: 'voreartsfund.org')
+            ->verify($captchaResponse, $this->getRequest()->clientIp());
+        if ($resp->isSuccess()) {
+            return true;
+        }
+
+        $this->Flash->error(
+            "Your CAPTCHA response could not be verified. $this->errorTryAgainContactMsg Details: "
+            . implode(', ', $resp->getErrorCodes()),
+            ['escape' => false]
+        );
+        return false;
+    }
+
+    /**
      * User registration page
      *
      * @return \Cake\Http\Response|null
@@ -102,8 +125,9 @@ class UsersController extends AppController
     {
         $user = $this->Users->newEmptyEntity();
 
-        if ($this->request->is('post')) {
+        if ($this->request->is('post') && $this->recaptchaResponseIsValid()) {
             $data = $this->request->getData();
+
             $data['phone'] = User::cleanPhone($data['phone']);
             $user = $this->Users->patchEntity($user, $data);
 
