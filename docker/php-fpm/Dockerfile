@@ -45,8 +45,6 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
 
 RUN apt-get install nodejs -y
 
-RUN npm install -g grunt
-
 WORKDIR "/var/www/html/webroot"
 
 RUN usermod -u 1000 ${WEB_USER} \
