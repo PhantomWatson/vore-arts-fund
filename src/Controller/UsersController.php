@@ -102,7 +102,7 @@ class UsersController extends AppController
         $captchaResponse = $_POST['g-recaptcha-response'];
         $recaptcha = new \ReCaptcha\ReCaptcha(Configure::read('recaptcha.secretKey'));
         $hostname = gethostname() ?: 'voreartsfund.org';
-        $resp = $recaptcha->setExpectedHostname()
+        $resp = $recaptcha->setExpectedHostname($hostname)
             ->verify($captchaResponse, $this->getRequest()->clientIp());
         if ($resp->isSuccess()) {
             return true;
