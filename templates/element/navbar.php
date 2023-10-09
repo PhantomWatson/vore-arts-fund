@@ -111,6 +111,17 @@
                                         ['class' => 'dropdown-item']
                                     ) ?>
                                 </li>
+                                <li>
+                                    <?= $this->Html->link(
+                                        'Transactions',
+                                        [
+                                            'prefix' => 'Admin',
+                                            'controller' => 'Transactions',
+                                            'action' => 'index',
+                                        ],
+                                        ['class' => 'dropdown-item']
+                                    ) ?>
+                                </li>
                             </ul>
                         </li>
                     <?php endif; ?>

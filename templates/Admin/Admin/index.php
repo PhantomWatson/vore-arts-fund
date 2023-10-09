@@ -38,3 +38,14 @@
         ['class' => 'btn btn-secondary']
     ) ?>
 </p>
+<p>
+    <?= $this->Html->link(
+        'Transactions',
+        [
+            'prefix' => 'Admin',
+            'controller' => 'Transactions',
+            'action' => 'index',
+        ],
+        ['class' => 'btn btn-secondary']
+    ) ?>
+</p>
