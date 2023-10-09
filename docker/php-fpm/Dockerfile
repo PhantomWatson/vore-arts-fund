@@ -1,4 +1,4 @@
-FROM php:8.0-fpm
+FROM php:8.1-fpm
 
 ARG WEB_USER
 ARG WEB_GROUP
@@ -43,7 +43,7 @@ RUN pecl install xdebug
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
 
-RUN apt-get install nodejs
+RUN apt-get install nodejs -y
 
 RUN npm install -g grunt
 
