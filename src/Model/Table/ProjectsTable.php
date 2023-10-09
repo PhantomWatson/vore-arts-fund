@@ -267,4 +267,21 @@ class ProjectsTable extends Table
             ])
             ->orderAsc('Projects.title');
     }
+
+    /**
+     * Returns projects that have not yet been finalized (finished giving reports and presumably have finished paying
+     * their loans)
+     *
+     * @param Query $query
+     * @return Query
+     */
+    public function findNotFinalized(Query $query)
+    {
+        return $query
+            ->notMatching('Reports', function (Query $q) {
+                return $q->where([
+                    'Reports.is_final' => true
+                ]);
+            });
+    }
 }

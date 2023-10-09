@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
+use App\Model\Entity\Project;
 use Cake\Event\EventInterface;
+use Cake\ORM\Query;
+use Cake\Utility\Hash;
 
 /**
  * Transactions Controller
@@ -69,8 +72,30 @@ class TransactionsController extends AdminController
             }
             $this->Flash->error(__('The transaction could not be saved. Please, try again.'));
         }
-        $projects = $this->Transactions->Projects->find('list', ['limit' => 200])->all();
-        $this->set(compact('transaction', 'projects'));
+        $projects = $this->Transactions->Projects
+            ->find()
+            ->find('notFinalized')
+            ->select([
+                'Projects.id',
+                'Projects.title'
+            ])
+            ->contain([
+                'Users' => function (Query $query) {
+                    return $query->select(['Users.id', 'Users.name']);
+                }
+            ])
+            ->orderAsc('title')
+            ->toArray();
+        $projects = Hash::combine($projects, '{n}.id', '{n}');
+        $prefixedProjects = array_map(function (Project $project) {
+            return $project->user->name . ': ' . $project->title;
+        }, $projects);
+        asort($prefixedProjects);
+
+        $this->set([
+            'transaction' => $transaction,
+            'projects' => $prefixedProjects,
+        ]);
     }
 
     /**
