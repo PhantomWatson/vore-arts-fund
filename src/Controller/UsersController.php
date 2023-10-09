@@ -13,6 +13,8 @@ use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
 use Cake\Mailer\Mailer;
 use Cake\Routing\Router;
+use ReCaptcha\ReCaptcha;
+use ReCaptcha\RequestMethod\CurlPost;
 use Twilio\Rest\Client;
 
 /**
@@ -100,7 +102,10 @@ class UsersController extends AppController
     public function recaptchaResponseIsValid(): bool
     {
         $captchaResponse = $_POST['g-recaptcha-response'];
-        $recaptcha = new \ReCaptcha\ReCaptcha(Configure::read('recaptcha.secretKey'));
+        $recaptcha = new ReCaptcha(
+            Configure::read('recaptcha.secretKey'),
+            new CurlPost(),
+        );
         $hostname = gethostname() ?: 'voreartsfund.org';
         $resp = $recaptcha->setExpectedHostname($hostname)
             ->verify($captchaResponse, $this->getRequest()->clientIp());
