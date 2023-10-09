@@ -126,8 +126,9 @@ class UsersController extends AppController
             }
 
             $this->Flash->error(
-                'There was an error registering your account. ' .
-                'Look for details below, and contact us if you need assistance.'
+                'There was an error registering your account. '
+                . 'Look for details below, and <a href="/contact">contact us</a if you need assistance.',
+                ['escape' => false]
             );
         }
 
@@ -155,9 +156,9 @@ class UsersController extends AppController
         $phone = User::cleanPhone($phone);
         $errorMsg = 'A verification code could not be sent to the provided phone number. ' .
             'In your account settings, please check your phone number and make sure it\'s correct, ' .
-            'then request a verification code.';
+            'then request a verification code. ' . $this->errorContactMsg;
         if (!$phone) {
-            $this->Flash->error($errorMsg);
+            $this->Flash->error($errorMsg, ['escape' => false]);
             return false;
         }
 
@@ -176,7 +177,10 @@ class UsersController extends AppController
                     'sms',
                 );
         } catch (\Exception $e) {
-            $this->Flash->error($errorMsg . ' Details: ' . $e->getMessage());
+            $this->Flash->error(
+                $errorMsg . ' Details: ' . $e->getMessage(),
+                ['escape' => false]
+            );
             return false;
         }
 
@@ -295,8 +299,8 @@ class UsersController extends AppController
                 return $this->redirect(['action' => 'login']);
             }
             $this->Flash->error(
-                'There was an error updating your password. ' .
-                    'Please check for error messages, and contact an administrator if you need assistance.'
+                'There was an error updating your password. ' . $this->errorTryAgainContactMsg,
+                ['escape' => false],
             );
         }
 
@@ -492,8 +496,10 @@ class UsersController extends AppController
                 $passwordIsCorrect = (new DefaultPasswordHasher())->check($currentPassword, $user->password);
                 if (!$passwordIsCorrect) {
                     $this->Flash->error(
-                        'Unable to update account information. ' .
-                        'Please make sure that your current password has been entered and is correct'
+                        'Unable to update account information. '
+                        . 'Please make sure that your current password has been entered and is correct, and '
+                        . '<a href="/contact">contact us</a> if you need assistance.',
+                        ['escape' => false]
                     );
 
                     return null;
@@ -515,8 +521,8 @@ class UsersController extends AppController
                 $this->Flash->success('Changes saved');
             } else {
                 $this->Flash->error(
-                    'There was an error saving those changes. ' .
-                        'Please check for any error messages, and contact an administrator if you need assistance.'
+                    'There was an error saving those changes. ' . $this->errorTryAgainContactMsg,
+                    ['escape' => false]
                 );
             }
         }

@@ -36,7 +36,7 @@ class ProjectsController extends BaseProjectsController
     {
         $projectId = $this->request->getParam('id');
         if (!$this->isOwnProject($projectId)) {
-            $this->Flash->error('Sorry, but that project is not available to view');
+            $this->Flash->error('Sorry, but that project is not available to view.');
             return $this->redirect('/');
         }
 
@@ -71,7 +71,7 @@ class ProjectsController extends BaseProjectsController
         // Confirm project exists
         $projectId = $this->request->getParam('id');
         if (!$this->isOwnProject($projectId)) {
-            $this->Flash->error('That project was not found');
+            $this->Flash->error('That project was not found.');
             return $this->redirect('/');
         }
 
@@ -79,7 +79,10 @@ class ProjectsController extends BaseProjectsController
         /** @var Project $project */
         $project = $this->Projects->getForForm($projectId);
         if (!$project->isUpdatable()) {
-            $this->Flash->error('That application cannot currently be updated.');
+            $this->Flash->error(
+                'That application cannot currently be updated. ' . $this->errorContactMsg,
+                ['escape' => false]
+            );
             return $this->redirect('/');
         }
 
@@ -125,7 +128,10 @@ class ProjectsController extends BaseProjectsController
         if ($this->request->is(['delete', 'post']) && $this->Projects->delete($project)) {
             $this->Flash->success('Application has been deleted');
         } else {
-            $this->Flash->error('There was an error deleting that application');
+            $this->Flash->error(
+                'There was an error deleting that application. ' . $this->errorTryAgainContactMsg,
+                ['escape' => false]
+            );
         }
         return $this->redirect($this->referer());
     }

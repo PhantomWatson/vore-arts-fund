@@ -110,7 +110,11 @@ class ReportsController extends AppController
 
                 return $this->redirect($back);
             }
-            $this->Flash->error(__('The report could not be submitted. Please check for errors and try again.'));
+            $this->Flash->error(
+                'The report could not be submitted. Please check for errors and try again, and '
+                . '<a href="/contact">contact us</a> if you need assistance.',
+                ['escape' => false]
+            );
         }
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
         $project = $projectsTable->get($projectId);
@@ -141,7 +145,10 @@ class ReportsController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The report could not be saved. Please, try again.'));
+            $this->Flash->error(
+                'The report could not be saved. ' . $this->errorTryAgainContactMsg,
+                ['escape' => false]
+            );
         }
         $users = $this->Reports->Users->find('list', ['limit' => 200])->all();
         $projects = $this->Reports->Projects->find('list', ['limit' => 200])->all();
@@ -173,7 +180,10 @@ class ReportsController extends AppController
         if ($this->Reports->delete($report)) {
             $this->Flash->success(__('The report has been deleted.'));
         } else {
-            $this->Flash->error(__('The report could not be deleted. Please, try again.'));
+            $this->Flash->error(
+                'The report could not be deleted. ' . $this->errorTryAgainContactMsg,
+                ['escape' => false]
+            );
         }
 
         return $this->redirect(['action' => 'index']);

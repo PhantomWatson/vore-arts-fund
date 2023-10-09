@@ -78,9 +78,9 @@ class ProjectsController extends AppController
                 'action'     => 'index',
             ]);
             $this->Flash->error(
-                'Sorry, but applications are not being accepted at the moment. ' .
-                "Please check back later, or visit the <a href=\"$url\">Funding Cycles</a> page for information " .
-                'about upcoming application periods.',
+                'Sorry, but applications are not being accepted at the moment. '
+                . "Please check back later, or visit the <a href=\"$url\">Funding Cycles</a> page for information "
+                . 'about upcoming application periods.',
                 ['escape' => false]
             );
             return $this->redirect('/');
@@ -139,8 +139,9 @@ class ProjectsController extends AppController
         $usersTable->patchEntity($user, $data);
         if (!$usersTable->save($user)) {
             $this->Flash->error(
-                'There was an error saving your address. Please correct any errors, try again, ' .
-                'and contact us if you need assistance.'
+                'There was an error saving your address. Please correct any errors, try again, '
+                . 'and <a href="/contact">contact us</a> if you need assistance.',
+                ['escape' => false]
             );
             return false;
         }
@@ -172,7 +173,10 @@ class ProjectsController extends AppController
         if ($this->Projects->save($project)) {
             $this->Flash->success("Your application has been $verb.");
         } else {
-            $this->Flash->error("Your application could not be $verb.");
+            $this->Flash->error(
+                "Your application could not be $verb. " . $this->errorTryAgainContactMsg,
+                ['escape' => false]
+            );
             $hasErrors = true;
         }
 
@@ -195,7 +199,9 @@ class ProjectsController extends AppController
             $image->filename = $imageFilenames->full;
             if (!$this->Images->save($image)) {
                 $this->Flash->error(
-                    'There was an error saving an image. Details: Record could not be added to database'
+                    'There was an error saving an image. Details: Record could not be added to database. '
+                    . $this->errorTryAgainContactMsg,
+                    ['escape' => false]
                 );
             }
         }
@@ -245,7 +251,9 @@ class ProjectsController extends AppController
             $rawImage->moveTo($path);
         } catch (Exception $e) {
             $this->Flash->error(
-                'Unfortunately, there was an error uploading that image. Details: ' . $e->getMessage()
+                'Unfortunately, there was an error uploading that image. Details: ' . $e->getMessage() . ' '
+                . $this->errorTryAgainContactMsg,
+                ['escape' => false]
             );
             return null;
         }

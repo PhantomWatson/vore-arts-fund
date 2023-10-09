@@ -25,6 +25,10 @@ class AppController extends Controller
     protected array $breadcrumbs = [];
     protected string $currentBreadcrumb = '';
 
+    protected string $errorContactMsg = 'Please <a href="/contact">contact us</a> if you need assistance.';
+    protected string $errorTryAgainContactMsg =
+        'Please try again, and <a href="/contact">contact us</a> if you need assistance.';
+
     /**
      * Initialization hook method.
      *
