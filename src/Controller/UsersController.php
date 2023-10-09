@@ -101,7 +101,8 @@ class UsersController extends AppController
     {
         $captchaResponse = $_POST['g-recaptcha-response'];
         $recaptcha = new \ReCaptcha\ReCaptcha(Configure::read('recaptcha.secretKey'));
-        $resp = $recaptcha->setExpectedHostname(gethostname() ?: 'voreartsfund.org')
+        $hostname = gethostname() ?: 'voreartsfund.org';
+        $resp = $recaptcha->setExpectedHostname()
             ->verify($captchaResponse, $this->getRequest()->clientIp());
         if ($resp->isSuccess()) {
             return true;
@@ -109,6 +110,7 @@ class UsersController extends AppController
 
         $this->Flash->error(
             "Your CAPTCHA response could not be verified. $this->errorTryAgainContactMsg Details: "
+            . "hostname: $hostname, "
             . implode(', ', $resp->getErrorCodes()),
             ['escape' => false]
         );
