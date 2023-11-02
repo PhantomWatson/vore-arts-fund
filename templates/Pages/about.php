@@ -115,14 +115,6 @@
                             Natalie Phillips
                         </dd>
                     </div>
-                    <div>
-                        <dt>
-                            Treasurer
-                        </dt>
-                        <dd>
-                            Janet Shindler
-                        </dd>
-                    </div>
                 </dl>
             </section>
         </div>
