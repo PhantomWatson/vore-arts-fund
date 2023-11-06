@@ -12632,6 +12632,10 @@ body {
   vertical-align: top;
 }
 
+.project-overview-table {
+  width: auto;
+}
+
 #review-notes {
   margin-top: 1em;
 }

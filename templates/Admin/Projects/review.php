@@ -14,61 +14,67 @@ function getActionName($statusId, array $statusActions): string
 {
     return array_search($statusId, $statusActions);
 }
+
+// TODO: Add notes count to button
+// TODO: Add transactions tab
 ?>
 
-<div class="row">
-    <div class="col-md-6">
-        <?= $this->element('../Projects/view') ?>
-        <table class="table">
+<div class="col-md-6 mb-3 card" id="review-action-column">
+    <div class="card-body">
+        <section class="mb-0">
+            <div id="root"></div>
+        </section>
+    </div>
+</div>
+
+<ul class="nav nav-tabs" id="review-tabs" role="tablist">
+    <?php foreach (['overview', 'description', 'notes'] as $i => $tab): ?>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link <?= !$i ? 'active' : '' ?>" id="<?= $tab ?>-tab" data-bs-toggle="tab"
+                    data-bs-target="#<?= $tab ?>-section" type="button" role="tab" aria-controls="<?= $tab ?>-section"
+                    aria-selected="<?= !$i ? 'true' : 'false' ?>">
+                <?= ucwords($tab) ?>
+                <?php if ($tab == 'notes' && !$notes->isEmpty()): ?>
+                    (<?= number_format(count($notes)) ?>)
+                <?php endif; ?>
+            </button>
+        </li>
+    <?php endforeach; ?>
+</ul>
+
+<div class="tab-content mt-3">
+    <div class="tab-pane show active" id="overview-section" role="tabpanel" aria-labelledby="overview-tab">
+        <table class="table project-overview-table">
             <tbody>
-                <tr>
-                    <th>
-                        Accept partial payout?
-                    </th>
-                    <td>
-                        <?= $project->accept_partial_payout ? 'Yes' : 'No' ?>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Make check out to
-                    </th>
-                    <td>
-                        <?= $project->check_name ?: '<span class="no-answer">No answer</span>' ?>
-                    </td>
-                </tr>
+                <?= $this->element('Projects/overview_admin') ?>
             </tbody>
         </table>
     </div>
-    <div class="col-md-6 card" id="review-action-column">
-        <div class="card-body">
-            <section>
-                <h3>
-                    Status: <?= $project->status_name ?>
-                </h3>
-                <div id="root"></div>
-            </section>
-
-            <?php if (!$notes->isEmpty()): ?>
-                <section>
-                    <h3>
-                        Notes
-                    </h3>
-                    <div id="review-notes">
-                        <?php foreach ($notes as $note): ?>
-                            <section>
-                                <p>
-                                    <?= nl2br($note->body) ?>
-                                </p>
-                                <p class="date">
-                                    <?= $note->user->name ?> - <?= $note->created->format('F j, Y') ?>
-                                </p>
-                            </section>
-                        <?php endforeach; ?>
-                    </div>
-                </section>
-            <?php endif; ?>
-        </div>
+    <div class="tab-pane" id="description-section" role="tabpanel" aria-labelledby="description-tab">
+        <?= $this->element('Projects/description') ?>
+    </div>
+    <div class="tab-pane" id="notes-section" role="tabpanel" aria-labelledby="notes-tab">
+        <section>
+            <h3>
+                Notes
+            </h3>
+            <div id="review-notes">
+                <?php if ($notes->isEmpty()): ?>
+                    No notes have been added for this project yet.
+                <?php else: ?>
+                    <?php foreach ($notes as $note): ?>
+                        <section>
+                            <p>
+                                <?= nl2br($note->body) ?>
+                            </p>
+                            <p class="date">
+                                <?= $note->user->name ?> - <?= $note->created->format('F j, Y') ?>
+                            </p>
+                        </section>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </section>
     </div>
 </div>
 
