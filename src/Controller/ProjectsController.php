@@ -281,6 +281,9 @@ class ProjectsController extends AppController
             return $this->redirect('/');
         }
 
+        $this->addControllerBreadcrumb('Projects');
+        $this->addBreadcrumb($project->title, []);
+
         return $this->_view();
     }
 
@@ -332,5 +335,18 @@ class ProjectsController extends AppController
             $data['answers'][$i]['project_id'] = $projectId;
         }
         return $data;
+    }
+
+    public function index()
+    {
+        $this->addControllerBreadcrumb('Projects');
+        $projectsQuery = $this->Projects
+            ->find('acceptedOrGreater')
+            ->contain(['FundingCycles', 'Categories'])
+            ->orderDesc('Projects.created');
+        $this->title('Projects');
+        $this->set([
+            'projects' => $this->paginate($projectsQuery)
+        ]);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\Project;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Query;
@@ -283,5 +284,28 @@ class ProjectsTable extends Table
                     'Reports.is_final' => true
                 ]);
             });
+    }
+
+    /**
+     * Modifies a query to return projects that are either accepted and awaiting voting or have been part of voting
+     *
+     * @param Query $query
+     * @return Query
+     */
+    public function findAcceptedOrGreater(Query $query): Query
+    {
+        return $query
+            ->where([
+                function (QueryExpression $exp) {
+                    return $exp->in(
+                        'Projects.status_id',
+                        [
+                            Project::STATUS_ACCEPTED,
+                            Project::STATUS_AWARDED,
+                            Project::STATUS_NOT_AWARDED,
+                        ]
+                    );
+                }
+            ]);
     }
 }
