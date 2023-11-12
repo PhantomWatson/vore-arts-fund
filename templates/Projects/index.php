@@ -60,7 +60,7 @@ use App\Model\Entity\Project;
                             'FundingCycles/link',
                             [
                                 'fundingCycle' => $project->funding_cycle,
-                                'append' => null
+                                'append' => '',
                             ]
                         ) ?>
                     </td>
