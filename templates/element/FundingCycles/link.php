@@ -1,10 +1,11 @@
 <?php
 /**
  * @var \App\Model\Entity\FundingCycle $fundingCycle
+ * @var ?string $append
  */
 ?>
 <?= $this->Html->link(
-    $fundingCycle->name . ' funding cycle',
+    $fundingCycle->name . ($append ?? ' funding cycle'),
     [
         'prefix' => false,
         'controller' => 'FundingCycles',
