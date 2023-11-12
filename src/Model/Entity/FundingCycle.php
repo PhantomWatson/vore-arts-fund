@@ -163,4 +163,26 @@ class FundingCycle extends Entity
 
         return $retval;
     }
+
+    /**
+     * Returns TRUE if this funding cycle is currently in its voting period
+     *
+     * @return bool
+     */
+    public function isCurrentlyVoting(): bool
+    {
+        $now = new \DateTime();
+        return $this->vote_begin <= $now && $this->vote_end >= $now;
+    }
+
+    /**
+     * Returns TRUE if voting has finished
+     *
+     * @return bool
+     */
+    public function votingHasPassed(): bool
+    {
+        $now = new \DateTime();
+        return $this->vote_end <= $now;
+    }
 }

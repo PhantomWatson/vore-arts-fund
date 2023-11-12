@@ -49,11 +49,27 @@ use App\Model\Entity\Project;
                         (<?= $project->category->name ?>)
                     </td>
                     <td>
-                        <?= match($project->status_id) {
-                            Project::STATUS_ACCEPTED => 'Accepted and awaiting voting',
-                            Project::STATUS_AWARDED => 'Awarded',
-                            Project::STATUS_NOT_AWARDED => 'Not awarded',
-                        } ?>
+                        <?php
+                            switch($project->status_id) {
+                                case Project::STATUS_ACCEPTED:
+                                    if ($project->funding_cycle->isCurrentlyVoting()) {
+                                        echo $this->Html->link(
+                                            'Voting currently underway',
+                                            ['controller' => 'Votes', 'action' => 'index', 'prefix' => false],
+                                        );
+                                    } elseif ($project->funding_cycle->votingHasPassed()) {
+                                        echo 'Awaiting funding decision';
+                                    } else {
+                                        echo 'Awaiting voting';
+                                    }
+                                    break;
+                                case Project::STATUS_AWARDED:
+                                    echo 'Funding awarded';
+                                    break;
+                                case Project::STATUS_NOT_AWARDED:
+                                    echo 'Funding not awarded';
+                            }
+                        ?>
                     </td>
                     <td>
                         <?= $this->element(
