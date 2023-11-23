@@ -79,9 +79,7 @@ class TransactionsTable extends Table
             ->allowEmptyString('project_id');
 
         $validator
-            ->scalar('meta')
-            ->requirePresence('meta', 'create')
-            ->notEmptyString('meta');
+            ->scalar('meta');
 
         return $validator;
     }
