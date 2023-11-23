@@ -59,6 +59,16 @@ $dateFormat = 'MMM d, YYYY';
                         </td>
                         <td>
                             <?= $this->Html->link(
+                                'Projects',
+                                [
+                                    'prefix' => 'Admin',
+                                    'controller' => 'FundingCycles',
+                                    'action' => 'projects',
+                                    $fundingCycle['id'],
+                                ],
+                                ['class' => 'btn btn-secondary']
+                            ) ?>
+                            <?= $this->Html->link(
                                 'Edit',
                                 [
                                     'prefix' => 'Admin',

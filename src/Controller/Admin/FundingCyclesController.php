@@ -7,6 +7,7 @@ use App\Application;
 use App\Model\Entity\FundingCycle;
 use Cake\Event\EventInterface;
 use Cake\I18n\FrozenTime;
+use Cake\ORM\TableRegistry;
 
 /**
  * FundingCyclesController
@@ -122,5 +123,32 @@ class FundingCyclesController extends AdminController
             'title' => 'Edit Funding Cycle',
         ]);
         $this->viewBuilder()->setTemplate('form');
+    }
+
+    public function projects($fundingCycleId)
+    {
+        $fundingCycle = $this->FundingCycles->get($fundingCycleId);
+        $projectsTable = TableRegistry::getTableLocator()->get('Projects');
+        $projects = $projectsTable
+            ->find()
+            ->where(['Projects.funding_cycle_id' => $fundingCycleId])
+            ->orderDesc('Projects.created')
+            ->all();
+
+        $this->title('Projects');
+        $this->addBreadcrumb(
+            $fundingCycle->name,
+            [
+                'prefix' => 'Admin',
+                'controller' => 'FundingCycles',
+                'action' => 'edit',
+                'id' => $fundingCycleId,
+            ],
+        );
+        $this->addBreadcrumb('Projects', []);
+
+        $this->set([
+            'projects' => $projects
+        ]);
     }
 }
