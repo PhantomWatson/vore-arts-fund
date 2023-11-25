@@ -14,7 +14,7 @@
             <th><?= $this->Paginator->sort('created', 'Date') ?></th>
             <th><?= $this->Paginator->sort('type') ?></th>
             <th><?= $this->Paginator->sort('amount') ?></th>
-            <th><?= $this->Paginator->sort('projects_id', 'Project') ?></th>
+            <th><?= $this->Paginator->sort('project_id', 'Project') ?></th>
             <th class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
@@ -26,10 +26,10 @@
                 <td><?= $transaction->dollar_amount_formatted ?></td>
                 <td>
                     <?=
-                        $transaction->has('projects')
+                        $transaction->has('project')
                             ? $this->Html->link(
-                                $transaction->projects->title,
-                                ['controller' => 'Projects', 'action' => 'view', $transaction->projects->id]
+                                $transaction->project->title,
+                                ['controller' => 'Projects', 'action' => 'view', $transaction->project->id]
                             )
                             : ''
                     ?>

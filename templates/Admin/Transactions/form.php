@@ -34,7 +34,7 @@ $types = \App\Model\Entity\Transaction::getTypes();
     </div>
     <?php
         echo $this->Form->control('amount', ['type' => 'number', 'min' => 0, 'step' => 0.01]);
-        echo $this->Form->control('projects_id', ['options' => $projects, 'empty' => true]);
+        echo $this->Form->control('project_id', ['options' => $projects, 'empty' => true]);
         echo $this->Form->control('meta');
     ?>
 </fieldset>
