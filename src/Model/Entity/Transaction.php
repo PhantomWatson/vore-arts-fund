@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\Http\Exception\BadRequestException;
 use Cake\ORM\Entity;
 
 /**
@@ -13,6 +14,8 @@ use Cake\ORM\Entity;
  * @property int|null $amount Amount in cents
  * @property int|null $project_id Project for loans, loan repayments, or canceled checks
  * @property string $meta Check number, donor name, Stripe meta dump
+ * @property float $dollar_amount
+ * @property string $dollar_amount_formatted
  * @property \Cake\I18n\FrozenTime $created
  *
  * @property \App\Model\Entity\Project $project
@@ -50,5 +53,34 @@ class Transaction extends Entity
             self::TYPE_LOAN => 'Loan',
             self::TYPE_CANCELED_CHECK => 'Canceled check',
         ];
+    }
+
+    /**
+     * @param int $typeId
+     * @return string
+     * @throws BadRequestException
+     */
+    public static function getTypeName(int $typeId): string
+    {
+        $types = static::getTypes();
+        if (isset($types[$typeId])) {
+            return $types[$typeId];
+        }
+        throw new BadRequestException('Unrecognized transaction type: ' . $typeId);
+    }
+
+    /**
+     * Returns amount, but in dollars
+     *
+     * @return float
+     */
+    protected function _getDollarAmount(): float
+    {
+        return $this->amount ? $this->amount / 100 : 0;
+    }
+
+    protected function _getDollarAmountFormatted(): string
+    {
+        return '$' . number_format($this->dollar_amount, 2);
     }
 }

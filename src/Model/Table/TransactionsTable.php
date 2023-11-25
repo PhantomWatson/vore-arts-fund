@@ -71,15 +71,16 @@ class TransactionsTable extends Table
             ->notEmptyString('type');
 
         $validator
-            ->integer('amount')
-            ->allowEmptyString('amount');
+            ->decimal('amount')
+            ->notEmptyString('amount');
 
         $validator
             ->integer('project_id')
             ->allowEmptyString('project_id');
 
         $validator
-            ->scalar('meta');
+            ->scalar('meta')
+            ->allowEmptyString('meta');
 
         return $validator;
     }

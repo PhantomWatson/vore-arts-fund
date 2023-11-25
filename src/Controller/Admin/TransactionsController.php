@@ -64,7 +64,12 @@ class TransactionsController extends AdminController
     {
         $transaction = $this->Transactions->newEmptyEntity();
         if ($this->request->is('post')) {
-            $transaction = $this->Transactions->patchEntity($transaction, $this->request->getData());
+            $data = $this->request->getData();
+
+            // Convert dollars to cents
+            $data['amount'] *= 100;
+
+            $transaction = $this->Transactions->patchEntity($transaction, $data);
             if ($this->Transactions->save($transaction)) {
                 $this->Flash->success(__('The transaction has been saved.'));
 
@@ -72,6 +77,17 @@ class TransactionsController extends AdminController
             }
             $this->Flash->error(__('The transaction could not be saved. Please, try again.'));
         }
+
+
+        $this->title('Add Transaction');
+        $this->set([
+            'transaction' => $transaction,
+        ]);
+        $this->setupForm();
+    }
+
+    private function setupForm(): void
+    {
         $projects = $this->Transactions->Projects
             ->find()
             ->find('notFinalized')
@@ -92,8 +108,8 @@ class TransactionsController extends AdminController
         }, $projects);
         asort($prefixedProjects);
 
+        $this->viewBuilder()->setTemplate('form');
         $this->set([
-            'transaction' => $transaction,
             'projects' => $prefixedProjects,
         ]);
     }
@@ -111,7 +127,12 @@ class TransactionsController extends AdminController
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $transaction = $this->Transactions->patchEntity($transaction, $this->request->getData());
+            $data = $this->request->getData();
+
+            // Convert dollars to cents
+            $data['amount'] *= 100;
+
+            $transaction = $this->Transactions->patchEntity($transaction, $data);
             if ($this->Transactions->save($transaction)) {
                 $this->Flash->success(__('The transaction has been saved.'));
 
@@ -119,7 +140,13 @@ class TransactionsController extends AdminController
             }
             $this->Flash->error(__('The transaction could not be saved. Please, try again.'));
         }
-        $projects = $this->Transactions->Projects->find('list', ['limit' => 200])->all();
-        $this->set(compact('transaction', 'projects'));
+
+        // Convert cents to dollars
+        $transaction->amount /= 100;
+
+        $this->setCurrentBreadcrumb('Update transaction ' . $transaction->id);
+        $this->title('Update Transaction');
+        $this->set(compact('transaction'));
+        $this->setupForm();
     }
 }
