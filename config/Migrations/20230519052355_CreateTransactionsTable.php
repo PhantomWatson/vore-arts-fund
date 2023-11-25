@@ -23,7 +23,7 @@ class CreateTransactionsTable extends AbstractMigration
             ])
             ->addColumn('amount', 'integer', [
                 'default' => null,
-                'limit' => 6,
+                'limit' => 8,
                 'null' => true,
             ])
             ->addColumn('application_id', 'integer', [
