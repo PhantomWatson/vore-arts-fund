@@ -47,7 +47,7 @@ function printJson($data) {
         __('Delete'),
         ['action' => 'delete', $transaction->id],
         ['confirm' => __('Are you sure you want to delete this transaction?'),
-            'class' => 'btn btn-secondary'
+            'class' => 'btn btn-danger'
         ]) ?>
 <?php endif; ?>
 

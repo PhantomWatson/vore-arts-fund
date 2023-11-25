@@ -13,7 +13,7 @@ $types = \App\Model\Entity\Transaction::getTypes();
         ['action' => 'delete', $transaction->id],
         [
             'confirm' => __('Are you sure you want to delete # {0}?', $transaction->id),
-            'class' => 'btn btn-secondary',
+            'class' => 'btn btn-danger',
         ]
     ) ?>
 <?php endif; ?>

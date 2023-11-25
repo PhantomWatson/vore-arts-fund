@@ -36,10 +36,25 @@
                 </td>
 
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $transaction->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $transaction->id]) ?>
+                    <?= $this->Html->link(
+                        'View',
+                        ['action' => 'view', $transaction->id],
+                        ['class' => 'btn btn-sm btn-secondary'],
+                    ) ?>
+                    <?= $this->Html->link(
+                        'Edit',
+                        ['action' => 'edit', $transaction->id],
+                        ['class' => 'btn btn-sm btn-secondary'],
+                    ) ?>
                     <?php if (isset($_GET['delete'])): ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $transaction->id], ['confirm' => __('Are you sure you want to delete that transaction?')]) ?>
+                        <?= $this->Form->postLink(
+                            'Delete',
+                            ['action' => 'delete', $transaction->id],
+                            [
+                                'confirm' => 'Are you sure you want to delete that transaction?',
+                                'class' => 'btn btn-sm btn-danger'
+                            ]
+                        ) ?>
                     <?php endif; ?>
                 </td>
             </tr>
