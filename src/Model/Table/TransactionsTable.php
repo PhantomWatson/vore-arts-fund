@@ -82,6 +82,10 @@ class TransactionsTable extends Table
             ->scalar('meta')
             ->allowEmptyString('meta');
 
+        $validator
+            ->date('date')
+            ->requirePresence('date');
+
         return $validator;
     }
 

@@ -19,6 +19,11 @@ $types = \App\Model\Entity\Transaction::getTypes();
 <?php endif; ?>
 <?= $this->Form->create($transaction) ?>
 <fieldset>
+    <div class="form-group">
+        <?= $this->Form->label('Date') ?>
+        <?= $this->Form->date('date') ?>
+    </div>
+
     <div class="form-group number">
         <?php
             echo $this->Form->label('Type');

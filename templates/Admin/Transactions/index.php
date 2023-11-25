@@ -11,7 +11,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th><?= $this->Paginator->sort('created', 'Date') ?></th>
+            <th><?= $this->Paginator->sort('date', 'Date') ?></th>
             <th><?= $this->Paginator->sort('type') ?></th>
             <th><?= $this->Paginator->sort('amount') ?></th>
             <th><?= $this->Paginator->sort('project_id', 'Project') ?></th>
@@ -21,7 +21,7 @@
     <tbody>
         <?php foreach ($transactions as $transaction): ?>
             <tr>
-                <td><?= h($transaction->created) ?></td>
+                <td><?= $transaction->date?->format('M j, Y') ?></td>
                 <td><?= $transaction->type_name ?></td>
                 <td><?= $transaction->dollar_amount_formatted ?></td>
                 <td>

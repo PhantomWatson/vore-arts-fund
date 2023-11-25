@@ -5,7 +5,10 @@ namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 use App\Model\Entity\Project;
+use Cake\Chronos\Date;
 use Cake\Event\EventInterface;
+use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Query;
 use Cake\Utility\Hash;
 
@@ -33,7 +36,7 @@ class TransactionsController extends AdminController
         $this->title('Transactions');
         $this->paginate = [
             'contain' => ['Projects'],
-            'order' => ['Transactions.created DESC'],
+            'order' => ['Transactions.date DESC'],
         ];
         $transactions = $this->paginate($this->Transactions);
 
@@ -67,6 +70,7 @@ class TransactionsController extends AdminController
     public function add()
     {
         $transaction = $this->Transactions->newEmptyEntity();
+        $transaction->date = new FrozenDate();
         if ($this->request->is('post')) {
             $data = $this->request->getData();
 
@@ -153,5 +157,25 @@ class TransactionsController extends AdminController
         $this->title($title);
         $this->set(compact('transaction'));
         $this->setupForm();
+    }
+
+    /**
+     * Delete method
+     *
+     * @param string|null $id
+     * @return \Cake\Http\Response|null|void Redirects to index
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found
+     */
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $report = $this->Transactions->get($id);
+        if ($this->Transactions->delete($report)) {
+            $this->Flash->success('The transaction has been deleted');
+        } else {
+            $this->Flash->error('The transaction could not be deleted');
+        }
+
+        return $this->redirect(['action' => 'index']);
     }
 }

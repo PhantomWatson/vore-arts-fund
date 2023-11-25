@@ -17,6 +17,7 @@ use Cake\ORM\Entity;
  * @property string $meta Check number, donor name, Stripe meta dump
  * @property float $dollar_amount
  * @property string $dollar_amount_formatted
+ * @property \Cake\I18n\FrozenDate $date
  * @property \Cake\I18n\FrozenTime $created
  *
  * @property \App\Model\Entity\Project $project
@@ -44,6 +45,7 @@ class Transaction extends Entity
         'meta' => true,
         'created' => true,
         'project' => true,
+        'date' => true,
     ];
 
     public static function getTypes()
