@@ -11,30 +11,6 @@ function isValidJson($data) {
     }
     return false;
 }
-
-function printJson($data) {
-    if (is_string($data)) {
-        $data = json_decode($data);
-    }
-    $data = (array)$data;
-
-    echo '<ul>';
-    foreach ($data as $var => $val) {
-        echo '<li>';
-        echo '<strong>' . $var . '</strong>';
-        if (is_string($val)) {
-            if (isValidJson($val)) {
-                printJson($val);
-            } else {
-                echo ': ' . $val;
-            }
-        } else {
-            printJson($val);
-        }
-        echo '</li>';
-    }
-    echo '</ul>';
-}
 ?>
 
 <?= $this->Html->link(
@@ -83,7 +59,7 @@ function printJson($data) {
         </th>
         <td>
             <?php if (isValidJson($transaction->meta)): ?>
-                <?php printJson($transaction->meta) ?>
+                <pre><?= json_encode(json_decode($transaction->meta), JSON_PRETTY_PRINT) ?></pre>
             <?php else: ?>
                 <?= $this->Text->autoParagraph(h($transaction->meta)); ?>
             <?php endif; ?>
