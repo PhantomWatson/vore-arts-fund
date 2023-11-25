@@ -53,6 +53,9 @@ class TransactionsController extends AdminController
             'contain' => ['Projects'],
         ]);
 
+        $title = 'Transaction ' . $transaction->id;
+        $this->title($title);
+        $this->setCurrentBreadcrumb($title);
         $this->set(compact('transaction'));
     }
 
@@ -145,8 +148,9 @@ class TransactionsController extends AdminController
         // Convert cents to dollars
         $transaction->amount /= 100;
 
-        $this->setCurrentBreadcrumb('Update transaction ' . $transaction->id);
-        $this->title('Update Transaction');
+        $title = 'Update transaction ' . $transaction->id;
+        $this->setCurrentBreadcrumb($title);
+        $this->title($title);
         $this->set(compact('transaction'));
         $this->setupForm();
     }

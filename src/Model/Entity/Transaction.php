@@ -11,6 +11,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $type
+ * @property string $type_name
  * @property int|null $amount Amount in cents
  * @property int|null $project_id Project for loans, loan repayments, or canceled checks
  * @property string $meta Check number, donor name, Stripe meta dump
@@ -82,5 +83,10 @@ class Transaction extends Entity
     protected function _getDollarAmountFormatted(): string
     {
         return '$' . number_format($this->dollar_amount, 2);
+    }
+
+    protected function _getTypeName(): string
+    {
+        return Transaction::getTypeName($this->type);
     }
 }

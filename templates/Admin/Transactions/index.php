@@ -22,7 +22,7 @@
         <?php foreach ($transactions as $transaction): ?>
             <tr>
                 <td><?= h($transaction->created) ?></td>
-                <td><?= \App\Model\Entity\Transaction::getTypeName($transaction->type) ?></td>
+                <td><?= $transaction->type_name ?></td>
                 <td><?= $transaction->dollar_amount_formatted ?></td>
                 <td>
                     <?=
