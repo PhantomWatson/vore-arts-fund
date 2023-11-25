@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller\API;
+namespace App\Controller\Api;
 
 use App\Model\Table\FundingCyclesTable;
 use Cake\Event\EventInterface;
