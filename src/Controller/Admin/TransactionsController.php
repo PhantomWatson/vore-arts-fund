@@ -33,6 +33,7 @@ class TransactionsController extends AdminController
         $this->title('Transactions');
         $this->paginate = [
             'contain' => ['Projects'],
+            'order' => ['Transactions.created DESC'],
         ];
         $transactions = $this->paginate($this->Transactions);
 
