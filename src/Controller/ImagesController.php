@@ -5,7 +5,6 @@ namespace App\Controller;
 
 use App\Model\Entity\Image;
 use Cake\Utility\Security;
-use Cake\View\JsonView;
 
 /**
  * Images Controller

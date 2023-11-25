@@ -5,7 +5,6 @@ namespace App\Controller\API;
 
 use App\Model\Entity\Project;
 use App\Model\Entity\FundingCycle;
-use App\Model\Entity\User;
 use App\Model\Entity\Vote;
 use App\Model\Table\FundingCyclesTable;
 use Cake\Event\EventInterface;

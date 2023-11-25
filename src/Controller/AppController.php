@@ -5,9 +5,7 @@ namespace App\Controller;
 
 use App\Model\Entity\User;
 use Cake\Controller\Controller;
-use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventInterface;
-use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\View\JsonView;
 

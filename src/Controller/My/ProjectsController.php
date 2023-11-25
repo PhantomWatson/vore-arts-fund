@@ -7,7 +7,6 @@ use App\Controller\ProjectsController as BaseProjectsController;
 use App\Model\Entity\Project;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
-use Cake\ORM\TableRegistry;
 
 /**
  * ProjectsController

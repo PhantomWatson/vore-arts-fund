@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
-use App\Model\Entity\User;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\ForbiddenException;
 

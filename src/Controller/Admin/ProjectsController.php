@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 
 use App\Event\MailListener;
 use App\Model\Entity\Project;
-use App\Model\Entity\User;
 use Cake\Event\Event;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
