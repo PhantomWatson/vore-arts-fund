@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\Transaction;
+use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -106,7 +107,7 @@ class TransactionsTable extends Table
     /**
      * Saves a payment
      *
-     * Assumes that this is a donation and not a load repayment.
+     * Assumes that this is a donation and not a loan repayment.
      * TODO: Check metadata for project_id and update type and project_id as appropriate
      *
      * @param \Stripe\Charge $charge
@@ -115,6 +116,7 @@ class TransactionsTable extends Table
     public function addPayment(\Stripe\Charge $charge): bool
     {
         $transaction = $this->newEntity([
+            'date' => new FrozenDate(),
             'amount' => $charge->amount_captured,
             'type' => Transaction::TYPE_DONATION,
             'project_id' => null,
