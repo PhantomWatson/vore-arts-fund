@@ -135,14 +135,7 @@
                 <?php else: ?>
                     <li>
                         <?= $this->Html->link(
-                            'Register',
-                            ['controller' => 'Users', 'action' => 'register', 'prefix' => false],
-                            ['class' => 'nav-link']
-                        ) ?>
-                    </li>
-                    <li>
-                        <?= $this->Html->link(
-                            'Login',
+                            'Login / Register',
                             ['controller' => 'Users', 'action' => 'login', 'prefix' => false],
                             ['class' => 'nav-link']
                         ) ?>

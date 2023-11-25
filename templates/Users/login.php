@@ -3,7 +3,18 @@
  * @var \App\View\AppView $this
  */
 ?>
-
+<p>
+    Don't have an account yet?
+    <br />
+    <?= $this->Html->link(
+        'Register an account',
+        [
+            'controller' => 'Users',
+            'action' => 'register',
+        ],
+        ['class' => 'btn btn-primary'],
+    ) ?>
+</p>
 <div class="users form" id="login-form">
     <?= $this->Form->create() ?>
     <fieldset>
@@ -26,15 +37,4 @@
         ['class' => 'btn btn-secondary']
     ) ?>
     <?= $this->Form->end() ?>
-
-    <p>
-        Don't have an account yet?
-        <?= $this->Html->link(
-            'Register an account',
-            [
-                'controller' => 'Users',
-                'action' => 'register',
-            ],
-        ) ?>
-    </p>
 </div>
