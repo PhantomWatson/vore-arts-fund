@@ -33,6 +33,10 @@ function isValidJson($data) {
         <td><?= $transaction->type_name ?></td>
     </tr>
     <tr>
+        <th>Name</th>
+        <td><?= $transaction->name ?: '(anonymous)' ?></td>
+    </tr>
+    <tr>
         <th><?= __('Amount') ?></th>
         <td><?= $transaction->dollar_amount_formatted ?></td>
     </tr>

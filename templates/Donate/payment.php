@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var int $amount
+ * @var string $name
  */
 
 use Cake\Core\Configure;
@@ -13,6 +14,8 @@ $this->Html->script('checkout.js', ['block' => true, 'defer' => true]);
 
 <div id="checkout">
     <p>
+        <strong>Name:</strong> <?= $name ?: '(anonymous)' ?>
+        <br />
         <strong>Donation amount:</strong> $<?= number_format($amount / 100, 2) ?>
         (<?= $this->Html->link(
             'change',
@@ -37,6 +40,7 @@ $this->Html->script('checkout.js', ['block' => true, 'defer' => true]);
 
 <script>
     window.stripeAmount = <?= json_encode($amount) ?>;
+    window.stripeDonorName = <?= json_encode($name ?: null) ?>;
     window.stripeReturnUrl = <?= json_encode(Router::url([
         'prefix' => false,
         'controller' => 'Donate',

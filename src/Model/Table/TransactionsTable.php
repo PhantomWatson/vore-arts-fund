@@ -87,6 +87,11 @@ class TransactionsTable extends Table
             ->date('date')
             ->requirePresence('date');
 
+        $validator
+            ->scalar('name')
+            ->allowEmptyString('name')
+            ->maxLength('name', 100);
+
         return $validator;
     }
 
@@ -121,6 +126,7 @@ class TransactionsTable extends Table
             'type' => Transaction::TYPE_DONATION,
             'project_id' => null,
             'meta' => json_encode($charge),
+            'name' => $charge->metadata['name'],
         ]);
         if ($this->save($transaction)) {
             return true;

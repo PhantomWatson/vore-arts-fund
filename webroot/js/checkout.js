@@ -1,20 +1,25 @@
 const stripe = window.stripe;
 const amount = window.stripeAmount;
+const donorName = window.stripeDonorName;
 
 let elements;
 
-initialize(amount);
+initialize(amount, donorName);
 checkStatus();
 
 const paymentForm = document.getElementById('payment-form');
 paymentForm.addEventListener('submit', handleSubmit);
 
 // Fetches a payment intent and captures the client secret
-async function initialize(amount) {
+async function initialize(amount, donorName) {
   const { result } = await fetch('/api/stripe/create-payment-intent', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ amount }),
+    body: JSON.stringify({
+      amount: amount,
+      description: 'Donation ' + (donorName ? 'from ' + donorName : '(anonymous)'),
+      metadata: {name: donorName}
+    }),
   }).then((r) => r.json());
   console.log(result);
 

@@ -13,6 +13,7 @@
         <tr>
             <th><?= $this->Paginator->sort('date', 'Date') ?></th>
             <th><?= $this->Paginator->sort('type') ?></th>
+            <th><?= $this->Paginator->sort('name') ?></th>
             <th><?= $this->Paginator->sort('amount') ?></th>
             <th><?= $this->Paginator->sort('project_id', 'Project') ?></th>
             <th class="actions"><?= __('Actions') ?></th>
@@ -23,6 +24,7 @@
             <tr>
                 <td><?= $transaction->date?->format('M j, Y') ?></td>
                 <td><?= $transaction->type_name ?></td>
+                <td><?= $transaction->name ?></td>
                 <td><?= $transaction->dollar_amount_formatted ?></td>
                 <td>
                     <?=

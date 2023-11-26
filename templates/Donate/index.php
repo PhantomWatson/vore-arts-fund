@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var \App\Model\Entity\User|null $user
  */
 
 $formAction = \Cake\Routing\Router::url([
@@ -23,8 +24,9 @@ $formAction = \Cake\Routing\Router::url([
                     Make a one-time donation
                 </h1>
                 <?= $this->Form->create(null, ['id' => 'donate-index', 'method' => 'post', 'action' => $formAction]) ?>
+                <?= $this->Form->control('name', ['label' => 'Name (optional)', 'value' => $user?->name]) ?>
                 <div class="row">
-                    <div class="col">
+                    <div class="col form-group">
                         <p class="input-group">
                             <span class="input-group-text">$</span>
                             <input name="amount" type="number" class="form-control" aria-label="Amount to donate" min="1" id="donation-amount" required="required">

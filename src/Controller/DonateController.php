@@ -27,7 +27,8 @@ class DonateController extends AppController
     public function index()
     {
         $title = 'Donate';
-        $this->set(compact('title'));
+        $user = $this->getAuthUser();
+        $this->set(compact('title', 'user'));
     }
 
     public function payment()
@@ -39,8 +40,9 @@ class DonateController extends AppController
         if (!$amount) {
             throw new BadRequestException('No amount provided');
         }
+        $name = trim($request->getData('name'));
         $title = 'Payment info';
-        $this->set(compact('title', 'amount'));
+        $this->set(compact('title', 'amount', 'name'));
     }
 
     public function complete()

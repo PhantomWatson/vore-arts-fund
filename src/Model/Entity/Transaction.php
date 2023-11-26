@@ -12,6 +12,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $type
  * @property string $type_name
+ * @property string $name Name of person who initiated the transaction, such as a donor
  * @property int|null $amount Amount in cents
  * @property int|null $project_id Project for loans, loan repayments, or canceled checks
  * @property string $meta Check number, donor name, Stripe meta dump
@@ -46,6 +47,7 @@ class Transaction extends Entity
         'created' => true,
         'project' => true,
         'date' => true,
+        'name' => true,
     ];
 
     public static function getTypes()
