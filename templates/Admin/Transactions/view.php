@@ -42,7 +42,9 @@ function isValidJson($data) {
     </tr>
     <tr>
         <th><?= __('Created') ?></th>
-        <td><?= h($transaction->created) ?></td>
+        <td>
+            <?= $transaction->created->setTimezone(\App\Application::LOCAL_TIMEZONE) ?>
+        </td>
     </tr>
     <tr>
         <th>Project</th>

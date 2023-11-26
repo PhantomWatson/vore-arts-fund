@@ -57,7 +57,7 @@ $reportWhen = [
                         ) ?>
                     </td>
                     <td>
-                        <?= $project->created->format('F j, Y') ?>
+                        <?= $project->created->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') ?>
                         <br />
                         <?= $this->element('FundingCycles/link', ['fundingCycle' => $project->funding_cycle]) ?>
                     </td>

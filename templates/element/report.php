@@ -14,7 +14,7 @@
         <?= $report->projects->title ?>
     </h2>
     <p class="date">
-        <?= $report->created->format('F j, Y') ?>
+        <?= $report->created->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') ?>
         &nbsp; - &nbsp;
         <?= $this->Html->link(
             'Go to project',

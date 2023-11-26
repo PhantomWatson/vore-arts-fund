@@ -68,7 +68,7 @@ function getActionName($statusId, array $statusActions): string
                                 <?= nl2br($note->body) ?>
                             </p>
                             <p class="date">
-                                <?= $note->user->name ?> - <?= $note->created->format('F j, Y') ?>
+                                <?= $note->user->name ?> - <?= $note->created->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') ?>
                             </p>
                         </section>
                     <?php endforeach; ?>

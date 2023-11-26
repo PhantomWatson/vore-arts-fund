@@ -22,7 +22,7 @@
     <tbody>
         <?php foreach ($transactions as $transaction): ?>
             <tr>
-                <td><?= $transaction->date?->format('M j, Y') ?></td>
+                <td><?= $transaction->date?->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('M j, Y') ?></td>
                 <td><?= $transaction->type_name ?></td>
                 <td><?= $transaction->name ?></td>
                 <td><?= $transaction->dollar_amount_formatted ?></td>

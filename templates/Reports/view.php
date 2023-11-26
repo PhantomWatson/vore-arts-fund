@@ -32,11 +32,11 @@
                 </tr>
                 <tr>
                     <th><?= __('Created') ?></th>
-                    <td><?= h($report->created) ?></td>
+                    <td><?= $report->created->setTimezone(\App\Application::LOCAL_TIMEZONE) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Modified') ?></th>
-                    <td><?= h($report->modified) ?></td>
+                    <td><?= $report->modified->setTimezone(\App\Application::LOCAL_TIMEZONE) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Is Final') ?></th>
