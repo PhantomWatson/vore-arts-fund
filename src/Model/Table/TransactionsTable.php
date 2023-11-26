@@ -126,7 +126,7 @@ class TransactionsTable extends Table
             'type' => Transaction::TYPE_DONATION,
             'project_id' => null,
             'meta' => json_encode($charge),
-            'name' => $charge->metadata['name'],
+            'name' => $charge->metadata['name'] ?? '',
         ]);
         if ($this->save($transaction)) {
             return true;
