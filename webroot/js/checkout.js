@@ -17,8 +17,7 @@ async function initialize(amount, donorName) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       amount: amount,
-      description: 'Donation ' + (donorName ? 'from ' + donorName : '(anonymous)'),
-      metadata: {name: donorName}
+      donorName: donorName,
     }),
   }).then((r) => r.json());
   console.log(result);

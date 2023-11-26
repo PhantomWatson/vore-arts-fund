@@ -52,6 +52,8 @@ class StripeController extends ApiController
             throw new BadRequestException('No amount provided');
         }
 
+        $donorName = $this->getRequest()->getData('donorName');
+        $description = 'Donation ' . ($donorName ? "from $donorName" : '(anonymous)';
         $stripeSecretKey = Configure::read('Stripe.secret_key');
         Stripe::setApiKey($stripeSecretKey);
         try {
@@ -59,6 +61,10 @@ class StripeController extends ApiController
                 'amount' => $amount,
                 'currency' => 'usd',
                 'automatic_payment_methods' => ['enabled' => true],
+                'description' => $description,
+                'metadata' => [
+                    'name' => $donorName,
+                ]
             ]);
 
             $result = ['clientSecret' => $paymentIntent->client_secret];
