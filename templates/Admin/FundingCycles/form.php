@@ -126,7 +126,7 @@
     <?= $this->Form->control('resubmit_deadline') ?>
     <?= $this->Form->control('vote_begin') ?>
     <?= $this->Form->control('vote_end') ?>
-    <?= $this->Form->control('funding_available') ?>
+    <?= $this->Form->control('funding_available', ['label' => 'Funding available (in dollars)']) ?>
 </fieldset>
 <?= $this->Form->submit(__('Submit'), ['class' => 'btn btn-primary']) ?>
 <?= $this->Form->end() ?>
