@@ -12,9 +12,6 @@ use Cake\View\JsonView;
 /**
  * Application Controller
  *
- * Add your application-wide methods in the class below, your controllers
- * will inherit them.
- *
  * @link https://book.cakephp.org/4/en/controllers.html#the-app-controller
  * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
  */
