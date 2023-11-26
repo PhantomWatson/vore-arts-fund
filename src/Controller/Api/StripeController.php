@@ -53,7 +53,7 @@ class StripeController extends ApiController
         }
 
         $donorName = $this->getRequest()->getData('donorName');
-        $description = 'Donation ' . ($donorName ? "from $donorName" : '(anonymous)';
+        $description = 'Donation ' . ($donorName ? "from $donorName" : '(anonymous)');
         $stripeSecretKey = Configure::read('Stripe.secret_key');
         Stripe::setApiKey($stripeSecretKey);
         try {
