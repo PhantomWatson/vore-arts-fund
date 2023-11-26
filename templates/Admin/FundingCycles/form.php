@@ -112,7 +112,7 @@
                     </select>
                 </div>
                 <div class="col-12">
-                    <input type="submit" class="btn btn-primary" />
+                    <input type="submit" class="btn btn-primary" value="Set dates" />
                 </div>
             </form>
         </div>
