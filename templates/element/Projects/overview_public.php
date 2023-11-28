@@ -25,7 +25,10 @@
         Funding cycle
     </th>
     <td>
-        <?= $this->element('FundingCycles/link', ['fundingCycle' => $project->funding_cycle]) ?>
+        <?= $this->element('FundingCycles/link', [
+            'fundingCycle' => $project->funding_cycle,
+            'append' => '',
+        ]) ?>
     </td>
 </tr>
 <tr>
