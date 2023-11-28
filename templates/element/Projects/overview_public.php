@@ -33,6 +33,7 @@
         Amount requested
     </th>
     <td>
+        <?= $project->accept_partial_payout ? 'Up to ' : null ?>
         $<?= number_format($project->amount_requested) ?>
     </td>
 </tr>
