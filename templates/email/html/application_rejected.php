@@ -27,7 +27,7 @@
     if it will be funded.
     <?php if ($fundingCycle): ?>
         The deadline to apply for funding for the <?= $fundingCycle->name ?> funding cycle is
-        <?= $fundingCycle->resubmit_deadline->format('F j, Y') ?>.
+        <?= $fundingCycle->resubmit_deadline_local->format('F j, Y') ?>.
     <?php else: ?>
         Check the Vore Arts Fund website for information about upcoming funding cycles and their deadlines.
     <?php endif; ?>

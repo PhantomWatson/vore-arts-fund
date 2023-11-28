@@ -15,6 +15,6 @@ Before we can accept your application for funding for <?= $project->title ?>, we
 <?= nl2br($note) ?>
 
 
-The deadline for finalizing your application is <?= $fundingCycle->resubmit_deadline->format('F j, Y') ?>, after which you won't be able to update it. If it hasn't been revised and accepted by that date, then it won't be eligible for funding in this funding cycle.
+The deadline for finalizing your application is <?= $fundingCycle->resubmit_deadline_local->format('F j, Y') ?>, after which you won't be able to update it. If it hasn't been revised and accepted by that date, then it won't be eligible for funding in this funding cycle.
 
 To revise your application, go to <?= $url ?>.

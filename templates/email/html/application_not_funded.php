@@ -19,7 +19,7 @@
 <p>
     <?php if ($fundingCycle): ?>
         The deadline to apply for funding on <a href="https://VoreArtsFund.org">VoreArtsFund.org</a> for the
-        <?= $fundingCycle->name ?> funding cycle is <?= $fundingCycle->resubmit_deadline->format('F j, Y') ?>.
+        <?= $fundingCycle->name ?> funding cycle is <?= $fundingCycle->resubmit_deadline_local->format('F j, Y') ?>.
     <?php else: ?>
         Check <a href="https://VoreArtsFund.org">VoreArtsFund.org</a> for information about upcoming funding cycles and
         their deadlines.

@@ -15,6 +15,11 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $resubmit_deadline
  * @property \Cake\I18n\FrozenTime|null $vote_begin
  * @property \Cake\I18n\FrozenTime|null $vote_end
+ * @property \Cake\I18n\FrozenTime|null $application_begin_local
+ * @property \Cake\I18n\FrozenTime|null $application_end_local
+ * @property \Cake\I18n\FrozenTime|null $resubmit_deadline_local
+ * @property \Cake\I18n\FrozenTime|null $vote_begin_local
+ * @property \Cake\I18n\FrozenTime|null $vote_end_local
  * @property int $funding_available
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
@@ -71,6 +76,46 @@ class FundingCycle extends Entity
     }
 
     /**
+     * @return \Cake\Chronos\ChronosInterface|FrozenTime
+     */
+    protected function _getApplicationBeginLocal()
+    {
+        return $this->application_begin->setTimezone(\App\Application::LOCAL_TIMEZONE);
+    }
+
+    /**
+     * @return \Cake\Chronos\ChronosInterface|FrozenTime
+     */
+    protected function _getApplicationEndLocal()
+    {
+        return $this->application_end->setTimezone(\App\Application::LOCAL_TIMEZONE);
+    }
+
+    /**
+     * @return \Cake\Chronos\ChronosInterface|FrozenTime
+     */
+    protected function _getResubmitDeadlineLocal()
+    {
+        return $this->resubmit_deadline->setTimezone(\App\Application::LOCAL_TIMEZONE);
+    }
+
+    /**
+     * @return \Cake\Chronos\ChronosInterface|FrozenTime
+     */
+    protected function _getVoteBeginLocal()
+    {
+        return $this->vote_begin->setTimezone(\App\Application::LOCAL_TIMEZONE);
+    }
+
+    /**
+     * @return \Cake\Chronos\ChronosInterface|FrozenTime
+     */
+    protected function _getVoteEndLocal()
+    {
+        return $this->vote_end->setTimezone(\App\Application::LOCAL_TIMEZONE);
+    }
+
+    /**
      * Returns the name of the provided month's season
      *
      * 12-2: Winter
@@ -93,31 +138,6 @@ class FundingCycle extends Entity
             return 'Summer';
         }
         return 'Fall';
-    }
-
-    protected function _getApplicationBegin(?FrozenTime $time): ?FrozenTime
-    {
-        return $time ? $time->setTimezone(\App\Application::LOCAL_TIMEZONE) : null;
-    }
-
-    protected function _getApplicationEnd(?FrozenTime $time): ?FrozenTime
-    {
-        return $time ? $time->setTimezone(\App\Application::LOCAL_TIMEZONE) : null;
-    }
-
-    protected function _getVoteBegin(?FrozenTime $time): ?FrozenTime
-    {
-        return $time ? $time->setTimezone(\App\Application::LOCAL_TIMEZONE) : null;
-    }
-
-    protected function _getVoteEnd(?FrozenTime $time): ?FrozenTime
-    {
-        return $time ? $time->setTimezone(\App\Application::LOCAL_TIMEZONE) : null;
-    }
-
-    protected function _getResubmitDeadline(?FrozenTime $time): ?FrozenTime
-    {
-        return $time ? $time->setTimezone(\App\Application::LOCAL_TIMEZONE) : null;
     }
 
     /**

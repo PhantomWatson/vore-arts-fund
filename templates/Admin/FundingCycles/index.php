@@ -43,15 +43,15 @@ $dateFormat = 'MMM d, YYYY';
                         <td>
                             <?= sprintf(
                                 '%s to %s',
-                                $fundingCycle['application_begin']->i18nFormat($dateFormat),
-                                $fundingCycle['application_end']->i18nFormat($dateFormat)
+                                $fundingCycle->application_begin_local->i18nFormat($dateFormat),
+                                $fundingCycle->application_end_local->i18nFormat($dateFormat)
                             ) ?>
                         </td>
                         <td>
                             <?= sprintf(
                                 '%s to %s',
-                                $fundingCycle['vote_begin']->i18nFormat($dateFormat),
-                                $fundingCycle['vote_end']->i18nFormat($dateFormat)
+                                $fundingCycle->vote_begin_local->i18nFormat($dateFormat),
+                                $fundingCycle->vote_end_local->i18nFormat($dateFormat)
                             ) ?>
                         </td>
                         <td>

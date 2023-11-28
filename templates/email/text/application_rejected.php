@@ -17,7 +17,7 @@ We hate to deliver bad news, but your application for funding for <strong><?= $p
 You're welcome to submit another application on https://VoreArtsFund.org, and if it's eligible, submitted, and accepted before the application deadline, it will be voted on by the community to determine if it will be funded.
 
 <?php if ($fundingCycle): ?>
-The deadline to apply for funding for the <?= $fundingCycle->name ?> funding cycle is <?= $fundingCycle->resubmit_deadline->format('F j, Y') ?>.
+The deadline to apply for funding for the <?= $fundingCycle->name ?> funding cycle is <?= $fundingCycle->resubmit_deadline_local->format('F j, Y') ?>.
 <?php else: ?>
 Check the Vore Arts Fund website for information about upcoming funding cycles and their deadlines.
 <?php endif; ?>

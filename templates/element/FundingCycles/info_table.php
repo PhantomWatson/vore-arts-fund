@@ -8,9 +8,9 @@
             Application period
         </th>
         <td>
-            <?= $fundingCycle->application_begin->format('F j, Y') ?>
+            <?= $fundingCycle->application_begin_local->format('F j, Y') ?>
             to
-            <?= $fundingCycle->application_end->format('F j, Y') ?>
+            <?= $fundingCycle->application_end_local->format('F j, Y') ?>
         </td>
     </tr>
     <tr>
@@ -18,9 +18,9 @@
             Voting period
         </th>
         <td>
-            <?= $fundingCycle->vote_begin->format('F j, Y') ?>
+            <?= $fundingCycle->vote_begin_local->format('F j, Y') ?>
             to
-            <?= $fundingCycle->vote_end->format('F j, Y') ?>
+            <?= $fundingCycle->vote_end_local->format('F j, Y') ?>
         </td>
     </tr>
     <tr>
@@ -55,7 +55,7 @@
                         echo ' accepted';
                         if (
                             $projectSummary['submitted'] != $projectSummary['accepted']
-                            && $fundingCycle->vote_begin->isFuture()
+                            && $fundingCycle->vote_begin_local->isFuture()
                         ) {
                             echo ' so far';
                         }
