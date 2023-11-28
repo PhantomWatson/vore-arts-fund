@@ -17,7 +17,7 @@
         does not promote violent crimes
     </li>
     <li>
-        does not promote violence or harassment against people based on protected characteristics, such
+        does not promote violence, harassment, or hatred against people based on protected characteristics, such
         as ethnicity, nationality, sexual orientation, sex, gender, religion, age, or disability
     </li>
 </ul>
