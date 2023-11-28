@@ -41,8 +41,10 @@
                 recipients will be emailed reminders when reports are due.
             </li>
             <li>
-                If loans are fully or partially forgiven, the forgiven portion must be reported to the IRS as
-                taxable income if it totals $600 or more.
+                If loans are fully or partially forgiven, the recipient may be required to report the forgiven portion
+                to the IRS as taxable income. As of 2023, this is only required if the forgiven portion totals $600 or
+                more, but recipients are advised to consult a tax professional for any questions about their tax
+                liability.
             </li>
         </ol>
     </li>
