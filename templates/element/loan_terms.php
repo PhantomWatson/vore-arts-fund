@@ -61,9 +61,18 @@
                 The Vore Arts Fund does not claim project ownership nor a business relationship with the applicant by
                 awarding a loan. Loan recipients retain all ownership of and copyright to their intellectual property.
             </li>
+            <li>
+                Funding provided by the Vore Arts Fund does not constitute support or endorsement of the views,
+                opinions, or claims of loan recipients.
+            </li>
+            <li>
+                The Vore Arts Fund hereby disclaims any and all liability to any party for any direct, indirect,
+                implied, punitive, special, incidental or other consequential damages arising directly or indirectly
+                from its financial support of loan recipients.
+            </li>
         </ol>
     </li>
 </ol>
 <p>
-    Updated July 8, 2023
+    Updated November 28, 2023
 </p>
