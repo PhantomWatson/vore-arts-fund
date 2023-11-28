@@ -127,7 +127,7 @@ class ProjectsTable extends Table
             ->scalar('check_name')
             ->maxLength('check_name', 50)
             ->notEmptyString('check_name')
-            ->requirePresence('check_name');
+            ->requirePresence('check_name', 'create');
 
         // Actually saved to the users table, but integrated into the project form
         $validator

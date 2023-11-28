@@ -45,19 +45,20 @@ class ProjectsController extends BaseProjectsController
     /**
      * Page for withdrawing an application from consideration
      *
-     * @return void
+     * @return Response
      */
     public function withdraw()
     {
+        $this->getRequest()->allowMethod('post');
         $id = $this->request->getParam('id');
-        $project = $this->Projects->find()->where(['id' => $id])->first();
-        if ($this->request->is('post')) {
-            $project = $this->Projects->patchEntity($project, ['status_id' => Project::STATUS_WITHDRAWN]);
-            if ($this->Projects->save($project)) {
-                $this->Flash->success('Application withdrawn.');
-            }
+        $project = $this->Projects->get($id);
+        $project->status_id = Project::STATUS_WITHDRAWN;
+        if ($this->Projects->save($project)) {
+            $this->Flash->success('Application withdrawn.');
+        } else {
+            $this->Flash->error('There was an error withdrawing your application.');
         }
-        $this->set(['title' => 'Withdraw']);
+        return $this->redirect(['action' => 'index']);
     }
 
     /**

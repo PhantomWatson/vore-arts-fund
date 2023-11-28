@@ -127,7 +127,7 @@ $reportWhen = [
                                     ) ?>
                                 <?php endif; ?>
                                 <?php if (in_array($project->status_id, $withdrawWhen)): ?>
-                                    <?= $this->Html->link(
+                                    <?= $this->Form->postLink(
                                         '<i class="fa-solid fa-ban"></i> Withdraw',
                                         [
                                             'controller' => 'Projects',
@@ -136,7 +136,8 @@ $reportWhen = [
                                         ],
                                         [
                                             'class' => 'dropdown-item',
-                                            'escape' => false
+                                            'escape' => false,
+                                            'confirm' => 'Are you sure you want to withdraw this application?',
                                         ]
                                     ) ?>
                                 <?php endif; ?>
