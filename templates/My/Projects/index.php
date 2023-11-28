@@ -87,7 +87,7 @@ $reportWhen = [
 
                             <ul class="dropdown-menu">
                                 <?= $this->Html->link(
-                                    '<i class="fa-solid fa-eye"></i> View projects',
+                                    '<i class="fa-solid fa-eye"></i> View project',
                                     [
                                         'controller' => 'Projects',
                                         'action' => 'view',
