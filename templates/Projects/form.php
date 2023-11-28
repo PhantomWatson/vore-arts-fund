@@ -174,7 +174,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
         <div class="input-with-footnote">
             <div class="form-group required accept-partial">
                 <?= $this->Form->label('accept-partial-payout-0', 'Would you accept a partial payout?') ?>
-                <?= $this->Form->radio('accept_partial_payout', ['Yes', 'No'], ['required' => true]) ?>
+                <?= $this->Form->radio('accept_partial_payout', [1 => 'Yes', 0 => 'No'], ['required' => true]) ?>
                 <p class="footnote">
                     We may not have the budget to pay out this full amount. Would you still like to be considered for a
                     smaller amount?
