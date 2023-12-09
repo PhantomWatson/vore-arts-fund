@@ -40,6 +40,5 @@ $title = $title ?? $this->fetch('title');
         <?= $this->fetch('content') ?>
         <?= $this->element('footer') ?>
     </main>
-    <script src="/js/main.js"></script>
 </body>
 </html>
