@@ -151,17 +151,22 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                 'formGroup' => '{{input}}',
                 'inputContainer' => '{{content}}',
             ]); ?>
-            <div class="input-group mb-3">
-                <span class="input-group-text">$</span>
-                <?= $this->Form->control(
-                    'amount_requested',
-                    [
-                        'required' => true,
-                        'type' => 'number',
-                        'step' => 1,
-                    ]
-                ) ?>
-                <span class="input-group-text">.00</span>
+            <div class="input-with-footnote">
+                <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <?= $this->Form->control(
+                        'amount_requested',
+                        [
+                            'required' => true,
+                            'type' => 'number',
+                            'step' => 1,
+                        ]
+                    ) ?>
+                    <span class="input-group-text">.00</span>
+                </div>
+                <p class="footnote">
+                    Please round to the nearest dollar
+                </p>
             </div>
             <?php $this->Form->setTemplates([
                 'formGroup' => $defaultFormTemplate['formGroup'],
