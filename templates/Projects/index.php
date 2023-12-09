@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var Project[] $projects
+ * @var \Cake\ORM\ResultSet|Project[] $projects
  */
 
 // TODO: Link to vote, if applicable
@@ -20,7 +20,7 @@ use App\Model\Entity\Project;
     ) ?> page.
 </p>
 
-<?php if ($projects): ?>
+<?php if (!$projects->isEmpty()): ?>
     <?= $this->element('pagination') ?>
 
     <table class="table">

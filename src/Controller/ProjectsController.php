@@ -343,8 +343,7 @@ class ProjectsController extends AppController
         $projectsQuery = $this->Projects
             ->find('acceptedOrGreater')
             ->contain(['FundingCycles', 'Categories'])
-            ->orderDesc('Projects.created')
-            ->toArray();
+            ->orderDesc('Projects.created');
         $this->title('Projects');
         $this->set([
             'projects' => $this->paginate($projectsQuery)
