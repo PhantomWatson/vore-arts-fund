@@ -84,7 +84,7 @@ class TransactionsTable extends Table
             ->allowEmptyString('meta');
 
         $validator
-            ->date('date')
+            ->dateTime('date')
             ->requirePresence('date');
 
         $validator

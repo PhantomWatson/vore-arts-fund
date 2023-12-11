@@ -87,7 +87,7 @@ class FundingCyclesController extends AdminController
      * @param string $time Time string
      * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\FrozenTime
      */
-    private function convertTimeToUtc($time)
+    public static function convertTimeToUtc($time): \Cake\Chronos\ChronosInterface|FrozenTime
     {
         return (new FrozenTime($time, \App\Application::LOCAL_TIMEZONE))->setTimezone('UTC');
     }

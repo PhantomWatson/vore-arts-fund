@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Application;
 use App\Model\Entity\Project;
 use Cake\Event\EventInterface;
 use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Query;
 use Cake\Utility\Hash;
 
@@ -67,9 +69,9 @@ class TransactionsController extends AdminController
     public function add()
     {
         $transaction = $this->Transactions->newEmptyEntity();
-        $transaction->date = new FrozenDate();
         if ($this->request->is('post')) {
             $data = $this->request->getData();
+            $data['date'] = FundingCyclesController::convertTimeToUtc($data['date']);
 
             // Convert dollars to cents
             $data['amount'] *= 100;
@@ -83,6 +85,9 @@ class TransactionsController extends AdminController
             $this->Flash->error(__('The transaction could not be saved. Please, try again.'));
         }
 
+        if (!$transaction->date) {
+            $transaction->date = new FrozenTime('now', Application::LOCAL_TIMEZONE);
+        }
 
         $this->title('Add Transaction');
         $this->set([

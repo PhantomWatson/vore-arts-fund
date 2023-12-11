@@ -21,7 +21,7 @@ $types = \App\Model\Entity\Transaction::getTypes();
 <fieldset>
     <div class="form-group">
         <?= $this->Form->label('Date') ?>
-        <?= $this->Form->date('date') ?>
+        <?= $this->Form->dateTime('date') ?>
     </div>
 
     <div class="form-group number">
