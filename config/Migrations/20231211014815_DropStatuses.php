@@ -15,7 +15,7 @@ class DropStatuses extends AbstractMigration
     public function change(): void
     {
         $this->table('projects')
-            ->removeIndex('status_id')
+            //->removeIndex('status_id')
             ->save();
 
         $this->table('statuses')
