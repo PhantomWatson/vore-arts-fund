@@ -205,4 +205,15 @@ class FundingCycle extends Entity
         $now = new \DateTime();
         return $this->vote_end <= $now;
     }
+
+    public function convertToLocalTimes(): FundingCycle|static
+    {
+        $retval = $this;
+        $retval->application_begin = $retval->application_begin_local;
+        $retval->application_end = $retval->application_end_local;
+        $retval->vote_begin = $retval->vote_begin_local;
+        $retval->vote_end = $retval->vote_end_local;
+        $retval->resubmit_deadline = $retval->resubmit_deadline_local;
+        return $retval;
+    }
 }

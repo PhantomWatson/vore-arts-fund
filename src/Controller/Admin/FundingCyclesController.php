@@ -75,6 +75,9 @@ class FundingCyclesController extends AdminController
             $fundingCycle->vote_begin = $start;
             $fundingCycle->vote_end = $end;
         }
+
+        $fundingCycle = $fundingCycle->convertToLocalTimes();
+
         $this->title('Add Funding Cycle');
         $this->set(compact('fundingCycle'));
         $this->viewBuilder()->setTemplate('form');
@@ -89,7 +92,7 @@ class FundingCyclesController extends AdminController
      */
     public static function convertTimeToUtc($time): \Cake\Chronos\ChronosInterface|FrozenTime
     {
-        return (new FrozenTime($time, \App\Application::LOCAL_TIMEZONE))->setTimezone('UTC');
+        return (new FrozenTime($time, Application::LOCAL_TIMEZONE))->setTimezone('UTC');
     }
 
     /**
@@ -100,16 +103,13 @@ class FundingCyclesController extends AdminController
     public function edit()
     {
         $fundingCycleId = $this->request->getParam('id');
-        $fundingCycle = $this->FundingCycles
-            ->find()
-            ->where(['id' => $fundingCycleId])
-            ->first();
+        $fundingCycle = $this->FundingCycles->get($fundingCycleId);
         if ($this->request->is('put')) {
             $data = $this->request->getData();
             foreach (FundingCycle::TIME_FIELDS as $field) {
                 $data[$field] = $this->convertTimeToUtc($data[$field]);
             }
-            $fundingCycle = $this->FundingCycles->get($fundingCycleId);
+
             $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $data);
             if ($this->FundingCycles->save($fundingCycle)) {
                 $this->Flash->success(__('Successfully updated funding cycle'));
@@ -117,6 +117,8 @@ class FundingCyclesController extends AdminController
                 $this->Flash->error(__('Error updating funding cycle'));
             }
         }
+
+        $fundingCycle = $fundingCycle->convertToLocalTimes();
 
         $this->set([
             'fundingCycle' => $fundingCycle,
