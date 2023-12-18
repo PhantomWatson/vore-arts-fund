@@ -45,7 +45,7 @@ class FundingCyclesController extends AdminController
     /**
      * Page for adding a new funding cycle
      *
-     * @return void
+     * @return \Cake\Http\Response|null
      */
     public function add()
     {
@@ -59,7 +59,7 @@ class FundingCyclesController extends AdminController
             $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $data);
             if ($this->FundingCycles->save($fundingCycle)) {
                 $this->Flash->success('Funding cycle added');
-                $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error('Error creating funding cycle');
             }
@@ -81,6 +81,7 @@ class FundingCyclesController extends AdminController
         $this->title('Add Funding Cycle');
         $this->set(compact('fundingCycle'));
         $this->viewBuilder()->setTemplate('form');
+        return null;
     }
 
 
@@ -98,7 +99,7 @@ class FundingCyclesController extends AdminController
     /**
      * Page for updating a funding cycle
      *
-     * @return void
+     * @return \Cake\Http\Response|null
      */
     public function edit()
     {
@@ -113,6 +114,7 @@ class FundingCyclesController extends AdminController
             $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $data);
             if ($this->FundingCycles->save($fundingCycle)) {
                 $this->Flash->success(__('Successfully updated funding cycle'));
+                return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('Error updating funding cycle'));
             }
@@ -125,6 +127,7 @@ class FundingCyclesController extends AdminController
             'title' => 'Edit Funding Cycle',
         ]);
         $this->viewBuilder()->setTemplate('form');
+        return null;
     }
 
     public function projects($fundingCycleId)
