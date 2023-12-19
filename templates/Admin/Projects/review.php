@@ -14,9 +14,6 @@ function getActionName($statusId, array $statusActions): string
 {
     return array_search($statusId, $statusActions);
 }
-
-// TODO: Add notes count to button
-// TODO: Add transactions tab
 ?>
 
 <div class="col-md-6 mb-3 card" id="review-action-column">
