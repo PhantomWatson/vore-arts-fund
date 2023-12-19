@@ -12,6 +12,7 @@ use Cake\ORM\Entity;
  * @property int $user_id
  * @property int $project_id
  * @property string $body
+ * @property string $type
  * @property \Cake\I18n\FrozenTime $created
  *
  * @property \App\Model\Entity\User $user
@@ -19,6 +20,10 @@ use Cake\ORM\Entity;
  */
 class Note extends Entity
 {
+    public const TYPE_NOTE = 'note';
+    public const TYPE_REVISION_REQUEST = 'revision request';
+    public const TYPE_REJECTION = 'rejection';
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -35,5 +40,6 @@ class Note extends Entity
         'created' => true,
         'user' => true,
         'project' => true,
+        'type' => true,
     ];
 }

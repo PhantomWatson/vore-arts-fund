@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Event\MailListener;
+use App\Model\Entity\Note;
 use App\Model\Entity\Project;
 use Cake\Event\Event;
 use Cake\Event\EventInterface;
@@ -101,6 +102,7 @@ class ProjectsController extends AdminController
                 $user = $this->getAuthUser();
                 $data['user_id'] = $user?->id;
                 $data['project_id'] = $projectId;
+                $data['type'] = $this->getNoteType($data['status_id'] ?? null);
                 $note = $notesTable->newEntity($data);
                 if ($notesTable->save($note)) {
                     $this->Flash->success('Note added');
@@ -146,6 +148,21 @@ class ProjectsController extends AdminController
         $this->setCurrentBreadcrumb($project->title);
 
         return null;
+    }
+
+    /**
+     * Returns the note type corresponding to a status that a project is being changed to
+     *
+     * @param int|null $statusId
+     * @return string
+     */
+    private function getNoteType($statusId): string
+    {
+        return match ((int) $statusId) {
+            Project::STATUS_REVISION_REQUESTED => Note::TYPE_REVISION_REQUEST,
+            Project::STATUS_REJECTED => Note::TYPE_REJECTION,
+            default => Note::TYPE_NOTE,
+        };
     }
 
     /**

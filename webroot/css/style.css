@@ -12597,6 +12597,11 @@ body {
   font-size: 80%;
   text-align: right;
 }
+#review-notes section .note-type {
+  border-bottom: 1px solid #1A5B11;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
 
 #vote-steps {
   border-bottom: 1px solid #aaa;

@@ -61,6 +61,11 @@ function getActionName($statusId, array $statusActions): string
                 <?php else: ?>
                     <?php foreach ($notes as $note): ?>
                         <section>
+                            <?php if ($note->type != \App\Model\Entity\Note::TYPE_NOTE): ?>
+                                <p class="note-type">
+                                    <?= ucfirst($note->type) ?>
+                                </p>
+                            <?php endif; ?>
                             <p>
                                 <?= nl2br($note->body) ?>
                             </p>
