@@ -17,14 +17,6 @@
 
 <tr>
     <th>
-        Accept partial payout?
-    </th>
-    <td>
-        <?= $project->accept_partial_payout ? 'Yes' : 'No' ?>
-    </td>
-</tr>
-<tr>
-    <th>
         Make check out to
     </th>
     <td>
