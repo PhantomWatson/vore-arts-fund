@@ -93,19 +93,21 @@ class MailListener implements EventListenerInterface
     public function mailProjectRevisionRequested(Event $event, Project $project, string $note)
     {
         list($email, $name) = $this->getRecipientFromProject($project);
+        $foo = [
+            'project' => $project,
+            'fundingCycle' => $this->fundingCyclesTable->get($project->funding_cycle_id),
+            'note' => $note,
+            'url' => Router::url([
+                'prefix' => 'My',
+                'controller' => 'Projects',
+                'action' => 'edit',
+                'id' => $project->id,
+            ], true),
+            'userName' => $name,
+        ];
         EmailQueue::enqueue(
             $email,
-            [
-                'project' => $project,
-                'fundingCycle' => $this->fundingCyclesTable->get($project->funding_cycle_id),
-                'note' => $note,
-                'url' => Router::url([
-                    'controller' => 'Projects',
-                    'action' => 'edit',
-                    'id' => $project->id,
-                ], true),
-                'userName' => $name,
-            ],
+            $foo,
             [
                 'subject' => self::$subjectPrefix . 'Revision Requested',
                 'template' => 'application_revision_requested',
@@ -159,7 +161,7 @@ class MailListener implements EventListenerInterface
                 'project' => $project,
                 'fundingCycle' => $this->fundingCyclesTable->get($project->funding_cycle_id),
                 'myProjectsUrl' => Router::url([
-                    'prefix' => false,
+                    'prefix' => 'My',
                     'controller' => 'Projects',
                     'action' => 'index'
                 ], true),
