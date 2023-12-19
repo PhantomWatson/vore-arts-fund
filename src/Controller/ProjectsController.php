@@ -97,7 +97,7 @@ class ProjectsController extends AppController
         $this->title('Apply for Funding');
         $this->viewBuilder()->setTemplate('form');
         $this->setProjectVars();
-        $this->setFromNow($fundingCycle->application_end);
+        $this->setFromNow($fundingCycle->application_end_local);
 
         $user = $this->getAuthUser();
 
@@ -323,7 +323,7 @@ class ProjectsController extends AppController
         /** @var FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->find('current')->first();
         $categories = $this->Categories->getOrdered();
-        $deadline = $fundingCycle?->application_end->format('F j, Y');
+        $deadline = $fundingCycle?->application_end_local->format('F j, Y');
         $questionsTable = $this->fetchTable('Questions');
         $questions = $questionsTable->find('forProject')->toArray();
         $this->set(compact('categories', 'fundingCycle', 'deadline', 'questions'));
