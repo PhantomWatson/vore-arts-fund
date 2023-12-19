@@ -82,13 +82,13 @@ $routes->prefix('my', function (RouteBuilder $builder) {
         ->setPass(['id']);
     $builder->connect('/projects/edit/{id}', ['controller' => 'Projects', 'action' => 'edit'])
         ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);;
+        ->setPass(['id']);
     $builder->connect('/projects/delete/{id}', ['controller' => 'Projects', 'action' => 'delete'])
         ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);;
+        ->setPass(['id']);
     $builder->connect('/projects/withdraw/{id}', ['controller' => 'Projects', 'action' => 'withdraw'])
         ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);;
+        ->setPass(['id']);
 });
 
 // Admin routes
