@@ -109,12 +109,17 @@ class MailListener implements EventListenerInterface
             $email,
             $foo,
             [
-                'subject' => self::$subjectPrefix . 'Revision Requested',
+                'subject' => self::getRevisionRequestedSubject(),
                 'template' => 'application_revision_requested',
                 'from_name' => $this->fromName,
                 'from_email' => $this->fromEmail,
             ],
         );
+    }
+
+    public static function getRevisionRequestedSubject()
+    {
+        return self::$subjectPrefix . 'Revision Requested';
     }
 
     /**

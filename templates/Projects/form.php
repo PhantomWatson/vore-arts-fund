@@ -16,19 +16,35 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
 ?>
 
-<p class="alert alert-info">
-    The deadline to submit an application in the current funding cycle is
-    <strong><?= $deadline ?></strong> (<?= $fromNow ?>).
-    For more information about future opportunities for funding, refer to the
-    <?= $this->Html->link(
-        'Funding Cycles',
-        [
-            'prefix' => false,
-            'controller' => 'FundingCycles',
-            'action' => 'index',
-        ]
-    ) ?> page.
-</p>
+<?php if ($project->status_id == \App\Model\Entity\Project::STATUS_REVISION_REQUESTED): ?>
+    <div class="alert alert-info">
+        <p>
+            <strong>We'll need this project to be revised before we can accept it.</strong>
+            Check your inbox for a message with the subject
+            "<?= \App\Event\MailListener::getRevisionRequestedSubject() ?>" for more information.
+        </p>
+        <p>
+            The deadline for finalizing your application is
+            <?= $fundingCycle->resubmit_deadline_local->format('F j, Y') ?>, after which you won't be able to
+            update it. If it hasn't been revised and accepted by that date, then it won't be eligible for funding in
+            this funding cycle.
+        </p>
+    </div>
+<?php else: ?>
+    <p class="alert alert-info">
+        The deadline to submit an application in the current funding cycle is
+        <strong><?= $deadline ?></strong> (<?= $fromNow ?>).
+        For more information about future opportunities for funding, refer to the
+        <?= $this->Html->link(
+            'Funding Cycles',
+            [
+                'prefix' => false,
+                'controller' => 'FundingCycles',
+                'action' => 'index',
+            ]
+        ) ?> page.
+    </p>
+<?php endif; ?>
 
 <div class="apply">
     <?= $this->Form->create($project, ['enctype' => 'multipart/form-data']) ?>
