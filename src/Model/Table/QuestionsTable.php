@@ -78,7 +78,7 @@ class QuestionsTable extends Table
     }
 
     /**
-     * Modifies a query to return appropriate results for displaying in an project
+     * Modifies a query to return appropriate results for displaying in a project
      *
      * @param \Cake\ORM\Query $query
      * @return \Cake\ORM\Query

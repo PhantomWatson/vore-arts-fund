@@ -58,7 +58,7 @@ class ProjectsController extends AdminController
     }
 
     /**
-     * Page for reviewing an project
+     * Page for reviewing a project
      *
      * @return Response|null
      */

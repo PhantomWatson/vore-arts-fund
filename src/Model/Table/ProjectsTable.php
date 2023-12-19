@@ -159,7 +159,7 @@ class ProjectsTable extends Table
     }
 
     /**
-     * Returns an project entity for the apply/edit form
+     * Returns a project entity for the apply/edit form
      *
      * @param int $projectId
      * @return EntityInterface|Project|null
