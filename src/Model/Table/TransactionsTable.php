@@ -140,10 +140,8 @@ class TransactionsTable extends Table
         if ($this->save($transaction)) {
             return true;
         }
-        Log::write(
-            'Error',
+        self::logStripeError(
             'Can\'t save charge. Details: ' . print_r($transaction->getErrors(), true),
-            ['scope' => 'stripe']
         );
         return false;
     }
@@ -161,7 +159,21 @@ class TransactionsTable extends Table
             $balanceTransaction = $stripe->balanceTransactions->retrieve($balanceTransactionId, []);
             return $balanceTransaction->net;
         } catch (ApiErrorException $e) {
+            self::logStripeError(sprintf(
+                'Failed to fetch net amount for balance transaction %s. Details: %s',
+                $balanceTransactionId,
+                $e->getMessage()
+            ));
             return null;
         }
+    }
+
+    public static function logStripeError($msg): void
+    {
+        Log::write(
+            'Error',
+            $msg,
+            ['scope' => 'stripe']
+        );
     }
 }
