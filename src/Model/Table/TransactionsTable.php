@@ -89,7 +89,7 @@ class TransactionsTable extends Table
 
         $validator
             ->dateTime('date')
-            ->requirePresence('date');
+            ->requirePresence('date', 'create');
 
         $validator
             ->scalar('name')
