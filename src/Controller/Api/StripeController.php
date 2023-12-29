@@ -34,7 +34,7 @@ class StripeController extends ApiController
     }
 
     /**
-     * POST /api/votes endpoint
+     * Used by checkout.js
      *
      * @return void
      * @throws BadRequestException

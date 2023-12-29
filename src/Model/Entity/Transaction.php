@@ -13,11 +13,14 @@ use Cake\ORM\Entity;
  * @property int $type
  * @property string $type_name
  * @property string $name Name of person who initiated the transaction, such as a donor
- * @property int|null $amount Amount in cents
+ * @property int|null $amount_gross Amount paid
+ * @property int|null $amount_net Amount received
  * @property int|null $project_id Project for loans, loan repayments, or canceled checks
  * @property string $meta Check number, donor name, Stripe meta dump
- * @property float $dollar_amount
- * @property string $dollar_amount_formatted
+ * @property float $dollar_amount_net
+ * @property string $dollar_amount_net_formatted
+ * @property float $dollar_amount_gross
+ * @property string $dollar_amount_gross_formatted
  * @property \Cake\I18n\FrozenDate $date
  * @property \Cake\I18n\FrozenTime $created
  *
@@ -30,6 +33,9 @@ class Transaction extends Entity
     public const TYPE_LOAN = 3;
     public const TYPE_CANCELED_CHECK = 4;
 
+    /** @deprecated  */
+    private $amount;
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -41,7 +47,8 @@ class Transaction extends Entity
      */
     protected $_accessible = [
         'type' => true,
-        'amount' => true,
+        'amount_net' => true,
+        'amount_gross' => true,
         'project_id' => true,
         'meta' => true,
         'created' => true,
@@ -75,18 +82,44 @@ class Transaction extends Entity
     }
 
     /**
-     * Returns amount, but in dollars
+     * Returns amount in dollars
      *
+     * @param int $amount Amount in cents
      * @return float
      */
-    protected function _getDollarAmount(): float
+    private function getDollarAmount($amount): float
     {
-        return $this->amount ? $this->amount / 100 : 0;
+        return $amount ? $amount / 100 : 0;
     }
 
-    protected function _getDollarAmountFormatted(): string
+    /**
+     * Returns a dollar-formatted string
+     *
+     * @return string
+     */
+    private function getDollarAmountFormatted($amount): string
     {
-        return '$' . number_format($this->dollar_amount, 2);
+        return '$' . number_format($amount, 2);
+    }
+
+    protected function _getDollarAmountNet(): float
+    {
+        return $this->getDollarAmount($this->amount_net);
+    }
+
+    protected function _getDollarAmountNetFormatted(): string
+    {
+        return $this->getDollarAmountFormatted($this->dollar_amount_net);
+    }
+
+    protected function _getDollarAmountGross(): float
+    {
+        return $this->getDollarAmount($this->amount_gross);
+    }
+
+    protected function _getDollarAmountGrossFormatted(): string
+    {
+        return $this->getDollarAmountFormatted($this->dollar_amount_gross);
     }
 
     protected function _getTypeName(): string

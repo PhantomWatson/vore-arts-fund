@@ -4,11 +4,14 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\Transaction;
+use Cake\Core\Configure;
 use Cake\I18n\FrozenTime;
 use Cake\Log\Log;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Stripe\Exception\ApiErrorException;
+use Stripe\StripeClient;
 
 /**
  * Transactions Model
@@ -71,8 +74,12 @@ class TransactionsTable extends Table
             ->notEmptyString('type');
 
         $validator
-            ->decimal('amount')
-            ->notEmptyString('amount');
+            ->decimal('amount_gross')
+            ->notEmptyString('amount_gross');
+
+        $validator
+            ->decimal('amount_net')
+            ->notEmptyString('amount_net');
 
         $validator
             ->integer('project_id')
@@ -84,7 +91,7 @@ class TransactionsTable extends Table
 
         $validator
             ->dateTime('date')
-            ->requirePresence('date');
+            ->requirePresence('date', 'create');
 
         $validator
             ->scalar('name')
@@ -120,8 +127,9 @@ class TransactionsTable extends Table
     public function addPayment(\Stripe\Charge $charge): bool
     {
         $transaction = $this->newEntity([
+            'amount_gross' => $charge->amount_captured,
+            'amount_net' => self::getNetAmount($charge->balance_transaction),
             'date' => new FrozenTime(),
-            'amount' => $charge->amount_captured,
             'type' => Transaction::TYPE_DONATION,
             'project_id' => null,
             'meta' => json_encode($charge),
@@ -130,11 +138,40 @@ class TransactionsTable extends Table
         if ($this->save($transaction)) {
             return true;
         }
-        Log::write(
-            'Error',
+        self::logStripeError(
             'Can\'t save charge. Details: ' . print_r($transaction->getErrors(), true),
-            ['scope' => 'stripe']
         );
         return false;
+    }
+
+    /**
+     * Returns the net amount of the specified balance transaction, or NULL if there's an error
+     *
+     * @param string $balanceTransactionId
+     * @return int|null
+     */
+    public static function getNetAmount(string $balanceTransactionId): ?int
+    {
+        $stripe = new StripeClient(Configure::read('Stripe.secret_key'));
+        try {
+            $balanceTransaction = $stripe->balanceTransactions->retrieve($balanceTransactionId, []);
+            return $balanceTransaction->net;
+        } catch (ApiErrorException $e) {
+            self::logStripeError(sprintf(
+                'Failed to fetch net amount for balance transaction %s. Details: %s',
+                $balanceTransactionId,
+                $e->getMessage()
+            ));
+            return null;
+        }
+    }
+
+    public static function logStripeError($msg): void
+    {
+        Log::write(
+            'Error',
+            $msg,
+            ['scope' => 'stripe']
+        );
     }
 }

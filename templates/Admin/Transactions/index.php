@@ -14,7 +14,7 @@
             <th><?= $this->Paginator->sort('date', 'Date') ?></th>
             <th><?= $this->Paginator->sort('type') ?></th>
             <th><?= $this->Paginator->sort('name') ?></th>
-            <th><?= $this->Paginator->sort('amount') ?></th>
+            <th><?= $this->Paginator->sort('amount_gross', 'Amount (net)') ?></th>
             <th><?= $this->Paginator->sort('project_id', 'Project') ?></th>
             <th class="actions"><?= __('Actions') ?></th>
         </tr>
@@ -25,7 +25,12 @@
                 <td><?= $transaction->date?->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('M j, Y g:ia') ?></td>
                 <td><?= $transaction->type_name ?></td>
                 <td><?= $transaction->name ?></td>
-                <td><?= $transaction->dollar_amount_formatted ?></td>
+                <td>
+                    <?= $transaction->dollar_amount_gross_formatted ?>
+                    <?php if ($transaction->amount_net && $transaction->amount_net != $transaction->amount_gross): ?>
+                        (<?= $transaction->dollar_amount_net_formatted ?>)
+                    <?php endif; ?>
+                </td>
                 <td>
                     <?=
                         $transaction->has('project')
