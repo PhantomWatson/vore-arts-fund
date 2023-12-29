@@ -72,8 +72,12 @@ class TransactionsTable extends Table
             ->notEmptyString('type');
 
         $validator
-            ->decimal('amount')
-            ->notEmptyString('amount');
+            ->decimal('amount_gross')
+            ->notEmptyString('amount_gross');
+
+        $validator
+            ->decimal('amount_net')
+            ->notEmptyString('amount_net');
 
         $validator
             ->integer('project_id')
@@ -122,7 +126,7 @@ class TransactionsTable extends Table
     {
         $transaction = $this->newEntity([
             'date' => new FrozenDate(),
-            'amount' => $charge->amount_captured,
+            'amount_gross' => $charge->amount_captured,
             'type' => Transaction::TYPE_DONATION,
             'project_id' => null,
             'meta' => json_encode($charge),

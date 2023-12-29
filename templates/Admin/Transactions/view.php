@@ -37,8 +37,12 @@ function isValidJson($data) {
         <td><?= $transaction->name ?: '(anonymous)' ?></td>
     </tr>
     <tr>
-        <th><?= __('Amount') ?></th>
-        <td><?= $transaction->dollar_amount_formatted ?></td>
+        <th><?= __('Amount (Gross / Net)') ?></th>
+        <td>
+            <?= $transaction->dollar_amount_gross_formatted ?>
+            /
+            <?= $transaction->dollar_amount_net_formatted ?>
+        </td>
     </tr>
     <tr>
         <th><?= __('Created') ?></th>

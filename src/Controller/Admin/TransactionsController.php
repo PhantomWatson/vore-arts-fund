@@ -74,7 +74,8 @@ class TransactionsController extends AdminController
             $data['date'] = FundingCyclesController::convertTimeToUtc($data['date']);
 
             // Convert dollars to cents
-            $data['amount'] *= 100;
+            $data['amount_gross'] *= 100;
+            $data['amount_net'] *= 100;
 
             $transaction = $this->Transactions->patchEntity($transaction, $data);
             if ($this->Transactions->save($transaction)) {
@@ -140,7 +141,8 @@ class TransactionsController extends AdminController
             $data = $this->request->getData();
 
             // Convert dollars to cents
-            $data['amount'] *= 100;
+            $data['amount_net'] *= 100;
+            $data['amount_gross'] *= 100;
 
             $transaction = $this->Transactions->patchEntity($transaction, $data);
             if ($this->Transactions->save($transaction)) {
@@ -152,7 +154,8 @@ class TransactionsController extends AdminController
         }
 
         // Convert cents to dollars
-        $transaction->amount /= 100;
+        $transaction->amount_net /= 100;
+        $transaction->amount_gross /= 100;
 
         $title = 'Update transaction ' . $transaction->id;
         $this->setCurrentBreadcrumb($title);
