@@ -5,13 +5,11 @@ namespace App\Model\Table;
 
 use App\Model\Entity\Transaction;
 use Cake\Core\Configure;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 use Cake\Log\Log;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Stripe\BalanceTransaction;
 use Stripe\Exception\ApiErrorException;
 use Stripe\StripeClient;
 
@@ -129,7 +127,7 @@ class TransactionsTable extends Table
     public function addPayment(\Stripe\Charge $charge): bool
     {
         $transaction = $this->newEntity([
-            'date' => new FrozenDate(),
+            'date' => new FrozenTime(),
             'amount_gross' => $charge->amount_captured,
             'amount_net' => self::getNetAmount($charge->balance_transaction),
             'type' => Transaction::TYPE_DONATION,
