@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\Transaction;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 use Cake\Log\Log;
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -121,7 +120,7 @@ class TransactionsTable extends Table
     public function addPayment(\Stripe\Charge $charge): bool
     {
         $transaction = $this->newEntity([
-            'date' => new FrozenDate(),
+            'date' => new FrozenTime(),
             'amount' => $charge->amount_captured,
             'type' => Transaction::TYPE_DONATION,
             'project_id' => null,
