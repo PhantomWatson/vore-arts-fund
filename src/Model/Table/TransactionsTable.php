@@ -4,12 +4,16 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\Transaction;
+use Cake\Core\Configure;
 use Cake\I18n\FrozenDate;
 use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Stripe\BalanceTransaction;
+use Stripe\Exception\ApiErrorException;
+use Stripe\StripeClient;
 
 /**
  * Transactions Model
@@ -127,6 +131,7 @@ class TransactionsTable extends Table
         $transaction = $this->newEntity([
             'date' => new FrozenDate(),
             'amount_gross' => $charge->amount_captured,
+            'amount_net' => self::getNetAmount($charge->balance_transaction),
             'type' => Transaction::TYPE_DONATION,
             'project_id' => null,
             'meta' => json_encode($charge),
@@ -141,5 +146,22 @@ class TransactionsTable extends Table
             ['scope' => 'stripe']
         );
         return false;
+    }
+
+    /**
+     * Returns the net amount of the specified balance transaction, or NULL if there's an error
+     *
+     * @param string $balanceTransactionId
+     * @return int|null
+     */
+    public static function getNetAmount(string $balanceTransactionId): ?int
+    {
+        $stripe = new StripeClient(Configure::read('Stripe.secret_key'));
+        try {
+            $balanceTransaction = $stripe->balanceTransactions->retrieve($balanceTransactionId, []);
+            return $balanceTransaction->net;
+        } catch (ApiErrorException $e) {
+            return null;
+        }
     }
 }

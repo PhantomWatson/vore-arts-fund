@@ -47,8 +47,6 @@ class PopulateAmountNetCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $stripe = new StripeClient(Configure::read('Stripe.secret_key'));
-
         /** @var TransactionsTable $transactionsTable */
         $transactionsTable = TableRegistry::getTableLocator()->get('Transactions');
         $stripeTransactions = $transactionsTable
@@ -67,9 +65,13 @@ class PopulateAmountNetCommand extends Command
         foreach ($stripeTransactions as $stripeTransaction) {
             $meta = json_decode($stripeTransaction->meta);
             echo 'Fetching details for balance transaction ' . $meta->balance_transaction . PHP_EOL;
-            $balanceTransaction = $stripe->balanceTransactions->retrieve($meta->balance_transaction, []);
-            echo ' - Net amount is ' . $balanceTransaction->net . PHP_EOL;
-            $transactionsTable->patchEntity($stripeTransaction, ['amount_net' => $balanceTransaction->net]);
+            $netAmount = TransactionsTable::getNetAmount($meta->balance_transaction);
+            if ($netAmount === null) {
+                echo '- Net amount cannot be fetched. ApiErrorException encountered. Log in to Stripe and check logs for details.' . PHP_EOL;
+                exit;
+            }
+            echo ' - Net amount is ' . $netAmount . PHP_EOL;
+            $transactionsTable->patchEntity($stripeTransaction, ['amount_net' => $netAmount]);
             if ($transactionsTable->save($stripeTransaction)) {
                 echo ' - Updated' . PHP_EOL;
             } else {
