@@ -55,6 +55,7 @@ class MailListener implements EventListenerInterface
             'Project.rejected' => 'mailProjectRejected',
             'Project.funded' => 'mailProjectFunded',
             'Project.notFunded' => 'mailProjectNotFunded',
+            'Note.messageSent' => 'mailMessage',
         ];
     }
 
@@ -201,6 +202,32 @@ class MailListener implements EventListenerInterface
             [
                 'subject' => self::$subjectPrefix . 'Application Not Funded',
                 'template' => 'application_not_funded',
+                'from_name' => $this->fromName,
+                'from_email' => $this->fromEmail,
+            ],
+        );
+    }
+
+    /**
+     * @param Event $event
+     * @param Project $project
+     * @param string $message
+     * @return void
+     * @throws InternalErrorException
+     */
+    public function mailMessage(Event $event, Project $project, string $message)
+    {
+        list($email, $name) = $this->getRecipientFromProject($project);
+        EmailQueue::enqueue(
+            $email,
+            [
+                'project' => $project,
+                'userName' => $name,
+                'message' => $message
+            ],
+            [
+                'subject' => self::$subjectPrefix . 'Message from review committee',
+                'template' => 'message',
                 'from_name' => $this->fromName,
                 'from_email' => $this->fromEmail,
             ],

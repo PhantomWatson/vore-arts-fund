@@ -43,4 +43,18 @@ class Note extends Entity
         'project' => true,
         'type' => true,
     ];
+
+    /**
+     * Returns TRUE if this note triggers an email being sent out
+     *
+     * @return bool
+     */
+    public function triggersEmail()
+    {
+        return in_array($this->type, [
+            self::TYPE_REJECTION,
+            self::TYPE_REVISION_REQUEST,
+            self::TYPE_MESSAGE,
+        ]);
+    }
 }
