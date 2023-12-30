@@ -12594,12 +12594,15 @@ body {
 .note-header {
   border-bottom: 1px solid #1A5B11;
   margin-bottom: 1em;
+  padding-bottom: 1em;
+  vertical-align: bottom;
 }
 .note-header p {
   margin-bottom: 0;
 }
 
 .note-type {
+  font-size: 125%;
   font-weight: bold;
 }
 .note-type i {

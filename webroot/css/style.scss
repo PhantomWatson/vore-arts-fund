@@ -818,6 +818,8 @@ article.note {
 .note-header {
     border-bottom: 1px solid $primary;
     margin-bottom: 1em;
+    padding-bottom: 1em;
+    vertical-align: bottom;
 
     p {
         margin-bottom: 0;
@@ -825,6 +827,7 @@ article.note {
 }
 
 .note-type {
+    font-size: 125%;
     font-weight: bold;
 
     i {
