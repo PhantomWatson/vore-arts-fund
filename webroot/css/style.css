@@ -12602,6 +12602,9 @@ body {
 .note-type {
   font-weight: bold;
 }
+.note-type i {
+  margin-right: 0.25em;
+}
 
 .note-date {
   font-size: 80%;

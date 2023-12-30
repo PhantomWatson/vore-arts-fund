@@ -1,8 +1,11 @@
 <?php
+
+use App\Model\Entity\Note;
+
 /**
  * @var \App\Model\Entity\Project $project
- * @var \App\Model\Entity\Note $newNote
- * @var \App\Model\Entity\Note[]|\Cake\ORM\ResultSet $notes
+ * @var Note $newNote
+ * @var Note[]|\Cake\ORM\ResultSet $notes
  * @var \App\Model\Entity\Question[] $questions
  * @var \App\View\AppView $this
  * @var int[] $statusActions
@@ -16,6 +19,19 @@ function getActionName($statusId, array $statusActions): string
 }
 
 $tabs = ['Overview' => 'overview', 'Description' => 'description', 'Notes & Messages' => 'notes'];
+
+function getNoteType($type) {
+    $retval = '';
+    $retval .= match ($type) {
+        Note::TYPE_NOTE => '<i class="fa-solid fa-file-lines"></i>',
+        Note::TYPE_MESSAGE => '<i class="fa-solid fa-message"></i>',
+        Note::TYPE_REVISION_REQUEST => '<i class="fa-solid fa-rotate-left"></i>',
+        Note::TYPE_REJECTION => '<i class="fa-solid fa-heart-crack"></i>',
+        default => '<i class="fa-solid fa-question"></i>',
+    };
+    $retval .= ' ' . ucfirst($type);
+    return $retval;
+}
 ?>
 
 <div class="col-md-6 mb-3 card" id="review-action-column">
@@ -65,7 +81,7 @@ $tabs = ['Overview' => 'overview', 'Description' => 'description', 'Notes & Mess
                         <article class="note">
                             <header class="note-header row">
                                 <p class="note-type col-6">
-                                    <?= ucfirst($note->type) ?>
+                                    <?= getNoteType($note->type) ?>
                                 </p>
                                 <p class="note-date col-6">
                                     <?= $note->user->name ?> - <?= $note->created->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') ?>
