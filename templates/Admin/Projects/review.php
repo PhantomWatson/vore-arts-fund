@@ -14,6 +14,8 @@ function getActionName($statusId, array $statusActions): string
 {
     return array_search($statusId, $statusActions);
 }
+
+$tabs = ['Overview' => 'overview', 'Description' => 'description', 'Notes & Messages' => 'notes'];
 ?>
 
 <div class="col-md-6 mb-3 card" id="review-action-column">
@@ -25,13 +27,13 @@ function getActionName($statusId, array $statusActions): string
 </div>
 
 <ul class="nav nav-tabs" id="review-tabs" role="tablist">
-    <?php foreach (['overview', 'description', 'notes'] as $i => $tab): ?>
+    <?php foreach ($tabs as $label => $tabId): ?>
         <li class="nav-item" role="presentation">
-            <button class="nav-link <?= !$i ? 'active' : '' ?>" id="<?= $tab ?>-tab" data-bs-toggle="tab"
-                    data-bs-target="#<?= $tab ?>-section" type="button" role="tab" aria-controls="<?= $tab ?>-section"
-                    aria-selected="<?= !$i ? 'true' : 'false' ?>">
-                <?= ucwords($tab) ?>
-                <?php if ($tab == 'notes' && !$notes->isEmpty()): ?>
+            <button class="nav-link <?= $tabId == 'overview' ? 'active' : '' ?>" id="<?= $tabId ?>-tab" data-bs-toggle="tab"
+                    data-bs-target="#<?= $tabId ?>-section" type="button" role="tab" aria-controls="<?= $tabId ?>-section"
+                    aria-selected="<?= $tabId == 'overview' ? 'true' : 'false' ?>">
+                <?= $label ?>
+                <?php if ($tabId == 'notes' && !$notes->isEmpty()): ?>
                     (<?= number_format(count($notes)) ?>)
                 <?php endif; ?>
             </button>
@@ -53,11 +55,11 @@ function getActionName($statusId, array $statusActions): string
     <div class="tab-pane" id="notes-section" role="tabpanel" aria-labelledby="notes-tab">
         <section>
             <h3>
-                Notes
+                Notes & Messages
             </h3>
             <div id="review-notes">
                 <?php if ($notes->isEmpty()): ?>
-                    No notes have been added for this project yet.
+                    None found for this project
                 <?php else: ?>
                     <?php foreach ($notes as $note): ?>
                         <section>
