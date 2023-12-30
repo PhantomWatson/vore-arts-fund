@@ -23,6 +23,7 @@ class Note extends Entity
     public const TYPE_NOTE = 'note';
     public const TYPE_REVISION_REQUEST = 'revision request';
     public const TYPE_REJECTION = 'rejection';
+    public const TYPE_MESSAGE = 'message';
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

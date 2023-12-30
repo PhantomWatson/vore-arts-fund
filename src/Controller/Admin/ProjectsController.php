@@ -102,7 +102,6 @@ class ProjectsController extends AdminController
                 $user = $this->getAuthUser();
                 $data['user_id'] = $user?->id;
                 $data['project_id'] = $projectId;
-                $data['type'] = $this->getNoteType($data['status_id'] ?? null);
                 $note = $notesTable->newEntity($data);
                 if ($notesTable->save($note)) {
                     $this->Flash->success('Note added');

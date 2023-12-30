@@ -21,15 +21,26 @@ const App = () => {
   const validStatusIds = window.validStatusIds;
   const [selectedAction, setSelectedAction] = useState(null);
   const [selectedStatusId, setSelectedStatusId] = useState(null);
+  const STATUS_REJECTED = 3;
+  const STATUS_REVISION_REQUESTED = 4;
   const noteNeeded = [
-    3, // Reject
-    4, // Request revision
+    STATUS_REJECTED, // Reject
+    STATUS_REVISION_REQUESTED, // Request revision
   ];
+  const NOTE_TYPE_NOTE = 'note';
+  const NOTE_TYPE_REVISION_REQUESTED = 'revision request';
+  const NOTE_TYPE_REJECTION = 'rejection';
+  const NOTE_TYPE_MESSAGE = 'message';
 
   const getActionName = (statusId) => statusActions['' + statusId];
 
   const addNote = () => {
     setSelectedAction('note');
+    setSelectedStatusId(null);
+  };
+
+  const addMessage = () => {
+    setSelectedAction('message');
     setSelectedStatusId(null);
   };
 
@@ -82,7 +93,16 @@ const App = () => {
                   type="button"
                   onClick={addNote}
           >
-            Add note
+            Add private note
+          </button>
+        </li>
+        <li>
+          <button className="dropdown-item"
+                  data-action="message"
+                  type="button"
+                  onClick={addMessage}
+          >
+            Send applicant a message
           </button>
         </li>
         {validStatusIds.map(statusId => (
@@ -102,14 +122,31 @@ const App = () => {
     </div>
   );
 
+  const getNoteType = () => {
+    if (selectedAction === 'note') {
+      return NOTE_TYPE_NOTE;
+    }
+    if (selectedAction === 'message') {
+      return NOTE_TYPE_MESSAGE;
+    }
+    if (selectedStatusId === STATUS_REJECTED) {
+      return NOTE_TYPE_REJECTION;
+    }
+    if (selectedStatusId === STATUS_REVISION_REQUESTED) {
+      return NOTE_TYPE_REVISION_REQUESTED;
+    }
+    return NOTE_TYPE_NOTE;
+  };
+
   const NoteSection = () => {
     return (
       <>
         <div className="form-group textarea required mt-3">
           <label htmlFor="status-change-note" className="form-label">
-            {selectedStatusId === null && "Note"}
-            {selectedStatusId === 3 && "Reason for rejection"}
-            {selectedStatusId === 4 && "What should the applicant add/change?"}
+            {selectedAction === 'note' && "Private note (will not be shown to applicant)"}
+            {selectedAction === 'message' && "Message to applicant"}
+            {selectedStatusId === STATUS_REJECTED && "Reason for rejection (will be sent to applicant)"}
+            {selectedStatusId === STATUS_REVISION_REQUESTED && "What should the applicant add/change? (will be sent to applicant)"}
           </label>
           <textarea className="form-control"
                     id="status-change-note"
@@ -120,10 +157,12 @@ const App = () => {
           </textarea>
         </div>
         <button type="submit" className="btn btn-primary">
-          {selectedStatusId === null && "Add note"}
-          {selectedStatusId === 3 && "Reject application"}
-          {selectedStatusId === 4 && "Request revision"}
+          {selectedAction === 'note' && "Add note"}
+          {selectedAction === 'message' && "Send message"}
+          {selectedStatusId === STATUS_REJECTED && "Reject application"}
+          {selectedStatusId === STATUS_REVISION_REQUESTED && "Request revision"}
         </button>
+        <input type="hidden" name="type" value={getNoteType()} />
       </>
     );
   };
@@ -142,7 +181,7 @@ const App = () => {
     <>
       <Menu />
       <form method="post">
-        {selectedAction === 'note' &&
+        {(selectedAction === 'note' || selectedAction === 'message') &&
           <NoteSection />
         }
         {selectedAction === 'change status' &&
