@@ -809,25 +809,28 @@ body {
 
 #review-notes {
     margin-top: 1em;
+}
 
-    section {
-        @extend .bordered-section;
+article.note {
+    @extend .bordered-section;
+}
 
-        p {
-            margin-bottom: 0;
-        }
+.note-header {
+    border-bottom: 1px solid $primary;
+    margin-bottom: 1em;
 
-        .date {
-            font-size: 80%;
-            text-align: right;
-        }
-
-        .note-type {
-            border-bottom: 1px solid $primary;
-            font-weight: bold;
-            margin-bottom: 1em;
-        }
+    p {
+        margin-bottom: 0;
     }
+}
+
+.note-type {
+    font-weight: bold;
+}
+
+.note-date {
+    font-size: 80%;
+    text-align: right;
 }
 
 #voter-app {

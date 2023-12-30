@@ -62,19 +62,19 @@ $tabs = ['Overview' => 'overview', 'Description' => 'description', 'Notes & Mess
                     None found for this project
                 <?php else: ?>
                     <?php foreach ($notes as $note): ?>
-                        <section>
-                            <?php if ($note->type != \App\Model\Entity\Note::TYPE_NOTE): ?>
-                                <p class="note-type">
+                        <article class="note">
+                            <header class="note-header row">
+                                <p class="note-type col-6">
                                     <?= ucfirst($note->type) ?>
                                 </p>
-                            <?php endif; ?>
+                                <p class="note-date col-6">
+                                    <?= $note->user->name ?> - <?= $note->created->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') ?>
+                                </p>
+                            </header>
                             <p>
                                 <?= nl2br($note->body) ?>
                             </p>
-                            <p class="date">
-                                <?= $note->user->name ?> - <?= $note->created->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') ?>
-                            </p>
-                        </section>
+                        </article>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
