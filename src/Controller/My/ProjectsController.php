@@ -7,6 +7,7 @@ use App\Controller\ProjectsController as BaseProjectsController;
 use App\Model\Entity\Project;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
+use Cake\ORM\Query;
 
 /**
  * ProjectsController
@@ -144,7 +145,15 @@ class ProjectsController extends BaseProjectsController
             ->find()
             ->where(['user_id' => $user->id])
             ->orderDesc('Projects.created')
-            ->contain(['FundingCycles', 'Reports'])
+            ->contain([
+                'FundingCycles',
+                'Reports' => function (Query $q) {
+                    return $q->select([
+                        'Reports.project_id',
+                        'Reports.id',
+                    ]);
+                }
+            ])
             ->all();
         $this->set(compact('projects'));
     }
