@@ -12573,6 +12573,11 @@ body {
   width: auto;
 }
 
+#review-actions button i {
+  margin-right: 0.25em;
+  width: 1.5em;
+}
+
 #review-action-column section {
   margin-bottom: 2rem;
 }

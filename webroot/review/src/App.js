@@ -93,7 +93,7 @@ const App = () => {
                   type="button"
                   onClick={addNote}
           >
-            Add private note
+            <i class="fa-solid fa-file-lines"></i> Add private note
           </button>
         </li>
         <li>
@@ -102,7 +102,7 @@ const App = () => {
                   type="button"
                   onClick={addMessage}
           >
-            Send applicant a message
+            <i class="fa-solid fa-message"></i> Send applicant a message
           </button>
         </li>
         {validStatusIds.map(statusId => (
@@ -113,8 +113,10 @@ const App = () => {
                     onClick={() => {
                       changeStatus(statusId)
                     }}
+                    dangerouslySetInnerHTML={{
+                      __html: getActionName(statusId)
+                    }}
             >
-              {getActionName(statusId)}
             </button>
           </li>
         ))}

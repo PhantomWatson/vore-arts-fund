@@ -1,9 +1,10 @@
 <?php
 
 use App\Model\Entity\Note;
+use App\Model\Entity\Project;
 
 /**
- * @var \App\Model\Entity\Project $project
+ * @var Project $project
  * @var Note $newNote
  * @var Note[]|\Cake\ORM\ResultSet $notes
  * @var \App\Model\Entity\Question[] $questions
@@ -23,11 +24,11 @@ $tabs = ['Overview' => 'overview', 'Description' => 'description', 'Notes & Mess
 function getNoteType($type) {
     $retval = '';
     $retval .= match ($type) {
-        Note::TYPE_NOTE => '<i class="fa-solid fa-file-lines"></i>',
-        Note::TYPE_MESSAGE => '<i class="fa-solid fa-message"></i>',
-        Note::TYPE_REVISION_REQUEST => '<i class="fa-solid fa-rotate-left"></i>',
-        Note::TYPE_REJECTION => '<i class="fa-solid fa-heart-crack"></i>',
-        default => '<i class="fa-solid fa-question"></i>',
+        Note::TYPE_NOTE => Project::ICON_NOTE,
+        Note::TYPE_MESSAGE => Project::ICON_MESSAGE,
+        Note::TYPE_REVISION_REQUEST => Project::ICON_REVISION_REQUESTED,
+        Note::TYPE_REJECTION => Project::ICON_REJECTED,
+        default => Project::ICON_UNKNOWN,
     };
     $retval .= ' ' . ucfirst($type);
     return $retval;
