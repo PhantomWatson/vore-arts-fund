@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Note;
 use App\Model\Entity\Project;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
@@ -196,7 +197,10 @@ class ProjectsTable extends Table
                     'Users',
                     'Reports' => function (Query $query) {
                         return $query->select(['id', 'project_id']);
-                    }
+                    },
+                    'Notes' => function (Query $query) {
+                        return $query->find('notInternal');
+                    },
                 ]
             ]
         );

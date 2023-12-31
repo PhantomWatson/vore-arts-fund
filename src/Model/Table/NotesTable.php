@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Note;
+use Cake\Database\Expression\QueryExpression;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -85,5 +88,22 @@ class NotesTable extends Table
         $rules->add($rules->existsIn(['project_id'], 'Projects'));
 
         return $rules;
+    }
+
+    /**
+     * Returns notes that aren't private/internal and can be shown to the applicant
+     *
+     * @param Query|SelectQuery $query
+     * @return Query
+     */
+    public function findNotInternal($query)
+    {
+        return $query->where(function (QueryExpression $exp) {
+            return $exp->in('type', [
+                Note::TYPE_REVISION_REQUEST,
+                Note::TYPE_MESSAGE,
+                Note::TYPE_REJECTION,
+            ]);
+        });
     }
 }

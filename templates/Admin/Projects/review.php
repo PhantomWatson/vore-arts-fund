@@ -20,19 +20,6 @@ function getActionName($statusId, array $statusActions): string
 }
 
 $tabs = ['Overview' => 'overview', 'Description' => 'description', 'Notes & Messages' => 'notes'];
-
-function getNoteType($type) {
-    $retval = '';
-    $retval .= match ($type) {
-        Note::TYPE_NOTE => Project::ICON_NOTE,
-        Note::TYPE_MESSAGE => Project::ICON_MESSAGE,
-        Note::TYPE_REVISION_REQUEST => Project::ICON_REVISION_REQUESTED,
-        Note::TYPE_REJECTION => Project::ICON_REJECTED,
-        default => Project::ICON_UNKNOWN,
-    };
-    $retval .= ' ' . ucfirst($type);
-    return $retval;
-}
 ?>
 
 <div class="col-md-6 mb-3 card" id="review-action-column">
@@ -79,19 +66,7 @@ function getNoteType($type) {
                     None found for this project
                 <?php else: ?>
                     <?php foreach ($notes as $note): ?>
-                        <article class="note">
-                            <header class="note-header row">
-                                <p class="note-type col-6">
-                                    <?= getNoteType($note->type) ?>
-                                </p>
-                                <p class="note-date col-6">
-                                    <?= $note->user->name ?> - <?= $note->created->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') ?>
-                                </p>
-                            </header>
-                            <p>
-                                <?= nl2br($note->body) ?>
-                            </p>
-                        </article>
+                        <?= $this->element('Notes/view', compact('note')) ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>

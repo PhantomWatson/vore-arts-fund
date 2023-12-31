@@ -80,6 +80,9 @@ $routes->prefix('my', function (RouteBuilder $builder) {
     $builder->connect('/projects/{id}', ['controller' => 'Projects', 'action' => 'view'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
+    $builder->connect('/projects/messages/{id}', ['controller' => 'Projects', 'action' => 'messages'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);
     $builder->connect('/projects/edit/{id}', ['controller' => 'Projects', 'action' => 'edit'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
