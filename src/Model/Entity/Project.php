@@ -56,6 +56,7 @@ class Project extends Entity
     const ICON_SAVE = '<i class="fa-solid fa-floppy-disk"></i>';
     const ICON_SUBMIT = '<i class="fa-solid fa-share-from-square"></i>';
     const ICON_WITHDRAW = '<i class="fa-solid fa-ban"></i>';
+    const ICON_REPORT = '<i class="fa-solid fa-file-lines"></i>';
 
 
     /**

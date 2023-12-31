@@ -144,7 +144,7 @@ $reportWhen = [
                                 <?php endif; ?>
                                 <?php if (in_array($project->status_id, $withdrawWhen)): ?>
                                     <?= $this->Form->postLink(
-                                        '<i class="fa-solid fa-ban"></i> Withdraw',
+                                        Project::ICON_WITHDRAW . ' Withdraw',
                                         [
                                             'controller' => 'Projects',
                                             'action' => 'withdraw',
@@ -159,7 +159,7 @@ $reportWhen = [
                                 <?php endif; ?>
                                 <?php if (in_array($project->status_id, $reportWhen)): ?>
                                     <?= $this->Html->link(
-                                        '<i class="fa-solid fa-file-lines"></i> Submit report',
+                                        Project::ICON_REPORT . ' Submit report',
                                         [
                                             'prefix' => false,
                                             'controller' => 'Reports',
@@ -189,7 +189,7 @@ $reportWhen = [
                                 <?php endif; ?>
                                 <?php if (count($project->reports)): ?>
                                     <?= $this->Html->link(
-                                        '<i class="fa-solid fa-file-lines"></i> View reports',
+                                        Project::ICON_REPORT . ' View reports',
                                         [
                                             'prefix' => false,
                                             'controller' => 'Reports',
