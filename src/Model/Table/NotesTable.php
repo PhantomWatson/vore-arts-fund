@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use App\Model\Entity\Note;
 use Cake\Database\Expression\QueryExpression;
+use Cake\ORM\Query;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
