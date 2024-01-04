@@ -34,6 +34,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/contact', ['controller' => 'Pages', 'action' => 'contact']);
     $builder->connect('/privacy', ['controller' => 'Pages', 'action' => 'privacy']);
     $builder->connect('/terms', ['controller' => 'Pages', 'action' => 'terms']);
+    $builder->connect('/maintenance', ['controller' => 'Pages', 'action' => 'maintenanceMode']);
 
     // Projects
     $builder->connect('/project/{id}', ['controller' => 'Projects', 'action' => 'view']);
