@@ -789,6 +789,15 @@ body {
     width: auto;
 }
 
+#review-actions {
+    button {
+        i {
+            margin-right: 0.25em;
+            width: 1.5em;
+        }
+    }
+}
+
 #review-action-column {
     section {
         margin-bottom: $section-spacer;
@@ -809,25 +818,35 @@ body {
 
 #review-notes {
     margin-top: 1em;
+}
 
-    section {
-        @extend .bordered-section;
+article.note {
+    @extend .bordered-section;
+}
 
-        p {
-            margin-bottom: 0;
-        }
+.note-header {
+    border-bottom: 1px solid $primary;
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    vertical-align: bottom;
 
-        .date {
-            font-size: 80%;
-            text-align: right;
-        }
-
-        .note-type {
-            border-bottom: 1px solid $primary;
-            font-weight: bold;
-            margin-bottom: 1em;
-        }
+    p {
+        margin-bottom: 0;
     }
+}
+
+.note-type {
+    font-size: 125%;
+    font-weight: bold;
+
+    i {
+        margin-right: 0.25em;
+    }
+}
+
+.note-date {
+    font-size: 80%;
+    text-align: right;
 }
 
 #voter-app {

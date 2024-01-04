@@ -39,6 +39,7 @@ $reportWhen = [
                 <th>Project</th>
                 <th>Created</th>
                 <th>Status</th>
+                <th>Messages</th>
                 <th>Reports</th>
                 <th>Actions</th>
             </tr>
@@ -65,9 +66,24 @@ $reportWhen = [
                         <?= $project->status_name ?>
                     </td>
                     <td>
+                        <?php if (count($project->notes)): ?>
+                            <?= $this->Html->link(
+                                count($project->notes) . ' (view)',
+                                [
+                                    'prefix' => 'My',
+                                    'controller' => 'Projects',
+                                    'action' => 'messages',
+                                    'id' => $project->id,
+                                ]
+                            ) ?>
+                        <?php else: ?>
+                            <?= count($project->notes) ?>
+                        <?php endif; ?>
+                    </td>
+                    <td>
                         <?php if (count($project->reports)): ?>
                             <?= $this->Html->link(
-                                count($project->reports),
+                                count($project->reports) . ' (view)',
                                 [
                                     'prefix' => false,
                                     'controller' => 'Reports',
@@ -128,7 +144,7 @@ $reportWhen = [
                                 <?php endif; ?>
                                 <?php if (in_array($project->status_id, $withdrawWhen)): ?>
                                     <?= $this->Form->postLink(
-                                        '<i class="fa-solid fa-ban"></i> Withdraw',
+                                        Project::ICON_WITHDRAW . ' Withdraw',
                                         [
                                             'controller' => 'Projects',
                                             'action' => 'withdraw',
@@ -143,7 +159,7 @@ $reportWhen = [
                                 <?php endif; ?>
                                 <?php if (in_array($project->status_id, $reportWhen)): ?>
                                     <?= $this->Html->link(
-                                        '<i class="fa-solid fa-file-lines"></i> Submit report',
+                                        Project::ICON_REPORT . ' Submit report',
                                         [
                                             'prefix' => false,
                                             'controller' => 'Reports',
@@ -156,9 +172,24 @@ $reportWhen = [
                                         ]
                                     ) ?>
                                 <?php endif; ?>
+                                <?php if (count($project->notes)): ?>
+                                    <?= $this->Html->link(
+                                        Project::ICON_MESSAGE . ' View messages',
+                                        [
+                                            'prefix' => 'My',
+                                            'controller' => 'Projects',
+                                            'action' => 'messages',
+                                            $project->id,
+                                        ],
+                                        [
+                                            'class' => 'dropdown-item',
+                                            'escape' => false
+                                        ]
+                                    ) ?>
+                                <?php endif; ?>
                                 <?php if (count($project->reports)): ?>
                                     <?= $this->Html->link(
-                                        '<i class="fa-solid fa-file-lines"></i> View reports',
+                                        Project::ICON_REPORT . ' View reports',
                                         [
                                             'prefix' => false,
                                             'controller' => 'Reports',
@@ -171,7 +202,6 @@ $reportWhen = [
                                         ]
                                     ) ?>
                                 <?php endif; ?>
-
                             </ul>
                         </div>
                     </td>

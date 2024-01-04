@@ -46,6 +46,19 @@ class Project extends Entity
     const STATUS_NOT_AWARDED = 7;
     const STATUS_WITHDRAWN = 8;
 
+    const ICON_ACCEPTED = '<i class="fa-solid fa-thumbs-up"></i>';
+    const ICON_REJECTED = '<i class="fa-solid fa-heart-crack"></i>';
+    const ICON_REVISION_REQUESTED = '<i class="fa-solid fa-rotate-left"></i>';
+    const ICON_MESSAGE = '<i class="fa-solid fa-message"></i>';
+    const ICON_NOTE = '<i class="fa-solid fa-file-lines"></i>';
+    const ICON_FUND = '<i class="fa-solid fa-sack-dollar"></i>';
+    const ICON_UNKNOWN = '<i class="fa-solid fa-question"></i>';
+    const ICON_SAVE = '<i class="fa-solid fa-floppy-disk"></i>';
+    const ICON_SUBMIT = '<i class="fa-solid fa-share-from-square"></i>';
+    const ICON_WITHDRAW = '<i class="fa-solid fa-ban"></i>';
+    const ICON_REPORT = '<i class="fa-solid fa-file-lines"></i>';
+
+
     /**
      * Returns TRUE if this project can be viewed by the public
      *
@@ -100,14 +113,14 @@ class Project extends Entity
     public static function getStatusActions(): array
     {
         return [
-            self::STATUS_DRAFT              => 'Save this application as a draft',
-            self::STATUS_UNDER_REVIEW       => 'Submit  this application for review',
-            self::STATUS_ACCEPTED           => 'Accept this application',
-            self::STATUS_REJECTED           => 'Reject this application',
-            self::STATUS_REVISION_REQUESTED => 'Request revision',
-            self::STATUS_AWARDED            => 'Award funding to this project',
-            self::STATUS_NOT_AWARDED        => 'Decline to award funding to this project',
-            self::STATUS_WITHDRAWN          => 'Withdraw this application',
+            self::STATUS_DRAFT              => self::ICON_SAVE . ' Save this application as a draft',
+            self::STATUS_UNDER_REVIEW       => self::ICON_SUBMIT . ' Submit this application for review',
+            self::STATUS_ACCEPTED           => self::ICON_ACCEPTED . ' Accept this application',
+            self::STATUS_REJECTED           => self::ICON_REJECTED . ' Reject this application',
+            self::STATUS_REVISION_REQUESTED => self::ICON_REVISION_REQUESTED . ' Request revision',
+            self::STATUS_AWARDED            => self::ICON_FUND . ' Award funding to this project',
+            self::STATUS_NOT_AWARDED        => self::ICON_REJECTED . ' Decline to award funding to this project',
+            self::STATUS_WITHDRAWN          => self::ICON_WITHDRAW . ' Withdraw this application',
         ];
     }
 

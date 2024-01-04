@@ -140,4 +140,9 @@ class PagesController extends AppController
             'title' => '',
         ]);
     }
+
+    public function maintenanceMode(): void
+    {
+        $this->title('Hang tight! We\'re undergoing maintenance.');
+    }
 }

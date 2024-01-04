@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 use App\Event\MailListener;
 use App\Model\Entity\Note;
 use App\Model\Entity\Project;
+use App\Model\Table\NotesTable;
 use Cake\Event\Event;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
@@ -21,6 +22,9 @@ use Cake\Http\Response;
 
 class ProjectsController extends AdminController
 {
+    /** @var bool Helps keep track of whether a "message sent" message should be shown */
+    private $messageSent = false;
+
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
@@ -76,10 +80,13 @@ class ProjectsController extends AdminController
             return $this->redirect(['action' => 'index']);
         }
 
+        /** @var NotesTable $notesTable */
         $notesTable = $this->fetchTable('Notes');
         if (!$this->request->is('get')) {
             // Assume save was successful unless if an error is encountered
             $successfullySaved = true;
+
+            $this->messageSent = false;
 
             $data = $this->request->getData();
 
@@ -97,19 +104,27 @@ class ProjectsController extends AdminController
                 }
             }
 
-            // Adding note
+            // Adding note / sending message
             if ($noteBody) {
                 $user = $this->getAuthUser();
                 $data['user_id'] = $user?->id;
                 $data['project_id'] = $projectId;
-                $data['type'] = $this->getNoteType($data['status_id'] ?? null);
                 $note = $notesTable->newEntity($data);
                 if ($notesTable->save($note)) {
-                    $this->Flash->success('Note added');
+                    if ($note->type == Note::TYPE_MESSAGE) {
+                        $this->dispatchMessageSentEvent($project, $note->body);
+                        $this->messageSent = true;
+                    } elseif (!$this->messageSent) {
+                        $this->Flash->success('Note added');
+                    }
                 } else {
                     $this->Flash->error('Error adding note. Details: ' . print_r($note->getErrors(), true));
                     $successfullySaved = false;
                 }
+            }
+
+            if ($this->messageSent) {
+                $this->Flash->success('Message sent to applicant');
             }
 
             // POST/Redirect/GET pattern
@@ -170,7 +185,7 @@ class ProjectsController extends AdminController
      * @param string|null $noteBody
      * @return void
      */
-    private function dispatchStatusChangeEvent(Project $project, ?string $noteBody)
+    private function dispatchStatusChangeEvent(Project $project, ?string $noteBody): void
     {
         switch ($project->status_id) {
             case Project::STATUS_ACCEPTED:
@@ -185,6 +200,25 @@ class ProjectsController extends AdminController
             default;
                 return;
         }
+        $this->getEventManager()->dispatch($event);
+        $this->messageSent = true;
+    }
+
+    /**
+     * @param Project $project
+     * @param string $message
+     * @return void
+     */
+    private function dispatchMessageSentEvent(Project $project, string $message): void
+    {
+        $event = new Event(
+            'Note.messageSent',
+            $this,
+            [
+                'project' => $project,
+                'message' => $message,
+            ]
+        );
         $this->getEventManager()->dispatch($event);
     }
 }

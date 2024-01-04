@@ -34,6 +34,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/contact', ['controller' => 'Pages', 'action' => 'contact']);
     $builder->connect('/privacy', ['controller' => 'Pages', 'action' => 'privacy']);
     $builder->connect('/terms', ['controller' => 'Pages', 'action' => 'terms']);
+    $builder->connect('/maintenance', ['controller' => 'Pages', 'action' => 'maintenanceMode']);
 
     // Projects
     $builder->connect('/project/{id}', ['controller' => 'Projects', 'action' => 'view']);
@@ -78,6 +79,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
 $routes->prefix('my', function (RouteBuilder $builder) {
     $builder->connect('/projects', ['controller' => 'Projects', 'action' => 'index']);
     $builder->connect('/projects/{id}', ['controller' => 'Projects', 'action' => 'view'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);
+    $builder->connect('/projects/messages/{id}', ['controller' => 'Projects', 'action' => 'messages'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
     $builder->connect('/projects/edit/{id}', ['controller' => 'Projects', 'action' => 'edit'])

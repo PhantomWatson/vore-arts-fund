@@ -12291,7 +12291,7 @@ pre {
   width: 100%;
 }
 
-.bordered-section, #review-notes section, fieldset {
+.bordered-section, article.note, fieldset {
   background-color: #fff;
   border: 1px solid #1A5B11;
   border-radius: 0.5rem;
@@ -12573,6 +12573,11 @@ body {
   width: auto;
 }
 
+#review-actions button i {
+  margin-right: 0.25em;
+  width: 1.5em;
+}
+
 #review-action-column section {
   margin-bottom: 2rem;
 }
@@ -12590,17 +12595,28 @@ body {
 #review-notes {
   margin-top: 1em;
 }
-#review-notes section p {
+
+.note-header {
+  border-bottom: 1px solid #1A5B11;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+  vertical-align: bottom;
+}
+.note-header p {
   margin-bottom: 0;
 }
-#review-notes section .date {
+
+.note-type {
+  font-size: 125%;
+  font-weight: bold;
+}
+.note-type i {
+  margin-right: 0.25em;
+}
+
+.note-date {
   font-size: 80%;
   text-align: right;
-}
-#review-notes section .note-type {
-  border-bottom: 1px solid #1A5B11;
-  font-weight: bold;
-  margin-bottom: 1em;
 }
 
 #vote-steps {

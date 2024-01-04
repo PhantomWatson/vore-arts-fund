@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Model\Entity\User;
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\ORM\TableRegistry;
 use Cake\View\JsonView;
@@ -51,13 +52,23 @@ class AppController extends Controller
 
     /**
      * @param \Cake\Event\EventInterface $event Event object
-     * @return \Cake\Http\Response|void|null
+     * @return \Cake\Http\Response|null
      */
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
 
+        $isMaintenanceMode = Configure::read('maintenanceMode');
+        $alreadyRedirected = $this->getRequest()->getParam('action') == 'maintenanceMode';
+        if ($isMaintenanceMode && !$alreadyRedirected) {
+            return $this->redirect([
+                'controller' => 'Pages',
+                'action' => 'maintenanceMode',
+            ]);
+        }
+
         $this->addBreadcrumb('Home', '/');
+        return null;
     }
 
     /**

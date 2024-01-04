@@ -4,9 +4,14 @@ declare(strict_types=1);
 namespace App\Controller\My;
 
 use App\Controller\ProjectsController as BaseProjectsController;
+use App\Model\Entity\Note;
 use App\Model\Entity\Project;
+use App\Model\Table\NotesTable;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
+use Cake\ORM\Query;
+use Cake\ORM\TableRegistry;
 
 /**
  * ProjectsController
@@ -144,8 +149,62 @@ class ProjectsController extends BaseProjectsController
             ->find()
             ->where(['user_id' => $user->id])
             ->orderDesc('Projects.created')
-            ->contain(['FundingCycles', 'Reports'])
+            ->contain([
+                'FundingCycles',
+                'Reports' => function (Query $q) {
+                    return $q->select([
+                        'Reports.project_id',
+                        'Reports.id',
+                    ]);
+                },
+                'Notes' => function (Query $q) {
+                    return $q
+                        ->find('notInternal')
+                        ->select([
+                            'Notes.project_id',
+                            'Notes.id'
+                        ]);
+                }
+            ])
             ->all();
         $this->set(compact('projects'));
+    }
+
+    /**
+     * Shows the applicant all of the non-internal notes (a.k.a. messages) for the selected project
+     *
+     * @return Response|null
+     */
+    public function messages()
+    {
+        $projectId = $this->request->getParam('id');
+        if (!$this->isOwnProject($projectId)) {
+            $this->Flash->error('Sorry, but that project is not available to view.');
+            return $this->redirect('/');
+        }
+
+        /** @var Project $project */
+        $project = $this->Projects->get($projectId);
+
+        /** @var NotesTable $notesTable */
+        $notesTable = TableRegistry::getTableLocator()->get('Notes');
+        $notes = $notesTable
+            ->find('notInternal')
+            ->where(['Notes.project_id' => $projectId])
+            ->orderDesc('Notes.created')
+            ->all();
+
+        $this->set(compact('project', 'notes'));
+
+        $this->title('Messages: ' . $project->title);
+        $this->addBreadcrumb($project->title, [
+            'prefix' => 'My',
+            'controller' => 'Projects',
+            'action' => 'view',
+            'id' => $projectId,
+        ]);
+        $this->setCurrentBreadcrumb('Messages');
+
+        return null;
     }
 }
