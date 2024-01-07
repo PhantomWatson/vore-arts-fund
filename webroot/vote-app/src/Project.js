@@ -67,6 +67,7 @@ const Project = (props) => {
               <strong>Category:</strong> {props.project.category.name}
             </p>
             <p>
+              {props.project.accept_partial_payout && 'Up to '}
               {currencyFormatter.format(props.project.amount_requested) + ' '}
               is being requested by {props.project.user.name}
             </p>
