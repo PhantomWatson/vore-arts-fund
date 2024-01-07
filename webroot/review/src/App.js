@@ -35,7 +35,7 @@ const App = () => {
   const getAction = (statusId) => statusActions['' + statusId];
   const getButtonLabel = (statusId) => {
     const action = getAction(statusId);
-    return action.icon + ' ' + action.label;
+    return ' ' + action.icon + ' ' + action.label;
   };
 
   // Debugging
