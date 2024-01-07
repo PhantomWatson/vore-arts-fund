@@ -887,7 +887,7 @@ article.note {
     }
 }
 
-.vote-projects-list {
+.vote-project-list {
     @extend .table;
 
     .fa-thumbs-up {
@@ -896,6 +896,12 @@ article.note {
 
     .fa-thumbs-down {
         color: red;
+    }
+
+    .project-title {
+        font-size: 125%;
+        font-weight: bold;
+        margin-bottom: 0;
     }
 }
 
