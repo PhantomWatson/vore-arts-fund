@@ -19,8 +19,8 @@ import {useState} from 'react';
 const App = () => {
   const statusActions = window.statusActions;
   const validStatusIds = window.validStatusIds;
-  const [selectedAction, setSelectedAction] = useState(null);
-  const [selectedStatusId, setSelectedStatusId] = useState(null);
+  const [selectedAction, setSelectedAction] = useState('');
+  const [selectedStatusId, setSelectedStatusId] = useState('');
   const STATUS_REJECTED = 3;
   const STATUS_REVISION_REQUESTED = 4;
   const noteNeeded = [
