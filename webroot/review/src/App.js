@@ -32,7 +32,15 @@ const App = () => {
   const NOTE_TYPE_REJECTION = 'rejection';
   const NOTE_TYPE_MESSAGE = 'message';
 
-  const getActionName = (statusId) => statusActions['' + statusId];
+  const getAction = (statusId) => statusActions['' + statusId];
+  const getButtonLabel = (statusId) => {
+    const action = getAction(statusId);
+    return action.icon + ' ' + action.label;
+  };
+
+  // Debugging
+  console.log(statusActions);
+  console.log('updating automatically?');
 
   const addNote = () => {
     setSelectedAction('note');
@@ -67,8 +75,8 @@ const App = () => {
     }
 
     // Submit
-    const action = statusActions['' + statusId].toLowerCase();
-    if (confirm('Are you sure you want to ' + action + '?')) {
+    const action = getAction(statusId);
+    if (confirm('Are you sure you want to ' + action.label.toLowerCase() + '?')) {
       submitStatusChange(statusId);
 
       return;
@@ -93,7 +101,7 @@ const App = () => {
                   type="button"
                   onClick={addNote}
           >
-            <i class="fa-solid fa-file-lines"></i> Add private note
+            <i className="fa-solid fa-file-lines"></i> Add private note
           </button>
         </li>
         <li>
@@ -102,7 +110,7 @@ const App = () => {
                   type="button"
                   onClick={addMessage}
           >
-            <i class="fa-solid fa-message"></i> Send applicant a message
+            <i className="fa-solid fa-message"></i> Send applicant a message
           </button>
         </li>
         {validStatusIds.map(statusId => (
@@ -114,7 +122,7 @@ const App = () => {
                       changeStatus(statusId)
                     }}
                     dangerouslySetInnerHTML={{
-                      __html: getActionName(statusId)
+                      __html: getButtonLabel(statusId)
                     }}
             >
             </button>

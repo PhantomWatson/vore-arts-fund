@@ -113,14 +113,38 @@ class Project extends Entity
     public static function getStatusActions(): array
     {
         return [
-            self::STATUS_DRAFT              => self::ICON_SAVE . ' Save this application as a draft',
-            self::STATUS_UNDER_REVIEW       => self::ICON_SUBMIT . ' Submit this application for review',
-            self::STATUS_ACCEPTED           => self::ICON_ACCEPTED . ' Accept this application',
-            self::STATUS_REJECTED           => self::ICON_REJECTED . ' Reject this application',
-            self::STATUS_REVISION_REQUESTED => self::ICON_REVISION_REQUESTED . ' Request revision',
-            self::STATUS_AWARDED            => self::ICON_FUND . ' Award funding to this project',
-            self::STATUS_NOT_AWARDED        => self::ICON_REJECTED . ' Decline to award funding to this project',
-            self::STATUS_WITHDRAWN          => self::ICON_WITHDRAW . ' Withdraw this application',
+            self::STATUS_DRAFT => [
+                'icon' => self::ICON_SAVE,
+                'label' => 'Save this application as a draft'
+            ],
+            self::STATUS_UNDER_REVIEW => [
+                'icon' => self::ICON_SUBMIT,
+                'label' => 'Submit this application for review'
+            ],
+            self::STATUS_ACCEPTED => [
+                'icon' => self::ICON_ACCEPTED,
+                'label' => 'Accept this application'
+            ],
+            self::STATUS_REJECTED => [
+                'icon' => self::ICON_REJECTED,
+                'label' => 'Reject this application'
+            ],
+            self::STATUS_REVISION_REQUESTED => [
+                'icon' => self::ICON_REVISION_REQUESTED,
+                'label' => 'Request revision'
+            ],
+            self::STATUS_AWARDED => [
+                'icon' => self::ICON_FUND,
+                'label' => 'Award funding to this project'
+            ],
+            self::STATUS_NOT_AWARDED => [
+                'icon' => self::ICON_REJECTED,
+                'label' => 'Decline to award funding to this project'
+            ],
+            self::STATUS_WITHDRAWN => [
+                'icon' => self::ICON_WITHDRAW,
+                'label' => 'Withdraw this application'
+            ],
         ];
     }
 
