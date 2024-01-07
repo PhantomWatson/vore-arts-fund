@@ -17,11 +17,13 @@ use Cake\ORM\Entity;
  * @property int $category_id
  * @property string $description
  * @property int $amount_requested
+ * @property string $amount_requested_formatted
  * @property bool $accept_partial_payout
  * @property int $funding_cycle_id
  * @property string $check_name
  * @property int $status_id
  * @property string $status_name
+ * @property float $voting_score
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -250,5 +252,31 @@ class Project extends Entity
             default:
                 throw new BadRequestException('That application cannot currently be updated.');
         }
+    }
+
+    /**
+     * Returns the sum of all vote weights
+     *
+     * @return float|null
+     */
+    protected function _getVotingScore()
+    {
+        if (!isset($this->votes) || empty($this->votes)) {
+            return null;
+        }
+
+        $total = 0;
+        foreach ($this->votes as $vote) {
+            $total += $vote->weight;
+        }
+        return $total;
+    }
+
+    /**
+     * @return string
+     */
+    protected function _getAmountRequestedFormatted()
+    {
+        return ($this->accept_partial_payout ? 'Up to ' : '') . '$' . number_format($this->amount_requested);
     }
 }
