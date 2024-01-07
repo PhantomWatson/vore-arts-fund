@@ -12,7 +12,7 @@ use Cake\Event\EventInterface;
 use Cake\Http\Response;
 
 /**
- * FundingCyclesController
+ * ProjectsController
  *
  * @property \App\Model\Table\ProjectsTable $Projects
  * @property \App\Model\Table\CategoriesTable $Categories
