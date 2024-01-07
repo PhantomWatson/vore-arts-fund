@@ -7,21 +7,11 @@
 ?>
 
 <?php if ($fundingCycles): ?>
-    <p>
-        <label for="funding-cycle-selector">
-            Funding cycle:
-            <select id="funding-cycle-selector" class="form-select">
-                <?php foreach ($fundingCycles as $fundingCycle): ?>
-                    <option value="<?= $fundingCycle->id ?>" <?= $fundingCycleId == $fundingCycle->id ? 'selected' : null ?>>
-                        #<?= $fundingCycle->id ?>: <?= $fundingCycle->name ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <span id="loading-indicator" style="display: none;">
-                <i class="fa-solid fa-spinner fa-spin-pulse" title="Loading"></i>
-            </span>
-        </label>
-    </p>
+    <?= $this->element('funding_cycle_selector', ['url' => [
+        'prefix' => 'Admin',
+        'controller' => 'Projects',
+        'action' => 'index',
+    ]]) ?>
 
     <?php if (count($projects)): ?>
         <table class="table">
@@ -61,16 +51,3 @@
         No funding cycles found
     </p>
 <?php endif; ?>
-
-<script>
-    const selector = document.getElementById('funding-cycle-selector');
-    selector.addEventListener('change', (event) => {
-        const fundingCycleId = event.target.value;
-        document.getElementById('loading-indicator').style.display = 'inline';
-        document.location = '<?= \Cake\Routing\Router::url([
-            'prefix' => 'Admin',
-            'controller' => 'Projects',
-            'action' => 'index',
-        ]) ?>/' + fundingCycleId;
-    });
-</script>

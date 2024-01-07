@@ -3,9 +3,16 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Project[] $projects
  * @var \App\Model\Entity\FundingCycle|null $fundingCycle
+ * @var \App\Model\Entity\FundingCycle[] $fundingCycles
  */
 $fundingAvailable = $fundingCycle->funding_available;
 ?>
+
+<?= $this->element('funding_cycle_selector', ['url' => [
+    'prefix' => 'Admin',
+    'controller' => 'Votes',
+    'action' => 'index',
+]]) ?>
 
 <?php if ($fundingCycle): ?>
     <p>
