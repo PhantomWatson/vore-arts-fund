@@ -38,10 +38,6 @@ const App = () => {
     return ' ' + action.icon + ' ' + action.label;
   };
 
-  // Debugging
-  console.log(statusActions);
-  console.log('updating automatically?');
-
   const addNote = () => {
     setSelectedAction('note');
     setSelectedStatusId(null);
