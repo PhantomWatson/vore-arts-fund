@@ -2,8 +2,16 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Project[] $projects
+ * @var \App\Model\Entity\FundingCycle|null $fundingCycle
  */
+$fundingAvailable = $fundingCycle->funding_available;
 ?>
+
+<?php if ($fundingCycle): ?>
+    <p>
+        Available funds in this cycle: <?= $fundingCycle->funding_available_formatted ?>
+    </p>
+<?php endif; ?>
 
 <?php if ($projects): ?>
     <table class="table">
@@ -21,10 +29,26 @@
                 <th>
                     Funding requested
                 </th>
+                <th>
+                    To Award
+                </th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($projects as $i => $project): ?>
+                <?php
+                    if ($project->voting_score == null) {
+                        $toAward = 'N/A';
+                    } elseif ($project->amount_requested <= $fundingAvailable) {
+                        $toAward = '$' . number_format($project->amount_requested);
+                        $fundingAvailable -= $project->amount_requested;
+                    } elseif ($fundingAvailable && $project->accept_partial_payout) {
+                        $toAward = '$' . number_format($fundingAvailable) . ' (partial payout)';
+                        $fundingAvailable = 0;
+                    } else {
+                        $toAward = 'Unable to fund';
+                    }
+                ?>
                 <tr>
                     <td>
                         <?= $project->voting_score == null ? '' : $i + 1 ?>
@@ -38,10 +62,16 @@
                     <td>
                         <?= $project->amount_requested_formatted ?>
                     </td>
+                    <td>
+                        <?= $toAward ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
+    <p>
+        Total to award: $<?= number_format($fundingCycle->funding_available - $fundingAvailable) ?>
+    </p>
 <?php else: ?>
     <p>
         No projects found in this funding cycle

@@ -28,11 +28,7 @@
             Budget
         </th>
         <td>
-            <?=
-            $fundingCycle->funding_available
-                ? '$' . number_format($fundingCycle->funding_available)
-                : 'Not yet determined'
-            ?>
+            <?= $fundingCycle->funding_available_formatted ?>
         </td>
     </tr>
     <?php $projectSummary = $fundingCycle->getProjectsSummary(); ?>

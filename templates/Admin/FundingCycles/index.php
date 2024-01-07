@@ -55,7 +55,7 @@ $dateFormat = 'MMM d, YYYY';
                             ) ?>
                         </td>
                         <td>
-                            $<?= number_format($fundingCycle['funding_available']) ?>
+                            <?= $fundingCycle->funding_available_formatted ?>
                         </td>
                         <td>
                             <?= $this->Html->link(

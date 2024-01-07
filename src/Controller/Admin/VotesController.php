@@ -71,8 +71,7 @@ class VotesController extends AdminController
 
         $this->set([
             'projects' => $projects,
-            'fundingCycles' => $fundingCyclesTable->find()->orderDesc('application_begin')->all(),
-            'fundingCycleId' => $fundingCycleId,
+            'fundingCycle' => $fundingCycle,
         ]);
     }
 }

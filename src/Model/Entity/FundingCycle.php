@@ -21,6 +21,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $vote_begin_local
  * @property \Cake\I18n\FrozenTime|null $vote_end_local
  * @property int $funding_available
+ * @property string $funding_available_formatted
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  * @property string $name
@@ -215,5 +216,15 @@ class FundingCycle extends Entity
         $retval->vote_end = $retval->vote_end_local;
         $retval->resubmit_deadline = $retval->resubmit_deadline_local;
         return $retval;
+    }
+
+    /**
+     * @return string
+     */
+    protected function _getFundingAvailableFormatted(): string
+    {
+        return $this->funding_available
+            ? '$' . number_format($this->funding_available)
+            : 'Not yet determined';
     }
 }
