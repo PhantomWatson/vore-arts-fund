@@ -14,41 +14,10 @@
  */
 ?>
 
-<?php if ($hasVoted): ?>
-    <p class="alert alert-success">
-        Thank you for voting in this funding cycle!
-    </p>
-<?php endif; ?>
-
 <?php if ($cycle): ?>
-    <?php if (!$isLoggedIn): ?>
-        <p class="alert alert-warning">
-            You must
-            <?= $this->Html->link(
-                'log in',
-                [
-                    'controller' => 'Users',
-                    'action' => 'login',
-                ]
-            ) ?>
-            to vote.
-        </p>
-    <?php elseif (!$isVerified): ?>
-        <p class="alert alert-warning">
-            Before you can vote, you must first
-            <?= $this->Html->link('verify your phone number', ['controller' => 'Users', 'action' => 'verify']) ?>.
-        </p>
-    <?php endif; ?>
-
     <script>
         window.fundingCycleId = <?= json_encode($cycle->id) ?>;
     </script>
-<?php endif; ?>
-
-<?php if (!$projects): ?>
-    <p>
-        Unfortunately, there are no applications to vote on in this funding cycle.
-    </p>
 <?php endif; ?>
 
 <?php if ($canVote): ?>
@@ -77,15 +46,4 @@
     <?php $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]); ?>
     <div id="root"></div>
     <?= $this->element('load_app_files', ['dir' => 'vote-app']) ?>
-<?php endif; ?>
-
-<?php if ($showUpcoming): ?>
-    <p>
-        <?php if ($nextCycle): ?>
-            Voting for the <?= $nextCycle->name ?> applicants begins on
-            <strong><?= $nextCycle->vote_begin_local->format('F j, Y') ?></strong>. See you then!
-        <?php else: ?>
-            Check back later for information about when voting will begin for the next funding cycle.
-        <?php endif; ?>
-    </p>
 <?php endif; ?>
