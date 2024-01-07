@@ -17,6 +17,19 @@ $fundingAvailable = $fundingCycle->funding_available;
 <?php if ($fundingCycle): ?>
     <p>
         Available funds in this cycle: <?= $fundingCycle->funding_available_formatted ?>
+        <br />
+        <?php if ($fundingCycle->vote_end->isPast()): ?>
+            Voting ended on
+        <?php else: ?>
+            <?php if ($fundingCycle->vote_begin->isPast()): ?>
+                Voting is underway
+            <?php else: ?>
+                Voting will begin on
+                <?= $fundingCycle->vote_begin_local->i18nFormat('MMM d, YYYY') ?>
+            <?php endif; ?>
+            and will end on
+        <?php endif; ?>
+        <?= $fundingCycle->vote_end_local->i18nFormat('MMM d, YYYY') ?>
     </p>
 <?php endif; ?>
 
