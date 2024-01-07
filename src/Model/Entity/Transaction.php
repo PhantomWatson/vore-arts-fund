@@ -33,9 +33,6 @@ class Transaction extends Entity
     public const TYPE_LOAN = 3;
     public const TYPE_CANCELED_CHECK = 4;
 
-    /** @deprecated  */
-    private $amount;
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
