@@ -1245,3 +1245,23 @@ footer {
 .g-recaptcha {
     margin-bottom: 2em;
 }
+
+.voting-results__score {
+    color: #666;
+    font-size: 80%;
+}
+
+.voting-results__award {
+}
+
+.voting-results__award--awarded {
+    i {
+        color: $success;
+    }
+}
+
+.voting-results__award--to-award {
+    i {
+        color: $danger;
+    }
+}

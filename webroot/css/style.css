@@ -12921,4 +12921,17 @@ footer a {
   margin-bottom: 2em;
 }
 
+.voting-results__score {
+  color: #666;
+  font-size: 80%;
+}
+
+.voting-results__award--awarded i {
+  color: #09a600;
+}
+
+.voting-results__award--to-award i {
+  color: #e30125;
+}
+
 /*# sourceMappingURL=style.css.map */
