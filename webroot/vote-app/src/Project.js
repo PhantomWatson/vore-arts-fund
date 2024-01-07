@@ -48,6 +48,7 @@ const Project = (props) => {
           flipHorizontal: false,
           flipVertical: false,
         },
+        transition: false,
       }
     );
   });
