@@ -105,7 +105,7 @@ const Project = (props) => {
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="success" onClick={voteYes}>
+            <Button variant="primary" onClick={voteYes}>
               <i className="fa-solid fa-thumbs-up"></i>
               &nbsp;
               Approve
