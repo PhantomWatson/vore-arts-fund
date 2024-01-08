@@ -71,6 +71,8 @@ class TransactionsController extends AdminController
         $transaction = $this->Transactions->newEmptyEntity();
         if ($this->request->is('post')) {
             $data = $this->request->getData();
+            $user = $this->getAuthUser();
+            $data['user_id'] = $user?->id;
             $data['date'] = FundingCyclesController::convertTimeToUtc($data['date']);
 
             // Convert dollars to cents
