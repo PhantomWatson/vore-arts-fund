@@ -55,6 +55,10 @@ class TransactionsTable extends Table
         $this->belongsTo('Projects', [
             'foreignKey' => 'project_id',
         ]);
+
+        $this->belongsTo('Users', [
+            'foreignKey' => 'user_id',
+        ]);
     }
 
     /**

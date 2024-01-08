@@ -16,6 +16,7 @@ use Cake\ORM\Entity;
  * @property int|null $amount_gross Amount paid
  * @property int|null $amount_net Amount received
  * @property int|null $project_id Project for loans, loan repayments, or canceled checks
+ * @property int|null $user_id ID of user who recorded the transaction
  * @property string $meta Check number, donor name, Stripe meta dump
  * @property float $dollar_amount_net
  * @property string $dollar_amount_net_formatted
