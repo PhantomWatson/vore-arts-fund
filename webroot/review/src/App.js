@@ -19,8 +19,8 @@ import {useState} from 'react';
 const App = () => {
   const statusActions = window.statusActions;
   const validStatusIds = window.validStatusIds;
-  const [selectedAction, setSelectedAction] = useState(null);
-  const [selectedStatusId, setSelectedStatusId] = useState(null);
+  const [selectedAction, setSelectedAction] = useState('');
+  const [selectedStatusId, setSelectedStatusId] = useState('');
   const STATUS_REJECTED = 3;
   const STATUS_REVISION_REQUESTED = 4;
   const noteNeeded = [
@@ -32,7 +32,11 @@ const App = () => {
   const NOTE_TYPE_REJECTION = 'rejection';
   const NOTE_TYPE_MESSAGE = 'message';
 
-  const getActionName = (statusId) => statusActions['' + statusId];
+  const getAction = (statusId) => statusActions['' + statusId];
+  const getButtonLabel = (statusId) => {
+    const action = getAction(statusId);
+    return ' ' + action.icon + ' ' + action.label;
+  };
 
   const addNote = () => {
     setSelectedAction('note');
@@ -67,8 +71,8 @@ const App = () => {
     }
 
     // Submit
-    const action = statusActions['' + statusId].toLowerCase();
-    if (confirm('Are you sure you want to ' + action + '?')) {
+    const action = getAction(statusId);
+    if (confirm('Are you sure you want to ' + action.label.toLowerCase() + '?')) {
       submitStatusChange(statusId);
 
       return;
@@ -93,7 +97,7 @@ const App = () => {
                   type="button"
                   onClick={addNote}
           >
-            <i class="fa-solid fa-file-lines"></i> Add private note
+            <i className="fa-solid fa-file-lines"></i> Add private note
           </button>
         </li>
         <li>
@@ -102,7 +106,7 @@ const App = () => {
                   type="button"
                   onClick={addMessage}
           >
-            <i class="fa-solid fa-message"></i> Send applicant a message
+            <i className="fa-solid fa-message"></i> Send applicant a message
           </button>
         </li>
         {validStatusIds.map(statusId => (
@@ -114,7 +118,7 @@ const App = () => {
                       changeStatus(statusId)
                     }}
                     dangerouslySetInnerHTML={{
-                      __html: getActionName(statusId)
+                      __html: getButtonLabel(statusId)
                     }}
             >
             </button>

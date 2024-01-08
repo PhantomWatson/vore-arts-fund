@@ -69,7 +69,7 @@ class VotesTable extends Table
             ->allowEmptyString('id', null, 'create');
 
         $validator
-            ->integer('weight')
+            ->decimal('weight')
             ->requirePresence('weight', 'create')
             ->notEmptyString('weight');
 

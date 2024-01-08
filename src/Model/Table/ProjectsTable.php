@@ -80,6 +80,7 @@ class ProjectsTable extends Table
         $this->hasMany('Answers', [
             'foreignKey' => 'project_id',
             'dependent' => true,
+            'saveStrategy' => 'replace',
         ]);
         $this->hasMany('Reports', [
             'foreignKey' => 'project_id',

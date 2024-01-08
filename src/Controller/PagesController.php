@@ -139,6 +139,18 @@ class PagesController extends AppController
             'fundingCycleIsCurrent' => $fundingCycleIsCurrent,
             'title' => '',
         ]);
+        $isStaging = str_contains($_SERVER['HTTP_HOST'], 'staging.');
+        if ($isStaging) {
+            $this->Flash->set(
+                '<strong>Welcome beta testers!</strong> Check out <a href="https://docs.google.com/document/d/1BtZUQg6w3LaaumHRdgMXJC8EVIEu3GhzELijZdlebaU/edit?usp=sharing">these instructions</a> for helping out this project!',
+                ['escape' => false]
+            );
+        } else {
+            $this->Flash->error(
+                '<strong>Attention beta testers!</strong> Please visit <a href="https://staging.voreartsfund.org">the staging site</a> instead.',
+                ['escape' => false]
+            );
+        }
     }
 
     public function maintenanceMode(): void

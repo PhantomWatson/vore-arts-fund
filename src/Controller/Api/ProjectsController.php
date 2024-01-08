@@ -42,7 +42,7 @@ class ProjectsController extends ApiController
         $fundingCyclesTable = $this->fetchTable('FundingCycles');
         $fundingCycle = $fundingCyclesTable->find('currentVoting')->first();
         $projects = $fundingCycle
-            ? $this->Projects->find('forVoting', ['funding_cycle_id' => $fundingCycle->id])->limit(3)->all()
+            ? $this->Projects->find('forVoting', ['funding_cycle_id' => $fundingCycle->id])->all()
             : [];
         $this->set(compact('projects'));
         $this->viewBuilder()->setOption('serialize', ['projects']);

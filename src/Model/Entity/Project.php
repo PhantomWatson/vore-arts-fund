@@ -17,11 +17,13 @@ use Cake\ORM\Entity;
  * @property int $category_id
  * @property string $description
  * @property int $amount_requested
+ * @property string $amount_requested_formatted
  * @property bool $accept_partial_payout
  * @property int $funding_cycle_id
  * @property string $check_name
  * @property int $status_id
  * @property string $status_name
+ * @property float $voting_score
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -113,14 +115,38 @@ class Project extends Entity
     public static function getStatusActions(): array
     {
         return [
-            self::STATUS_DRAFT              => self::ICON_SAVE . ' Save this application as a draft',
-            self::STATUS_UNDER_REVIEW       => self::ICON_SUBMIT . ' Submit this application for review',
-            self::STATUS_ACCEPTED           => self::ICON_ACCEPTED . ' Accept this application',
-            self::STATUS_REJECTED           => self::ICON_REJECTED . ' Reject this application',
-            self::STATUS_REVISION_REQUESTED => self::ICON_REVISION_REQUESTED . ' Request revision',
-            self::STATUS_AWARDED            => self::ICON_FUND . ' Award funding to this project',
-            self::STATUS_NOT_AWARDED        => self::ICON_REJECTED . ' Decline to award funding to this project',
-            self::STATUS_WITHDRAWN          => self::ICON_WITHDRAW . ' Withdraw this application',
+            self::STATUS_DRAFT => [
+                'icon' => self::ICON_SAVE,
+                'label' => 'Save this application as a draft'
+            ],
+            self::STATUS_UNDER_REVIEW => [
+                'icon' => self::ICON_SUBMIT,
+                'label' => 'Submit this application for review'
+            ],
+            self::STATUS_ACCEPTED => [
+                'icon' => self::ICON_ACCEPTED,
+                'label' => 'Accept this application'
+            ],
+            self::STATUS_REJECTED => [
+                'icon' => self::ICON_REJECTED,
+                'label' => 'Reject this application'
+            ],
+            self::STATUS_REVISION_REQUESTED => [
+                'icon' => self::ICON_REVISION_REQUESTED,
+                'label' => 'Request revision'
+            ],
+            self::STATUS_AWARDED => [
+                'icon' => self::ICON_FUND,
+                'label' => 'Award funding to this project'
+            ],
+            self::STATUS_NOT_AWARDED => [
+                'icon' => self::ICON_REJECTED,
+                'label' => 'Decline to award funding to this project'
+            ],
+            self::STATUS_WITHDRAWN => [
+                'icon' => self::ICON_WITHDRAW,
+                'label' => 'Withdraw this application'
+            ],
         ];
     }
 
@@ -226,5 +252,31 @@ class Project extends Entity
             default:
                 throw new BadRequestException('That application cannot currently be updated.');
         }
+    }
+
+    /**
+     * Returns the sum of all vote weights
+     *
+     * @return float|null
+     */
+    protected function _getVotingScore()
+    {
+        if (!isset($this->votes) || empty($this->votes)) {
+            return null;
+        }
+
+        $total = 0;
+        foreach ($this->votes as $vote) {
+            $total += $vote->weight;
+        }
+        return $total;
+    }
+
+    /**
+     * @return string
+     */
+    protected function _getAmountRequestedFormatted()
+    {
+        return ($this->accept_partial_payout ? 'Up to ' : '') . '$' . number_format($this->amount_requested);
     }
 }

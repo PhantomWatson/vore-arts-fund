@@ -12,7 +12,7 @@ use Cake\Event\EventInterface;
 use Cake\Http\Response;
 
 /**
- * FundingCyclesController
+ * ProjectsController
  *
  * @property \App\Model\Table\ProjectsTable $Projects
  * @property \App\Model\Table\CategoriesTable $Categories
@@ -160,6 +160,15 @@ class ProjectsController extends AdminController
             'validStatusIds'
         ));
         $this->title('Project: ' . $project->title);
+        $this->addBreadcrumb(
+            $project->funding_cycle->name,
+            [
+                'prefix' => 'Admin',
+                'controller' => 'Projects',
+                'action' => 'index',
+                $project->funding_cycle_id,
+            ]
+        );
         $this->setCurrentBreadcrumb($project->title);
 
         return null;

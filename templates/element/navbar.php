@@ -55,19 +55,19 @@ $loggedInLinks[] = [
 
 $adminLinks = [
     [
-        'Projects',
+        'Funding Cycles',
         [
             'prefix' => 'Admin',
-            'controller' => 'Projects',
+            'controller' => 'FundingCycles',
             'action' => 'index',
         ],
         ['class' => 'dropdown-item']
     ],
     [
-        'Funding Cycles',
+        'Projects',
         [
             'prefix' => 'Admin',
-            'controller' => 'FundingCycles',
+            'controller' => 'Projects',
             'action' => 'index',
         ],
         ['class' => 'dropdown-item']
@@ -86,6 +86,15 @@ $adminLinks = [
         [
             'prefix' => 'Admin',
             'controller' => 'Transactions',
+            'action' => 'index',
+        ],
+        ['class' => 'dropdown-item']
+    ],
+    [
+        'Votes',
+        [
+            'prefix' => 'Admin',
+            'controller' => 'Votes',
             'action' => 'index',
         ],
         ['class' => 'dropdown-item']

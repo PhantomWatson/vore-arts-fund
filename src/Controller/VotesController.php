@@ -65,36 +65,45 @@ class VotesController extends AppController
                 ->toArray()
             : [];
         $user = $this->getAuthUser();
+        $isVerified = $user ? $user->is_verified : false;
         $hasVoted = $user && $cycle && $this->Votes->hasVoted($user->id, $cycle->id);
         $nextCycle = $fundingCyclesTable->find('nextVoting')->first();
         $showUpcoming = $hasVoted || !$cycle || !$projects;
         $canVote = $user && $user->is_verified && !$showUpcoming && $projects;
 
         $this->setCurrentBreadcrumb('Vote');
-        $this->title(
-            $cycle
-                ? 'Vote on Funding Applications'
-                : (
-                    $nextCycle
-                        ? 'Voting begins ' . $nextCycle->vote_begin->format('F j, Y')
-                        : 'Check back later for voting info'
-                )
-        );
-
+        $title = $projects
+            ? 'Vote on Funding Applications'
+            : ($nextCycle
+                ? 'Voting begins ' . $nextCycle->vote_begin->format('F j, Y')
+                : 'Check back later for voting info'
+            );
+        $this->title($title);
         $toLoad = $this->getAppFiles('vote-app');
-
         $this->set(compact(
-            'projects',
             'canVote',
             'cycle',
             'hasVoted',
+            'isVerified',
             'nextCycle',
+            'projects',
             'showUpcoming',
             'toLoad',
         ));
-        $this->set([
-            'isVerified' => $user ? $user->is_verified : false,
-        ]);
+        $this->viewBuilder()->setLayout('vote');
+
+        if (!$user) {
+            $template = 'not_logged_in';
+        } elseif (!$isVerified) {
+            $template = 'not_verified';
+        } elseif ($hasVoted) {
+            $template = 'already_voted';
+        } elseif (!$projects) {
+            $template = 'no_projects';
+        } else {
+            $template = 'index';
+        }
+        $this->viewBuilder()->setTemplate($template);
 
         return null;
     }

@@ -25,7 +25,7 @@ const SelectStep = (props) => {
   );
 
   const table = (
-    <table id="vote-project-select-list" className="vote-project-list">
+    <table id="vote-project-select-list" className="vote-project-list table">
       <tbody>
       {props.projects.map((project, index) => {
         return (

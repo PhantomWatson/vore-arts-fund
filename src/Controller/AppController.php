@@ -213,7 +213,7 @@ class AppController extends Controller
         if ($files) {
             foreach ($files as $file) {
                 if (preg_match('/\.css$/', $file) === 1) {
-                    $retval['css'][] = "/$dir/dist/styles$file";
+                    $retval['css'][] = "/$dir/dist/styles/$file";
                 }
             }
         }

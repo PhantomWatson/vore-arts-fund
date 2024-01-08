@@ -48,6 +48,7 @@ const Project = (props) => {
           flipHorizontal: false,
           flipVertical: false,
         },
+        transition: false,
       }
     );
   });
@@ -67,6 +68,7 @@ const Project = (props) => {
               <strong>Category:</strong> {props.project.category.name}
             </p>
             <p>
+              {props.project.accept_partial_payout && 'Up to '}
               {currencyFormatter.format(props.project.amount_requested) + ' '}
               is being requested by {props.project.user.name}
             </p>
@@ -103,7 +105,7 @@ const Project = (props) => {
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="success" onClick={voteYes}>
+            <Button variant="primary" onClick={voteYes}>
               <i className="fa-solid fa-thumbs-up"></i>
               &nbsp;
               Approve

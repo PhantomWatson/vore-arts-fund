@@ -887,7 +887,7 @@ article.note {
     }
 }
 
-.vote-projects-list {
+.vote-project-list {
     @extend .table;
 
     .fa-thumbs-up {
@@ -897,6 +897,22 @@ article.note {
     .fa-thumbs-down {
         color: red;
     }
+
+    .project-title {
+        font-size: 125%;
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+}
+
+.vote-project.modal {
+    section {
+        margin-bottom: 2em;
+    }
+}
+
+.vote-project-q {
+    font-size: 1.5rem;
 }
 
 .vote-actions,
@@ -1228,4 +1244,24 @@ footer {
 
 .g-recaptcha {
     margin-bottom: 2em;
+}
+
+.voting-results__score {
+    color: #666;
+    font-size: 80%;
+}
+
+.voting-results__award {
+}
+
+.voting-results__award--awarded {
+    i {
+        color: $success;
+    }
+}
+
+.voting-results__award--to-award {
+    i {
+        color: $danger;
+    }
 }
