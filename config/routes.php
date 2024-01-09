@@ -48,14 +48,15 @@ $routes->scope('/', function (RouteBuilder $builder) {
         ->setPass(['id']);
 
     // Users
+    $builder->connect('/register', ['controller' => 'Users', 'action' => 'register']);
     $builder->connect('/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword']);
     $builder->connect('/login', ['controller' => 'Users', 'action' => 'login']);
     $builder->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
     $builder->connect('/account', ['controller' => 'Users', 'action' => 'account']);
     $builder->connect('/account/update', ['controller' => 'Users', 'action' => 'changeAccountInfo']);
-    $builder->connect('/register', ['controller' => 'Users', 'action' => 'register']);
-    $builder->connect('/verify', ['controller' => 'Users', 'action' => 'verify']);
-    $builder->connect('/verify/resend', ['controller' => 'Users', 'action' => 'verifyResend']);
+    $builder->connect('/account/password', ['controller' => 'Users', 'action' => 'updatePassword']);
+    $builder->connect('/account/verify', ['controller' => 'Users', 'action' => 'verify']);
+    $builder->connect('/account/verify/resend', ['controller' => 'Users', 'action' => 'verifyResend']);
 
     // Funding Cycles
     $builder->connect('/funding-cycles', ['controller' => 'FundingCycles', 'action' => 'index']);
