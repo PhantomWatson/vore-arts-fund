@@ -6,14 +6,14 @@
 $this->Html->script('account-form', ['block' => true]);
 ?>
 
+<?= $this->element('Users/account_nav') ?>
+
 <div class="users form">
     <?= $this->Form->create($user, ['id' => 'account-info-form']) ?>
     <fieldset>
         <?= $this->Form->control('email') ?>
         <?= $this->Form->control('name') ?>
         <?= $this->element('phone_input') ?>
-        <?= $this->Form->control('current password') ?>
-        <?= $this->Form->control('new password') ?>
     </fieldset>
     <?= $this->Form->submit('Submit', ['class' => 'btn btn-primary']) ?>
     <?= $this->Form->end() ?>

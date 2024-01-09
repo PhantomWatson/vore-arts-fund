@@ -131,10 +131,10 @@ class AppController extends Controller
 
     /**
      * @param string $title
-     * @param array|string $url
+     * @param array|string|null $url
      * @return void
      */
-    protected function addBreadcrumb($title, $url)
+    protected function addBreadcrumb($title, $url = null)
     {
         $this->breadcrumbs[] = [$title, $url];
     }

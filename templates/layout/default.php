@@ -10,6 +10,7 @@ $title = $title ?? $this->fetch('title');
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?= $this->element('analytics') ?>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
