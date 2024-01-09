@@ -25,7 +25,11 @@ if ($breadcrumbs && end($breadcrumbs)[0] == $currentBreadcrumb) {
         <ol class="breadcrumb">
             <?php foreach ($breadcrumbs as $breadcrumb): ?>
                 <li class="breadcrumb-item">
-                    <?= $this->Html->link($breadcrumb[0], $breadcrumb[1]) ?>
+                    <?php if ($breadcrumb[1]): ?>
+                        <?= $this->Html->link($breadcrumb[0], $breadcrumb[1]) ?>
+                    <?php else: ?>
+                        <?= $breadcrumb[0] ?>
+                    <?php endif; ?>
                 </li>
             <?php endforeach; ?>
             <li class="breadcrumb-item active" aria-current="page">
