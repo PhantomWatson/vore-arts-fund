@@ -3,7 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
  */
-$this->Html->script('account-form', ['block' => true]);
 ?>
 
 <?= $this->element('Users/account_nav') ?>
