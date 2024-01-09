@@ -437,12 +437,8 @@ class UsersController extends AppController
      */
     public function verify()
     {
+        $this->addBreadcrumb('Account');
         $user = $this->getAuthUser();
-
-        if ($user->is_verified) {
-            $this->Flash->success('Your phone number has already been verified');
-            return $this->redirect(['action' => 'account']);
-        }
 
         if ($this->request->is('post')) {
             $data = $this->request->getData();
@@ -453,7 +449,6 @@ class UsersController extends AppController
                 $this->Flash->success('Your phone number is now verified');
                 $this->redirect(['action' => 'account']);
             } else {
-                $verifyUrl = Router::url(['controller' => 'Users', 'action' => 'verify', 'prefix' => false]);
                 $this->Flash->error(
                     'Error verifying phone number. ' .
                     'If the verification code was sent more than ten minutes ago, then it has expired, ' .
@@ -462,7 +457,8 @@ class UsersController extends AppController
             }
         }
 
-        $this->title('Verify');
+        $this->title('Verify phone number');
+        $this->set(compact('user'));
 
         return null;
     }
@@ -494,15 +490,11 @@ class UsersController extends AppController
     /**
      * "My Account" page
      *
-     * @return void
+     * @return Response
      */
-    public function account()
+    public function account(): Response
     {
-        $user = $this->getAuthUser();
-        $this->set(compact('user'));
-        $this->title('Account');
-
-        $this->addBreadcrumb('Account', ['action' => 'account']);
+        return $this->redirect(['action' => 'changeAccountInfo']);
     }
 
     /**
@@ -512,7 +504,7 @@ class UsersController extends AppController
      */
     public function changeAccountInfo(): ?Response
     {
-        $this->addBreadcrumb('Account', ['action' => 'account']);
+        $this->addBreadcrumb('Account');
         $this->title('Update Account Info');
         $user = $this->getAuthUser();
 
@@ -543,7 +535,7 @@ class UsersController extends AppController
 
     public function updatePassword()
     {
-        $this->addBreadcrumb('Account', ['action' => 'account']);
+        $this->addBreadcrumb('Account');
         $this->title('Update Password');
         $user = $this->getAuthUser();
 
