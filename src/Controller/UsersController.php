@@ -515,28 +515,8 @@ class UsersController extends AppController
         $this->addBreadcrumb('Account', ['action' => 'account']);
         $this->title('Update Account Info');
         $user = $this->getAuthUser();
-        $this->set(['user' => $user]);
 
         if ($this->request->is(['post', 'put'])) {
-            // Update password
-            $newPassword = $this->request->getData('new_password');
-            if ($newPassword) {
-                $currentPassword = $this->request->getData('current_password');
-                $passwordIsCorrect = (new DefaultPasswordHasher())->check($currentPassword, $user->password);
-                if (!$passwordIsCorrect) {
-                    $this->Flash->error(
-                        'Unable to update account information. '
-                        . 'Please make sure that your current password has been entered and is correct, and '
-                        . '<a href="/contact">contact us</a> if you need assistance.',
-                        ['escape' => false]
-                    );
-
-                    return null;
-                }
-
-                $user = $this->Users->patchEntity($user, ['password' => $newPassword]);
-            }
-
             // Update user entity
             $user = $this->Users->patchEntity(
                 $user,
@@ -547,15 +527,67 @@ class UsersController extends AppController
             // Save changes
             if ($this->Users->save($user)) {
                 $this->Authentication->setIdentity($user);
-                $this->Flash->success('Changes saved');
+                $this->Flash->success('Account info updated');
             } else {
                 $this->Flash->error(
-                    'There was an error saving those changes. ' . $this->errorTryAgainContactMsg,
+                    'There was an error updating your account info. ' . $this->errorTryAgainContactMsg,
                     ['escape' => false]
                 );
             }
         }
 
+        $this->set(['user' => $user]);
+
         return null;
+    }
+
+    public function updatePassword()
+    {
+        $this->addBreadcrumb('Account', ['action' => 'account']);
+        $this->title('Update Password');
+        $user = $this->getAuthUser();
+
+        $newPassword = $this->request->getData('new_password');
+        if ($newPassword) {
+            $currentPassword = $this->request->getData('current_password');
+            $passwordIsCorrect = (new DefaultPasswordHasher())->check($currentPassword, $user->password);
+            if (!$passwordIsCorrect) {
+                $this->Flash->error(
+                    'Unable to update account information. '
+                    . 'Please make sure that your current password has been entered and is correct, and '
+                    . '<a href="/contact">contact us</a> if you need assistance.',
+                    ['escape' => false]
+                );
+
+                return null;
+            }
+
+            $user = $this->Users->patchEntity($user, ['password' => $newPassword]);
+
+            // Save changes
+            if ($this->Users->save($user)) {
+                $this->Flash->success('Password updated');
+            } else {
+                pr($user->getErrors());
+                $this->Flash->error(
+                    'There was an error updating your password. ' . $this->errorTryAgainContactMsg,
+                    ['escape' => false]
+                );
+            }
+        }
+        $this->set(['user' => $user]);
+    }
+
+    /**
+     * Returns a User entity for a form
+     *
+     * This looks weird, but the first $user is always immediately generated with a "phone number is not unique" error
+     *
+     * @return User
+     */
+    private function getUserForForm()
+    {
+        $user = $this->getAuthUser();
+        return $this->Users->get($user->id);
     }
 }

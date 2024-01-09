@@ -121,7 +121,6 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-
         $rules->add(
             function (User $user) {
                 $phone = User::cleanPhone((string)$user->phone);
