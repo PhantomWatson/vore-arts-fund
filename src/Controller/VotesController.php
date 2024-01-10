@@ -51,7 +51,7 @@ class VotesController extends AppController
                 $this->Flash->error("Sorry, we couldn't find funding cycle #$fundingCycleId.");
                 return $this->redirect(['action' => 'index']);
             }
-        } elseif ($cyclesCurrentlyVoting->count() > 1) {
+        } elseif ($cyclesCurrentlyVoting->all()->count() > 1) {
             $this->set('title', 'Select funding cycle');
             return $this->render('chooseCycle');
         } else {
