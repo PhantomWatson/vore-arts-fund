@@ -109,7 +109,7 @@
                     </div>
                     <div>
                         <dt>
-                            Secretary
+                            Vice President / Secretary
                         </dt>
                         <dd>
                             Natalie Phillips
@@ -126,7 +126,7 @@
                 <dl>
                     <div>
                         <dt>
-                            Lead Web Developer
+                            Lead Engineer
                         </dt>
                         <dd>
                             Graham Watson
@@ -134,7 +134,7 @@
                     </div>
                     <div>
                         <dt>
-                            Web Developers
+                            Engineers
                         </dt>
                         <dd>
                             Dakota Savage
