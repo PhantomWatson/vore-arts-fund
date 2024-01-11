@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Table\FundingCyclesTable;
+use App\Model\Table\VotesTable;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\ForbiddenException;
@@ -127,6 +129,8 @@ class PagesController extends AppController
      */
     public function home()
     {
+        // Get "currently applying" info
+        /** @var FundingCyclesTable $fundingCyclesTable */
         $fundingCyclesTable = $this->fetchTable('FundingCycles');
         /** @var \App\Model\Entity\FundingCycle $fundingCycle */
         $fundingCycle = $fundingCyclesTable
@@ -134,11 +138,25 @@ class PagesController extends AppController
             ->orderAsc('application_end')
             ->first();
         $fundingCycleIsCurrent = $fundingCycle && $fundingCycle->application_begin->isPast();
+
+        // Get info for "currently voting" info
+        $currentVotingInfo = $fundingCyclesTable->getCurrentVotingInfo();
+        /** @var VotesTable $votesTable */
+        $votesTable = $this->fetchTable('Votes');
+        $user = $this->getAuthUser();
+        $hasVoted = $user
+            && ($currentVotingInfo['cycle'] ?? false)
+            && $votesTable->hasVoted($user->id, $currentVotingInfo['cycle']->id);
+
         $this->set([
             'fundingCycle' => $fundingCycle,
             'fundingCycleIsCurrent' => $fundingCycleIsCurrent,
             'title' => '',
+            'votingInfo' => $currentVotingInfo,
+            'hasVoted' => $hasVoted,
         ]);
+
+        // Display beta testing message
         $isStaging = str_contains($_SERVER['HTTP_HOST'], 'staging.');
         if ($isStaging) {
             $this->Flash->set(
