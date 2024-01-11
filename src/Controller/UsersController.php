@@ -280,7 +280,6 @@ class UsersController extends AppController
             } else {
                 $user = $this->__generatePasswordToken($user);
                 $this->Users->save($user);
-                $this->Authentication->setIdentity($user);
                 $this->__sendForgotPasswordEmail($user);
                 $this->Flash->success(
                     'Password reset instructions have been sent to your email address. ' .
