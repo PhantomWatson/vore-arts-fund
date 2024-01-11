@@ -28,7 +28,7 @@
                             <?= __n('project', 'projects', $votingProjectCount) ?>
                             in the
                             <?= $votingCycle->name ?> funding cycle, and the deadline to cast your votes is
-                            <?= $votingCycle->vote_end_local->i18nFormat('MMM d, YYYY') ?>.
+                            <?= $votingCycle->vote_end_local->i18nFormat('MMMM d, YYYY') ?>.
                         </p>
                         <p>
                             <?= $this->Html->link(
