@@ -147,8 +147,7 @@ class UsersController extends AppController
                 $this->Authentication->setIdentity($user);
                 $successMsg = 'Your account has been registered.';
                 $shouldVerifyPhone = Configure::read('enablePhoneVerification') && $user->phone;
-                $didSendCode = $shouldVerifyPhone && $this->sendVerificationText((string)$user->phone);
-                if ($shouldVerifyPhone && $didSendCode) {
+                if ($shouldVerifyPhone && $this->sendVerificationText((string)$user->phone)) {
                     $this->Flash->success($successMsg . ' ' . $this->verificationCodeSentMsg);
                     return $this->redirect(['action' => 'verify']);
                 }
