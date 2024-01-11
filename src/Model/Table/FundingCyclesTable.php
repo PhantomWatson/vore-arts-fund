@@ -195,4 +195,21 @@ class FundingCyclesTable extends Table
             ->where(['FundingCycles.application_end >' => $now])
             ->orderAsc('FundingCycles.application_end');
     }
+
+    public function getCurrentVotingInfo()
+    {
+        $cycle = $this
+            ->find('currentVoting')
+            ->first();
+        if (!$cycle) {
+            return null;
+        }
+
+        $projectCount = $this->Projects
+            ->find('forVoting', ['funding_cycle_id' => $cycle->id])
+            ->all()
+            ->count();
+
+        return compact('cycle', 'projectCount');
+    }
 }

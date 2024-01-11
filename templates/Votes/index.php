@@ -38,7 +38,7 @@
         </ol>
         <p>
             The deadline to cast your votes is
-            <strong><?= $cycle->vote_end->format('F j, Y') ?></strong>.
+            <strong><?= $cycle->vote_end_local->format('F j, Y') ?></strong>.
         </p>
     </div>
 

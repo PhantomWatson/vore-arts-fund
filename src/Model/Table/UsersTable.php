@@ -127,10 +127,11 @@ class UsersTable extends Table
                 if ($phone === Configure::read('testPhoneNumber')) {
                     return true;
                 }
-                return !$this->exists([
-                    'phone' => $phone,
-                    'id !=' => $user->id,
-                ]);
+                $conditions = compact('phone');
+                if ($user->id ?? false) {
+                    $conditions['id !='] = $user->id;
+                }
+                return !$this->exists($conditions);
             },
             'uniquePhoneNumber',
             [
