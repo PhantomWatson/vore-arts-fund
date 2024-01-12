@@ -20,7 +20,8 @@ const SelectStep = (props) => {
     <Alert flavor="info">
       <span className="vote-step-title">Step one:</span>{' '}
       Review each application and either <strong>approve</strong> it{' '}
-      if you think it should be funded or <strong>reject</strong> it.
+      if you think it should be funded or <strong>reject</strong> it.{' '}
+      Then click <strong>Next</strong> to move to the next step.
     </Alert>
   );
 
