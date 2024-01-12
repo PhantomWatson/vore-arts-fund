@@ -72,13 +72,13 @@ class ReportsTable extends Table
             ->notEmptyString('body');
 
         $validator
-            ->scalar('user_id')
-            ->maxLength('user_id', 255)
+            ->integer('user_id')
+            ->requirePresence('user_id', 'create')
             ->notEmptyString('user_id');
 
         $validator
-            ->scalar('project_id')
-            ->maxLength('project_id', 255)
+            ->integer('project_id')
+            ->requirePresence('project_id', 'create')
             ->notEmptyString('project_id');
 
         $validator

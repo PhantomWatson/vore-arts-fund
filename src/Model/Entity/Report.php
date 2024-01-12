@@ -10,8 +10,8 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $body
- * @property string $user_id
- * @property string $project_id
+ * @property int $user_id
+ * @property int $project_id
  * @property bool $is_final
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
