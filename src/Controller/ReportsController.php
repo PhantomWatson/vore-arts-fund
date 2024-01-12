@@ -75,10 +75,17 @@ class ReportsController extends AppController
     private function addBreadcrumbForProject(Project $project): void
     {
         $this->addBreadcrumb(
+            'Projects',
+            [
+                'controller' => 'Projects',
+                'action' => 'index',
+            ]
+        );
+        $this->addBreadcrumb(
             $project->title,
             [
-                'controller' => 'Reports',
-                'action' => 'project',
+                'controller' => 'Projects',
+                'action' => 'view',
                 'id' => $project->id,
             ]
         );
