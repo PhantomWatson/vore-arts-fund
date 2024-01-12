@@ -7,9 +7,6 @@
  */
 $back = $back ?? null;
 
-use App\Model\Entity\Image;
-use Cake\Utility\Hash;
-
 $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 ?>
 
