@@ -47,7 +47,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                         [
                             'prefix' => false,
                             'controller' => 'Reports',
-                            'action' => 'projects',
+                            'action' => 'project',
                             $project->id,
                         ]
                     ) ?>
