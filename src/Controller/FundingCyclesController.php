@@ -18,7 +18,10 @@ class FundingCyclesController extends AppController
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
-        $this->Authentication->allowUnauthenticated(['index']);
+        $this->Authentication->allowUnauthenticated([
+            'index',
+            'view',
+        ]);
         $this->addControllerBreadcrumb('Funding Cycles');
     }
 
