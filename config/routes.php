@@ -21,6 +21,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
+use App\BotCatcher;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 
@@ -72,6 +73,8 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/reports/submit/:id', ['controller' => 'Reports', 'action' => 'submit'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
+
+    BotCatcher::connectBotRoutes($builder);
 
     $builder->fallbacks(DashedRoute::class);
 });

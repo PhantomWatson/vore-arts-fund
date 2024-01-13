@@ -175,4 +175,15 @@ class PagesController extends AppController
     {
         $this->title('Hang tight! We\'re undergoing maintenance.');
     }
+
+    /**
+     * A simple 404 page to render for bot requests
+     *
+     * @return void
+     */
+    public function botCatcher()
+    {
+        $this->viewBuilder()->setLayout('ajax');
+        $this->response = $this->response->withStatus(404);
+    }
 }
