@@ -11,24 +11,24 @@ const SelectStepSubmit = (props) => {
           submit your vote.
         </Alert>
       }
-      {props.allVotesAreCast && props.approvedProjects.length > 0 &&
-        <div className="vote-footer">
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={props.handleSubmitSelectStep}
-            disabled={!props.allVotesAreCast || props.approvedProjects.length === 0 || props.submitIsLoading}
-          >
-            {props.approvedProjects.length === 1 ? 'Cast votes' : 'Next'}
-            {props.submitIsLoading &&
-              <>
-                {' '}
-                <i className="fa-solid fa-spinner fa-spin-pulse" title="Loading"></i>
-              </>
-            }
-          </Button>
-        </div>
-      }
+
+      <div className="vote-footer">
+        <Button
+          variant="primary"
+          size="lg"
+          onClick={props.handleSubmitSelectStep}
+          disabled={!props.allVotesAreCast || props.approvedProjects.length === 0 || props.submitIsLoading}
+        >
+          Next
+          {props.submitIsLoading &&
+            <>
+              {' '}
+              <i className="fa-solid fa-spinner fa-spin-pulse" title="Loading"></i>
+            </>
+          }
+        </Button>
+      </div>
+
       {props.allVotesAreCast && props.approvedProjects.length === 0 &&
         <Alert flavor="warning">
           You must approve at least one application in order to cast a vote.

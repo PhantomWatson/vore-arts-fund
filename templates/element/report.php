@@ -11,7 +11,7 @@
     <?php endif; ?>
     <h2>
         Project Update:
-        <?= $report->projects->title ?>
+        <?= $report->project->title ?>
     </h2>
     <p class="date">
         <?= $report->created->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') ?>
@@ -21,7 +21,7 @@
             [
                 'controller' => 'Projects',
                 'action' => 'view',
-                'id' => $report->projects->id,
+                'id' => $report->project->id,
             ],
         ) ?>
     </p>

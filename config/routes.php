@@ -21,6 +21,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
+use App\BotCatcher;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 
@@ -73,6 +74,8 @@ $routes->scope('/', function (RouteBuilder $builder) {
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
 
+    BotCatcher::connectBotRoutes($builder);
+
     $builder->fallbacks(DashedRoute::class);
 });
 
@@ -113,6 +116,11 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
         ->setPass(['id']);
     $builder->connect('/projects/review/{id}', ['controller' => 'Projects', 'action' => 'review']);
     $builder->connect('/projects/set-status/{id}', ['controller' => 'Projects', 'action' => 'setStatus']);
+
+    // Votes
+    $builder->connect('/votes/{id}', ['controller' => 'Votes', 'action' => 'index'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);
 
     $builder->fallbacks(DashedRoute::class);
 });

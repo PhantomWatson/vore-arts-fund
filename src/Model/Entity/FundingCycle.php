@@ -197,6 +197,17 @@ class FundingCycle extends Entity
     }
 
     /**
+     * Returns TRUE if this funding cycle is currently in its application period
+     *
+     * @return bool
+     */
+    public function isCurrentlyApplying(): bool
+    {
+        $now = new \DateTime();
+        return $this->application_begin <= $now && $this->application_end >= $now;
+    }
+
+    /**
      * Returns TRUE if voting has finished
      *
      * @return bool

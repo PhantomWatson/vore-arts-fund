@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\FundingCycle;
 use Cake\ORM\Query;
+use Cake\ORM\ResultSet;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -25,6 +27,11 @@ use Cake\Validation\Validator;
  */
 class FundingCyclesTable extends Table
 {
+    const GROUP_VOTING = 'Currently voting';
+    const GROUP_PAST = 'Past';
+    const GROUP_APPLYING = 'Taking applications';
+    const GROUP_UPCOMING = 'Upcoming';
+
     /**
      * Initialize method
      *
@@ -211,5 +218,34 @@ class FundingCyclesTable extends Table
             ->count();
 
         return compact('cycle', 'projectCount');
+    }
+
+    /**
+     * Takes an array of funding cycles and groups them into categories based on what phase they're currently in
+     *
+     * @param FundingCycle[]|ResultSet $fundingCycles
+     * @return null[]|FundingCycle[][]
+     */
+    static public function groupCycles($fundingCycles)
+    {
+        $groupedCycles = [];
+        foreach ($fundingCycles as $fundingCycle) {
+            if ($fundingCycle->isCurrentlyVoting()) {
+                $group = self::GROUP_VOTING;
+            } elseif ($fundingCycle->votingHasPassed()) {
+                $group = self::GROUP_PAST;
+            } elseif ($fundingCycle->isCurrentlyApplying()) {
+                $group = self::GROUP_APPLYING;
+            } else {
+                $group = self::GROUP_UPCOMING;
+            }
+            $groupedCycles[$group][] = $fundingCycle;
+        }
+        return [
+            self::GROUP_UPCOMING => $groupedCycles[self::GROUP_UPCOMING] ?? null,
+            self::GROUP_APPLYING => $groupedCycles[self::GROUP_APPLYING] ?? null,
+            self::GROUP_VOTING => $groupedCycles[self::GROUP_VOTING] ?? null,
+            self::GROUP_PAST => $groupedCycles[self::GROUP_PAST] ?? null,
+        ];
     }
 }

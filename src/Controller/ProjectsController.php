@@ -31,7 +31,11 @@ class ProjectsController extends AppController
         $this->Categories = $this->fetchTable('Categories');
         $this->Images = $this->fetchTable('Images');
 
-        $this->Authentication->allowUnauthenticated(['apply']);
+        $this->Authentication->allowUnauthenticated([
+            'apply',
+            'index',
+            'view',
+        ]);
     }
 
     /**

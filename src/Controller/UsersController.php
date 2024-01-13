@@ -136,6 +136,8 @@ class UsersController extends AppController
             $data['phone'] = User::cleanPhone($data['phone']);
             $user = $this->Users->patchEntity($user, $data);
 
+            $data['email'] = strtolower(trim($data['email']));
+
             // admins should only be assignable from the database itself, new accounts always default to 0
             $user->is_admin = 0;
             // is_verified will later be assigned based on text verification API, see verify() below
@@ -145,9 +147,8 @@ class UsersController extends AppController
                 $this->Authentication->setIdentity($user);
                 $successMsg = 'Your account has been registered.';
                 $shouldVerifyPhone = Configure::read('enablePhoneVerification') && $user->phone;
-                $didSendCode = $this->sendVerificationText((string)$user->phone);
-                if ($shouldVerifyPhone && $didSendCode) {
-                    $this->Flash->success($successMsg . $this->verificationCodeSentMsg);
+                if ($shouldVerifyPhone && $this->sendVerificationText((string)$user->phone)) {
+                    $this->Flash->success($successMsg . ' ' . $this->verificationCodeSentMsg);
                     return $this->redirect(['action' => 'verify']);
                 }
                 $this->Flash->success($successMsg);
@@ -272,7 +273,9 @@ class UsersController extends AppController
     {
         if ($this->request->is('post')) {
             /** @var \App\Model\Entity\User $user */
-            $user = $this->Users->findByEmail($this->request->getData()['User']['email'])->first();
+            $data = $this->request->getData();
+            $data['User']['email'] = strtolower(trim($data['User']['email']));
+            $user = $this->Users->findByEmail($data['User']['email'])->first();
             if (empty($user)) {
                 $this->Flash->error('Sorry, the email address entered was not found.');
 
@@ -280,7 +283,6 @@ class UsersController extends AppController
             } else {
                 $user = $this->__generatePasswordToken($user);
                 $this->Users->save($user);
-                $this->Authentication->setIdentity($user);
                 $this->__sendForgotPasswordEmail($user);
                 $this->Flash->success(
                     'Password reset instructions have been sent to your email address. ' .
@@ -509,10 +511,14 @@ class UsersController extends AppController
         $user = $this->getAuthUser();
 
         if ($this->request->is(['post', 'put'])) {
+
+            $data = $this->request->getData();
+            $data['email'] = strtolower(trim($data['email']));
+
             // Update user entity
             $user = $this->Users->patchEntity(
                 $user,
-                $this->request->getData(),
+                $data,
                 ['fields' => ['email', 'name', 'phone']]
             );
 

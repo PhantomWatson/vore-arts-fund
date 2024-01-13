@@ -10,9 +10,12 @@
             What is the Vore Arts Fund?
         </h2>
         <p>
-            The Vore Arts Fund is a 501(c)(3) not-for-profit company incorporated in 2020 to financially support the arts
-            and entertainment community of Muncie, Indiana. It distributes no-contract, no-interest loans to cover the
-            up-front costs of producing for-profit art, music, performances, and art education.
+            The Vore Arts Fund is a 501(c)(3) not-for-profit corporation created to financially support the arts
+            and entertainment community of Muncie, Indiana. It distributes
+            <strong>
+                no-contract, no-interest loans to cover the up-front costs of producing for-profit art, music,
+                performances, and art education.
+            </strong>
         </p>
         <p>
             By absorbing the financial risk inherent in arts-related projects with up-front costs, this program makes it
@@ -29,7 +32,7 @@
         </h2>
         <img src="/img/phil.jpg" alt="Photo of Phil Vore" title="Phil Vore" />
         <p>
-            Phil Vore served as a director on the boards of the Full Circle Arts Co-op and the Muncie Arts and Culture
+            <strong>Phil Vore</strong> served as a director on the boards of the Full Circle Arts Co-op and the Muncie Arts and Culture
             Council from 2007 until his death in 2017, and during that time he championed the idea that such nonprofits
             must prove their worth to the community by directly and materially supporting artists. Whenever our focus
             would stray too far from our real purpose, Phil would remind us that we needed to be spending our time
@@ -45,8 +48,8 @@
             Who's eligible?
         </h2>
         <p>
-            To apply for funding, you must be a resident of Muncie, Indiana, at least 18, and seeking support for the
-            up-front costs of an arts-related project that is expected to generate enough money to pay back those costs.
+            To apply for funding, you must be a <strong>resident of Muncie, Indiana</strong>, at least 18, and seeking support for the
+            up-front costs of an <strong>arts-related project</strong> that is expected to generate enough money to pay back those costs.
         </p>
         <p>
             For more details about who qualifies, refer to the <a href="/terms#eligibility">eligibility requirements</a>
@@ -72,8 +75,11 @@
             What are the loan repayment terms?
         </h2>
         <p>
-            No interest is charged for any loans, but recipients are encouraged to add "voluntary interest" to their
-            repayment (kind of like adding gratuity) to help our program continue to grow. Until your loan is
+            <strong>No interest</strong> will ever be charged for any loans, but "voluntary interest" (think of it as
+            adding a tip on top of your repayment) is very appreciated, since it helps us offset losses incurred from
+            failed projects. Loans have no deadline for repayment, will never be reported to a credit agency, and will
+            never be passed on to a third party such as a collection agency. We aim for the Vore Arts Fund to be
+            <strong>as low-risk as possible</strong> for all participants.
         </p>
         <p>
             For more details about loan terms, refer to the <a href="/terms#loan-terms">loan terms</a> section of our
@@ -86,9 +92,10 @@
             What if my funded project fails?
         </h2>
         <p>
-            In the event a funded project fails to generate enough money to repay a loan, that loan can be unconditionally
-            forgiven. The Vore Arts Fund accepts the risk of your project potentially failing, and that helps you, the
-            artist, to focus on your work without worrying about whether it will bankrupt you.
+            In the event a funded project fails to generate enough money to repay a loan, that loan can be
+            <strong>unconditionally forgiven</strong>. The Vore Arts Fund accepts the risk of your project potentially
+            failing, and that helps you, the artist, to focus on your work without worrying about whether it will
+            bankrupt you.
         </p>
     </article>
 
@@ -109,7 +116,7 @@
                     </div>
                     <div>
                         <dt>
-                            Secretary
+                            Vice President / Secretary
                         </dt>
                         <dd>
                             Natalie Phillips
@@ -126,7 +133,7 @@
                 <dl>
                     <div>
                         <dt>
-                            Lead Web Developer
+                            Lead Engineer
                         </dt>
                         <dd>
                             Graham Watson
@@ -134,7 +141,7 @@
                     </div>
                     <div>
                         <dt>
-                            Web Developers
+                            Engineers
                         </dt>
                         <dd>
                             Dakota Savage
