@@ -114,6 +114,11 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
     $builder->connect('/projects/review/{id}', ['controller' => 'Projects', 'action' => 'review']);
     $builder->connect('/projects/set-status/{id}', ['controller' => 'Projects', 'action' => 'setStatus']);
 
+    // Votes
+    $builder->connect('/votes/{id}', ['controller' => 'Votes', 'action' => 'index'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);
+
     $builder->fallbacks(DashedRoute::class);
 });
 
