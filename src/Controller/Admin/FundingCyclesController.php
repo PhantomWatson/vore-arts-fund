@@ -5,8 +5,10 @@ namespace App\Controller\Admin;
 
 use App\Application;
 use App\Model\Entity\FundingCycle;
+use Cake\Database\Expression\QueryExpression;
 use Cake\Event\EventInterface;
 use Cake\I18n\FrozenTime;
+use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -33,11 +35,24 @@ class FundingCyclesController extends AdminController
     {
         $this->title('Funding Cycles');
         $table = $this->FundingCycles;
+        function getCycles(Query $query) {
+            return $query->orderAsc('application_begin')
+                ->contain([
+                    'Projects' => function (Query $q)
+                    {
+                        return $q->select([
+                            'Projects.funding_cycle_id',
+                            'count' => $q->func()->count('Projects.id')
+                        ]);
+                    }
+                ])
+                ->all();
+        }
         $this->set([
             'fundingCycles' => [
-                'past' => $table->find('past')->orderAsc('application_begin')->all(),
-                'current' => $table->find('current')->orderAsc('application_begin')->all(),
-                'future' => $table->find('future')->orderAsc('application_begin')->all(),
+                'past' => getCycles($table->find('past')),
+                'current' => getCycles($table->find('current')),
+                'future' => getCycles($table->find('future')),
             ],
         ]);
     }
