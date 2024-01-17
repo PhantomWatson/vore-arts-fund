@@ -16,7 +16,7 @@ $groupedCycles = \App\Model\Table\FundingCyclesTable::groupCycles($fundingCycles
                     <optgroup label="<?= $label ?>">
                         <?php foreach ($group as $fundingCycle): ?>
                             <option value="<?= $fundingCycle->id ?>"
-                                <?= $fundingCycleId ?? null == $fundingCycle->id ? 'selected' : null ?>
+                                <?= ($fundingCycleId ?? null) == $fundingCycle->id ? 'selected' : null ?>
                             >
                                 #<?= $fundingCycle->id ?>: <?= $fundingCycle->name ?>
                             </option>
