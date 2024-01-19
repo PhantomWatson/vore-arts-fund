@@ -12717,7 +12717,7 @@ body {
 }
 
 main {
-  padding-top: 100px;
+  padding-top: 116px;
 }
 
 #header {
@@ -12773,6 +12773,10 @@ main {
 .navbar button:hover,
 .navbar button:focus {
   color: #2487ce;
+}
+
+.navbar-brand {
+  margin: -15px 0;
 }
 
 #funding-cycle-selector {

@@ -988,7 +988,7 @@ article.note {
 }
 
 main {
-    padding-top: 100px;
+    padding-top: 116px;
 }
 
 $theme-link-color: #16507b;
@@ -1052,6 +1052,10 @@ $theme-link-hover-color: #2487ce;
     button:focus {
         color: $theme-link-hover-color;
     }
+}
+
+.navbar-brand {
+    margin: -15px 0;
 }
 
 #navbar-cta {
