@@ -114,7 +114,13 @@ class ProjectsTable extends Table
         $validator
             ->integer('amount_requested')
             ->requirePresence('amount_requested', 'create')
-            ->notEmptyString('amount_requested');
+            ->notEmptyString('amount_requested')
+            ->lessThan(
+                'amount_requested',
+                Project::MAXIMUM_ALLOWED_REQUEST + 1,
+                'Sorry, but that request was too large. Please limit your request to no more than $'
+                . number_format(Project::MAXIMUM_ALLOWED_REQUEST) . '.',
+            );
 
         $validator
             ->boolean('accept_partial_payout')
