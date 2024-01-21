@@ -34,12 +34,13 @@ class PagesController extends AppController
     {
         parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated([
-            'display',
             'about',
+            'botCatcher',
             'contact',
-            'terms',
-            'privacy',
+            'display',
             'home',
+            'privacy',
+            'terms',
         ]);
     }
 

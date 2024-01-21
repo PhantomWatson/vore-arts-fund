@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \App\Model\Entity\Project $project
+ * @var Project $project
  * @var \App\Model\Entity\FundingCycle $fundingCycle
  * @var \App\Model\Entity\Question[] $questions
  * @var \App\Model\Entity\User $user
@@ -10,13 +10,15 @@
  * @var string[] $categories
  */
 
+use App\Model\Entity\Project;
+
 $this->Html->css('/filepond/filepond.css', ['block' => true]);
 $this->Html->css('/filepond/filepond-plugin-image-preview.css', ['block' => true]);
 $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
 ?>
 
-<?php if ($project->status_id == \App\Model\Entity\Project::STATUS_REVISION_REQUESTED): ?>
+<?php if ($project->status_id == Project::STATUS_REVISION_REQUESTED): ?>
     <div class="alert alert-info">
         <p>
             <strong>We'll need this project to be revised before we can accept it.</strong>
@@ -176,6 +178,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                             'required' => true,
                             'type' => 'number',
                             'step' => 1,
+                            'max' => Project::MAXIMUM_ALLOWED_REQUEST,
                         ]
                     ) ?>
                     <span class="input-group-text">.00</span>

@@ -40,10 +40,7 @@ if (Configure::read('debug')) :
         Please
         <?= $this->Html->link(
             'log in',
-            [
-                'controller' => 'Users',
-                'action' => 'login',
-            ],
+            \App\Application::LOGIN_URL,
         ) ?>
         to continue.
     <?php elseif ($error->getCode() == 403): ?>

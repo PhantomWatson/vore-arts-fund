@@ -60,6 +60,9 @@ class Project extends Entity
     const ICON_WITHDRAW = '<i class="fa-solid fa-ban"></i>';
     const ICON_REPORT = '<i class="fa-solid fa-file-lines"></i>';
 
+    /** @var int Maximum amount that can be requested (in dollars) */
+    const MAXIMUM_ALLOWED_REQUEST = 1000000; // One million dollars
+
 
     /**
      * Returns TRUE if this project can be viewed by the public

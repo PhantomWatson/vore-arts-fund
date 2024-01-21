@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Application;
 use App\Event\MailListener;
 use App\Model\Entity\User;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
@@ -256,7 +257,7 @@ class UsersController extends AppController
         // regardless of POST or GET, redirect if user is logged in
         if ($result->isValid()) {
             $this->Authentication->logout();
-            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+            return $this->redirect(['action' => 'login']);
         }
 
         return $this->redirect($this->referer());

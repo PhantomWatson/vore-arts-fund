@@ -45,6 +45,12 @@ use Psr\Http\Message\ServerRequestInterface;
 class Application extends BaseApplication implements AuthenticationServiceProviderInterface
 {
     const LOCAL_TIMEZONE = 'America/Indiana/Indianapolis';
+    const LOGIN_URL = [
+        'plugin' => null,
+        'prefix' => false,
+        'controller' => 'Users',
+        'action' => 'login',
+    ];
 
     /**
      * @inheritDoc
@@ -175,12 +181,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
     {
         $service = new AuthenticationService();
         $service->setConfig([
-            'unauthenticatedRedirect' => Router::url([
-                'prefix' => false,
-                'controller' => 'Users',
-                'action' => 'login',
-                'plugin' => null,
-            ]),
+            'unauthenticatedRedirect' => Router::url(self::LOGIN_URL),
             'queryParam' => 'redirect',
         ]);
 
@@ -196,12 +197,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         $service->loadAuthenticator('Authentication.Session');
         $service->loadAuthenticator('Authentication.Cookie', [
             'fields' => $fields,
-            'loginUrl' => Router::url([
-                'prefix' => false,
-                'controller' => 'Users',
-                'action' => 'login',
-                'plugin' => false,
-            ]),
+            'loginUrl' => Router::url(self::LOGIN_URL),
         ]);
 
         return $service;

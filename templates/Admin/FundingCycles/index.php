@@ -58,16 +58,21 @@ $dateFormat = 'MMM d, YYYY';
                             <?= $fundingCycle->funding_available_formatted ?>
                         </td>
                         <td>
-                            <?= $this->Html->link(
-                                'Projects',
-                                [
-                                    'prefix' => 'Admin',
-                                    'controller' => 'FundingCycles',
-                                    'action' => 'projects',
-                                    $fundingCycle['id'],
-                                ],
-                                ['class' => 'btn btn-secondary']
-                            ) ?>
+                            <?php if ($fundingCycle->projects[0]->count): ?>
+                                <?= $this->Html->link(
+                                    $fundingCycle->projects[0]->count
+                                    . __n(' Project', ' Projects', $fundingCycle->projects[0]->count),
+                                    [
+                                        'prefix' => 'Admin',
+                                        'controller' => 'FundingCycles',
+                                        'action' => 'projects',
+                                        $fundingCycle['id'],
+                                    ],
+                                    ['class' => 'btn btn-secondary']
+                                ) ?>
+                            <?php else: ?>
+
+                            <?php endif; ?>
                             <?= $this->Html->link(
                                 'Edit',
                                 [

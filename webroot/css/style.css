@@ -7335,7 +7335,7 @@ fieldset:disabled .vote-rank button,
   display: inline-block !important;
 }
 
-.d-block {
+.d-block, #my-projects .cell--project .responsive-details {
   display: block !important;
 }
 
@@ -7367,7 +7367,11 @@ fieldset:disabled .vote-rank button,
   display: inline-flex !important;
 }
 
-.d-none {
+.d-none, #my-projects th.cell--status, #my-projects th.cell--created, #my-projects th.cell--messages, #my-projects th.cell--reports,
+#my-projects td.cell--status,
+#my-projects td.cell--created,
+#my-projects td.cell--messages,
+#my-projects td.cell--reports {
   display: none !important;
 }
 
@@ -9773,7 +9777,11 @@ fieldset:disabled .vote-rank button,
   .d-md-table-row {
     display: table-row !important;
   }
-  .d-md-table-cell {
+  .d-md-table-cell, #my-projects th.cell--status, #my-projects th.cell--created, #my-projects th.cell--messages, #my-projects th.cell--reports,
+  #my-projects td.cell--status,
+  #my-projects td.cell--created,
+  #my-projects td.cell--messages,
+  #my-projects td.cell--reports {
     display: table-cell !important;
   }
   .d-md-flex {
@@ -9782,7 +9790,7 @@ fieldset:disabled .vote-rank button,
   .d-md-inline-flex {
     display: inline-flex !important;
   }
-  .d-md-none {
+  .d-md-none, #my-projects .cell--project .responsive-details {
     display: none !important;
   }
   .flex-md-fill {
@@ -12717,7 +12725,7 @@ body {
 }
 
 main {
-  padding-top: 100px;
+  padding-top: 116px;
 }
 
 #header {
@@ -12773,6 +12781,10 @@ main {
 .navbar button:hover,
 .navbar button:focus {
   color: #2487ce;
+}
+
+.navbar-brand {
+  margin: -15px 0;
 }
 
 #funding-cycle-selector {
@@ -12877,7 +12889,6 @@ footer a {
   margin-right: 0.25em;
   width: 1.5em;
 }
-
 #donate-index .input-group {
   margin-bottom: 1rem;
   margin-right: 1rem;

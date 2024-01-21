@@ -24,7 +24,7 @@ use Exception;
  */
 class ProjectsController extends AppController
 {
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
         $this->FundingCycles = $this->fetchTable('FundingCycles');
