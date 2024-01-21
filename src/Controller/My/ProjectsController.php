@@ -23,12 +23,22 @@ use Cake\ORM\TableRegistry;
  */
 class ProjectsController extends BaseProjectsController
 {
-    public function beforeFilter(EventInterface $event): void
+    /**
+     * @param EventInterface $event
+     * @return Response|null
+     */
+    public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
+        if (!$this->getAuthUser()) {
+            return $this->redirect(\App\Application::LOGIN_URL);
+        }
+
         $this->Projects = $this->fetchTable('Projects');
 
         $this->addControllerBreadcrumb('My Projects');
+
+        return null;
     }
 
     /**

@@ -31,10 +31,7 @@ $count = count($projects);
         Please
         <?= $this->Html->link(
             'log in',
-            [
-                'controller' => 'Users',
-                'action' => 'login',
-            ]
+            \App\Application::LOGIN_URL
         ) ?>
         to vote.
     </p>

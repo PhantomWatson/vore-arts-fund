@@ -143,7 +143,7 @@ function echoLinks(\App\View\AppView $appView, $links, $navbarItemClass = 'nav-i
                         <li>
                             <?= $this->Html->link(
                                 'Login / Register',
-                                ['controller' => 'Users', 'action' => 'login', 'prefix' => false],
+                                \App\Application::LOGIN_URL,
                                 ['class' => 'nav-link']
                             ) ?>
                         </li>
