@@ -12932,7 +12932,9 @@ footer a {
 
 .voting-results__score {
   color: #666;
+  display: inline-block;
   font-size: 80%;
+  line-height: 110%;
 }
 
 .voting-results__award--awarded i {

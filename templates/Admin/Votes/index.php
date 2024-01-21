@@ -94,6 +94,8 @@ $fundingAvailable = $fundingCycle->funding_available;
                         <br />
                         <span class="voting-results__score">
                             <?= $project->voting_score === null ? 'No votes' : ('Score: ' . $project->voting_score) ?>
+                            <br />
+                            <?= number_format(count($project->votes)) . __n(' vote', ' votes', count($project->votes)) ?>
                         </span>
                     </td>
                     <td>
