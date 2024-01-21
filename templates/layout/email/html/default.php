@@ -3,6 +3,8 @@
  * @var \App\View\AppView $this
  * @var string|null $subject
  */
+
+$host = $this->getRequest()->host() ?: 'voreartsfund.org';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -278,8 +280,8 @@
 </head>
 <body>
 <div class="header">
-    <a href="https://<?= $this->getRequest()->host() ?>">
-        <img src="https://<?= $this->getRequest()->host() ?>/img/logo/logo.wordmark.v5.white.png" alt="Vore Arts Fund" title="Vore Arts Fund" />
+    <a href="https://<?= $host ?>">
+        <img src="https://<?= $host ?>/img/logo/logo.wordmark.v5.white.png" alt="Vore Arts Fund" title="Vore Arts Fund" />
     </a>
 </div>
 
@@ -301,8 +303,8 @@
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="content-block">
-                                <a href="https://<?= $this->getRequest()->host() ?>">
-                                    <?= str_replace('voreartsfund', 'VoreArtsFund', $this->getRequest()->host()) ?>
+                                <a href="https://<?= $host ?>">
+                                    <?= str_replace('voreartsfund', 'VoreArtsFund', $host) ?>
                                 </a>
                             </td>
                         </tr>
