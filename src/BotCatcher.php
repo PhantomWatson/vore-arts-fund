@@ -12,12 +12,14 @@ class BotCatcher
         $botCatcher = ['controller' => 'Pages', 'action' => 'botCatcher'];
         $paths = [
             'addons',
-            'admin/editor',
+            'admin/.git',
             'admin/SouthidcEditor',
+            'admin/editor',
             'admin/start',
             'administrator',
             'advfile',
             'alimail',
+            'api/.git',
             'app',
             'apps',
             'archive',
@@ -35,6 +37,7 @@ class BotCatcher
             'cms',
             'common',
             'console',
+            'core',
             'coremail',
             'CuteSoft_Client',
             'dialog',
