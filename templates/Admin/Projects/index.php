@@ -7,11 +7,14 @@
 ?>
 
 <?php if ($fundingCycles): ?>
-    <?= $this->element('funding_cycle_selector', ['url' => [
-        'prefix' => 'Admin',
-        'controller' => 'Projects',
-        'action' => 'index',
-    ]]) ?>
+    <?= $this->element('funding_cycle_selector', [
+        'url' => [
+            'prefix' => 'Admin',
+            'controller' => 'Projects',
+            'action' => 'index',
+        ],
+        'fundingCycleId' => $fundingCycleId,
+    ]) ?>
 
     <?php if (count($projects)): ?>
         <table class="table">

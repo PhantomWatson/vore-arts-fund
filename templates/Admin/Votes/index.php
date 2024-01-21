@@ -11,11 +11,14 @@ use App\Model\Entity\Project;
 $fundingAvailable = $fundingCycle->funding_available;
 ?>
 
-<?= $this->element('funding_cycle_selector', ['url' => [
-    'prefix' => 'Admin',
-    'controller' => 'Votes',
-    'action' => 'index',
-]]) ?>
+<?= $this->element('funding_cycle_selector', [
+    'url' => [
+        'prefix' => 'Admin',
+        'controller' => 'Votes',
+        'action' => 'index',
+    ],
+    'fundingCycleId' => $fundingCycle->id ?? null,
+]) ?>
 
 <?php if ($fundingCycle): ?>
     <p>
