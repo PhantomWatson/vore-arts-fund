@@ -90,7 +90,6 @@
             background: #ffffff;
             border: 1px solid #eaebed;
             clear: both;
-            margin-bottom: 24px;
             padding: 24px;
             text-align: center;
         }
