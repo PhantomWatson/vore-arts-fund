@@ -86,6 +86,22 @@
             padding: 24px;
         }
 
+        .header {
+            background: #ffffff;
+            border: 1px solid #eaebed;
+            clear: both;
+            margin-bottom: 24px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .header img {
+            border: 0;
+            margin: auto;
+            max-height: 150px;
+            max-width: 75%;
+        }
+
         .footer {
             clear: both;
             padding-top: 24px;
@@ -262,42 +278,38 @@
     </style>
 </head>
 <body>
+<div class="header">
+    <a href="https://<?= $this->getRequest()->host() ?>">
+        <img src="https://<?= $this->getRequest()->host() ?>/img/logo/logo.wordmark.v5.white.png" alt="Vore Arts Fund" title="Vore Arts Fund" />
+    </a>
+</div>
+
 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
     <tr>
         <td>&nbsp;</td>
         <td class="container">
             <div class="content">
 
-                <!-- START CENTERED WHITE CONTAINER -->
                 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="main">
                     <tr>
                         <td class="wrapper">
                             <?= $this->fetch('content') ?>
-                            <p>
-                                <span style="font-weight: bold; font-size: 150%;">
-                                    <img src="https://<?= $this->getRequest()->host() ?>/img/logo/logo.wordmark.v5.white.png"
-                                         height="70" alt="Vore Arts Fund" title="Vore Arts Fund" />
-                                </span>
-                            </p>
                         </td>
                     </tr>
                 </table>
 
-                <!-- START FOOTER -->
                 <div class="footer">
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="content-block">
-                                <a href="https://voreartsfund.org">
-                                    Vore Arts Fund
+                                <a href="https://<?= $this->getRequest()->host() ?>">
+                                    <?= str_replace('voreartsfund', 'VoreArtsFund', $this->getRequest()->host()) ?>
                                 </a>
                             </td>
                         </tr>
                     </table>
                 </div>
-                <!-- END FOOTER -->
 
-                <!-- END CENTERED WHITE CONTAINER -->
             </div>
         </td>
         <td>&nbsp;</td>
