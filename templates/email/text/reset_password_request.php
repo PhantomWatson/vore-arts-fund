@@ -1,12 +1,12 @@
 <?php
 /**
- * @var \App\Model\Entity\User $User
+ * @var \App\Model\Entity\User $user
  * @var \App\View\AppView $this
  * @var string $url
  */
 ?>
 
-<?= $User->name ?>,
+<?= $user->name ?>,
 
 You may change your password using the link below.
 
