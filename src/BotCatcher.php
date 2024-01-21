@@ -53,7 +53,6 @@ class BotCatcher
             'helpnew',
             'home',
             'ids/admin',
-            'images',
             'inc',
             'includes',
             'install',
