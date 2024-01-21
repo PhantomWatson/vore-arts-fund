@@ -18,7 +18,6 @@ class BotCatcher
             'administrator',
             'advfile',
             'alimail',
-            'api',
             'app',
             'apps',
             'archive',
