@@ -69,7 +69,7 @@ $fundingAvailable = $fundingCycle->funding_available;
                         $toAward = '$' . number_format($fundingAvailable);
                         $fundingAvailable = 0;
                         $fundable = true;
-                        $isPartial;
+                        $isPartial = true;
                     } else {
                         $toAward = 'Unable to fund';
                     }
