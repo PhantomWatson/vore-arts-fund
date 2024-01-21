@@ -287,7 +287,9 @@
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="content-block">
-                                <a href="https://voreartsfund.org">Vore Arts Fund</a>
+                                <a href="https://voreartsfund.org">
+                                    <img src="/img/logo/logo.wordmark.v5.white.png" height="70" alt="Vore Arts Fund" title="Vore Arts Fund" />
+                                </a>
                             </td>
                         </tr>
                     </table>

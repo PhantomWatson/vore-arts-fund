@@ -113,7 +113,7 @@ function echoLinks(\App\View\AppView $appView, $links, $navbarItemClass = 'nav-i
         <div class="container-fluid">
             <h1 class="logo">
                 <a class="navbar-brand" href="/">
-                    <img src="/img/logo-wordmark.png" height="70" alt="Vore Arts Fund" title="Vore Arts Fund" />
+                    <img src="/img/logo/logo.wordmark.v5.transparent.png" height="70" alt="Vore Arts Fund" title="Vore Arts Fund" />
                 </a>
             </h1>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
