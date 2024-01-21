@@ -1185,6 +1185,20 @@ footer {
             width: 1.5em;
         }
     }
+    th,
+    td {
+        &.cell--status,
+        &.cell--created,
+        &.cell--messages,
+        &.cell--reports {
+            @extend .d-none, .d-md-table-cell;
+        }
+    }
+    .cell--project {
+        .responsive-details {
+            @extend .d-block, .d-md-none;
+        }
+    }
 }
 
 #donate-index {
