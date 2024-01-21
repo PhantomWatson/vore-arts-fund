@@ -275,7 +275,8 @@
                             <?= $this->fetch('content') ?>
                             <p>
                                 <span style="font-weight: bold; font-size: 150%;">
-                                    Vore Arts Fund
+                                    <img src="//<?= $this->getRequest()->host() ?>/img/logo/logo.wordmark.v5.white.png"
+                                         height="70" alt="Vore Arts Fund" title="Vore Arts Fund" />
                                 </span>
                             </p>
                         </td>
@@ -288,7 +289,7 @@
                         <tr>
                             <td class="content-block">
                                 <a href="https://voreartsfund.org">
-                                    <img src="/img/logo/logo.wordmark.v5.white.png" height="70" alt="Vore Arts Fund" title="Vore Arts Fund" />
+                                    Vore Arts Fund
                                 </a>
                             </td>
                         </tr>
