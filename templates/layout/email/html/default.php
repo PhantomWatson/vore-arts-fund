@@ -275,7 +275,7 @@
                             <?= $this->fetch('content') ?>
                             <p>
                                 <span style="font-weight: bold; font-size: 150%;">
-                                    <img src="//<?= $this->getRequest()->host() ?>/img/logo/logo.wordmark.v5.white.png"
+                                    <img src="https://<?= $this->getRequest()->host() ?>/img/logo/logo.wordmark.v5.white.png"
                                          height="70" alt="Vore Arts Fund" title="Vore Arts Fund" />
                                 </span>
                             </p>
