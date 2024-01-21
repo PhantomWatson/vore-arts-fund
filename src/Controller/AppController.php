@@ -123,10 +123,13 @@ class AppController extends Controller
         }
 
         $user = $this->getAuthUser();
+        if (!$user) {
+            return false;
+        }
 
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
 
-        return $projectsTable->exists(['id' => $projectId, 'user_id' => $user?->id]);
+        return $projectsTable->exists(['id' => $projectId, 'user_id' => $user->id]);
     }
 
     /**
