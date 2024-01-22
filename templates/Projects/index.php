@@ -4,8 +4,6 @@
  * @var \Cake\ORM\ResultSet|Project[] $projects
  */
 
-// TODO: Link to vote, if applicable
-
 use App\Model\Entity\Project;
 
 ?>
