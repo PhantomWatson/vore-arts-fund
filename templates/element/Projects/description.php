@@ -33,9 +33,9 @@ use Cake\Utility\Hash;
 
 <?php foreach ($questions as $question): ?>
     <?php
-    $answer = Hash::filter($project->answers, function ($answer) use ($question) {
-        return $answer->question_id == $question->id;
-    });
+        $answer = Hash::filter($project->answers, function ($answer) use ($question) {
+            return $answer->question_id == $question->id;
+        });
     ?>
     <section class="projects-view">
         <h3>
