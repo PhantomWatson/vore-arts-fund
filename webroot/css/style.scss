@@ -1,52 +1,8 @@
-$section-spacer: 2rem;
-
-/* Bootstrap overrides */
-$primary: #1A5B11;
-$secondary: #E4E6C3;
-$info: #00b0bd;
-$success: #09a600;
-$warning: #f8c300;
-$danger: #e30125;
-$light: #F7F7F2;
-$dark: #001904;
-$body-bg: $light;
-$body-color: $dark;
-$navbar-dark-color: $light;
-$navbar-dark-hover-color: #fff;
-$navbar-dark-active-color: #fff;
-$card-bg: #fff;
-$card-border-radius: 0.5em;
-$card-spacer-x: 1em;
-$card-spacer-y: 1em;
-$btn-border-radius: 5px;
-$input-btn-padding-y: .5rem;
-$input-btn-padding-x: 1.5rem;
-$input-bg: white;
-$border-radius: 0.2em;
-$font-family-sans-serif: "Open Sans", sans-serif;
-$headings-font-family: "Raleway", sans-serif;
-
-/* Weirdly necessary to avoid stuff like "color: ;" and warnings */
-$box-shadow: 0 .5rem 1rem rgba(#000, .15);
-$card-box-shadow: $box-shadow;
-$dropdown-box-shadow: $box-shadow;
-$dropdown-dark-box-shadow: $box-shadow;
-$breadcrumb-bg: inherit;
-$breadcrumb-border-radius: inherit;
-$card-cap-color: inherit;
-$card-color: inherit;
-$card-height: inherit;
-$input-btn-font-family: $font-family-sans-serif;
-$modal-content-color: inherit;
-$modal-footer-bg: inherit;
-$nav-link-font-size: inherit;
-$nav-link-font-weight: inherit;
-$offcanvas-color: inherit;
-$popover-header-color: inherit;
-$toast-color: inherit;
-$tooltip-margin: 0;
-
+@import "variables";
 @import "../../vendor/twbs/bootstrap/scss/bootstrap.scss";
+@import "elements";
+@import "form";
+@import "vote";
 
 @mixin inline-select {
     display: inline;
@@ -56,10 +12,6 @@ $tooltip-margin: 0;
 .disabled a,
 a.disabled {
     pointer-events: none;
-}
-
-legend {
-    color: $link-hover-color;
 }
 
 .row {
@@ -161,71 +113,6 @@ ul.pagination {
     content: " \2191";
 }
 
-.form {
-    .error-message {
-        color: rgba(0, 0, 0, 0.54);
-        display: block;
-        font-size: 0.75rem;
-        font-style: italic;
-        font-weight: normal;
-        margin-bottom: 1rem;
-        margin-top: -1px;
-        padding: 0.375rem 0.5625rem 0.5625rem;
-    }
-
-    button[type="submit"] {
-        box-shadow: none;
-        float: right;
-        text-transform: uppercase;
-    }
-
-    button:hover,
-    button:focus {
-        background: #BE840B;
-        box-shadow: none;
-    }
-}
-
-label {
-    font-weight: bold;
-}
-
-.required {
-    > label {
-        &:after {
-            content: ' *';
-            color: #C3232D;
-        }
-    }
-}
-
-select[multiple] {
-    min-height: 150px;
-    background: none;
-}
-
-input[type=checkbox],
-input[type=radio] {
-    margin-right: 0.5em;
-}
-
-.date,
-.time,
-.datetime {
-    select {
-        display: inline;
-        margin-right: 10px;
-        width: auto;
-    }
-}
-
-.error {
-    label,
-    label.error {
-        color: #C3232D;
-    }
-}
-
 .view {
     h2 {
         color: #6F6F6F;
@@ -316,14 +203,6 @@ p.notice {
 p.error {
     color: #fff;
     background: #C3232D;
-}
-
-pre {
-    background: none repeat scroll 0 0 #FFF;
-    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.24);
-    color: rgba(0, 0, 0, 0.74);
-    margin: 15px 0;
-    padding: 5px;
 }
 
 .cake-stack-trace {
@@ -452,24 +331,6 @@ pre {
     padding: 1em;
 }
 
-fieldset {
-    @extend .bordered-section;
-    margin: 1.125rem 0;
-    padding: 1.25rem;
-
-    legend {
-        color: $dark;
-        border-bottom: 2px solid $primary;
-        line-height: 2rem;
-        margin-bottom: 1rem;
-        width: 100%;
-    }
-}
-
-button {
-    background: #966600;
-}
-
 div.message {
     background-color: #a0d3e8;
     color: #626262;
@@ -584,10 +445,6 @@ div.message {
     }
 }
 
-table td {
-    vertical-align: top;
-}
-
 .my-projects__projects {
     th,
     td {
@@ -641,21 +498,6 @@ table td {
     font-size: 80%;
 }
 
-.form-group {
-    margin-bottom: 2em;
-}
-
-.input-with-footnote {
-    .form-group,
-    .input-group {
-        margin-bottom: 0;
-    }
-
-    .footnote {
-        margin-bottom: 2rem;
-    }
-}
-
 .apply {
     .accept-partial {
         label {
@@ -686,12 +528,6 @@ table td {
     }
 }
 
-form {
-    .footnote {
-        margin-bottom: 0;
-    }
-}
-
 #home {
     section {
         margin: $section-spacer 0;
@@ -714,10 +550,6 @@ form {
     form {
         margin-bottom: 1rem;
     }
-}
-
-body {
-    padding-bottom: 4em;
 }
 
 .image-gallery {
@@ -762,10 +594,6 @@ body {
             background-color: #cfe2f3;
         }
     }
-}
-
-.form-control {
-    appearance: auto;
 }
 
 #change-status {
@@ -835,136 +663,6 @@ article.note {
     text-align: right;
 }
 
-#voter-app {
-    @extend .container;
-}
-
-#vote-steps {
-    @extend .list-unstyled;
-    border-bottom: 1px solid #aaa;
-    list-style: none;
-    padding-left: 0;
-
-    li {
-        display: inline-block;
-        padding: 0.5em;
-        margin-right: 1em;
-    }
-
-    .active {
-        font-weight: bold;
-    }
-
-    button {
-        &[disabled] {
-            color: $body-color;
-            opacity: 1;
-            text-decoration: none;
-        }
-        &:not([disabled]) {
-            color: $link-color;
-        }
-    }
-}
-
-.vote-projects {
-    h2 {
-        font-size: 1.2em;
-    }
-}
-
-.vote-project-list {
-    @extend .table;
-
-    .fa-thumbs-up {
-        color: green;
-    }
-
-    .fa-thumbs-down {
-        color: red;
-    }
-
-    .project-title {
-        font-size: 125%;
-        font-weight: bold;
-        margin-bottom: 0;
-    }
-}
-
-.vote-project.modal {
-    section {
-        margin-bottom: 2em;
-    }
-}
-
-.vote-project-q {
-    font-size: 1.5rem;
-}
-
-.vote-actions,
-.vote-rank {
-    padding: 1em !important;
-    text-align: center;
-    vertical-align: middle;
-    white-space: nowrap;
-    width: 1%;
-
-    i {
-        font-size: 2em;
-    }
-
-    button {
-        @extend .btn;
-
-        &.vote-actions-change-vote {
-            @extend .btn-link;
-            @extend .btn-sm;
-        }
-
-        &.vote-actions-vote,
-        &.vote-actions-rank
-        {
-            @extend .btn-primary;
-        }
-    }
-}
-
-.vote-step-title {
-    font-size: 1.2em;
-    font-weight: bold;
-}
-
-.vote-footer {
-    padding: 0.5em;
-    text-align: right;
-
-    .col:first-child {
-        text-align: left;
-    }
-
-    .col:last-child {
-        text-align: right;
-    }
-}
-
-.vote-rank {
-    font-size: 2em;
-    font-weight: bold;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.vote-sortable-table {
-    .is-dragging {
-        background-color: #faf4d0;
-        user-select: none;
-    }
-
-    .is-dragging-over {
-        background-color: #EEE;
-    }
-}
-
 .projects-title {
     font-size: 1.5em;
     font-weight: bold;
@@ -974,13 +672,6 @@ article.note {
     color: $danger;
     font-weight: bold;
 }
-
-main {
-    padding-top: 116px;
-}
-
-$theme-link-color: #16507b;
-$theme-link-hover-color: #2487ce;
 
 #header {
     background: #fff;
@@ -1068,10 +759,6 @@ section.funding-cycles {
     }
 }
 
-.btn-primary {
-    color: #fff !important;
-}
-
 .alert-info {
     background-color: $card-bg;
 }
@@ -1090,37 +777,6 @@ section.funding-cycles {
     td {
         text-align: center;
         vertical-align: middle;
-    }
-}
-
-p:last-child {
-    margin-bottom: 0;
-}
-
-footer {
-    @extend .border-top;
-    border-top: 1px solid;
-    color: $text-muted;
-    font-size: 90%;
-    padding-top: 0.9em;
-    margin-top: 5em;
-    text-align: center;
-
-    p {
-        margin-bottom: 0.9em;
-    }
-
-    ul {
-        @extend .list-unstyled;
-    }
-
-    li {
-        display: inline-block;
-        margin: 0 1em;
-    }
-
-    a {
-        text-decoration: none;
     }
 }
 
@@ -1248,26 +904,4 @@ footer {
 
 .g-recaptcha {
     margin-bottom: 2em;
-}
-
-.voting-results__score {
-    color: #666;
-    display: inline-block;
-    font-size: 80%;
-    line-height: 110%;
-}
-
-.voting-results__award {
-}
-
-.voting-results__award--awarded {
-    i {
-        color: $success;
-    }
-}
-
-.voting-results__award--to-award {
-    i {
-        color: $danger;
-    }
 }

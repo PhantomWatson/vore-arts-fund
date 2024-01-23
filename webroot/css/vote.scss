@@ -1,0 +1,154 @@
+@import "../../vendor/twbs/bootstrap/scss/variables.scss";
+@import "variables";
+
+.vote-projects {
+    h2 {
+        font-size: 1.2em;
+    }
+}
+
+.vote-project-list {
+    @extend .table;
+
+    .fa-thumbs-up {
+        color: green;
+    }
+
+    .fa-thumbs-down {
+        color: red;
+    }
+
+    .project-title {
+        font-size: 125%;
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+}
+
+.vote-project.modal {
+    section {
+        margin-bottom: 2em;
+    }
+}
+
+.vote-project-q {
+    font-size: 1.5rem;
+}
+
+.vote-actions,
+.vote-rank {
+    padding: 1em !important;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 1%;
+
+    i {
+        font-size: 2em;
+    }
+
+    button {
+        @extend .btn;
+
+        &.vote-actions-change-vote {
+            @extend .btn-link;
+            @extend .btn-sm;
+        }
+
+        &.vote-actions-vote,
+        &.vote-actions-rank
+        {
+            @extend .btn-primary;
+        }
+    }
+}
+
+.vote-step-title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.vote-footer {
+    padding: 0.5em;
+    text-align: right;
+
+    .col:first-child {
+        text-align: left;
+    }
+
+    .col:last-child {
+        text-align: right;
+    }
+}
+
+.vote-rank {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.vote-sortable-table {
+    .is-dragging {
+        background-color: #faf4d0;
+        user-select: none;
+    }
+
+    .is-dragging-over {
+        background-color: #EEE;
+    }
+}
+
+#voter-app {
+    @extend .container;
+}
+
+#vote-steps {
+    @extend .list-unstyled;
+    border-bottom: 1px solid #aaa;
+    list-style: none;
+    padding-left: 0;
+
+    li {
+        display: inline-block;
+        padding: 0.5em;
+        margin-right: 1em;
+    }
+
+    .active {
+        font-weight: bold;
+    }
+
+    button {
+        &[disabled] {
+            color: $body-color;
+            opacity: 1;
+            text-decoration: none;
+        }
+        &:not([disabled]) {
+            color: $link-color;
+        }
+    }
+}
+
+.voting-results__score {
+    color: #666;
+    display: inline-block;
+    font-size: 80%;
+    line-height: 110%;
+}
+
+.voting-results__award {
+}
+
+.voting-results__award--awarded {
+    i {
+        color: $success;
+    }
+}
+
+.voting-results__award--to-award {
+    i {
+        color: $danger;
+    }
+}

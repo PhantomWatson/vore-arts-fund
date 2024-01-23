@@ -1,0 +1,49 @@
+$section-spacer: 2rem;
+$theme-link-color: #16507b;
+$theme-link-hover-color: #2487ce;
+
+/* Bootstrap overrides */
+$primary: #1A5B11;
+$secondary: #E4E6C3;
+$info: #00b0bd;
+$success: #09a600;
+$warning: #f8c300;
+$danger: #e30125;
+$light: #F7F7F2;
+$dark: #001904;
+$body-bg: $light;
+$body-color: $dark;
+$navbar-dark-color: $light;
+$navbar-dark-hover-color: #fff;
+$navbar-dark-active-color: #fff;
+$card-bg: #fff;
+$card-border-radius: 0.5em;
+$card-spacer-x: 1em;
+$card-spacer-y: 1em;
+$btn-border-radius: 5px;
+$input-btn-padding-y: .5rem;
+$input-btn-padding-x: 1.5rem;
+$input-bg: white;
+$border-radius: 0.2em;
+$font-family-sans-serif: "Open Sans", sans-serif;
+$headings-font-family: "Raleway", sans-serif;
+
+/* Weirdly necessary to avoid stuff like "color: ;" and warnings */
+$box-shadow: 0 .5rem 1rem rgba(#000, .15);
+$card-box-shadow: $box-shadow;
+$dropdown-box-shadow: $box-shadow;
+$dropdown-dark-box-shadow: $box-shadow;
+$breadcrumb-bg: inherit;
+$breadcrumb-border-radius: inherit;
+$card-cap-color: inherit;
+$card-color: inherit;
+$card-height: inherit;
+$input-btn-font-family: $font-family-sans-serif;
+$modal-content-color: inherit;
+$modal-footer-bg: inherit;
+$nav-link-font-size: inherit;
+$nav-link-font-weight: inherit;
+$offcanvas-color: inherit;
+$popover-header-color: inherit;
+$toast-color: inherit;
+$tooltip-margin: 0;

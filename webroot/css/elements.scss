@@ -1,0 +1,89 @@
+@import "../../vendor/twbs/bootstrap/scss/variables.scss";
+@import "variables";
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+footer {
+    @extend .border-top;
+    border-top: 1px solid;
+    color: $text-muted;
+    font-size: 90%;
+    padding-top: 0.9em;
+    margin-top: 5em;
+    text-align: center;
+
+    p {
+        margin-bottom: 0.9em;
+    }
+
+    ul {
+        @extend .list-unstyled;
+    }
+
+    li {
+        display: inline-block;
+        margin: 0 1em;
+    }
+
+    a {
+        text-decoration: none;
+    }
+}
+
+legend {
+    color: $link-hover-color;
+}
+
+label {
+    font-weight: bold;
+}
+
+select[multiple] {
+    min-height: 150px;
+    background: none;
+}
+
+input[type=checkbox],
+input[type=radio] {
+    margin-right: 0.5em;
+}
+
+pre {
+    background: none repeat scroll 0 0 #FFF;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.24);
+    color: rgba(0, 0, 0, 0.74);
+    margin: 15px 0;
+    padding: 5px;
+}
+
+fieldset {
+    @extend .bordered-section;
+    margin: 1.125rem 0;
+    padding: 1.25rem;
+
+    legend {
+        color: $dark;
+        border-bottom: 2px solid $primary;
+        line-height: 2rem;
+        margin-bottom: 1rem;
+        width: 100%;
+    }
+}
+
+button {
+    background: #966600;
+}
+
+table td {
+    vertical-align: top;
+}
+
+body {
+    padding-bottom: 4em;
+}
+
+main {
+    padding-top: 116px;
+}

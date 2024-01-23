@@ -662,7 +662,7 @@ progress {
   }
 }
 
-.list-unstyled, footer ul, #vote-steps {
+.list-unstyled, #vote-steps, footer ul {
   padding-left: 0;
   list-style: none;
 }
@@ -11984,13 +11984,259 @@ fieldset:disabled .vote-rank button,
     display: none !important;
   }
 }
-.disabled a,
-a.disabled {
-  pointer-events: none;
+/* Bootstrap overrides */
+/* Weirdly necessary to avoid stuff like "color: ;" and warnings */
+p:last-child {
+  margin-bottom: 0;
+}
+
+footer {
+  border-top: 1px solid;
+  color: var(--bs-secondary-color);
+  font-size: 90%;
+  padding-top: 0.9em;
+  margin-top: 5em;
+  text-align: center;
+}
+footer p {
+  margin-bottom: 0.9em;
+}
+footer li {
+  display: inline-block;
+  margin: 0 1em;
+}
+footer a {
+  text-decoration: none;
 }
 
 legend {
   color: #15490e;
+}
+
+label {
+  font-weight: bold;
+}
+
+select[multiple] {
+  min-height: 150px;
+  background: none;
+}
+
+input[type=checkbox],
+input[type=radio] {
+  margin-right: 0.5em;
+}
+
+pre {
+  background: none repeat scroll 0 0 #FFF;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.24);
+  color: rgba(0, 0, 0, 0.74);
+  margin: 15px 0;
+  padding: 5px;
+}
+
+fieldset {
+  margin: 1.125rem 0;
+  padding: 1.25rem;
+}
+fieldset legend {
+  color: #001904;
+  border-bottom: 2px solid #1A5B11;
+  line-height: 2rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+button {
+  background: #966600;
+}
+
+table td {
+  vertical-align: top;
+}
+
+body {
+  padding-bottom: 4em;
+}
+
+main {
+  padding-top: 116px;
+}
+
+.form .error-message {
+  color: rgba(0, 0, 0, 0.54);
+  display: block;
+  font-size: 0.75rem;
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 1rem;
+  margin-top: -1px;
+  padding: 0.375rem 0.5625rem 0.5625rem;
+}
+.form button[type=submit] {
+  box-shadow: none;
+  float: right;
+  text-transform: uppercase;
+}
+.form button:hover,
+.form button:focus {
+  background: #BE840B;
+  box-shadow: none;
+}
+
+.required > label:after {
+  content: " *";
+  color: #C3232D;
+}
+
+.date select,
+.time select,
+.datetime select {
+  display: inline;
+  margin-right: 10px;
+  width: auto;
+}
+
+.error label,
+.error label.error {
+  color: #C3232D;
+}
+
+.form-group {
+  margin-bottom: 2em;
+}
+
+.input-with-footnote .form-group,
+.input-with-footnote .input-group {
+  margin-bottom: 0;
+}
+.input-with-footnote .footnote {
+  margin-bottom: 2rem;
+}
+
+form .footnote {
+  margin-bottom: 0;
+}
+
+.form-control {
+  appearance: auto;
+}
+
+.btn-primary, #navbar-cta, .vote-actions button.vote-actions-vote, .vote-actions button.vote-actions-rank,
+.vote-rank button.vote-actions-vote,
+.vote-rank button.vote-actions-rank {
+  color: #fff !important;
+}
+
+/* Bootstrap overrides */
+/* Weirdly necessary to avoid stuff like "color: ;" and warnings */
+.vote-projects h2, .vote-projects .h2 {
+  font-size: 1.2em;
+}
+
+.vote-project-list .fa-thumbs-up {
+  color: green;
+}
+.vote-project-list .fa-thumbs-down {
+  color: red;
+}
+.vote-project-list .project-title {
+  font-size: 125%;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.vote-project.modal section {
+  margin-bottom: 2em;
+}
+
+.vote-project-q {
+  font-size: 1.5rem;
+}
+
+.vote-actions,
+.vote-rank {
+  padding: 1em !important;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: 1%;
+}
+.vote-actions i,
+.vote-rank i {
+  font-size: 2em;
+}
+.vote-step-title {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.vote-footer {
+  padding: 0.5em;
+  text-align: right;
+}
+.vote-footer .col:first-child {
+  text-align: left;
+}
+.vote-footer .col:last-child {
+  text-align: right;
+}
+
+.vote-rank {
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.vote-sortable-table .is-dragging {
+  background-color: #faf4d0;
+  user-select: none;
+}
+.vote-sortable-table .is-dragging-over {
+  background-color: #EEE;
+}
+
+#vote-steps {
+  border-bottom: 1px solid #aaa;
+  list-style: none;
+  padding-left: 0;
+}
+#vote-steps li {
+  display: inline-block;
+  padding: 0.5em;
+  margin-right: 1em;
+}
+#vote-steps .active {
+  font-weight: bold;
+}
+#vote-steps button[disabled] {
+  color: #001904;
+  opacity: 1;
+  text-decoration: none;
+}
+#vote-steps button:not([disabled]) {
+  color: #1A5B11;
+}
+
+.voting-results__score {
+  color: #666;
+  display: inline-block;
+  font-size: 80%;
+  line-height: 110%;
+}
+
+.voting-results__award--awarded i {
+  color: #09a600;
+}
+
+.voting-results__award--to-award i {
+  color: #e30125;
+}
+
+.disabled a,
+a.disabled {
+  pointer-events: none;
 }
 
 .row {
@@ -12074,59 +12320,6 @@ ul.pagination .disabled:hover a {
   content: " ↑";
 }
 
-.form .error-message {
-  color: rgba(0, 0, 0, 0.54);
-  display: block;
-  font-size: 0.75rem;
-  font-style: italic;
-  font-weight: normal;
-  margin-bottom: 1rem;
-  margin-top: -1px;
-  padding: 0.375rem 0.5625rem 0.5625rem;
-}
-.form button[type=submit] {
-  box-shadow: none;
-  float: right;
-  text-transform: uppercase;
-}
-.form button:hover,
-.form button:focus {
-  background: #BE840B;
-  box-shadow: none;
-}
-
-label {
-  font-weight: bold;
-}
-
-.required > label:after {
-  content: " *";
-  color: #C3232D;
-}
-
-select[multiple] {
-  min-height: 150px;
-  background: none;
-}
-
-input[type=checkbox],
-input[type=radio] {
-  margin-right: 0.5em;
-}
-
-.date select,
-.time select,
-.datetime select {
-  display: inline;
-  margin-right: 10px;
-  width: auto;
-}
-
-.error label,
-.error label.error {
-  color: #C3232D;
-}
-
 .view h2, .view .h2 {
   color: #6F6F6F;
 }
@@ -12197,14 +12390,6 @@ p.notice {
 p.error {
   color: #fff;
   background: #C3232D;
-}
-
-pre {
-  background: none repeat scroll 0 0 #FFF;
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.24);
-  color: rgba(0, 0, 0, 0.74);
-  margin: 15px 0;
-  padding: 5px;
 }
 
 .cake-stack-trace code {
@@ -12314,22 +12499,6 @@ pre {
   padding: 1em;
 }
 
-fieldset {
-  margin: 1.125rem 0;
-  padding: 1.25rem;
-}
-fieldset legend {
-  color: #001904;
-  border-bottom: 2px solid #1A5B11;
-  line-height: 2rem;
-  margin-bottom: 1rem;
-  width: 100%;
-}
-
-button {
-  background: #966600;
-}
-
 div.message {
   background-color: #a0d3e8;
   color: #626262;
@@ -12433,10 +12602,6 @@ div.message.hidden {
   border-bottom: 0;
 }
 
-table td {
-  vertical-align: top;
-}
-
 .my-projects__projects th,
 .my-projects__projects td {
   vertical-align: middle;
@@ -12481,18 +12646,6 @@ table td {
   font-size: 80%;
 }
 
-.form-group {
-  margin-bottom: 2em;
-}
-
-.input-with-footnote .form-group,
-.input-with-footnote .input-group {
-  margin-bottom: 0;
-}
-.input-with-footnote .footnote {
-  margin-bottom: 2rem;
-}
-
 .apply .accept-partial label {
   display: block;
 }
@@ -12510,10 +12663,6 @@ table td {
   max-width: 300px;
 }
 
-form .footnote {
-  margin-bottom: 0;
-}
-
 #home section {
   margin: 2rem 0;
 }
@@ -12528,10 +12677,6 @@ form .footnote {
 
 #login-form form {
   margin-bottom: 1rem;
-}
-
-body {
-  padding-bottom: 4em;
 }
 
 .image-gallery img {
@@ -12561,10 +12706,6 @@ body {
 #cycles-chart .winter th,
 #cycles-chart .winter td:not(.blank) {
   background-color: #cfe2f3;
-}
-
-.form-control {
-  appearance: auto;
 }
 
 #change-status {
@@ -12620,95 +12761,6 @@ body {
   text-align: right;
 }
 
-#vote-steps {
-  border-bottom: 1px solid #aaa;
-  list-style: none;
-  padding-left: 0;
-}
-#vote-steps li {
-  display: inline-block;
-  padding: 0.5em;
-  margin-right: 1em;
-}
-#vote-steps .active {
-  font-weight: bold;
-}
-#vote-steps button[disabled] {
-  color: #001904;
-  opacity: 1;
-  text-decoration: none;
-}
-#vote-steps button:not([disabled]) {
-  color: #1A5B11;
-}
-
-.vote-projects h2, .vote-projects .h2 {
-  font-size: 1.2em;
-}
-
-.vote-project-list .fa-thumbs-up {
-  color: green;
-}
-.vote-project-list .fa-thumbs-down {
-  color: red;
-}
-.vote-project-list .project-title {
-  font-size: 125%;
-  font-weight: bold;
-  margin-bottom: 0;
-}
-
-.vote-project.modal section {
-  margin-bottom: 2em;
-}
-
-.vote-project-q {
-  font-size: 1.5rem;
-}
-
-.vote-actions,
-.vote-rank {
-  padding: 1em !important;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  width: 1%;
-}
-.vote-actions i,
-.vote-rank i {
-  font-size: 2em;
-}
-.vote-step-title {
-  font-size: 1.2em;
-  font-weight: bold;
-}
-
-.vote-footer {
-  padding: 0.5em;
-  text-align: right;
-}
-.vote-footer .col:first-child {
-  text-align: left;
-}
-.vote-footer .col:last-child {
-  text-align: right;
-}
-
-.vote-rank {
-  font-size: 2em;
-  font-weight: bold;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.vote-sortable-table .is-dragging {
-  background-color: #faf4d0;
-  user-select: none;
-}
-.vote-sortable-table .is-dragging-over {
-  background-color: #EEE;
-}
-
 .projects-title {
   font-size: 1.5em;
   font-weight: bold;
@@ -12717,10 +12769,6 @@ body {
 .no-answer {
   color: #e30125;
   font-weight: bold;
-}
-
-main {
-  padding-top: 116px;
 }
 
 #header {
@@ -12796,12 +12844,6 @@ section.funding-cycles th {
   width: 1%;
 }
 
-.btn-primary, .vote-actions button.vote-actions-vote, .vote-actions button.vote-actions-rank,
-.vote-rank button.vote-actions-vote,
-.vote-rank button.vote-actions-rank, #navbar-cta {
-  color: #fff !important;
-}
-
 .alert-info {
   background-color: #fff;
 }
@@ -12819,29 +12861,6 @@ section.funding-cycles th {
 #form-images td {
   text-align: center;
   vertical-align: middle;
-}
-
-p:last-child {
-  margin-bottom: 0;
-}
-
-footer {
-  border-top: 1px solid;
-  color: var(--bs-secondary-color);
-  font-size: 90%;
-  padding-top: 0.9em;
-  margin-top: 5em;
-  text-align: center;
-}
-footer p {
-  margin-bottom: 0.9em;
-}
-footer li {
-  display: inline-block;
-  margin: 0 1em;
-}
-footer a {
-  text-decoration: none;
 }
 
 #about article {
@@ -12923,21 +12942,6 @@ footer a {
 
 .g-recaptcha {
   margin-bottom: 2em;
-}
-
-.voting-results__score {
-  color: #666;
-  display: inline-block;
-  font-size: 80%;
-  line-height: 110%;
-}
-
-.voting-results__award--awarded i {
-  color: #09a600;
-}
-
-.voting-results__award--to-award i {
-  color: #e30125;
 }
 
 /*# sourceMappingURL=style.css.map */
