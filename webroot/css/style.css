@@ -12944,4 +12944,19 @@ section.funding-cycles th {
   margin-bottom: 2em;
 }
 
+.projects-index__project {
+  border-bottom: 1px solid #aaa;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+}
+.projects-index__project-title {
+  margin-bottom: 0;
+}
+.projects-index__project-details {
+  font-size: 0.8em;
+}
+.projects-index__images {
+  text-align: center;
+}
+
 /*# sourceMappingURL=style.css.map */

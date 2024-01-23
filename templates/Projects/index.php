@@ -1,11 +1,11 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var \Cake\ORM\ResultSet|\App\Model\Entity\FundingCycle[] $fundingCycles
  * @var \Cake\ORM\ResultSet|Project[] $projects
  */
 
 use App\Model\Entity\Project;
-
 ?>
 
 <p>
@@ -18,74 +18,73 @@ use App\Model\Entity\Project;
     ) ?> page.
 </p>
 
-<?php if (!$projects->isEmpty()): ?>
-    <?= $this->element('pagination') ?>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Project
-                </th>
-                <th>Status</th>
-                <th>Funding cycle</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($projects as $project): ?>
-                <tr>
-                    <td>
-                        <?= $this->Html->link(
-                            $project->title,
-                            [
-                                'prefix' => false,
-                                'controller' => 'Projects',
-                                'action' => 'view',
-                                'id' => $project->id,
-                            ]
-                        ) ?>
-                        (<?= $project->category->name ?>)
-                    </td>
-                    <td>
-                        <?php
-                            switch($project->status_id) {
-                                case Project::STATUS_ACCEPTED:
-                                    if ($project->funding_cycle->isCurrentlyVoting()) {
-                                        echo $this->Html->link(
-                                            'Voting currently underway',
-                                            ['controller' => 'Votes', 'action' => 'index', 'prefix' => false],
-                                        );
-                                    } elseif ($project->funding_cycle->votingHasPassed()) {
-                                        echo 'Awaiting funding decision';
-                                    } else {
-                                        echo 'Awaiting voting';
-                                    }
-                                    break;
-                                case Project::STATUS_AWARDED:
-                                    echo 'Funding awarded';
-                                    break;
-                                case Project::STATUS_NOT_AWARDED:
-                                    echo 'Funding not awarded';
-                            }
-                        ?>
-                    </td>
-                    <td>
-                        <?= $this->element(
-                            'FundingCycles/link',
-                            [
-                                'fundingCycle' => $project->funding_cycle,
-                                'append' => '',
-                            ]
-                        ) ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-
-    <?= $this->element('pagination') ?>
-<?php else: ?>
+<?php if ($fundingCycles->isEmpty()): ?>
     <p>
         Please check back later for a list of projects that have applied for funding.
     </p>
+<?php else: ?>
+    <?php foreach ($fundingCycles as $fundingCycle): ?>
+        <?php if (empty($fundingCycle->projects)) continue; ?>
+        <section class="card">
+            <div class="card-header">
+                <h1>
+                    <?= $this->element(
+                        'FundingCycles/link',
+                        [
+                            'fundingCycle' => $fundingCycle,
+                            'append' => '',
+                        ]
+                    ) ?>
+                </h1>
+                <p>
+                    Status:
+                    <?php if ($fundingCycle->isCurrentlyVoting()): ?>
+                        <?= $this->Html->link(
+                            'Voting currently underway',
+                            ['controller' => 'Votes', 'action' => 'index', 'prefix' => false],
+                        ) ?>
+                    <?php elseif ($fundingCycle->votingHasPassed()): ?>
+                        Voting concluded and results being processed
+                    <?php endif; ?>
+                </p>
+            </div>
+            <div class="card-body">
+                <?php foreach ($fundingCycle->projects as $project): ?>
+                    <article class="projects-index__project">
+                        <h2 class="projects-index__project-title">
+                            <?= $this->Html->link(
+                                $project->title,
+                                [
+                                    'prefix' => false,
+                                    'controller' => 'Projects',
+                                    'action' => 'view',
+                                    'id' => $project->id,
+                                ]
+                            ) ?>
+                        </h2>
+                        <p class="projects-index__project-details">
+                            <?= $project->category->name ?>
+                            <?php if ($project->status_id == Project::STATUS_AWARDED): ?>
+                                - Awarded
+                                <?= $project->amount_awarded
+                                    ? ('$' . number_format($project->amount_awarded))
+                                    : '(amount pending)'
+                                ?>
+                            <?php endif; ?>
+                        </p>
+                        <div class="row">
+                            <div class="col-12 col-sm-8 col-md-10">
+                                <?= $this->Text->truncate($project->description, 1000, ['exact' => false,]) ?>
+                            </div>
+                            <?php if ($project->images): ?>
+                                <div class="projects-index__images col-12 col-sm-4 col-md-2">
+                                    <?= $this->Image->thumb($project->images[0]) ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        </section>
+    <?php endforeach; ?>
 <?php endif; ?>

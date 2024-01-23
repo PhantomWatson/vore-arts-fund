@@ -24,6 +24,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\NotesTable&\Cake\ORM\Association\HasMany $Notes
  * @property \App\Model\Table\VotesTable&\Cake\ORM\Association\HasMany $Votes
  * @property \App\Model\Table\ReportsTable&\Cake\ORM\Association\HasMany $Reports
+ * @property \App\Model\Table\TransactionsTable&\Cake\ORM\Association\HasMany $Transactions
  * @method Project get($primaryKey, $options = [])
  * @method Project newEntity(array $data, array $options = [])
  * @method Project[] newEntities(array $data, array $options = [])
@@ -83,6 +84,9 @@ class ProjectsTable extends Table
             'saveStrategy' => 'replace',
         ]);
         $this->hasMany('Reports', [
+            'foreignKey' => 'project_id',
+        ]);
+        $this->hasMany('Transactions', [
             'foreignKey' => 'project_id',
         ]);
     }
@@ -298,25 +302,15 @@ class ProjectsTable extends Table
     }
 
     /**
-     * Modifies a query to return projects that are either accepted and awaiting voting or have been part of voting
+     * Modifies a query to only return projects that can be displayed to the public
      *
-     * @param Query $query
-     * @return Query
+     * @param \Cake\ORM\Query $query
+     * @return \Cake\ORM\Query
      */
-    public function findAcceptedOrGreater(Query $query): Query
+    public function findPublic(Query $query): Query
     {
-        return $query
-            ->where([
-                function (QueryExpression $exp) {
-                    return $exp->in(
-                        'Projects.status_id',
-                        [
-                            Project::STATUS_ACCEPTED,
-                            Project::STATUS_AWARDED,
-                            Project::STATUS_NOT_AWARDED,
-                        ]
-                    );
-                }
-            ]);
+        return $query->where(function (QueryExpression $exp) {
+            return $exp->in('status', Project::VIEWABLE_STATUSES);
+        });
     }
 }

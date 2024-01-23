@@ -24,6 +24,7 @@ use Cake\ORM\Entity;
  * @property int $status_id
  * @property string $status_name
  * @property float $voting_score
+ * @property int $amount_awarded
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -36,6 +37,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Vote[] $votes
  * @property \App\Model\Entity\Report[] $reports
+ * @property \App\Model\Entity\Transaction[] $transactions
  */
 class Project extends Entity
 {
@@ -63,6 +65,12 @@ class Project extends Entity
     /** @var int Maximum amount that can be requested (in dollars) */
     const MAXIMUM_ALLOWED_REQUEST = 1000000; // One million dollars
 
+    const VIEWABLE_STATUSES = [
+        Project::STATUS_ACCEPTED,
+        Project::STATUS_AWARDED,
+        Project::STATUS_NOT_AWARDED,
+    ];
+
 
     /**
      * Returns TRUE if this project can be viewed by the public
@@ -71,13 +79,7 @@ class Project extends Entity
      */
     public function isViewable(): bool
     {
-        $viewableStatuses = [
-            Project::STATUS_ACCEPTED,
-            Project::STATUS_AWARDED,
-            Project::STATUS_NOT_AWARDED,
-        ];
-
-        return in_array($this->status_id, $viewableStatuses);
+        return in_array($this->status_id, self::VIEWABLE_STATUSES);
     }
 
     /**
@@ -281,5 +283,23 @@ class Project extends Entity
     protected function _getAmountRequestedFormatted()
     {
         return ($this->accept_partial_payout ? 'Up to ' : '') . '$' . number_format($this->amount_requested);
+    }
+
+    /**
+     * Returns sum (gross, in dollars) of loan-type transactions for this  project
+     *
+     * Ignores canceled checks
+     * Requires project to have a transactions property
+     *
+     * @return int
+     */
+    protected function _getAmountAwarded()
+    {
+        $sum = 0;
+        /** @var Transaction $transaction */
+        foreach ($this->transactions ?? [] as $transaction) {
+            $sum += $transaction->amount_gross;
+        }
+        return round($sum / 100);
     }
 }

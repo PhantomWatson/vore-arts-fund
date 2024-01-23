@@ -6,6 +6,9 @@ namespace App\Controller;
 use App\Model\Entity\Project;
 use App\Model\Entity\FundingCycle;
 use App\Model\Entity\Image;
+use App\Model\Entity\Transaction;
+use Cake\Database\Expression\QueryExpression;
+use Cake\Database\Query;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\I18n\FrozenTime;
@@ -343,14 +346,48 @@ class ProjectsController extends AppController
 
     public function index()
     {
+        $fundingCycles = $this->FundingCycles
+            ->find()
+            ->orderAsc('FundingCycles.application_end')
+            ->contain([
+                'Projects' => [
+                    'queryBuilder' => function (Query $q) {
+                        return $q
+                            ->select([
+                                'Projects.id',
+                                'Projects.title',
+                                'Projects.category_id',
+                                'Projects.description',
+                                'Projects.funding_cycle_id',
+                                'Projects.status_id',
+                                'Categories.id',
+                                'Categories.name',
+                            ])
+                            ->where(function (QueryExpression $exp) {
+                                return $exp->in('status_id', [Project::STATUS_ACCEPTED, Project::STATUS_AWARDED]);
+                            })
+                            ->orderAsc('title');
+                    },
+                    'Transactions' => [
+                        'queryBuilder' => function (Query $q) {
+                            return $q
+                                ->select([
+                                    'Transactions.id',
+                                    'Transactions.project_id',
+                                    'Transactions.amount_gross',
+                                    'Transactions.type',
+                                ])
+                                ->where(['Transactions.type' => Transaction::TYPE_LOAN]);
+                        },
+                    ],
+                    'Categories',
+                    'Images',
+                ]
+            ])
+            ->all();
+
         $this->addControllerBreadcrumb('Projects');
-        $projectsQuery = $this->Projects
-            ->find('acceptedOrGreater')
-            ->contain(['FundingCycles', 'Categories'])
-            ->orderDesc('Projects.created');
         $this->title('Projects');
-        $this->set([
-            'projects' => $this->paginate($projectsQuery)
-        ]);
+        $this->set(compact('fundingCycles'));
     }
 }
