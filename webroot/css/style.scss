@@ -84,14 +84,6 @@ legend {
     }
 }
 
-.index {
-    table {
-        thead {
-            height: 3.5rem;
-        }
-    }
-}
-
 .header-help {
     float: right;
     font-size: 16px;
@@ -179,6 +171,18 @@ ul.pagination {
         margin-bottom: 1rem;
         margin-top: -1px;
         padding: 0.375rem 0.5625rem 0.5625rem;
+    }
+
+    button[type="submit"] {
+        box-shadow: none;
+        float: right;
+        text-transform: uppercase;
+    }
+
+    button:hover,
+    button:focus {
+        background: #BE840B;
+        box-shadow: none;
     }
 }
 
@@ -322,12 +326,6 @@ pre {
     padding: 5px;
 }
 
-.cake-error {
-    .cake-stack-trace {
-        margin-top: 10px;
-    }
-}
-
 .cake-stack-trace {
     code {
         background: inherit;
@@ -348,6 +346,10 @@ pre {
         color: #fff;
         text-decoration: underline;
     }
+
+    .cake-stack-trace {
+        margin-top: 10px;
+    }
 }
 
 .checks {
@@ -357,9 +359,7 @@ pre {
     color: #626262;
     margin-bottom: 2em;
     padding: 30px;
-}
 
-.checks {
     h4 {
         margin-bottom: 1.5rem;
     }
@@ -437,6 +437,10 @@ pre {
         margin-top: 0;
         table-layout: fixed;
         width: 100%;
+
+        thead {
+            height: 3.5rem;
+        }
     }
 }
 
@@ -459,20 +463,6 @@ fieldset {
         line-height: 2rem;
         margin-bottom: 1rem;
         width: 100%;
-    }
-}
-
-.form {
-    button[type="submit"] {
-        box-shadow: none;
-        float: right;
-        text-transform: uppercase;
-    }
-
-    button:hover,
-    button:focus {
-        background: #BE840B;
-        box-shadow: none;
     }
 }
 
@@ -549,10 +539,6 @@ div.message {
     }
 }
 
-.content {
-    padding: 2rem;
-}
-
 /* Use 'one true layout' methods to get equal height columns */
 .container {
     min-height: 92%; /* full height almost always */
@@ -574,6 +560,8 @@ div.message {
 }
 
 .content {
+    padding: 2rem;
+
     h3 {
         color: #be140b;
         margin-bottom: 20px;
