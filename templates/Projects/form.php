@@ -367,8 +367,8 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
                 thumb_: (transforms) => {
                     transforms.resize = {
                         size: {
-                            width: 128,
-                            height: 128,
+                            width: 300,
+                            height: 300,
                         },
                     };
                     return transforms;
