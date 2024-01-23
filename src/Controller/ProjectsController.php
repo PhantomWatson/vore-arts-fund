@@ -353,16 +353,6 @@ class ProjectsController extends AppController
                 'Projects' => [
                     'queryBuilder' => function (Query $q) {
                         return $q
-                            ->select([
-                                'Projects.id',
-                                'Projects.title',
-                                'Projects.category_id',
-                                'Projects.description',
-                                'Projects.funding_cycle_id',
-                                'Projects.status_id',
-                                'Categories.id',
-                                'Categories.name',
-                            ])
                             ->where(function (QueryExpression $exp) {
                                 return $exp->in('status_id', [Project::STATUS_ACCEPTED, Project::STATUS_AWARDED]);
                             })
@@ -382,6 +372,8 @@ class ProjectsController extends AppController
                     ],
                     'Categories',
                     'Images',
+                    'Users',
+                    'FundingCycles',
                 ]
             ])
             ->all();

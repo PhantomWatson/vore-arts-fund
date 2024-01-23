@@ -11,17 +11,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 ?>
 
 <p>
-    <?php
-        $startsWithVowel = in_array(substr($project->category->name, 0, 1), ['a', 'e', 'i', 'o', 'u']);
-        switch ($project->category->name) {
-            case 'Other':
-                echo 'A miscellaneous';
-                break;
-            default:
-                echo ($startsWithVowel ? 'An ' : 'A ') . lcfirst($project->category->name);
-        }
-    ?>
-    project by <?= $project->user->name ?>, who is requesting <?= strtolower($project->amount_requested_formatted) ?>
+    <?= $project->status_summary ?>
     in the
     <?= $this->element('FundingCycles/link', [
         'fundingCycle' => $project->funding_cycle,

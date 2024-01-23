@@ -25,6 +25,7 @@ use Cake\ORM\Entity;
  * @property string $status_name
  * @property float $voting_score
  * @property int $amount_awarded
+ * @property string $status_summary
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -301,5 +302,24 @@ class Project extends Entity
             $sum += $transaction->amount_gross;
         }
         return round($sum / 100);
+    }
+
+    protected function _getStatusSummary()
+    {
+        $retval = '';
+        $startsWithVowel = in_array(substr($this->category->name, 0, 1), ['a', 'e', 'i', 'o', 'u']);
+        switch ($this->category->name) {
+            case 'Other':
+                $retval .= 'A miscellaneous';
+                break;
+            default:
+                $retval .= ($startsWithVowel ? 'An ' : 'A ') . lcfirst($this->category->name);
+        }
+        //$isPast = ($this->funding_cycle ?? false) ? $this->funding_cycle->votingHasPassed() : true;
+        $isPast = $this->funding_cycle->votingHasPassed();
+        $retval .= " project by {$this->user->name}, who ";
+        $retval .= $isPast ? 'requested ' : 'is requesting ';
+        $retval .= strtolower($this->amount_requested_formatted);
+        return $retval;
     }
 }

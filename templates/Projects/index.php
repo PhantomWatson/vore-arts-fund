@@ -63,9 +63,10 @@ use App\Model\Entity\Project;
                             ) ?>
                         </h2>
                         <p class="projects-index__project-details">
-                            <?= $project->category->name ?>
+                            <?= $project->status_summary ?>
                             <?php if ($project->status_id == Project::STATUS_AWARDED): ?>
-                                - Awarded
+                                <br />
+                                Awarded
                                 <?= $project->amount_awarded
                                     ? ('$' . number_format($project->amount_awarded))
                                     : '(amount pending)'
