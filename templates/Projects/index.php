@@ -73,11 +73,11 @@ use App\Model\Entity\Project;
                             <?php endif; ?>
                         </p>
                         <div class="row">
-                            <div class="col-12 col-sm-8 col-md-10">
+                            <div class="col-12 <?php if ($project->images): ?>col-sm-8<?php endif; ?>">
                                 <?= $this->Text->truncate($project->description, 1000, ['exact' => false,]) ?>
                             </div>
                             <?php if ($project->images): ?>
-                                <div class="projects-index__images col-12 col-sm-4 col-md-2">
+                                <div class="projects-index__images col-12 col-sm-4">
                                     <?= $this->Image->thumb($project->images[0]) ?>
                                 </div>
                             <?php endif; ?>
