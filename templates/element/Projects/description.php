@@ -22,14 +22,14 @@ use Cake\Utility\Hash;
     </section>
 <?php endif; ?>
 
-    <section class="projects-view">
-        <h3>
-            Description
-        </h3>
-        <p>
-            <?= nl2br($project->description) ?>
-        </p>
-    </section>
+<section class="projects-view">
+    <h3>
+        Description
+    </h3>
+    <p>
+        <?= nl2br($project->description) ?>
+    </p>
+</section>
 
 <?php foreach ($questions as $question): ?>
     <?php
