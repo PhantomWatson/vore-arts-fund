@@ -18,7 +18,7 @@ $this->append(
             \App\Application::LOGIN_URL,
         ) ?>
     </p>
-    <?= $this->Form->create($user, ['id' => 'register-form']) ?>
+    <?= $this->Form->create($user) ?>
     <fieldset>
         <div class="input-with-footnote">
             <?= $this->Form->control('name', ['id' => 'register-name']) ?>
@@ -38,5 +38,5 @@ $this->append(
 </div>
 
 <script>
-    preventMultipleSubmit('#register-form');
+    preventMultipleSubmit('#register-form form');
 </script>

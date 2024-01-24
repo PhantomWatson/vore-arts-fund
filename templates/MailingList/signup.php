@@ -18,11 +18,15 @@ $this->Html->script('https://vr2.verticalresponse.com/signup_forms/signup_forms.
     </div>
     <div class="vr-submit">
         <div class="vr-notice"></div>
-        <input type="submit" class="btn btn-primary" value="Sign Up" />
+        <button type="submit" class="btn btn-primary">
+            Sign up
+        </button>
     </div>
 </form>
 
 <script type="text/javascript">
+    preventMultipleSubmit('#vr-signup-form-43980465123985');
+
     if (typeof VR !== "undefined" && typeof VR.SignupForm !== "undefined") {
         new VR.SignupForm({
             id: "43980465123985",

@@ -15,11 +15,15 @@ $this->Html->script('account-form', ['block' => true]);
         <?= $this->Form->control('name') ?>
         <?= $this->element('phone_input') ?>
     </fieldset>
-    <?= $this->Form->submit('Submit', ['class' => 'btn btn-primary']) ?>
+    <button type="submit" class="btn btn-primary">
+        Submit
+    </button>
     <?= $this->Form->end() ?>
 </div>
 
 <script>
+    preventMultipleSubmit('#account-info-form');
+
     const accountForm = new AccountForm({
         originalPhone: <?= json_encode($user->phone) ?>,
         isVerified: <?= json_encode($user->is_verified) ?>,

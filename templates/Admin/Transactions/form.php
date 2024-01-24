@@ -17,7 +17,7 @@ $types = \App\Model\Entity\Transaction::getTypes();
         ]
     ) ?>
 <?php endif; ?>
-<?= $this->Form->create($transaction) ?>
+<?= $this->Form->create($transaction, ['id' => 'transaction-form']) ?>
 <fieldset>
     <div class="form-group">
         <?= $this->Form->label('Date') ?>
@@ -45,8 +45,11 @@ $types = \App\Model\Entity\Transaction::getTypes();
         echo $this->Form->control('meta');
     ?>
 </fieldset>
-<?= $this->Form->button(
-     $this->getRequest()->getParam('action') == 'edit' ? 'Update' : 'Add',
-    ['class' => 'btn btn-primary']
-) ?>
+<button type="submit" class="btn btn-primary">
+    <?= $this->getRequest()->getParam('action') == 'edit' ? 'Update' : 'Add' ?>
+</button>
 <?= $this->Form->end() ?>
+
+<script>
+    preventMultipleSubmit('#transaction-form');
+</script>

@@ -15,10 +15,12 @@
  */
 ?>
 
-<?= $this->Form->create() ?>
+<?= $this->Form->create(null, ['id' => 'resubmit-form']) ?>
 
 <h4> Are you sure you want to resubmit your application? </h4>
-<?= $this->Form->submit(__('Yes'), ['class' => 'btn btn-primary']) ?>
+<button type="submit" class="btn btn-primary">
+    Yes
+</button>
 <?= $this->Html->link(
     'Back',
     [
@@ -29,3 +31,7 @@
     ['class' => 'btn btn-secondary']
 ) ?>
 <?= $this->Form->end() ?>
+
+<script>
+    preventMultipleSubmit('#resubmit-form');
+</script>

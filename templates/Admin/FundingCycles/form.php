@@ -119,7 +119,7 @@
     </div>
 </div>
 
-<?= $this->Form->create($fundingCycle) ?>
+<?= $this->Form->create($fundingCycle, ['id' => 'funding-cycle-form']) ?>
 <fieldset>
     <?= $this->Form->control('application_begin') ?>
     <?= $this->Form->control('application_end') ?>
@@ -128,10 +128,14 @@
     <?= $this->Form->control('vote_end') ?>
     <?= $this->Form->control('funding_available', ['label' => 'Funding available (in dollars)']) ?>
 </fieldset>
-<?= $this->Form->submit(__('Submit'), ['class' => 'btn btn-primary']) ?>
+<button type="submit" class="btn btn-primary">
+    Submit
+</button>
 <?= $this->Form->end() ?>
 
 <script>
+    preventMultipleSubmit('#funding-cycle-form');
+
     const checkbox = document.getElementById('wizard-checkbox');
     const container = document.getElementById('wizard-container');
     const form = document.getElementById('wizard-form');

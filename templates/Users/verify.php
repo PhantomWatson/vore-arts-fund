@@ -12,10 +12,12 @@
         Your phone number has already been verified
     </p>
 <?php else: ?>
-    <?= $this->Form->create() ?>
+    <?= $this->Form->create(null, ['id' => 'account-info-form']) ?>
     <fieldset>
         <?= $this->Form->control('code', ['label' => 'Verification code']) ?>
-        <?= $this->Form->submit(__('Verify'), ['class' => 'btn btn-primary']) ?>
+        <button type="submit" class="btn btn-primary">
+            Verify
+        </button>
     </fieldset>
     <?= $this->Form->end() ?>
 
@@ -24,4 +26,8 @@
         ['action' => 'verifyResend'],
         ['class' => 'btn btn-secondary']
     ) ?>
+
+    <script>
+        preventMultipleSubmit('#account-info-form');
+    </script>
 <?php endif; ?>

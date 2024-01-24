@@ -5,7 +5,7 @@
  */
 ?>
 
-<?= $this->Form->create($question) ?>
+<?= $this->Form->create($question, ['id' => 'question-form']) ?>
 <fieldset>
     <?php
         echo $this->Form->control('question');
@@ -13,5 +13,11 @@
         echo $this->Form->control('weight');
     ?>
 </fieldset>
-<?= $this->Form->submit(__('Submit'), ['class' => 'btn btn-primary']) ?>
+<button type="submit" class="btn btn-primary">
+    Submit
+</button>
 <?= $this->Form->end() ?>
+
+<script>
+    preventMultipleSubmit('#question-form');
+</script>

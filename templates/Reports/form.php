@@ -20,7 +20,7 @@ $back = $back ?? Router::url([
     ['class' => 'btn btn-secondary']
 ) ?>
 
-<?= $this->Form->create($report) ?>
+<?= $this->Form->create($report, ['id' => 'report-form']) ?>
 
 <fieldset>
     <?= $this->Form->control('body') ?>
@@ -41,3 +41,7 @@ $back = $back ?? Router::url([
     ]
 ) ?>
 <?= $this->Form->end() ?>
+
+<script>
+    preventMultipleSubmit('#report-form');
+</script>
