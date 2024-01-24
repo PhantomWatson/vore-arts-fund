@@ -311,7 +311,7 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
         [
             'type' => 'submit',
             'class' => 'btn btn-primary',
-            'confirm' => 'Are you sure you\'re ready to submit this application for review?'
+            'confirm' => 'Are you sure you\'re ready to submit this application for review? You won\'t be able to edit it while it\'s being reviewed.',
         ]
     ) ?>
     <?= $this->Form->end() ?>
