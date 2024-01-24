@@ -167,11 +167,6 @@
         input.value = date.toISOString().slice(0, 19);
     }
 
-    yearSelector.addEventListener('change', (event) => {
-        const year = event.target.value;
-        //console.log(date.toISOString());
-        //console.log(date.toISOString().slice(0,16));
-    });
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         const year = yearSelector.value;
