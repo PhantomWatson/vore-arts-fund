@@ -47,7 +47,6 @@ class UsersController extends AppController
             'logout',
             'register',
             'resetPasswordToken',
-            'verify',
         ]);
     }
 
