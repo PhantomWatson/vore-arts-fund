@@ -11,6 +11,7 @@ class BotCatcher
         // Bot-catcher
         $botCatcher = ['controller' => 'Pages', 'action' => 'botCatcher'];
         $paths = [
+            '.svn',
             'addons',
             'admin/.git',
             'admin/SouthidcEditor',
