@@ -5,6 +5,7 @@
  * @var \Cake\ORM\ResultSet|Project[] $projects
  */
 
+use App\Model\Entity\Image;
 use App\Model\Entity\Project;
 ?>
 
@@ -79,7 +80,14 @@ use App\Model\Entity\Project;
                             </div>
                             <?php if ($project->images): ?>
                                 <div class="projects-index__images col-12 col-sm-4">
-                                    <?= $this->Image->thumb($project->images[0]) ?>
+                                    <?= sprintf(
+                                        '<img src="/img/projects/%s%s" alt="%s" class="img-thumbnail" ' .
+                                            'data-full="/img/projects/%s" />',
+                                        Image::THUMB_PREFIX,
+                                        $project->images[0]->filename,
+                                        $project->images[0]->caption,
+                                        $project->images[0]->filename,
+                                    ) ?>
                                 </div>
                             <?php endif; ?>
                         </div>
