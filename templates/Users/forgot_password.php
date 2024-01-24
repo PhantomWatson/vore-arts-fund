@@ -16,7 +16,6 @@
 ?>
 
 <div class="users form">
-    <?= $this->Form->create() ?>
     <fieldset>
         <?= $this->Form->create(null, ['action' => 'forgot_password']) ?>
         <?= $this->Form->control(
@@ -34,5 +33,4 @@
         ) ?>
         <?= $this->Form->end() ?>
     </fieldset>
-    <?= $this->Form->end() ?>
 </div>
