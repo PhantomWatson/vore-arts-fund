@@ -204,7 +204,9 @@ class ProjectsTable extends Table
                     'Answers',
                     'Categories',
                     'FundingCycles',
-                    'Images',
+                    'Images' => function (\Cake\Database\Query $q) {
+                        return $q->orderAsc('weight');
+                    },
                     'Users',
                     'Reports' => function (Query $query) {
                         return $query->select(['id', 'project_id']);

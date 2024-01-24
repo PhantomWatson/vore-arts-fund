@@ -82,7 +82,7 @@ class ProjectsController extends AppController
             $url = Router::url([
                 'prefix' => false,
                 'controller' => 'FundingCycles',
-                'action'     => 'index',
+                'action' => 'index',
             ]);
             $this->Flash->error(
                 'Sorry, but applications are not being accepted at the moment. '
@@ -371,7 +371,9 @@ class ProjectsController extends AppController
                         },
                     ],
                     'Categories',
-                    'Images',
+                    'Images' => function (Query $q) {
+                        return $q->orderAsc('weight');
+                    },
                     'Users',
                     'FundingCycles',
                 ]
