@@ -124,6 +124,9 @@ class UsersTable extends Table
         $rules->add(
             function (User $user) {
                 $phone = User::cleanPhone((string)$user->phone);
+                if ($phone === '') {
+                    return true;
+                }
                 if ($phone === Configure::read('testPhoneNumber')) {
                     return true;
                 }
