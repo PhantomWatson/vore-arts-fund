@@ -27,10 +27,12 @@ $title = $title ?? $this->fetch('title');
     <meta name="theme-color" content="#E4E6C3" />
 
     <?= $this->Html->css('style.css') ?>
+    <?= $this->Html->script('main') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
+
     <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
     <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
     <link rel="stylesheet" href="/fontawesome/css/regular.min.css" />

@@ -18,7 +18,7 @@ $this->append(
             \App\Application::LOGIN_URL,
         ) ?>
     </p>
-    <?= $this->Form->create($user) ?>
+    <?= $this->Form->create($user, ['id' => 'register-form']) ?>
     <fieldset>
         <div class="input-with-footnote">
             <?= $this->Form->control('name', ['id' => 'register-name']) ?>
@@ -30,7 +30,13 @@ $this->append(
         <?= $this->Form->control('password') ?>
         <?= $this->element('phone_input') ?>
         <div class="g-recaptcha" data-sitekey="<?= \Cake\Core\Configure::read('recaptcha.siteKey') ?>"></div>
-        <?= $this->Form->submit('Register', ['class' => 'btn btn-primary']) ?>
+        <button type="submit" class="btn btn-primary">
+            Register
+        </button>
     </fieldset>
     <?= $this->Form->end() ?>
 </div>
+
+<script>
+    preventMultipleSubmit('#register-form');
+</script>
