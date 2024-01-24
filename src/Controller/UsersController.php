@@ -157,7 +157,7 @@ class UsersController extends AppController
 
             $this->Flash->error(
                 'There was an error registering your account. '
-                . 'Look for details below, and <a href="/contact">contact us</a if you need assistance.',
+                . 'Look for details below, and <a href="/contact">contact us</a> if you need assistance.',
                 ['escape' => false]
             );
         }
