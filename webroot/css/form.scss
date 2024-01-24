@@ -9,18 +9,6 @@
         margin-top: -1px;
         padding: 0.375rem 0.5625rem 0.5625rem;
     }
-
-    button[type="submit"] {
-        box-shadow: none;
-        float: right;
-        text-transform: uppercase;
-    }
-
-    button:hover,
-    button:focus {
-        background: #BE840B;
-        box-shadow: none;
-    }
 }
 
 .required {
