@@ -85,7 +85,7 @@
                         <option value="">
                             Year
                         </option>
-                        <?php for ($year = date('Y'); $year <= date('Y') + 2; $year++): ?>
+                        <?php for ($year = date('Y'); $year <= (int)date('Y') + 2; $year++): ?>
                             <option value="<?= $year ?>">
                                 <?= $year ?>
                             </option>
