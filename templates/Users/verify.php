@@ -14,7 +14,10 @@
 <?php else: ?>
     <?= $this->Form->create(null, ['id' => 'account-info-form']) ?>
     <fieldset>
-        <?= $this->Form->control('code', ['label' => 'Verification code']) ?>
+        <?= $this->Form->control(
+            'code',
+            ['label' => 'Please enter the verification code that was sent to your phone'],
+        ) ?>
         <button type="submit" class="btn btn-primary">
             Verify
         </button>
