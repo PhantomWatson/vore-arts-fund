@@ -16,6 +16,7 @@ use Cake\Mailer\Mailer;
 use Cake\Routing\Router;
 use ReCaptcha\ReCaptcha;
 use ReCaptcha\RequestMethod\CurlPost;
+use Twilio\Exceptions\TwilioException;
 use Twilio\Rest\Client;
 
 /**
@@ -223,7 +224,6 @@ class UsersController extends AppController
      * @param string $phone Phone number
      * @param string $code The verification string
      * @return bool
-     * @throws \Twilio\Exceptions\TwilioException
      */
     private function validate(string $phone, string $code): bool
     {
@@ -231,15 +231,19 @@ class UsersController extends AppController
         $authToken = Configure::read('twilio_auth_token');
         $twilio = new Client($accountSid, $authToken);
         $serviceSid = Configure::read('twilio_service_sid');
-        $verificationCheck = $twilio
-            ->verify
-            ->v2
-            ->services($serviceSid)
-            ->verificationChecks
-            ->create([
-                'to' => '+1' . $phone,
-                'code' => $code,
-            ]);
+        try {
+            $verificationCheck = $twilio
+                ->verify
+                ->v2
+                ->services($serviceSid)
+                ->verificationChecks
+                ->create([
+                    'to' => '+1' . $phone,
+                    'code' => $code,
+                ]);
+        } catch (TwilioException $e) {
+            return false;
+        }
 
         return $verificationCheck->status == 'approved';
     }
@@ -452,9 +456,7 @@ class UsersController extends AppController
                 $this->redirect(['action' => 'account']);
             } else {
                 $this->Flash->error(
-                    'Error verifying phone number. ' .
-                    'If the verification code was sent more than ten minutes ago, then it has expired, ' .
-                    'and you\'ll need to request a new code.'
+                    'Error verifying phone number. Please check to make sure you correctly entered the verification code that was texted to you. If the verification code was sent more than ten minutes ago, then it has expired, and you\'ll need to request a new code.'
                 );
             }
         }
