@@ -42,7 +42,6 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/apply', ['controller' => 'Projects', 'action' => 'apply']);
 
     // Votes
-    $builder->connect('/submit', ['controller' => 'Votes', 'action' => 'submit']);
     $builder->connect('/vote', ['controller' => 'Votes', 'action' => 'index']);
     $builder->connect('/vote/{id}', ['controller' => 'Votes', 'action' => 'index'])
         ->setPatterns(['id' => '\d+'])
