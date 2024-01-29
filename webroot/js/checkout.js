@@ -20,7 +20,6 @@ async function initialize(amount, donorName) {
       donorName: donorName,
     }),
   }).then((r) => r.json());
-  console.log(result);
 
   // Disable loading state
   document.getElementById('loading-indicator').style.display = 'none';
