@@ -16,6 +16,14 @@ $this->Html->css('/filepond/filepond.css', ['block' => true]);
 $this->Html->css('/filepond/filepond-plugin-image-preview.css', ['block' => true]);
 $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
+$data = $this->getRequest()->getData();
+
+function getAgreementCheckedValue($key, $data, $project) {
+    if (isset($data[$key])) {
+        return $data[$key] ? 'checked="checked"' : '';
+    }
+    return $project->isNew() ? '' : 'checked="checked"';
+}
 ?>
 
 <?php if ($project->status_id == Project::STATUS_REVISION_REQUESTED): ?>
@@ -59,8 +67,10 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
         </p>
         <?= $this->element('eligibility_applicant') ?>
         <div class="form-check required">
-            <input class="form-check-input" type="checkbox" value="" id="eligibility-applicant-agree-checkbox" required="required"
-                <?= $project->isNew() ? '' : 'checked="checked"' ?>
+            <input type="hidden" name="eligibility-applicant-agree" value="0" />
+            <input class="form-check-input" type="checkbox" value="1" id="eligibility-applicant-agree-checkbox"
+                   required="required" name="eligibility-applicant-agree"
+                   <?= getAgreementCheckedValue('eligibility-applicant-agree', $data, $project) ?>
             >
             <label class="form-check-label" for="eligibility-applicant-agree-checkbox">
                 I am eligible to apply
@@ -77,8 +87,10 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
         </p>
         <?= $this->element('eligibility_project') ?>
         <div class="form-check required">
-            <input class="form-check-input" type="checkbox" value="" id="eligibility-project-agree-checkbox" required="required"
-                <?= $project->isNew() ? '' : 'checked="checked"' ?>
+            <input type="hidden" value="0" name="eligibility-project-agree" />
+            <input class="form-check-input" type="checkbox" value="1" id="eligibility-project-agree-checkbox"
+                   required="required" name="eligibility-project-agree"
+                   <?= getAgreementCheckedValue('eligibility-project-agree', $data, $project) ?>
             >
             <label class="form-check-label" for="eligibility-project-agree-checkbox">
                 This project qualifies for funding
@@ -93,8 +105,10 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
 
         <?= $this->element('loan_terms') ?>
         <div class="form-check required">
-            <input class="form-check-input" type="checkbox" value="" id="loan-terms-agree-checkbox" required="required"
-                <?= $project->isNew() ? '' : 'checked="checked"' ?>
+            <input type="hidden" value="0" name="loan-terms-agree" />
+            <input class="form-check-input" type="checkbox" value="1" id="loan-terms-agree-checkbox" required="required"
+                   name="loan-terms-agree"
+                   <?= getAgreementCheckedValue('loan-terms-agree', $data, $project) ?>
             >
             <label class="form-check-label" for="loan-terms-agree-checkbox">
                 I agree to these terms

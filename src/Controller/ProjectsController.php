@@ -164,6 +164,10 @@ class ProjectsController extends AppController
      */
     protected function processProject($project, $data): bool
     {
+        if (!$this->validateAgreements()) {
+            return false;
+        }
+
         $addressData = ['address' => $data['address'], 'zipcode' => $data['zipcode']];
         if (!$this->processAddressUpdate($addressData)) {
             return false;
@@ -383,5 +387,28 @@ class ProjectsController extends AppController
         $this->addControllerBreadcrumb('Projects');
         $this->title('Projects');
         $this->set(compact('fundingCycles'));
+    }
+
+    /**
+     * Ensures that all agreement checkboxes were submitted with truthy values
+     *
+     * @return bool
+     */
+    private function validateAgreements()
+    {
+        $agreements = [
+            'loan-terms-agree',
+            'eligibility-project-agree',
+            'eligibility-applicant-agree',
+        ];
+        $data = $this->getRequest()->getData();
+        foreach ($agreements as $agreement) {
+            if (!$data[$agreement] ?? false) {
+                $this->Flash->error('You must agree to all terms in order to apply for funding.');
+                return false;
+            }
+        }
+
+        return true;
     }
 }
