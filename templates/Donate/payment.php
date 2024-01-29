@@ -35,7 +35,7 @@ $this->Html->script('checkout.js', ['block' => true, 'defer' => true]);
         <span class="spinner hidden" id="spinner"></span>
         <span id="button-text">Process payment</span>
     </button>
-    <div id="payment-message" class="hidden"></div>
+    <div id="payment-message" class="visually-hidden"></div>
 </form>
 
 <script>

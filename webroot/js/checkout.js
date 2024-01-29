@@ -115,11 +115,11 @@ async function checkStatus() {
 function showMessage(messageText) {
   const messageContainer = document.querySelector('#payment-message');
 
-  messageContainer.classList.remove('hidden');
+  messageContainer.classList.remove('visually-hidden');
   messageContainer.textContent = messageText;
 
   setTimeout(function () {
-    messageContainer.classList.add('hidden');
+    messageContainer.classList.add('visually-hidden');
     messageText.textContent = '';
   }, 4000);
 }
