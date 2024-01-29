@@ -59,6 +59,12 @@ const App = () => {
   };
 
   const handleSubmitSelectStep = async () => {
+    // Validate
+    if (!allVotesAreCast) {
+      alert('Before going to the next step, every project needs to be either approved or rejected.');
+      return;
+    }
+
     // Go to sort step
     if (approvedProjects.length > 1) {
       setCurrentStep('sort');

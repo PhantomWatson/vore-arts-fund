@@ -17,7 +17,6 @@ const SelectStepSubmit = (props) => {
           variant="primary"
           size="lg"
           onClick={props.handleSubmitSelectStep}
-          disabled={!props.allVotesAreCast || props.approvedProjects.length === 0 || props.submitIsLoading}
         >
           Next
           {props.submitIsLoading &&
