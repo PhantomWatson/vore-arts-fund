@@ -894,6 +894,10 @@ section.funding-cycles {
     }
 }
 
+#payment-message {
+    margin-top: 1em;
+}
+
 .vr-notice-success {
     @extend .alert, .alert-success, .mb-3;
 }

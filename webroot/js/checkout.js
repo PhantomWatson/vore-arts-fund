@@ -12,6 +12,16 @@ paymentForm.addEventListener('submit', handleSubmit);
 
 // Fetches a payment intent and captures the client secret
 async function initialize(amount, donorName) {
+  // Check to make sure that Stripe has loaded
+  if (stripe === undefined) {
+    showMessage(
+      'There was an error loading the payment information form. Please go back to the donation form and try again.',
+      'alert alert-danger'
+    );
+    setPageLoading(false);
+    return;
+  }
+
   const { result } = await fetch('/api/stripe/create-payment-intent', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -21,9 +31,8 @@ async function initialize(amount, donorName) {
     }),
   }).then((r) => r.json());
 
-  // Disable loading state
-  document.getElementById('loading-indicator').style.display = 'none';
-  paymentForm.style.display = 'block';
+  setPageLoading(false);
+  showForm();
 
   // https://stripe.com/docs/elements/appearance-api
   const appearance = {
@@ -57,7 +66,7 @@ async function initialize(amount, donorName) {
 
 async function handleSubmit(e) {
   e.preventDefault();
-  setLoading(true);
+  setSubmitLoading(true);
 
   const { error } = await stripe.confirmPayment({
     elements,
@@ -74,12 +83,12 @@ async function handleSubmit(e) {
   // be redirected to an intermediate site first to authorize the payment, then
   // redirected to the `return_url`.
   if (error.type === 'card_error' || error.type === 'validation_error') {
-    showMessage(error.message);
+    showMessage(error.message, 'alert alert-danger');
   } else {
-    showMessage('An unexpected error occurred.');
+    showMessage('An unexpected error occurred.', 'alert alert-danger');
   }
 
-  setLoading(false);
+  setSubmitLoading(false);
 }
 
 // Fetches the payment intent status after payment submission
@@ -96,44 +105,48 @@ async function checkStatus() {
 
   switch (paymentIntent.status) {
     case 'succeeded':
-      showMessage('Payment succeeded!');
+      showMessage('Payment succeeded!', 'alert alert-success');
       break;
     case 'processing':
-      showMessage('Your payment is processing.');
+      showMessage('Your payment is processing.', 'alert alert-info');
       break;
     case 'requires_payment_method':
-      showMessage('Your payment was not successful. Please try again.');
+      showMessage('Your payment was not successful. Please try again.', 'alert alert-danger');
       break;
     default:
-      showMessage('Something went wrong.');
+      showMessage('Something went wrong.', 'alert alert-danger');
       break;
   }
 }
 
 // ------- UI helpers -------
 
-function showMessage(messageText) {
+function showMessage(messageText, classes = '') {
   const messageContainer = document.querySelector('#payment-message');
 
-  messageContainer.classList.remove('visually-hidden');
+  messageContainer.className = classes;
   messageContainer.textContent = messageText;
+}
 
-  setTimeout(function () {
-    messageContainer.classList.add('visually-hidden');
-    messageText.textContent = '';
-  }, 4000);
+function setPageLoading(isLoading) {
+  if (isLoading) {
+    return;
+  }
+  document.getElementById('page-loading-indicator').style.display = 'none';
+}
+
+function showForm() {
+  paymentForm.style.display = 'block';
 }
 
 // Show a spinner on payment submission
-function setLoading(isLoading) {
+function setSubmitLoading(isLoading) {
   if (isLoading) {
     // Disable the button and show a spinner
     document.querySelector('#submit').disabled = true;
-    document.querySelector('#spinner').classList.remove('hidden');
-    document.querySelector('#button-text').classList.add('hidden');
+    document.querySelector('#submit-loading-indicator').style.display = 'inline-block';
   } else {
     document.querySelector('#submit').disabled = false;
-    document.querySelector('#spinner').classList.add('hidden');
-    document.querySelector('#button-text').classList.remove('hidden');
+    document.querySelector('#submit-loading-indicator').style.display = 'none';
   }
 }

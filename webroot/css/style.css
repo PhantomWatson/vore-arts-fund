@@ -12930,6 +12930,10 @@ section.funding-cycles th {
   margin-top: 1em;
 }
 
+#payment-message {
+  margin-top: 1em;
+}
+
 .g-recaptcha {
   margin-bottom: 2em;
 }
