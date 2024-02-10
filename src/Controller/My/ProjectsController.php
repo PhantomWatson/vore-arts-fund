@@ -34,6 +34,13 @@ class ProjectsController extends BaseProjectsController
             return $this->redirect(\App\Application::LOGIN_URL);
         }
 
+        $projectId = $this->request->getParam('id');
+        if ($projectId && !$this->isOwnProject($projectId)) {
+            $this->Flash->error('Sorry, but you are not authorized to access that project.');
+            $this->setResponse($this->getResponse()->withStatus(403));
+            return $this->redirect('/');
+        }
+
         $this->Projects = $this->fetchTable('Projects');
 
         $this->addControllerBreadcrumb('My Projects');
@@ -48,12 +55,6 @@ class ProjectsController extends BaseProjectsController
      */
     public function view(): ?Response
     {
-        $projectId = $this->request->getParam('id');
-        if (!$this->isOwnProject($projectId)) {
-            $this->Flash->error('Sorry, but that project is not available to view.');
-            return $this->redirect('/');
-        }
-
         return $this->_view();
     }
 
@@ -83,14 +84,8 @@ class ProjectsController extends BaseProjectsController
      */
     public function edit(): ?Response
     {
-        // Confirm project exists
-        $projectId = $this->request->getParam('id');
-        if (!$this->isOwnProject($projectId)) {
-            $this->Flash->error('That project was not found.');
-            return $this->redirect('/');
-        }
-
         // Confirm project can be updated
+        $projectId = $this->request->getParam('id');
         /** @var Project $project */
         $project = $this->Projects->getForForm($projectId);
         if (!$project->isUpdatable()) {
@@ -188,10 +183,6 @@ class ProjectsController extends BaseProjectsController
     public function messages()
     {
         $projectId = $this->request->getParam('id');
-        if (!$this->isOwnProject($projectId)) {
-            $this->Flash->error('Sorry, but that project is not available to view.');
-            return $this->redirect('/');
-        }
 
         /** @var Project $project */
         $project = $this->Projects->get($projectId);

@@ -23,7 +23,11 @@ class ReportsController extends AppController
         'order' => ['Reports.created' => 'desc'],
     ];
 
-    public function beforeFilter(EventInterface $event): void
+    /**
+     * @param EventInterface $event
+     * @return void
+     */
+    public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
     }
@@ -98,9 +102,12 @@ class ReportsController extends AppController
      */
     public function submit($projectId = null)
     {
-        if (!$this->isOwnProject($projectId)) {
-            throw new NotFoundException();
+        if ($projectId && !$this->isOwnProject($projectId)) {
+            $this->Flash->error('Sorry, but you are not authorized to access that project.');
+            $this->setResponse($this->getResponse()->withStatus(403));
+            return $this->redirect('/');
         }
+
         $report = $this->Reports->newEmptyEntity();
         $user = $this->getAuthUser();
         $report->user_id = $user->id;
@@ -145,6 +152,13 @@ class ReportsController extends AppController
         $report = $this->Reports->get($reportId, [
             'contain' => ['Projects'],
         ]);
+
+        if (!$this->isOwnProject($report->project_id)) {
+            $this->Flash->error('Sorry, but you are not authorized to access that project.');
+            $this->setResponse($this->getResponse()->withStatus(403));
+            return $this->redirect('/');
+        }
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $report = $this->Reports->patchEntity($report, $this->request->getData());
             if ($this->Reports->save($report)) {
@@ -184,6 +198,13 @@ class ReportsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $report = $this->Reports->get($id);
+
+        if (!$this->isOwnProject($report->project_id)) {
+            $this->Flash->error('Sorry, but you are not authorized to access that project.');
+            $this->setResponse($this->getResponse()->withStatus(403));
+            return $this->redirect('/');
+        }
+
         if ($this->Reports->delete($report)) {
             $this->Flash->success(__('The report has been deleted.'));
         } else {
