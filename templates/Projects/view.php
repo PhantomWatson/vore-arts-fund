@@ -8,7 +8,22 @@
 $back = $back ?? null;
 
 $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
+$isOwner = $this->getRequest()->getParam('prefix') == 'My';
 ?>
+
+<?php if ($isOwner): ?>
+    <p>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Actions
+            </button>
+
+            <ul class="dropdown-menu">
+                <?= $this->element('Projects/actions', compact('project')) ?>
+            </ul>
+        </div>
+    </p>
+<?php endif; ?>
 
 <p>
     <?= $project->status_summary ?>
