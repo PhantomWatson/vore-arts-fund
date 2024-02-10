@@ -4,11 +4,6 @@
  */
 ?>
 
-<p>
-    If you'd like to contact the Vore Arts Fund staff about this project, please visit
-    <?= $this->Html->link('our contact page', ['prefix' => false, 'controller' => 'Pages', 'action' => 'contact']) ?>.
-</p>
-
 <?php if ($notes->count()): ?>
     <?php foreach ($notes as $note): ?>
         <?= $this->element('Notes/view', compact('note')) ?>
@@ -18,3 +13,8 @@
         You have received no messages about this project so far.
     </p>
 <?php endif; ?>
+
+<p>
+    If you'd like to contact the Vore Arts Fund staff about this project, please visit
+    <?= $this->Html->link('our contact page', ['prefix' => false, 'controller' => 'Pages', 'action' => 'contact']) ?>.
+</p>
