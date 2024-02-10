@@ -26,7 +26,7 @@ function getAgreementCheckedValue($key, $data, $project) {
 }
 ?>
 
-<?php if (true || $project->status_id == Project::STATUS_REVISION_REQUESTED): ?>
+<?php if ($project->status_id == Project::STATUS_REVISION_REQUESTED): ?>
     <div class="alert alert-info">
         <p>
             <i class="fa-solid fa-circle-exclamation"></i>
