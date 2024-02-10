@@ -55,7 +55,8 @@
         <ol type="a">
             <li>
                 By applying for a loan, you grant the Vore Arts Fund the right to publicly release the provided
-                information and media to the public, which it may do for purposes such as transparency and promotion.
+                information and media (excluding mailing address) to the public, which it may do for purposes such
+                as transparency and promotion.
             </li>
             <li>
                 The Vore Arts Fund does not claim project ownership nor a business relationship with the applicant by
@@ -74,5 +75,5 @@
     </li>
 </ol>
 <p>
-    Updated November 28, 2023
+    Updated February 10, 2024
 </p>
