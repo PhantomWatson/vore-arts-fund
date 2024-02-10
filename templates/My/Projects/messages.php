@@ -9,7 +9,7 @@
     <?= $this->Html->link('our contact page', ['prefix' => false, 'controller' => 'Pages', 'action' => 'contact']) ?>.
 </p>
 
-<?php if ($notes): ?>
+<?php if ($notes->count()): ?>
     <?php foreach ($notes as $note): ?>
         <?= $this->element('Notes/view', compact('note')) ?>
     <?php endforeach; ?>
