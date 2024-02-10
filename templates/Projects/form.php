@@ -26,12 +26,21 @@ function getAgreementCheckedValue($key, $data, $project) {
 }
 ?>
 
-<?php if ($project->status_id == Project::STATUS_REVISION_REQUESTED): ?>
+<?php if (true || $project->status_id == Project::STATUS_REVISION_REQUESTED): ?>
     <div class="alert alert-info">
         <p>
+            <i class="fa-solid fa-circle-exclamation"></i>
             <strong>We'll need this project to be revised before we can accept it.</strong>
-            Check your inbox for a message with the subject
-            "<?= \App\Event\MailListener::getRevisionRequestedSubject() ?>" for more information.
+            For details,
+            <?= $this->Html->link(
+                'check this project\'s messages',
+                [
+                    'prefix' => 'My',
+                    'controller' => 'Projects',
+                    'action' => 'messages',
+                    'id' => $project->id,
+                ]
+            ) ?>
         </p>
         <p>
             The deadline for finalizing your application is
