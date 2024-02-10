@@ -96,7 +96,7 @@ $reportWhen = [
         [
             'prefix' => false,
             'controller' => 'Reports',
-            'action' => 'projects',
+            'action' => 'project',
             $project->id,
         ],
         [
