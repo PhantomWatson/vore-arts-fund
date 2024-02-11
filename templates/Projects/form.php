@@ -12,7 +12,7 @@
 
 use App\Model\Entity\Project;
 
-$this->Html->css('/filepond/filepond.css', ['block' => true]);
+$this->Html->css('/filepond/filepond.min.css', ['block' => true]);
 $this->Html->css('/filepond/filepond-plugin-image-preview.css', ['block' => true]);
 $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
@@ -344,7 +344,7 @@ function getAgreementCheckedValue($key, $data, $project) {
 <script src="/filepond/filepond-plugin-file-validate-type.js"></></script>
 <script src="/filepond/filepond-plugin-image-transform.js"></></script>
 <script src="/filepond/filepond-plugin-image-resize.js"></></script>
-<script src="/filepond/filepond.js"></></script>
+<script src="/filepond/filepond.min.js"></></script>
 <script>
     FilePond.registerPlugin(FilePondPluginImagePreview);
     FilePond.registerPlugin(FilePondPluginFileValidateType);
