@@ -51,7 +51,7 @@ bin/cake
 # Dependencies
 /vendor/*
 /node_modules/*
-/webroot/vote-app/node_modules/*
+/config/webpack/node_modules/*
 
 # Project directories
 /webroot/img/projects

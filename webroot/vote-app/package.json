@@ -7,7 +7,7 @@
     "serve": "webpack serve",
     "webpack": "webpack",
     "dev": "npm run serve -- --env mode=development",
-    "prod": "npm run webpack -- --env mode=production",
+    "prod": "cd ../../config/webpack && npm install && cd ../../webroot/vote-app && npm install && npm run webpack -- --env mode=production",
     "prod:analyze": "npm run prod -- --env presets=analyze",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

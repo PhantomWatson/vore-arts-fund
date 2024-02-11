@@ -1,21 +1,10 @@
 {
-  "name": "vore-arts-fund-review",
+  "name": "vore-arts-fund-common-webpack-config",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "serve": "webpack serve",
-    "webpack": "webpack",
-    "dev": "npm run serve -- --env mode=development",
-    "prod": "cd ../../config/webpack && npm install && cd ../../webroot/review && npm install && npm run webpack -- --env mode=production",
-    "prod:analyze": "npm run prod -- --env presets=analyze",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "",
   "license": "UNLICENSED",
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",

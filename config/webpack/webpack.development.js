@@ -1,7 +1,7 @@
 const path = require("path");
 const { HotModuleReplacementPlugin } = require("webpack");
 
-module.exports = () => ({
+module.exports = (paths) => ({
   devtool: false,
   module: {
     rules: [
@@ -12,7 +12,7 @@ module.exports = () => ({
     ],
   },
   devServer: {
-    static: path.resolve(__dirname, "../dist"),
+    static: paths.distPath,
     port: 3000,
     compress: true,
   },
