@@ -10,13 +10,23 @@
  * @var string[] $categories
  */
 
+use App\Model\Entity\Image;
 use App\Model\Entity\Project;
 
 $this->Html->css('/filepond/filepond.min.css', ['block' => true]);
 $this->Html->css('/filepond/filepond-plugin-image-preview.css', ['block' => true]);
 $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
+$this->Html->script('/viewerjs/viewer.min.js', ['block' => true]);
 $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
 $data = $this->getRequest()->getData();
+$preloadImageData = array_map(function (Image $image) {
+    return [
+        'id' => $image->id,
+        'filename' => $image->filename,
+        'weight' => $image->weight,
+        'caption' => $image->caption,
+    ];
+}, $project->images ?? []);
 
 function getAgreementCheckedValue($key, $data, $project) {
     if (isset($data[$key])) {
@@ -234,52 +244,17 @@ function getAgreementCheckedValue($key, $data, $project) {
         <legend>
             Images
         </legend>
-        <div class="form-group">
-            <?= $this->Form->label(
-                'filepond[]',
-                'Have images to help convey what your project is? Upload them here.'
-            ) ?>
-            <?= $this->Form->control('filepond[]', [
-                'accept' => 'image/*',
-                'label' => false,
-                'type' => 'file',
-                'multiple' => true,
-            ]) ?>
-            <p>
-                Sexually explicit or disturbingly violent imagery may not be included in an application and may result
-                in disqualification.
-            </p>
-        </div>
-        <?php if ($project->images): ?>
-            <table class="image-gallery table" id="form-images">
-                <thead>
-                    <tr>
-                        <th>
-                            Delete?
-                        </th>
-                        <th>
-                            Image
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($project->images as $image): ?>
-                        <tr>
-                            <td class="delete">
-                                <label class="visually-hidden" for="delete-image-<?= $image->id ?>">
-                                    Delete this image
-                                </label>
-                                <input type="checkbox" name="delete-image[]" value="<?= $image->id ?>"
-                                       id="delete-image-<?= $image->id ?>" />
-                            </td>
-                            <td>
-                                <?= $this->Image->thumb($image) ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php endif; ?>
+        <p>
+            Have images to help convey what your project is? Upload up to five of them here.
+        </p>
+        <div id="image-uploader-root" ></div>
+        <p>
+            Sexually explicit or disturbingly violent imagery may not be included in an application and may result
+            in disqualification.
+        </p>
+        <script>
+            window.preloadImages = <?= json_encode($preloadImageData) ?>;
+        </script>
     </fieldset>
 
     <fieldset>
@@ -401,4 +376,4 @@ function getAgreementCheckedValue($key, $data, $project) {
     );
 </script>
 
-<?= $this->Image->initViewer() ?>
+<?= $this->element('load_app_files', ['dir' => 'image-uploader']) ?>

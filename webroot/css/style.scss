@@ -929,3 +929,33 @@ section.funding-cycles {
         text-align: center;
     }
 }
+
+.image-upload {
+    &__images {
+        li {
+            border: 1px solid $primary;
+            border-radius: 3px;
+            margin: 0.5em 0;
+            padding: 0.5em;
+        }
+
+        img {
+            max-width: 100%;
+        }
+    }
+
+    &__remove-image {
+        color: red;
+        font-size: 2em;
+    }
+
+    &__move-image {
+        font-size: 2em;
+    }
+}
+
+#file-upload {
+    display: inline-block;
+    vertical-align: middle;
+    width: auto;
+}

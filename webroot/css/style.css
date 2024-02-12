@@ -12953,4 +12953,27 @@ section.funding-cycles th {
   text-align: center;
 }
 
+.image-upload__images li {
+  border: 1px solid #1A5B11;
+  border-radius: 3px;
+  margin: 0.5em 0;
+  padding: 0.5em;
+}
+.image-upload__images img {
+  max-width: 100%;
+}
+.image-upload__remove-image {
+  color: red;
+  font-size: 2em;
+}
+.image-upload__move-image {
+  font-size: 2em;
+}
+
+#file-upload {
+  display: inline-block;
+  vertical-align: middle;
+  width: auto;
+}
+
 /*# sourceMappingURL=style.css.map */

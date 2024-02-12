@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Controller\ImagesController;
+use App\Model\Entity\Image;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -89,5 +93,23 @@ class ImagesTable extends Table
         $rules->add($rules->existsIn(['project_id'], 'Projects'));
 
         return $rules;
+    }
+
+    public function afterDelete(EventInterface $event, Image $image)
+    {
+        $filename = $image->filename ?? null;
+        if (!$filename) {
+            return;
+        }
+
+        $paths = [
+            Image::PROJECT_IMAGES_DIR . DS . $filename,
+            Image::PROJECT_IMAGES_DIR . DS . Image::THUMB_PREFIX . $filename,
+        ];
+        foreach ($paths as $path) {
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        }
     }
 }

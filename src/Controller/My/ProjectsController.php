@@ -101,6 +101,7 @@ class ProjectsController extends BaseProjectsController
         $this->viewBuilder()->setTemplate('/Projects/form');
         $this->setFromNow($project->getSubmitDeadline());
         $this->setProjectVars();
+        $this->set('toLoad', $this->getAppFiles('image-uploader'));
 
         // Process form
         if ($this->request->is('put')) {

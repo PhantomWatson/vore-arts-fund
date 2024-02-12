@@ -10,7 +10,7 @@ use Cake\Utility\Security;
  * Images Controller
  *
  * @property \App\Model\Table\ImagesTable $Images
- * @method \App\Model\Entity\Image[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method Image[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class ImagesController extends AppController
 {
@@ -27,7 +27,7 @@ class ImagesController extends AppController
         foreach ($_FILES as $key => $image) {
             $image = $_FILES[$key];
             $filename = $key == 'thumb' ? Image::THUMB_PREFIX . $baseFilename : $baseFilename;
-            $destination = WWW_ROOT . 'img' . DS . 'projects' . DS . $filename;
+            $destination = Image::PROJECT_IMAGES_DIR . DS . $filename;
             $images[$key] = move_uploaded_file($image['tmp_name'], $destination)
                 ? $filename
                 : false;

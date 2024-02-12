@@ -194,6 +194,10 @@ class AppController extends Controller
             'js' => [],
             'css' => [],
         ];
+
+        // These vary for React 17 (dist) vs. 18 (build)
+        $buildDirs = ['dist', 'build/static'];
+
         $dist = WWW_ROOT . $dir . DS . 'dist';
 
         // JS

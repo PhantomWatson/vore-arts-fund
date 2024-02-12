@@ -20,6 +20,7 @@ use Cake\ORM\Entity;
 class Image extends Entity
 {
     public const THUMB_PREFIX = 'thumb_';
+    public const PROJECT_IMAGES_DIR = WWW_ROOT . 'img' . DS . 'projects';
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().

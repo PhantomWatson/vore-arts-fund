@@ -63,3 +63,4 @@ bin/cake
 # Dist files for React projects
 /webroot/vote-app/dist/*
 /webroot/review/dist/*
+/webroot/image-uploader/dist/*
