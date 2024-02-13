@@ -97,10 +97,13 @@ class ImagesTable extends Table
     public function afterDelete(EventInterface $event, Image $image)
     {
         $filename = $image->filename ?? null;
-        if (!$filename) {
-            return;
+        if ($filename) {
+            $this->deleteImageFiles($filename);
         }
+    }
 
+    public function deleteImageFiles($filename)
+    {
         $paths = [
             Image::PROJECT_IMAGES_DIR . DS . $filename,
             Image::PROJECT_IMAGES_DIR . DS . Image::THUMB_PREFIX . $filename,

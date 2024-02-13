@@ -64,26 +64,26 @@ class ImagesController extends ApiController
         $filename = $this->getRequest()->getData('filename');
         $image = $this->Images->getByFilename($filename);
 
-        // Image not found, so it's already been deleted
-        if (!$image) {
-            $this->setResponse($this->getResponse()->withStatus(204));
-            return;
-        }
+        if ($image) {
+            // Auth check
+            $projectsTable = TableRegistry::getTableLocator()->get('Projects');
+            $user = $this->getAuthUser();
+            $isOwner = $projectsTable->exists([
+                'id' => $image->project_id,
+                'user_id' => $user->id,
+            ]);
+            if (!$isOwner) {
+                throw new ForbiddenException();
+            }
 
-        // Auth check
-        $projectsTable = TableRegistry::getTableLocator()->get('Projects');
-        $user = $this->getAuthUser();
-        $isOwner = $projectsTable->exists([
-            'id' => $image->project_id,
-            'user_id' => $user->id,
-        ]);
-        if (!$isOwner) {
-            throw new ForbiddenException();
-        }
+            // Delete image
+            if (!$this->Images->delete($image)) {
+                throw new InternalErrorException();
+            }
 
-        // Delete image
-        if (!$this->Images->delete($image)) {
-            throw new InternalErrorException();
+        // Image was uploaded but has no DB record because the project form had never been submitted
+        } else {
+            $this->Images->deleteImageFiles($filename);
         }
 
         $this->setResponse($this->getResponse()->withStatus(204));
