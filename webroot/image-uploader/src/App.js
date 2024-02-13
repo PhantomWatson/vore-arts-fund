@@ -88,17 +88,6 @@ function App(props) {
     setImages(images.filter((img) => img.filename !== image.filename));
   };
 
-  const handleMoveX = (index, by) => {
-    const newIndex = index + by;
-    if (newIndex < 0 || newIndex >= images.length) {
-      return;
-    }
-    console.log(`Moving ${index} by ${by}`);
-    const indexes = [index, newIndex].sort();
-    const newImages = images.splice(indexes[0], 2, images[indexes[1]], images[indexes[0]]);
-    setImages(newImages);
-  };
-
   const handleMoveDown = (index) => {
     if (index >= images.length - 1) {
       return;
@@ -107,7 +96,6 @@ function App(props) {
     const newImages = [...images];
     newImages[index] = images[index + 1];
     newImages[index + 1] = images[index];
-
     setImages(newImages);
   };
 
@@ -119,7 +107,6 @@ function App(props) {
     const newImages = [...images];
     newImages[index] = images[index - 1];
     newImages[index - 1] = images[index];
-
     setImages(newImages);
   };
 
