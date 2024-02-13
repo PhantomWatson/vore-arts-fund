@@ -954,6 +954,12 @@ section.funding-cycles {
     }
 }
 
+#upload-button {
+    .loading-indicator {
+        margin-left: 1em;
+    }
+}
+
 #file-upload {
     display: inline-block;
     vertical-align: middle;

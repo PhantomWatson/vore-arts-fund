@@ -3,9 +3,11 @@ import {useEffect, useState} from 'react';
 
 function App(props) {
   const [images, setImages] = useState(props.images);
+  const [isUploading, setIsUploading] = useState(false);
 
   // Reinitialize image viewer whenever images change
   const initViewer = () => {
+    console.log('reinitializing image viewer');
     new Viewer(
       document.querySelector('.image-gallery'),
       {
@@ -34,37 +36,42 @@ function App(props) {
     alert(msg);
   };
 
-  const handleUpload = () => {
-    const uploadButton = document.getElementById('upload-button');
+  const handleUpload = async () => {
     const fileUpload = document.getElementById('file-upload');
 
-    uploadButton.addEventListener('click', () => {
-      const file = fileUpload.files[0];
-      if (!file) {
-        return;
+    const file = fileUpload.files[0];
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.includes('image/')) {
+      handleError('Only images can be uploaded');
+      return;
+    }
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      const response = await fetch('/api/images/upload', {
+        method: 'POST',
+        body: formData
+      });
+      if (!response.ok) {
+        throw new Error('There was a problem uploading that file. Please try again.');
       }
-
-      if (!file.type.contain('image/')) {
-        handleError('Only images can be uploaded');
-        return;
+      const data = await response.json();
+      const filename = data?.filename;
+      if (filename) {
+        const newImages = [...images, {filename}];
+        setImages(newImages);
+      } else {
+        throw new Error('There was a problem uploading that file. Please try again.');
       }
-
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', '/images/upload');
-      xhr.send(formData);
-
-      xhr.onload = () => {
-        console.log(xhr.response);
-        if (xhr.status === 200) {
-          console.log('success');
-        } else {
-          handleError('There was a problem uploading that file. Please try again.');
-        }
-      };
-    });
+    } catch (error) {
+      handleError(error.message);
+    }
+    setIsUploading(false);
   };
 
   const handleRemove = async (key) => {
@@ -116,6 +123,7 @@ function App(props) {
         <input type="file" id="file-upload" className="form-control" aria-label="Select an image to upload" />
         <button type="button" id="upload-button" onClick={handleUpload} className="btn btn-secondary">
           Upload
+          {isUploading && <i className="loading-indicator fa-solid fa-spinner fa-spin-pulse" title="Loading"></i>}
         </button>
       </div>
       <ul className="image-upload__images list-unstyled image-gallery">
