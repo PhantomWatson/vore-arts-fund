@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use App\Controller\ImagesController;
 use App\Model\Entity\Image;
-use Cake\Datasource\EntityInterface;
+use Cake\Datasource\ResultSetInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -111,5 +110,20 @@ class ImagesTable extends Table
                 unlink($path);
             }
         }
+    }
+
+    /**
+     * @param string $filename
+     * @return Image|null
+     */
+    public function getByFilename($filename)
+    {
+        /** @var Image|null $image */
+        $image = $this
+            ->find()
+            ->where(compact('filename'))
+            ->first();
+
+        return $image;
     }
 }
