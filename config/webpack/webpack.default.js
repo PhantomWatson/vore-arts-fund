@@ -51,9 +51,10 @@ module.exports = function (env, paths) {
             },
           ],
         }),
-        new HTMLWebpackPlugin({
+        /*new HTMLWebpackPlugin({
           template: `${paths.publicPath}/index.html`,
         }),
+         */
         new webpack.ProgressPlugin(),
         new webpack.ProvidePlugin({
           "React": "react",

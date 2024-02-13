@@ -192,23 +192,45 @@ class ProjectsController extends AppController
             $hasErrors = true;
         }
 
-        // Process new images
-        foreach ($data['filepond'] ?? [] as $imageEncoded) {
-            if (!is_string($imageEncoded)) {
-                continue;
+        $this->processImages($data, $project);
+
+        return !$hasErrors;
+    }
+
+    /**
+     * @param array $data Request data
+     * @param Project $project
+     * @return void
+     */
+    protected function processImages($data, $project): void
+    {
+        foreach ($data['images'] ?? [] as $key => $data) {
+            $weight = $key + 1;
+            $filename = $data['filename'] ?? null;
+            $caption = $data['caption'] ?? '';
+
+            // Find or create image
+            $image = $this->Images->getByFilename($filename);
+            if ($image) {
+                // Validate to prevent the user from manipulating someone else's image
+                if ($image->project_id != $project->id) {
+                    $this->Flash->error(
+                        "The image $filename is not associated with project {$project->id}"
+                        . $this->errorTryAgainContactMsg,
+                        ['escape' => false]
+                    );
+                    continue;
+                }
+            } else {
+                /** @var Image $image */
+                $image = $this->Images->newEmptyEntity();
+                $image->project_id = $project->id;
+                $image->filename = $filename;
             }
 
-            /** @var \stdClass $imageFilenames */
-            $imageFilenames = json_decode($imageEncoded);
-            if (!($imageFilenames->full ?? false) || !($imageFilenames->thumb ?? false)) {
-                continue;
-            }
-
-            /** @var Image $image */
-            $image = $this->Images->newEmptyEntity();
-            $image->project_id = $project->id;
-            $image->weight = 0;
-            $image->filename = $imageFilenames->full;
+            // Set new weight and caption
+            $image->weight = $weight;
+            $image->caption = $caption;
             if (!$this->Images->save($image)) {
                 $this->Flash->error(
                     'There was an error saving an image. Details: Record could not be added to database. '
@@ -217,25 +239,6 @@ class ProjectsController extends AppController
                 );
             }
         }
-
-        // Delete images
-        foreach ($data['delete-image'] ?? [] as $imageId) {
-            if (!$this->Images->exists(['id' => $imageId])) {
-                continue;
-            }
-            $image = $this->Images->get($imageId);
-            $thumbFilename = Image::THUMB_PREFIX . $image->filename;
-            $path = WWW_ROOT . 'img' . DS . 'projects' . DS;
-            if (file_exists($path . $image->filename)) {
-                unlink($path . $image->filename);
-            }
-            if (file_exists($path . $thumbFilename)) {
-                unlink($path . $thumbFilename);
-            }
-            $this->Images->delete($image);
-        }
-
-        return !$hasErrors;
     }
 
     /**
