@@ -5,7 +5,7 @@
  */
 ?>
 
-<?php if ($fundingCycles): ?>
+<?php if ($fundingCycles->count()): ?>
     <p>
         Recipients are decided and funding is disbursed shortly after each funding cycle's voting deadline.
     </p>
