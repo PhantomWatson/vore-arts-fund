@@ -146,14 +146,7 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                 $this->Authentication->setIdentity($user);
-                $successMsg = 'Your account has been registered.';
-                $shouldVerifyPhone = Configure::read('enablePhoneVerification') && $user->phone;
-                if ($shouldVerifyPhone && $this->sendVerificationText((string)$user->phone)) {
-                    $this->Flash->success($successMsg . ' ' . $this->verificationCodeSentMsg);
-                    return $this->redirect(['action' => 'verify']);
-                }
-                $this->Flash->success($successMsg);
-                return $this->redirect(['controller' => 'pages', 'action' => 'home']);
+                return $this->redirect(['controller' => 'Users', 'action' => 'registered']);
             }
 
             $this->Flash->error(
@@ -172,6 +165,24 @@ class UsersController extends AppController
         ]);
 
         return null;
+    }
+
+    /**
+     * The post-register screen shown to the user, which also conditionally sends a phone verification code
+     *
+     * @return void
+     * @throws TwilioException
+     */
+    public function registered(): void
+    {
+        $user = $this->getAuthUser();
+        $shouldVerifyPhone = Configure::read('enablePhoneVerification') && ($user->phone ?? false) && !$user->is_verified;
+        $verificationCodeSent = $shouldVerifyPhone && $this->sendVerificationText((string)$user->phone);
+        $verificationCodeSentMsg = $this->verificationCodeSentMsg;
+        $shouldVerifyPhone = true;
+        $verificationCodeSent = false;
+        $this->title('Your account has been registered');
+        $this->set(compact('user', 'shouldVerifyPhone', 'verificationCodeSent', 'verificationCodeSentMsg'));
     }
 
     /**
