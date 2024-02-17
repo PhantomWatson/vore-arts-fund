@@ -10,7 +10,7 @@ use App\Model\Entity\Project;
 ?>
 
 <p>
-    Commercial arts-related projects in Muncie, Indiana are eligible to apply for loans through the Vore Arts Fund to
+    Commercial arts-related projects in Muncie, Indiana, are eligible to apply for loans through the Vore Arts Fund to
     cover their up-front costs. After every round of public voting, some projects get funded, and others can re-apply
     and try again in the following funding cycle. For more details, visit our
     <?= $this->Html->link(
