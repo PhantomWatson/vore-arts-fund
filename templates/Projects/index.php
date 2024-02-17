@@ -7,6 +7,7 @@
 
 use App\Model\Entity\Image;
 use App\Model\Entity\Project;
+$projectsWereDisplayed = false;
 ?>
 
 <p>
@@ -26,6 +27,7 @@ use App\Model\Entity\Project;
 <?php else: ?>
     <?php foreach ($fundingCycles as $fundingCycle): ?>
         <?php if (empty($fundingCycle->projects)) continue; ?>
+        <?php $projectsWereDisplayed = true; ?>
         <section class="card">
             <div class="card-header">
                 <h1>
@@ -96,4 +98,10 @@ use App\Model\Entity\Project;
             </div>
         </section>
     <?php endforeach; ?>
+<?php endif; ?>
+
+<?php if (!$projectsWereDisplayed): ?>
+    <p>
+        Please check back later for a list of projects that have applied for funding.
+    </p>
 <?php endif; ?>
