@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \Cake\ORM\ResultSet|\App\Model\Entity\FundingCycle[] $fundingCycles
  * @var \Cake\ORM\ResultSet|Project[] $projects
+ * @var bool $hasProjects
  */
 
 use App\Model\Entity\Image;
@@ -19,6 +20,16 @@ $projectsWereDisplayed = false;
         ['controller' => 'Pages', 'action' => 'about']
     ) ?> page.
 </p>
+
+<?php if ($hasProjects): ?>
+    <p>
+        To view your own projects, go to
+        <?= $this->Html->link(
+            'Account > My Projects',
+            ['prefix' => 'My', 'controller' => 'Projects', 'action' => 'index'],
+        ) ?>.
+    </p>
+<?php endif; ?>
 
 <?php if ($fundingCycles->isEmpty()): ?>
     <p>
