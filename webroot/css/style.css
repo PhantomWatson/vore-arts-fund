@@ -12980,4 +12980,8 @@ section.funding-cycles th {
   width: auto;
 }
 
+.verification__already-verified {
+  margin-top: 1.125rem;
+}
+
 /*# sourceMappingURL=style.css.map */

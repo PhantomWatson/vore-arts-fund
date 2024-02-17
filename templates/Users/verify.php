@@ -8,7 +8,7 @@
 <?= $this->element('Users/account_nav') ?>
 
 <?php if ($user->is_verified): ?>
-    <p class="alert alert-success">
+    <p class="alert alert-success verification__already-verified">
         Your phone number has already been verified
     </p>
 <?php else: ?>
