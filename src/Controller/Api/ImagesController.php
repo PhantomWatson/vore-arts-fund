@@ -87,5 +87,7 @@ class ImagesController extends ApiController
         }
 
         $this->setResponse($this->getResponse()->withStatus(204));
+        $this->set(['result' => true]);
+        $this->viewBuilder()->setOption('serialize', ['result']);
     }
 }
