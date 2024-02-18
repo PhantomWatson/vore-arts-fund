@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\ImageProcessor;
 use App\Model\Entity\Image;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
-use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
-use Cake\Utility\Security;
-use Laminas\Diactoros\UploadedFile;
 
 /**
  * Images Controller
@@ -32,18 +30,15 @@ class ImagesController extends ApiController
         $this->viewBuilder()
             ->setClassName('Json')
             ->setOption('jsonOptions', JSON_FORCE_OBJECT);
-        $files = $this->getRequest()->getUploadedFiles();
-        /** @var UploadedFile $file */
-        $file = $files['file'] ?? null;
 
+        $file = $_FILES['file'] ?? null;
         if (!$file) {
             throw new BadRequestException();
         }
 
-        $baseFilename = Security::randomString(10) . '.png';
-        $filename = $baseFilename;
-        $destination = Image::PROJECT_IMAGES_DIR . DS . $filename;
-        $file->moveTo($destination);
+        $imageProcessor = new ImageProcessor();
+        $imageProcessor->processUpload($_FILES['file']);
+        $filename = $imageProcessor->filename;
 
         $this->set(compact('filename'));
         $this->viewBuilder()->setOption('serialize', ['filename']);
