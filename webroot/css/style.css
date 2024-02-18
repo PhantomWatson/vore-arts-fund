@@ -12962,7 +12962,7 @@ section.funding-cycles th {
 .image-upload__images img {
   max-width: 100%;
 }
-.image-upload__remove-image {
+.image-upload__remove-image, .image-upload:hover, .image-upload:focus, .image-upload:active {
   color: red;
   font-size: 2em;
 }
