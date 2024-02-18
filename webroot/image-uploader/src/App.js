@@ -67,7 +67,7 @@ function App(props) {
       const data = await response.json();
       const filename = data?.filename;
       if (filename) {
-        const newImages = [...images, {filename}];
+        const newImages = [filename, ...images];
         setImages(newImages);
         fileUpload.value = null;
       } else {
