@@ -63,7 +63,7 @@ const Project = (props) => {
             </Modal.Title>
           </Modal.Header>
 
-          <Modal.Body>
+          <Modal.Body size="xl">
             <p>
               <strong>Category:</strong> {props.project.category.name}
             </p>
