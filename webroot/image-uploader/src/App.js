@@ -1,14 +1,13 @@
 import './App.css';
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 function App(props) {
   const [images, setImages] = useState(props.images);
   const [isUploading, setIsUploading] = useState(false);
+  let viewer = useRef(null);
 
-  // Reinitialize image viewer whenever images change
-  const initViewer = () => {
-    console.log('reinitializing image viewer');
-    new Viewer(
+  useEffect(() => {
+    viewer.current = new Viewer(
       document.querySelector('.image-gallery'),
       {
         url: 'data-full',
@@ -27,9 +26,14 @@ function App(props) {
         },
       }
     );
-  };
+  }, []);
+
   useEffect(() => {
-    initViewer();
+    if (viewer.current) {
+      viewer.current.update();
+    } else {
+      console.error('Viewer is null. Cannot update.');
+    }
   }, [images]);
 
   const handleError = (msg) => {
