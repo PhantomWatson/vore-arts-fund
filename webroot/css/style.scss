@@ -945,9 +945,9 @@ section.funding-cycles {
     }
 
     &__remove-image,
-    &:hover,
-    &:focus,
-    &:active {
+    &__remove-image:hover,
+    &__remove-image:focus,
+    &__remove-image:active {
         color: red;
         font-size: 2em;
     }
