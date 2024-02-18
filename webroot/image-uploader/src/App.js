@@ -65,6 +65,7 @@ function App(props) {
       if (filename) {
         const newImages = [...images, {filename}];
         setImages(newImages);
+        fileUpload.value = null;
       } else {
         throw new Error('There was a problem uploading that file. Please try again.');
       }
