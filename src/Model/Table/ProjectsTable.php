@@ -185,7 +185,7 @@ class ProjectsTable extends Table
                 'Answers',
                 'FundingCycles',
                 'Images' => function (Query $q) {
-                    return $q->orderDesc('weight');
+                    return $q->orderAsc('weight');
                 },
             ])
             ->first();
