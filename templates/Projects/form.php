@@ -298,14 +298,14 @@ function getAgreementCheckedValue($key, $data, $project) {
     </fieldset>
 
     <?= $this->Form->submit(
-        'Save for later',
+        'Save draft',
         [
             'name' => 'save',
             'class' => 'btn btn-secondary',
         ]
     ) ?>
     <?= $this->Form->button(
-        'Submit',
+        'Submit for review',
         [
             'type' => 'submit',
             'class' => 'btn btn-primary',
