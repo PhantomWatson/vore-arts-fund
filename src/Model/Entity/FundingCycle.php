@@ -61,6 +61,7 @@ class FundingCycle extends Entity
         'modified' => true,
         'projects' => true,
         'votes' => true,
+        'is_finalized' => true,
     ];
 
     /**

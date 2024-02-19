@@ -127,6 +127,7 @@
     <?= $this->Form->control('vote_begin') ?>
     <?= $this->Form->control('vote_end') ?>
     <?= $this->Form->control('funding_available', ['label' => 'Funding available (in dollars)']) ?>
+    <?= $this->Form->control('is_finalized', ['label' => 'Is finalized (distribution has concluded)']) ?>
 </fieldset>
 <button type="submit" class="btn btn-primary">
     Submit
