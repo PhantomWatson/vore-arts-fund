@@ -4,6 +4,7 @@ import {useEffect, useRef, useState} from 'react';
 function App(props) {
   const [images, setImages] = useState(props.images);
   const [isUploading, setIsUploading] = useState(false);
+  const [removingImageKey, setRemovingImageKey] = useState(null);
   let viewer = useRef(null);
 
   useEffect(() => {
@@ -84,6 +85,7 @@ function App(props) {
       return;
     }
 
+    setRemovingImageKey(key);
     const image = images[key];
     try {
       const response = await fetch('/api/images/remove', {
@@ -91,13 +93,15 @@ function App(props) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({filename: image.filename}),
       });
-      if (!response.ok) {
+      if (response.ok) {
+        setImages(images.filter((img) => img.filename !== image.filename));
+      } else {
         handleError(`${response.status} ${response.statusText}`);
       }
     } catch(error) {
       handleError(error.message);
     }
-    setImages(images.filter((img) => img.filename !== image.filename));
+    setRemovingImageKey(null);
   };
 
   const handleMoveDown = (index) => {
@@ -136,8 +140,8 @@ function App(props) {
           <li key={key} className="row">
             <div className="col-1">
               <button type="button" className="image-upload__remove-image btn btn-link" title="Remove" aria-label="Remove"
-                      onClick={() => {
-                        handleRemove(key)
+                      onClick={(event) => {
+                        handleRemove(key, event.target);
                       }}>
                 <i className="fas fa-times"></i>
               </button>
@@ -160,7 +164,12 @@ function App(props) {
                           onClick={() => {
                             handleMoveDown(key)
                           }}>
-                    <i className="fa-solid fa-down-long"></i>
+                    {removingImageKey === key &&
+                      <i className="loading-indicator fa-solid fa-spinner fa-spin-pulse" title="Removing"></i>
+                    }
+                    {removingImageKey !== key &&
+                      <i className="fa-solid fa-down-long"></i>
+                    }
                   </button>
                 </>
               }
