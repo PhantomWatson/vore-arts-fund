@@ -62,13 +62,12 @@ function App(props) {
         method: 'POST',
         body: formData
       });
+      const responseJson = await response.json();
       if (!response.ok) {
-        const responseJson = await response.json();
-        const errorDetail = responseJson.errors[0]?.detail;
+        const errorDetail = responseJson?.errors[0]?.detail;
         handleError(errorDetail ?? 'There was a problem uploading that file. Please try again.');
       }
-      const data = await response.json();
-      const filename = data?.filename;
+      const filename = responseJson?.filename;
       if (filename) {
         const newImages = [filename, ...images];
         setImages(newImages);
