@@ -52,14 +52,7 @@ $projectsWereDisplayed = false;
                 </h1>
                 <p>
                     Status:
-                    <?php if ($fundingCycle->isCurrentlyVoting()): ?>
-                        <?= $this->Html->link(
-                            'Voting currently underway',
-                            ['controller' => 'Votes', 'action' => 'index', 'prefix' => false],
-                        ) ?>
-                    <?php elseif ($fundingCycle->votingHasPassed()): ?>
-                        Voting concluded and results being processed
-                    <?php endif; ?>
+                    <?= $fundingCycle->getStatusDescription(true) ?>
                 </p>
             </div>
             <div class="card-body">

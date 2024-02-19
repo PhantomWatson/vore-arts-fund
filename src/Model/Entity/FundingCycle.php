@@ -5,6 +5,7 @@ namespace App\Model\Entity;
 
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
+use Cake\Routing\Router;
 
 /**
  * FundingCycle Entity
@@ -209,6 +210,28 @@ class FundingCycle extends Entity
     }
 
     /**
+     * Returns TRUE if the application period has not yet started
+     *
+     * @return bool
+     */
+    public function awaitingApplicationPeriod(): bool
+    {
+        $now = new \DateTime();
+        return $this->application_begin > $now;
+    }
+
+    /**
+     * Returns TRUE if the voting period has not yet started
+     *
+     * @return bool
+     */
+    public function awaitingVotingPeriod(): bool
+    {
+        $now = new \DateTime();
+        return $this->vote_begin > $now;
+    }
+
+    /**
      * Returns TRUE if voting has finished
      *
      * @return bool
@@ -238,5 +261,38 @@ class FundingCycle extends Entity
         return $this->funding_available
             ? '$' . number_format($this->funding_available)
             : 'Not yet determined';
+    }
+
+    public function getStatusDescription($addLinks = false): string
+    {
+        if ($this->is_finalized) {
+            return 'Concluded';
+        }
+
+        if ($this->awaitingApplicationPeriod()) {
+            return 'Not taking applications until ' . $this->application_begin_local->i18nFormat('MMM d, YYYY');
+        }
+
+        if ($this->isCurrentlyApplying()) {
+            $retval = 'Currently accepting applications';
+            $url = Router::url(['controller' => 'Projects', 'action' => 'apply', 'prefix' => false]);
+            return $addLinks ? sprintf('<a href="%s">%s</a>', $url, $retval) : $retval;
+        }
+
+        if ($this->awaitingVotingPeriod()) {
+            return 'Awaiting the start of voting on ' . $this->vote_begin_local->i18nFormat('MMM d, YYYY');
+        }
+
+        if ($this->isCurrentlyVoting()) {
+            $retval = 'Voting currently underway';
+            $url = Router::url(['controller' => 'Votes', 'action' => 'index', 'prefix' => false]);
+            return $addLinks ? sprintf('<a href="%s">%s</a>', $url, $retval) : $retval;
+        }
+
+        if ($this->votingHasPassed()) {
+            return 'Voting concluded and results being processed';
+        }
+
+        return 'Unknown';
     }
 }
