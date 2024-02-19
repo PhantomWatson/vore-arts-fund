@@ -143,7 +143,12 @@ function App(props) {
                       onClick={(event) => {
                         handleRemove(key, event.target);
                       }}>
-                <i className="fas fa-times"></i>
+                {removingImageKey === key &&
+                  <i className="loading-indicator fa-solid fa-spinner fa-spin-pulse" title="Removing"></i>
+                }
+                {removingImageKey !== key &&
+                  <i className="fas fa-times"></i>
+                }
               </button>
             </div>
             <div className="col-1">
@@ -164,12 +169,7 @@ function App(props) {
                           onClick={() => {
                             handleMoveDown(key)
                           }}>
-                    {removingImageKey === key &&
-                      <i className="loading-indicator fa-solid fa-spinner fa-spin-pulse" title="Removing"></i>
-                    }
-                    {removingImageKey !== key &&
-                      <i className="fa-solid fa-down-long"></i>
-                    }
+                    <i className="fa-solid fa-down-long"></i>
                   </button>
                 </>
               }
