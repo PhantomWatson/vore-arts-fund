@@ -69,7 +69,7 @@ function App(props) {
       }
       const filename = responseJson?.filename;
       if (filename) {
-        const newImages = [filename, ...images];
+        const newImages = [{filename}, ...images];
         setImages(newImages);
         fileUpload.value = null;
       } else {
