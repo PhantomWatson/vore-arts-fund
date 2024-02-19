@@ -20,6 +20,8 @@ function getActionName($statusId, array $statusActions): string
 }
 
 $tabs = ['Overview' => 'overview', 'Description' => 'description', 'Notes & Messages' => 'notes'];
+
+$this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 ?>
 
 <div class="col-md-6 mb-3 card" id="review-action-column">
@@ -79,3 +81,4 @@ $tabs = ['Overview' => 'overview', 'Description' => 'description', 'Notes & Mess
     window.validStatusIds = <?= json_encode($validStatusIds) ?>;
 </script>
 <?= $this->element('load_app_files', ['dir' => 'review']) ?>
+<?= $this->Image->initViewer() ?>
