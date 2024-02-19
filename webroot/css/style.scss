@@ -912,9 +912,11 @@ section.funding-cycles {
 
 .projects-index {
     &__project {
-        border-bottom: 1px solid #aaa;
-        margin-bottom: 1em;
-        padding-bottom: 1em;
+        &:not(:last-of-type) {
+            border-bottom: 1px solid #aaa;
+            margin-bottom: 1em;
+            padding-bottom: 1em;
+        }
     }
 
     &__project-title {
@@ -927,6 +929,12 @@ section.funding-cycles {
 
     &__images {
         text-align: center;
+    }
+
+    &__funding-cycle {
+        &:not(:last-of-type) {
+            margin-bottom: 4em;
+        }
     }
 }
 

@@ -12938,7 +12938,7 @@ section.funding-cycles th {
   margin-bottom: 2em;
 }
 
-.projects-index__project {
+.projects-index__project:not(:last-of-type) {
   border-bottom: 1px solid #aaa;
   margin-bottom: 1em;
   padding-bottom: 1em;
@@ -12951,6 +12951,9 @@ section.funding-cycles th {
 }
 .projects-index__images {
   text-align: center;
+}
+.projects-index__funding-cycle:not(:last-of-type) {
+  margin-bottom: 4em;
 }
 
 .image-upload__images li {

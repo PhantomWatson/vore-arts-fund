@@ -39,7 +39,7 @@ $projectsWereDisplayed = false;
     <?php foreach ($fundingCycles as $fundingCycle): ?>
         <?php if (empty($fundingCycle->projects)) continue; ?>
         <?php $projectsWereDisplayed = true; ?>
-        <section class="card">
+        <section class="card projects-index__funding-cycle">
             <div class="card-header">
                 <h1>
                     <?= $this->element(
