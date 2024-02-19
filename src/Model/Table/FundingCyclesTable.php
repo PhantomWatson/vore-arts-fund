@@ -98,6 +98,9 @@ class FundingCyclesTable extends Table
             ->requirePresence('funding_available', 'create')
             ->notEmptyString('funding_available');
 
+        $validator
+            ->boolean('is_finalized');
+
         return $validator;
     }
 

@@ -25,6 +25,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  * @property string $name
+ * @property bool $is_finalized
  *
  * @property \App\Model\Entity\Project[] $projects
  * @property \App\Model\Entity\Vote[] $votes
