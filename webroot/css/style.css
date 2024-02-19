@@ -12963,8 +12963,10 @@ section.funding-cycles th {
   max-width: 100%;
 }
 .image-upload__remove-image, .image-upload__remove-image:hover, .image-upload__remove-image:focus, .image-upload__remove-image:active {
-  color: red;
   font-size: 2em;
+}
+.image-upload__remove-image .fa-times, .image-upload__remove-image:hover .fa-times, .image-upload__remove-image:focus .fa-times, .image-upload__remove-image:active .fa-times {
+  color: red;
 }
 .image-upload__move-image {
   font-size: 2em;
