@@ -63,7 +63,9 @@ function App(props) {
         body: formData
       });
       if (!response.ok) {
-        throw new Error('There was a problem uploading that file. Please try again.');
+        const errors = await response.json();
+        const errorDetail = errors['errors'][0]?.detail;
+        handleError(errorDetail ?? 'There was a problem uploading that file. Please try again.');
       }
       const data = await response.json();
       const filename = data?.filename;
@@ -72,7 +74,7 @@ function App(props) {
         setImages(newImages);
         fileUpload.value = null;
       } else {
-        throw new Error('There was a problem uploading that file. Please try again.');
+        handleError('There was a problem uploading that file. Please try again.');
       }
     } catch (error) {
       handleError(error.message);
@@ -96,7 +98,9 @@ function App(props) {
       if (response.ok) {
         setImages(images.filter((img) => img.filename !== image.filename));
       } else {
-        handleError(`${response.status} ${response.statusText}`);
+        const errors = await response.json();
+        const errorDetail = errors['errors'][0]?.detail;
+        handleError(errorDetail ?? 'There was an error deleting that image.');
       }
     } catch(error) {
       handleError(error.message);
