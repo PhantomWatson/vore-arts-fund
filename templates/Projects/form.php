@@ -13,8 +13,6 @@
 use App\Model\Entity\Image;
 use App\Model\Entity\Project;
 
-$this->Html->css('/filepond/filepond.min.css', ['block' => true]);
-$this->Html->css('/filepond/filepond-plugin-image-preview.css', ['block' => true]);
 $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 $this->Html->script('/viewerjs/viewer.min.js', ['block' => true]);
 $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
