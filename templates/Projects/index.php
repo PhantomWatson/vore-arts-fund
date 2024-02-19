@@ -102,10 +102,9 @@ $projectsWereDisplayed = false;
             </div>
         </section>
     <?php endforeach; ?>
-<?php endif; ?>
-
-<?php if (!$projectsWereDisplayed): ?>
-    <p>
-        Please check back later for a list of projects that have applied for funding.
-    </p>
+    <?php if (!$projectsWereDisplayed): ?>
+        <p>
+            Please check back later for a list of projects that have applied for funding.
+        </p>
+    <?php endif; ?>
 <?php endif; ?>
