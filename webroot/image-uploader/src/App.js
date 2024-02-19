@@ -63,8 +63,8 @@ function App(props) {
         body: formData
       });
       if (!response.ok) {
-        const errors = await response.json();
-        const errorDetail = errors['errors'][0]?.detail;
+        const responseJson = await response.json();
+        const errorDetail = responseJson.errors[0]?.detail;
         handleError(errorDetail ?? 'There was a problem uploading that file. Please try again.');
       }
       const data = await response.json();
