@@ -9,7 +9,7 @@
 ?>
 <?= $userName ?>,
 
-We hate to deliver bad news, but your application for funding for <strong><?= $project->title ?></strong> was not accepted. This is usually due to a project or an applicant not meeting the Vore Arts Fund's eligibility requirements. Here's what the reviewer who processed your application said:
+Thanks for applying to the Vore Arts Fund! We appreciate the work that you put into your application, your interest in our mission to support the local arts, and the work that you do to contribute to our community. However, your application for funding for <?= $project->title ?> was not accepted. This is usually due to a project or an applicant not meeting the Vore Arts Fund's eligibility requirements. Here's what the reviewer who processed your application said:
 
 <?= nl2br($note) ?>
 

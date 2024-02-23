@@ -11,9 +11,7 @@
 </p>
 
 <p>
-    We hate to deliver bad news, but we won't be able to provide funding for <strong><?= $project->title ?></strong>
-    in this funding cycle. When this happens, it's due to us running out of budgeted money after tallying the votes
-    and funding the highest-ranked applications. But hey, you can try again in the next funding cycle!
+    Thanks for applying to the Vore Arts Fund! We appreciate the work that you put into your application, your interest in our mission to support the local arts, and the work that you do to contribute to our community. However, we sorry to say that won't be able to provide funding for <strong><?= $project->title ?></strong> in this funding cycle. When this happens, it's due to us running out of budgeted money after tallying the votes and funding the highest-ranked applications. But hey, you can try again in the next funding cycle!
 </p>
 
 <p>
