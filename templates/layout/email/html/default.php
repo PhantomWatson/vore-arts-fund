@@ -304,13 +304,12 @@ $host = $this->getRequest()->host() ?: 'voreartsfund.org';
                         <tr>
                             <td class="content-block">
                                 <a href="https://<?= $host ?>">
-                                    <?= str_replace('voreartsfund', 'VoreArtsFund', $host) ?>
+                                    <img src="https://<?= $host ?>/img/logo/logo.wordmark.v5.white.email.png" alt="Vore Arts Fund" title="Vore Arts Fund" />
                                 </a>
                             </td>
                         </tr>
                     </table>
                 </div>
-
             </div>
         </td>
         <td>&nbsp;</td>
