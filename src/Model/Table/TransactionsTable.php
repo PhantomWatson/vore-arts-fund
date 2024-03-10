@@ -178,4 +178,12 @@ class TransactionsTable extends Table
             ['scope' => 'stripe']
         );
     }
+
+    protected function findForProject($query, $options)
+    {
+        return $this
+            ->find()
+            ->where(['project_id' => $options['project_id']])
+            ->orderAsc('created');
+    }
 }

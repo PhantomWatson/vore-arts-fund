@@ -80,6 +80,10 @@ class ProjectsController extends AdminController
             return $this->redirect(['action' => 'index']);
         }
 
+        $transactionsTable = $this->getTableLocator()->get('Transactions');
+        $transactions = $transactionsTable->find('forProject', ['project_id' => $project->id]);
+
+
         /** @var NotesTable $notesTable */
         $notesTable = $this->fetchTable('Notes');
         if (!$this->request->is('get')) {
@@ -157,7 +161,8 @@ class ProjectsController extends AdminController
             'notes',
             'questions',
             'toLoad',
-            'validStatusIds'
+            'validStatusIds',
+            'transactions',
         ));
         $this->title('Project: ' . $project->title);
         $this->addBreadcrumb(

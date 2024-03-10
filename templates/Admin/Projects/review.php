@@ -12,6 +12,7 @@ use App\Model\Entity\Project;
  * @var int[] $statusActions
  * @var int[] $validStatusIds
  * @var string $title
+ * @var \App\Model\Entity\Transaction[]|\Cake\ORM\ResultSet $transactions
  */
 
 function getActionName($statusId, array $statusActions): string
@@ -19,7 +20,13 @@ function getActionName($statusId, array $statusActions): string
     return array_search($statusId, $statusActions);
 }
 
-$tabs = ['Overview' => 'overview', 'Description' => 'description', 'Notes & Messages' => 'notes'];
+$transactionsTabLabel = 'Transactions' . ($transactions->isEmpty() ? null : ' (' . $transactions->count() . ')');
+$tabs = [
+    'Overview' => 'overview',
+    'Description' => 'description',
+    $transactionsTabLabel => 'transactions',
+    'Notes & Messages' => 'notes'
+];
 
 $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 ?>
@@ -57,6 +64,48 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
     </div>
     <div class="tab-pane" id="description-section" role="tabpanel" aria-labelledby="description-tab">
         <?= $this->element('Projects/description') ?>
+    </div>
+    <div class="tab-pane" id="transactions-section" role="tabpanel" aria-labelledby="transactions-tab">
+        <section>
+            <h3>
+                Transactions
+            </h3>
+            <?php if ($transactions->isEmpty()): ?>
+                <p>
+                    No transactions are associated with this project
+                </p>
+            <?php else: ?>
+                <table id="review-transactions" class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Name</th>
+                            <th>Amount (net)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($transactions as $transaction): ?>
+                            <tr>
+                                <td>
+                                    <?= $transaction->date?->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('M j, Y g:ia') ?>
+                                </td>
+                                <td>
+                                    <?= $transaction->type_name ?>
+                                </td>
+                                <td>
+                                    <?= $transaction->name ?>
+                                </td>
+                                <td>
+                                    <?= $transaction->dollar_amount_gross_formatted ?>
+                                    (<?= $transaction->dollar_amount_net_formatted ?>)
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
+        </section>
     </div>
     <div class="tab-pane" id="notes-section" role="tabpanel" aria-labelledby="notes-tab">
         <section>
