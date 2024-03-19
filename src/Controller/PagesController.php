@@ -165,7 +165,7 @@ class PagesController extends AppController
                 ['escape' => false]
             );
         } else {
-            $this->Flash->error(
+            $this->Flash->set(
                 '<strong>Attention beta testers!</strong> Please visit <a href="https://staging.voreartsfund.org">the staging site</a> instead.',
                 ['escape' => false]
             );
