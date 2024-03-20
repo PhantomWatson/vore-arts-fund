@@ -16,12 +16,12 @@
                 </h1>
                 <div class="info">
                     <p>
-                        The Vore Arts Fund is a 501(c)(3) not-for-profit program for supporting the Muncie, Indiana, arts
-                        community by distributing no-contract, no-interest loans to cover the up-front costs of producing
-                        for-profit art, music, performances, and art education.
+                        The Vore Arts Fund is a 501(c)(3) not-for-profit program for supporting the Muncie, Indiana,
+                        arts community by distributing zero-interest, unconditionally forgivable loans to cover the
+                        up-front costs of producing for-profit art, music, theater, and art education.
                     </p>
                     <p>
-                        We're currently fundraising and setting up the program's website, and applications for funding are
+                        We're currently fundraising for our first funding cycle, and applications for funding are
                         not yet open to the public. Stay tuned for updates.
                     </p>
                     <p>
