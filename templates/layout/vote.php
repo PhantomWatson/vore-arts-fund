@@ -7,6 +7,8 @@
 $this->extend('default');
 ?>
 
+<?= $this->element('Votes/intro') ?>
+
 <?= $this->fetch('content') ?>
 
 <?php if ($showUpcoming): ?>
