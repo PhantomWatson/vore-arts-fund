@@ -69,6 +69,7 @@
         </div>
     </div>
 
+    <?php /*
     <?= $this->element('home/voting', [
         'votingCycle' => $votingInfo['cycle'] ?? null,
         'votingProjectCount' => $votingInfo['projectCount'] ?? null,
@@ -76,4 +77,5 @@
     ]) ?>
 
     <?= $this->element('home/applying') ?>
+    */ ?>
 </div>
