@@ -12,9 +12,9 @@ $this->Html->script('https://vr2.verticalresponse.com/signup_forms/signup_forms.
 </p>
 
 <!-- Begin VR Signup Form -->
-<form class="vr-signup-form" id="vr-signup-form-43980465123985">
+<form class="" id="vr-signup-form-43980465123985">
     <div class="vr-field mb-3">
-        <span class="vr-required">*</span><label class="form-label">Email Address</label>
+        <label class="form-label">Email Address</label>
         <input type="email" name="email_address" required class="form-control">
     </div>
     <div class="vr-submit">
