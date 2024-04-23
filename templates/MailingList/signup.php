@@ -11,22 +11,20 @@ $this->Html->script('https://vr2.verticalresponse.com/signup_forms/signup_forms.
     our mission, and announcements about applying for funding and voting on applications.
 </p>
 
+<!-- Begin VR Signup Form -->
 <form class="vr-signup-form" id="vr-signup-form-43980465123985">
     <div class="vr-field mb-3">
-        <label for="signup-email" class="form-label">Email Address</label>
-        <input type="email" name="email_address" required id="signup-email" class="form-control" />
+        <span class="vr-required">*</span><label class="form-label">Email Address</label>
+        <input type="email" name="email_address" required class="form-control">
     </div>
     <div class="vr-submit">
         <div class="vr-notice"></div>
-        <button type="submit" class="btn btn-primary">
-            Sign up
-        </button>
+        <input type="submit" value="Sign Up" class="btn btn-primary">
     </div>
 </form>
-
+<link media="all" rel="stylesheet" type="text/css" href="https://vr2.verticalresponse.com/signup_forms/signup_forms.embedded-2.css">
+<script type="text/javascript" src="https://vr2.verticalresponse.com/signup_forms/signup_forms.embedded-2.js"></script>
 <script type="text/javascript">
-    preventMultipleSubmit('#vr-signup-form-43980465123985');
-
     if (typeof VR !== "undefined" && typeof VR.SignupForm !== "undefined") {
         new VR.SignupForm({
             id: "43980465123985",
@@ -46,3 +44,4 @@ $this->Html->script('https://vr2.verticalresponse.com/signup_forms/signup_forms.
         });
     }
 </script>
+<!-- End VR Signup Form -->
