@@ -5,6 +5,7 @@
  * @var bool $fundingCycleIsCurrent
  * @var array|null $votingInfo
  * @var bool $hasVoted
+ * @var bool $isStaging
  */
 ?>
 <div id="home">
@@ -69,13 +70,13 @@
         </div>
     </div>
 
-    <?php /*
-    <?= $this->element('home/voting', [
-        'votingCycle' => $votingInfo['cycle'] ?? null,
-        'votingProjectCount' => $votingInfo['projectCount'] ?? null,
-        'hasVoted' => $hasVoted,
-    ]) ?>
+    <?php if ($isStaging): ?>
+        <?= $this->element('home/voting', [
+            'votingCycle' => $votingInfo['cycle'] ?? null,
+            'votingProjectCount' => $votingInfo['projectCount'] ?? null,
+            'hasVoted' => $hasVoted,
+        ]) ?>
 
-    <?= $this->element('home/applying') ?>
-    */ ?>
+        <?= $this->element('home/applying') ?>
+    <?php endif; ?>
 </div>
