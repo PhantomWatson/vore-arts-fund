@@ -148,25 +148,26 @@ class PagesController extends AppController
         $hasVoted = $user
             && ($currentVotingInfo['cycle'] ?? false)
             && $votesTable->hasVoted($user->id, $currentVotingInfo['cycle']->id);
+        $isStaging = str_contains($_SERVER['HTTP_HOST'], 'staging.');
 
         $this->set([
             'fundingCycle' => $fundingCycle,
             'fundingCycleIsCurrent' => $fundingCycleIsCurrent,
+            'hasVoted' => $hasVoted,
+            'isStaging' => $isStaging,
             'title' => '',
             'votingInfo' => $currentVotingInfo,
-            'hasVoted' => $hasVoted,
         ]);
 
         // Display beta testing message
-        $isStaging = str_contains($_SERVER['HTTP_HOST'], 'staging.');
         if ($isStaging) {
             $this->Flash->set(
-                '<strong>Welcome beta testers!</strong> Check out <a href="https://docs.google.com/document/d/1BtZUQg6w3LaaumHRdgMXJC8EVIEu3GhzELijZdlebaU/edit?usp=sharing">these instructions</a> for helping out this project!',
+                '<strong>Welcome beta testers!</strong> staging.voreartsfund.org is exclusively used for <em>fake</em> applications and testing new website features. Check out <a href="https://docs.google.com/document/d/1BtZUQg6w3LaaumHRdgMXJC8EVIEu3GhzELijZdlebaU/edit?usp=sharing">these instructions</a> for helping out this project!',
                 ['escape' => false]
             );
         } else {
             $this->Flash->set(
-                '<strong>Attention beta testers!</strong> Please visit <a href="https://staging.voreartsfund.org">the staging site</a> instead.',
+                '<strong>Attention beta testers!</strong> Please visit <a href="https://staging.voreartsfund.org">the staging site</a> to help us test out our system by submitting and voting on fake applications and giving us your valuable feedback.',
                 ['escape' => false]
             );
         }
