@@ -46,6 +46,17 @@
                     would help share this survey with other folks in the local arts and entertainment community, too!
                 </p>
             </section>
+            <section>
+                <h1>
+                    Coverage on Indiana Public Radio
+                </h1>
+                <p>
+                    We'd like to thank Thomas Ouellette and Indiana Public Radio for
+                    <a href="https://indianapublicradio.org/news/2024/05/a-new-fund-aims-at-helping-struggling-artists-bring-their-projects-to-life/">their recent story about the Vore Arts Fund</a>.
+                    Also worth reading is <a href="https://indianapublicradio.org/news/2023/10/new-national-study-highlights-economic-impact-of-arts-culture-on-indiana-cities/">their coverage of National Arts and Economic Prosperity 6</a>,
+                    a 2023 study that measured the economic impact of the support given by arts and culture nonprofits.
+                </p>
+            </section>
         </div>
         <div class="col-sm-4">
             <section class="card">
