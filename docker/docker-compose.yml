@@ -5,7 +5,7 @@ services:
     image: mailhog/mailhog:latest
     container_name: ${COMPOSE_PROJECT_NAME}_mailhog
     ports:
-      - 127.0.0.1:8125:8025
+      - 127.0.0.1:${MAILHOG_PORT}:8025
     restart: ${RESTART}
 
   mysql:
