@@ -23,7 +23,7 @@ services:
       public_net:
         ipv4_address: ${MYSQL_IP}
     ports:
-      - "9906:3306"
+      - "${MYSQL_PORT}:3306"
     environment:
       - MYSQL_CONTAINER_USER=${MYSQL_CONTAINER_USER}
       - MYSQL_CONTAINER_GROUP=${MYSQL_CONTAINER_GROUP}
@@ -75,8 +75,8 @@ services:
         - PHP_ROOT_DIR=${PHP_ROOT_DIR}
     container_name: ${COMPOSE_PROJECT_NAME}_php
     expose:
-      - 9000
-      - 9003 # XDebug
+      - ${APACHE_EXPOSED_PORT}
+      - ${XDEBUG_PORT}
     working_dir: ${PHP_APP_DIR}
     volumes:
       - ..:${PHP_APP_DIR}
@@ -112,7 +112,7 @@ services:
       - PMA_USER=${MYSQL_USER}
       - PMA_PASSWORD=${MYSQL_PASSWORD}
       - PMA_HOST=vore_mysql
-      - PMA_PORT=3306
+      - PMA_PORT=${PHPMYADMIN_PORT}
       - MYSQL_CONTAINER_USER=${MYSQL_CONTAINER_USER}
       - MYSQL_CONTAINER_GROUP=${MYSQL_CONTAINER_GROUP}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
