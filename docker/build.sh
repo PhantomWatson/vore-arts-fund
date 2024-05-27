@@ -19,5 +19,5 @@ fi
 
 docker-compose up -d --build
 
-docker exec vore_apache chown -R root:www-data /usr/local/apache2/logs
-docker exec vore_php chown -R root:www-data /usr/local/etc/logs
+docker exec ${COMPOSE_PROJECT_NAME}_apache chown -R root:www-data /usr/local/apache2/logs
+docker exec ${COMPOSE_PROJECT_NAME}_php chown -R root:www-data /usr/local/etc/logs
