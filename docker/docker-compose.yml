@@ -43,8 +43,8 @@ services:
         - APACHE_ROOT_DIR=${APACHE_ROOT_DIR}
     container_name: ${COMPOSE_PROJECT_NAME}_apache
     extra_hosts:
-      - "vore.test:127.0.0.1"
-    hostname: vore.test
+      - "${HOST}:127.0.0.1"
+    hostname: ${HOST}
     ports:
       - ${APACHE_EXPOSED_PORT}:80
     networks:
