@@ -33,11 +33,13 @@ use Cake\Routing\Router;
  */
 class FundingCycle extends Entity
 {
-    const TIME_FIELDS = [
+    const TIME_START_FIELDS = [
         'application_begin',
+        'vote_begin',
+    ];
+    const TIME_END_FIELDS = [
         'application_end',
         'resubmit_deadline',
-        'vote_begin',
         'vote_end'
     ];
 

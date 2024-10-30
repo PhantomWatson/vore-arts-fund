@@ -57,6 +57,21 @@ class FundingCyclesController extends AdminController
         ]);
     }
 
+    private function adjustFormData($data)
+    {
+        foreach (FundingCycle::TIME_START_FIELDS as $field) {
+            $data[$field] = (new FrozenTime($data[$field]))->setTime(0, 0);
+        }
+        foreach (FundingCycle::TIME_END_FIELDS as $field) {
+            $data[$field] = (new FrozenTime($data[$field]))->setTime(23, 59, 59);
+        }
+        $fields = array_merge(FundingCycle::TIME_START_FIELDS, FundingCycle::TIME_END_FIELDS);
+        foreach ($fields as $field) {
+            $data[$field] = $this->convertTimeToUtc($data[$field]);
+        }
+        return $data;
+    }
+
     /**
      * Page for adding a new funding cycle
      *
@@ -68,9 +83,7 @@ class FundingCyclesController extends AdminController
         $fundingCycle = $this->FundingCycles->newEmptyEntity();
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-            foreach (FundingCycle::TIME_FIELDS as $field) {
-                $data[$field] = $this->convertTimeToUtc($data[$field]);
-            }
+            $data = $this->adjustFormData($data);
             $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $data);
             if ($this->FundingCycles->save($fundingCycle)) {
                 $this->Flash->success('Funding cycle added');
@@ -122,10 +135,7 @@ class FundingCyclesController extends AdminController
         $fundingCycle = $this->FundingCycles->get($fundingCycleId);
         if ($this->request->is('put')) {
             $data = $this->request->getData();
-            foreach (FundingCycle::TIME_FIELDS as $field) {
-                $data[$field] = $this->convertTimeToUtc($data[$field]);
-            }
-
+            $data = $this->adjustFormData($data);
             $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $data);
             if ($this->FundingCycles->save($fundingCycle)) {
                 $this->Flash->success(__('Successfully updated funding cycle'));

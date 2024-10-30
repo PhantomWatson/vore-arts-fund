@@ -19,9 +19,9 @@
 <div class="card">
     <div class="card-body">
         <p>
-            Funding cycles should begin on midnight of their first day and end on 11:59pm of their last day. If resubmitting
-            a rejected application is allowed, the resubmit deadline should be set to sometime between the application
-            deadline and the beginning of voting.
+            All deadlines will be at 11:59pm on the specified dates.
+            If resubmitting a rejected application is allowed, the resubmit deadline should be set to sometime
+            between the application deadline and the beginning of voting.
         </p>
 
         <table class="table table-bordered" id="cycles-chart">
@@ -121,11 +121,11 @@
 
 <?= $this->Form->create($fundingCycle, ['id' => 'funding-cycle-form']) ?>
 <fieldset>
-    <?= $this->Form->control('application_begin') ?>
-    <?= $this->Form->control('application_end') ?>
-    <?= $this->Form->control('resubmit_deadline') ?>
-    <?= $this->Form->control('vote_begin') ?>
-    <?= $this->Form->control('vote_end') ?>
+    <?= $this->Form->control('application_begin', ['type' => 'date']) ?>
+    <?= $this->Form->control('application_end', ['type' => 'date']) ?>
+    <?= $this->Form->control('resubmit_deadline', ['type' => 'date']) ?>
+    <?= $this->Form->control('vote_begin', ['type' => 'date']) ?>
+    <?= $this->Form->control('vote_end', ['type' => 'date']) ?>
     <?= $this->Form->control('funding_available', ['label' => 'Funding available (in dollars)']) ?>
     <?= $this->Form->control('is_finalized', ['label' => 'Is finalized (distribution has concluded)']) ?>
 </fieldset>
