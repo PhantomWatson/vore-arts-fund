@@ -58,7 +58,7 @@ $dateFormat = 'MMM d, YYYY';
                             <?= $fundingCycle->funding_available_formatted ?>
                         </td>
                         <td>
-                            <?php if ($fundingCycle->projects[0]->count): ?>
+                            <?php if ($fundingCycle->projects[0]->count ?? false): ?>
                                 <?= $this->Html->link(
                                     $fundingCycle->projects[0]->count
                                     . __n(' Project', ' Projects', $fundingCycle->projects[0]->count),
