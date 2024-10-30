@@ -83,14 +83,8 @@ class AppController extends Controller
         $isAdmin = $user->is_admin ?? false;
         $projectsTable = $this->getTableLocator()->get('Projects');
         $hasProjects = $user && $projectsTable->exists(['user_id' => $user->id]);
-        $fundingCyclesTable = $this->fetchTable('FundingCycles');
-        $applicationsBeingAccepted = (bool) $fundingCyclesTable
-            ->find('current')
-            ->all()
-            ->count();
 
         $this->set(compact(
-            'applicationsBeingAccepted',
             'hasProjects',
             'isAdmin',
             'isLoggedIn',

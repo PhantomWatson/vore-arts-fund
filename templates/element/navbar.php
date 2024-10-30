@@ -1,7 +1,6 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var bool $applicationsBeingAccepted
  * @var bool $hasProjects
  * @var bool $isAdmin
  * @var bool $isLoggedIn
@@ -149,18 +148,16 @@ function echoLinks(\App\View\AppView $appView, $links, $navbarItemClass = 'nav-i
                             ) ?>
                         </li>
                     <?php endif; ?>
-                    <?php if ($applicationsBeingAccepted): ?>
-                        <li>
-                            <?= $this->Html->link(
-                                'Apply',
-                                ['controller' => 'Projects', 'action' => 'apply', 'prefix' => false],
-                                [
-                                    'class' => 'nav-link',
-                                    'id' => 'navbar-cta',
-                                ]
-                            ) ?>
-                        </li>
-                    <?php endif; ?>
+                    <li>
+                        <?= $this->Html->link(
+                            'Apply',
+                            ['controller' => 'Projects', 'action' => 'apply', 'prefix' => false],
+                            [
+                                'class' => 'nav-link',
+                                'id' => 'navbar-cta',
+                            ]
+                        ) ?>
+                    </li>
                 </ul>
             </div>
         </div>
