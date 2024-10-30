@@ -75,22 +75,17 @@ class ProjectsController extends AppController
      */
     public function apply(): ?Response
     {
+        $this->title('Apply for Funding');
+
         // Check if applications can be accepted
         /** @var FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->find('current')->first();
+        $budget = $fundingCycle->funding_available;
+        $budgetFormatted = $fundingCycle->funding_available_formatted;
         if (is_null($fundingCycle)) {
-            $url = Router::url([
-                'prefix' => false,
-                'controller' => 'FundingCycles',
-                'action' => 'index',
-            ]);
-            $this->Flash->error(
-                'Sorry, but applications are not being accepted at the moment. '
-                . "Please check back later, or visit the <a href=\"$url\">Funding Cycles</a> page for information "
-                . 'about upcoming application periods.',
-                ['escape' => false]
-            );
-            return $this->redirect('/');
+            $this->viewBuilder()->setTemplate('applications_not_being_accepted');
+
+            return null;
         }
 
         // Show nonstandard error message and redirect if unauthenticated
@@ -101,7 +96,6 @@ class ProjectsController extends AppController
         }
 
         // Set up view vars
-        $this->title('Apply for Funding');
         $this->viewBuilder()->setTemplate('form');
         $this->setProjectVars();
         $this->setFromNow($fundingCycle->application_end_local);
@@ -130,7 +124,7 @@ class ProjectsController extends AppController
             $project->check_name = $user->name;
         }
 
-        $this->set(compact('project'));
+        $this->set(compact('project', 'budget', 'budgetFormatted'));
 
         return null;
     }
