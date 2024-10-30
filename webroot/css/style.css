@@ -12820,6 +12820,10 @@ div.message.hidden {
   margin: -15px 0;
 }
 
+#navbar-cta {
+  margin-left: 8px;
+}
+
 #funding-cycle-selector {
   display: inline;
   width: inherit;

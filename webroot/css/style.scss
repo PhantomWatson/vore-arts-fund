@@ -739,6 +739,7 @@ article.note {
 
 #navbar-cta {
     @extend .btn, .btn-primary;
+    margin-left: 8px;
 }
 
 #funding-cycle-selector {
