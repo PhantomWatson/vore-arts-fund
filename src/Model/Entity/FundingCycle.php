@@ -65,18 +65,14 @@ class FundingCycle extends Entity
     ];
 
     /**
-     * Virtual field for the name of the funding cycle, based on year and season when disbursement takes place
-     *
-     * Assumes that there will never be more than one in the same season
+     * Virtual field for the name of the funding cycle, which is the month when disbursement takes place,
+     * which is assumed to take place a week after voting ends
      *
      * @return string
      */
     public function _getName(): string
     {
-        $disbursementDate = $this->vote_end->addDay(1);
-        $year = $disbursementDate->format('Y');
-        $disbursementMonth = $disbursementDate->format('n');
-        return $this->getSeasonName($disbursementMonth) . ' ' . $year;
+        return $this->vote_end->addWeek()->format('F Y');
     }
 
     /**
@@ -117,31 +113,6 @@ class FundingCycle extends Entity
     protected function _getVoteEndLocal()
     {
         return $this->vote_end->setTimezone(\App\Application::LOCAL_TIMEZONE);
-    }
-
-    /**
-     * Returns the name of the provided month's season
-     *
-     * 12-2: Winter
-     * 3-5: Spring
-     * 6-8: Summer
-     * 9-11: Fall
-     *
-     * @param int $monthNumber
-     * @return string
-     */
-    public function getSeasonName($monthNumber): string
-    {
-        if ($monthNumber == 12 || $monthNumber < 3) {
-            return 'Winter';
-        }
-        if ($monthNumber < 6) {
-            return 'Spring';
-        }
-        if ($monthNumber < 9) {
-            return 'Summer';
-        }
-        return 'Fall';
     }
 
     /**
