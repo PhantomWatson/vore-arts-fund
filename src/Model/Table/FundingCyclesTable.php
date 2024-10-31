@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\FundingCycle;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
 use Cake\ORM\Table;
@@ -71,27 +72,68 @@ class FundingCyclesTable extends Table
         $validator
             ->dateTime('application_begin')
             ->requirePresence('application_begin', 'create')
-            ->allowEmptyDateTime('application_begin', 'Required', false);
+            ->allowEmptyDateTime('application_begin', 'Required', false)
+            ->add(
+                'application_begin',
+                'custom',
+                [
+                    'rule' => [$this, 'applicationBeginEnd'],
+                    'message' => 'Application must begin before it ends',
+                ],
+            );
 
         $validator
             ->dateTime('application_end')
             ->requirePresence('application_end', 'create')
-            ->allowEmptyDateTime('application_end', 'Required', false);
+            ->allowEmptyDateTime('application_end', 'Required', false)
+            ->add(
+                'application_end',
+                'custom',
+                [
+                    'rule' => [$this, 'applicationBeginEnd'],
+                    'message' => 'Application must end after it begins',
+                ],
+            );
 
         $validator
             ->dateTime('vote_begin')
             ->requirePresence('vote_begin', 'create')
-            ->allowEmptyDateTime('vote_begin', 'Required', false);
+            ->allowEmptyDateTime('vote_begin', 'Required', false)
+            ->add(
+                'vote_begin',
+                'custom',
+                [
+                    'rule' => [$this, 'voteBeginEnd'],
+                    'message' => 'Voting must begin before it ends',
+                ],
+            );
+
 
         $validator
             ->dateTime('vote_end')
             ->requirePresence('vote_end', 'create')
-            ->allowEmptyDateTime('vote_end', 'Required', false);
+            ->allowEmptyDateTime('vote_end', 'Required', false)
+            ->add(
+                'vote_end',
+                'custom',
+                [
+                    'rule' => [$this, 'voteBeginEnd'],
+                    'message' => 'Voting must end after it begins',
+                ],
+            );
 
         $validator
             ->dateTime('resubmit_deadline')
             ->requirePresence('resubmit_deadline', 'create')
-            ->allowEmptyDateTime('resubmit_deadline', 'Required', false);
+            ->allowEmptyDateTime('resubmit_deadline', 'Required', false)
+            ->add(
+                'resubmit_deadline',
+                'custom',
+                [
+                    'rule' => [$this, 'resubmitDeadline'],
+                    'message' => 'Resubmit deadline must be between the application deadline and the beginning of voting',
+                ],
+            );
 
         $validator
             ->integer('funding_available')
@@ -102,6 +144,38 @@ class FundingCyclesTable extends Table
             ->boolean('is_finalized');
 
         return $validator;
+    }
+
+    /**
+     * @param FrozenTime $data
+     * @param array $context
+     * @return bool
+     */
+    public function applicationBeginEnd($data, $context)
+    {
+        return new FrozenTime($context['data']['application_begin']) < new FrozenTime($context['data']['application_end']);
+    }
+
+    /**
+     * @param FrozenTime $data
+     * @param array $context
+     * @return bool
+     */
+    public function voteBeginEnd($data, $context)
+    {
+        return new FrozenTime($context['data']['vote_begin']) < new FrozenTime($context['data']['vote_end']);
+    }
+
+    /**
+     * @param FrozenTime $data
+     * @param array $context
+     * @return bool
+     */
+    public function resubmitDeadline($data, $context)
+    {
+        $resubmit = new FrozenTime($context['data']['resubmit_deadline']);
+        return $resubmit > new FrozenTime($context['data']['application_end'])
+            && $resubmit < new FrozenTime($context['data']['vote_begin']);
     }
 
     /**
