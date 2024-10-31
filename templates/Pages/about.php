@@ -116,10 +116,18 @@
                     </div>
                     <div>
                         <dt>
-                            Vice President / Secretary
+                            Vice President / Secretary / Treasurer
                         </dt>
                         <dd>
                             Natalie Phillips
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>
+                            Board Member
+                        </dt>
+                        <dd>
+                            Beth McCollum
                         </dd>
                     </div>
                 </dl>
