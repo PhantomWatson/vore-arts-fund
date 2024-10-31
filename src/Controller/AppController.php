@@ -7,6 +7,7 @@ use App\Model\Entity\User;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
+use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\View\JsonView;
 
@@ -235,5 +236,30 @@ class AppController extends Controller
     protected function getAuthUser()
     {
         return $this->Authentication->getIdentity()?->getOriginalData();
+    }
+
+    /**
+     * Takes an entity and returns a string that can be used in flash messages to describe validation errors
+     *
+     * Useful for when error messages aren't automatically displayed in a form
+     *
+     * @param Entity $entity
+     * @return string
+     */
+    protected function getEntityErrorDetails(Entity $entity): string
+    {
+        if (!$entity->hasErrors()) {
+            return '';
+        }
+
+        return implode(
+            '; ',
+            array_map(
+                function ($errors) {
+                    return implode('; ', array_values($errors));
+                },
+                $entity->getErrors()
+            ),
+        );
     }
 }
