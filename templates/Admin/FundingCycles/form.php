@@ -1,19 +1,9 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         0.10.0
- * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\FundingCycle $fundingCycle
  */
+$fieldType = 'date';
 ?>
 
 <div class="card">
@@ -121,11 +111,11 @@
 
 <?= $this->Form->create($fundingCycle, ['id' => 'funding-cycle-form']) ?>
 <fieldset>
-    <?= $this->Form->control('application_begin', ['type' => 'date']) ?>
-    <?= $this->Form->control('application_end', ['type' => 'date']) ?>
-    <?= $this->Form->control('resubmit_deadline', ['type' => 'date']) ?>
-    <?= $this->Form->control('vote_begin', ['type' => 'date']) ?>
-    <?= $this->Form->control('vote_end', ['type' => 'date']) ?>
+    <?= $this->Form->control('application_begin', ['type' => $fieldType, 'value' => $fundingCycle->application_begin_local]) ?>
+    <?= $this->Form->control('application_end', ['type' => $fieldType, 'value' => $fundingCycle->application_end_local]) ?>
+    <?= $this->Form->control('resubmit_deadline', ['type' => $fieldType, 'value' => $fundingCycle->resubmit_deadline_local]) ?>
+    <?= $this->Form->control('vote_begin', ['type' => $fieldType, 'value' => $fundingCycle->vote_begin_local]) ?>
+    <?= $this->Form->control('vote_end', ['type' => $fieldType, 'value' => $fundingCycle->vote_end_local]) ?>
     <?= $this->Form->control('funding_available', ['label' => 'Funding available (in dollars)']) ?>
     <?= $this->Form->control('is_finalized', ['label' => 'Is finalized (distribution has concluded)']) ?>
 </fieldset>

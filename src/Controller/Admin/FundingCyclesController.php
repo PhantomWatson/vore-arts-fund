@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 
 use App\Application;
 use App\Model\Entity\FundingCycle;
-use Cake\Database\Expression\QueryExpression;
 use Cake\Event\EventInterface;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Query;
@@ -40,10 +39,12 @@ class FundingCyclesController extends AdminController
                 ->contain([
                     'Projects' => function (Query $q)
                     {
-                        return $q->select([
-                            'Projects.funding_cycle_id',
-                            'count' => $q->func()->count('Projects.id')
-                        ]);
+                        return $q
+                            ->select([
+                                'Projects.funding_cycle_id',
+                                'count' => $q->func()->count('Projects.id')
+                            ])
+                            ->group('Projects.funding_cycle_id');
                     }
                 ])
                 ->all();
@@ -57,17 +58,17 @@ class FundingCyclesController extends AdminController
         ]);
     }
 
-    private function adjustFormData($data)
+    private function convertFormDataToUtc($data)
     {
         foreach (FundingCycle::TIME_START_FIELDS as $field) {
-            $data[$field] = (new FrozenTime($data[$field]))->setTime(0, 0);
+            $data[$field] = (new FrozenTime($data[$field], Application::LOCAL_TIMEZONE))
+                ->setTime(0, 0)
+                ->setTimezone('UTC');
         }
         foreach (FundingCycle::TIME_END_FIELDS as $field) {
-            $data[$field] = (new FrozenTime($data[$field]))->setTime(23, 59, 59);
-        }
-        $fields = array_merge(FundingCycle::TIME_START_FIELDS, FundingCycle::TIME_END_FIELDS);
-        foreach ($fields as $field) {
-            $data[$field] = $this->convertTimeToUtc($data[$field]);
+            $data[$field] = (new FrozenTime($data[$field], Application::LOCAL_TIMEZONE))
+                ->setTime(23, 59, 59)
+                ->setTimezone('UTC');
         }
         return $data;
     }
@@ -80,18 +81,22 @@ class FundingCyclesController extends AdminController
     public function add()
     {
         /** @var \App\Model\Entity\FundingCycle $fundingCycle */
-        $fundingCycle = $this->FundingCycles->newEmptyEntity();
         if ($this->request->is('post')) {
+
+            // Adjust times and timezones before validation
             $data = $this->request->getData();
-            $data = $this->adjustFormData($data);
-            $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $data);
-            if ($this->FundingCycles->save($fundingCycle)) {
+            $data = $this->convertFormDataToUtc($data);
+            $fundingCycle = $this->FundingCycles->newEntity($data);
+
+            $fundingCycleToSave = $this->FundingCycles->patchEntity($fundingCycle, $data);
+            if ($this->FundingCycles->save($fundingCycleToSave)) {
                 $this->Flash->success('Funding cycle added');
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error('Error creating funding cycle');
             }
         } else {
+            $fundingCycle = $this->FundingCycles->newEmptyEntity();
             $start = new FrozenTime('12:00am', Application::LOCAL_TIMEZONE);
             $start = $start->day(1);
             $end = new FrozenTime('11:59pm', Application::LOCAL_TIMEZONE);
@@ -103,8 +108,6 @@ class FundingCyclesController extends AdminController
             $fundingCycle->vote_begin = $start;
             $fundingCycle->vote_end = $end;
         }
-
-        $fundingCycle = $fundingCycle->convertToLocalTimes();
 
         $this->title('Add Funding Cycle');
         $this->set(compact('fundingCycle'));
@@ -133,19 +136,20 @@ class FundingCyclesController extends AdminController
     {
         $fundingCycleId = $this->request->getParam('id');
         $fundingCycle = $this->FundingCycles->get($fundingCycleId);
-        if ($this->request->is('put')) {
+
+        if ($this->request->is(['put', 'patch'])) {
+            // Adjust times and timezones before validation
             $data = $this->request->getData();
-            $data = $this->adjustFormData($data);
+            $data = $this->convertFormDataToUtc($data);
             $fundingCycle = $this->FundingCycles->patchEntity($fundingCycle, $data);
+
             if ($this->FundingCycles->save($fundingCycle)) {
                 $this->Flash->success(__('Successfully updated funding cycle'));
                 return $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error(__('Error updating funding cycle'));
+                $this->Flash->error('Error updating funding cycle');
             }
         }
-
-        $fundingCycle = $fundingCycle->convertToLocalTimes();
 
         $this->set([
             'fundingCycle' => $fundingCycle,
