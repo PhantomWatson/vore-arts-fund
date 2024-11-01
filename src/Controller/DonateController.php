@@ -36,13 +36,26 @@ class DonateController extends AppController
         $this->addControllerBreadcrumb();
         $request = $this->getRequest();
         $request->allowMethod(['post']);
-        $amount = (int)$request->getData('amount') * 100; // In cents
-        if (!$amount) {
+
+        $donationAmount = (int)$request->getData('amount') * 100; // In cents
+        if (!$donationAmount) {
             throw new BadRequestException('No amount provided');
         }
+
+        // Cover Stripe's 2.9% + $0.30 processing feee
+        $coverProcessingFee = (bool)$request->getData('coverProcessingFee');
+        $totalAmount = $coverProcessingFee
+            ? ceil(($donationAmount + 30)/(1 - 0.029))
+            : $donationAmount;
+
         $name = trim($request->getData('name'));
         $title = 'Payment info';
-        $this->set(compact('title', 'amount', 'name'));
+        $this->set(compact(
+            'donationAmount',
+            'name',
+            'title',
+            'totalAmount',
+        ));
     }
 
     public function complete()

@@ -12915,6 +12915,13 @@ section.funding-cycles th {
 #donate-index .col > p {
   margin-bottom: 0;
 }
+#donate-index label:has(#coverProcessingFee) {
+  cursor: pointer;
+}
+
+#coverProcessingFeePopover {
+  padding: 0;
+}
 
 .row--donate .col {
   display: flex;

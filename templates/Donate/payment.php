@@ -1,7 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var int $amount
+ * @var int $donationAmount
+ * @var int $totalAmount
  * @var string $name
  */
 
@@ -16,11 +17,15 @@ $this->Html->script('checkout.js', ['block' => true, 'defer' => true]);
     <p>
         <strong>Name:</strong> <?= $name ?: '(anonymous)' ?>
         <br />
-        <strong>Donation amount:</strong> $<?= number_format($amount / 100, 2) ?>
+        <strong>Donation amount:</strong> $<?= number_format($donationAmount / 100, 2) ?>
         (<?= $this->Html->link(
             'change',
             ['action' => 'index']
         ) ?>)
+        <?php if ($totalAmount != $donationAmount): ?>
+            <br />
+            <strong>Total amount (including processing fee):</strong> $<?= number_format($totalAmount / 100, 2) ?>
+        <?php endif; ?>
     </p>
 
     <span id="page-loading-indicator" class="loading-indicator">
@@ -41,7 +46,7 @@ $this->Html->script('checkout.js', ['block' => true, 'defer' => true]);
 <div id="payment-message" class="visually-hidden"></div>
 
 <script>
-    window.stripeAmount = <?= json_encode($amount) ?>;
+    window.stripeAmount = <?= json_encode($totalAmount) ?>;
     window.stripeDonorName = <?= json_encode($name ?: null) ?>;
     window.stripeReturnUrl = <?= json_encode(Router::url([
         'prefix' => false,

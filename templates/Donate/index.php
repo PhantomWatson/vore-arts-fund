@@ -32,6 +32,25 @@ $formAction = \Cake\Routing\Router::url([
                 <?= $this->Form->control('name', ['label' => 'Name (optional)', 'value' => $user?->name]) ?>
                 <div class="row">
                     <div class="col form-group">
+                        <input type="hidden" name="coverProcessingFee" value="0" />
+                        <label>
+                            <input type="checkbox" name="coverProcessingFee" id="coverProcessingFee" value="1" />
+                            Also cover 2.9% + 30¢ payment processing fee
+                            <button id="coverProcessingFeePopover"
+                                    type="button"
+                                    class="btn btn-lg btn-link"
+                                    data-bs-toggle="popover"
+                                    title="What does this mean?"
+                                    data-bs-title="What does this mean?"
+                                    data-bs-content="Our payment processor charges us a fee for every donation, which you could generously volunteer to pay for so we receive 100% of the amount that you enter."
+                                    data-bs-placement="top">
+                                <i class="fa-solid fa-circle-question"></i>
+                            </button>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col form-group">
                         <p class="input-group">
                             <span class="input-group-text">$</span>
                             <input name="amount" type="number" class="form-control" aria-label="Amount to donate" min="1" id="donation-amount" required="required">
@@ -76,4 +95,7 @@ $formAction = \Cake\Routing\Router::url([
             event.preventDefault();
         }
     });
+
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
 </script>

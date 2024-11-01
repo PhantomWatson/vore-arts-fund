@@ -869,6 +869,14 @@ section.funding-cycles {
             margin-bottom: 0;
         }
     }
+
+    label:has(#coverProcessingFee) {
+        cursor: pointer;
+    }
+}
+
+#coverProcessingFeePopover {
+    padding: 0;
 }
 
 .row--donate {
