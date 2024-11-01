@@ -7,6 +7,7 @@ use App\Model\Entity\FundingCycle;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -144,6 +145,57 @@ class FundingCyclesTable extends Table
             ->boolean('is_finalized');
 
         return $validator;
+    }
+
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        $rules->add(
+            function (FundingCycle $entity, $options) {
+                !$this->exists([
+                    'id !=' => $entity->id ?? 0,
+                    'OR' => [
+                        [
+                            'application_begin <=' => $entity->application_begin,
+                            'application_end >=' => $entity->application_begin,
+                        ],
+                        [
+                            'application_begin <=' => $entity->application_end,
+                            'application_end >=' => $entity->application_end,
+                        ]
+                    ]
+                ]);
+            },
+            'applicationPeriodDoesntOverlap',
+            [
+                'errorField' => 'application_begin',
+                'message' => 'Application period overlaps with another funding cycle'
+            ]
+        );
+
+        $rules->add(
+            function (FundingCycle $entity, $options) {
+                !$this->exists([
+                    'id !=' => $entity->id ?? 0,
+                    'OR' => [
+                        [
+                            'vote_begin <=' => $entity->vote_begin,
+                            'vote_end >=' => $entity->vote_begin,
+                        ],
+                        [
+                            'vote_begin <=' => $entity->vote_end,
+                            'vote_end >=' => $entity->vote_end,
+                        ]
+                    ]
+                ]);
+            },
+            'votingPeriodDoesntOverlap',
+            [
+                'errorField' => 'vote_begin',
+                'message' => 'Voting period overlaps with another funding cycle'
+            ]
+        );
+
+        return $rules;
     }
 
     /**
