@@ -31,9 +31,6 @@ async function initialize(amount, donorName) {
     }),
   }).then((r) => r.json());
 
-  setPageLoading(false);
-  showForm();
-
   // https://stripe.com/docs/elements/appearance-api
   const appearance = {
     theme: 'stripe',
@@ -62,6 +59,10 @@ async function initialize(amount, donorName) {
 
   const paymentElement = elements.create('payment', paymentElementOptions);
   paymentElement.mount('#payment-element');
+  paymentElement.on('ready', () => {
+    setPageLoading(false);
+    showForm();
+  });
 }
 
 async function handleSubmit(e) {
