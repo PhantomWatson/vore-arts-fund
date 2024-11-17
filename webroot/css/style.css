@@ -8551,7 +8551,8 @@ fieldset:disabled .vote-rank button,
   color: rgba(var(--bs-body-color-rgb), var(--bs-text-opacity)) !important;
 }
 
-.text-muted, .footnote {
+.text-muted, .footnote,
+.pronoun {
   --bs-text-opacity: 1;
   color: var(--bs-secondary-color) !important;
 }
@@ -12632,7 +12633,8 @@ div.message.hidden {
   top: 4px;
 }
 
-.footnote {
+.footnote,
+.pronoun {
   font-size: 80%;
 }
 

@@ -111,7 +111,7 @@
                             President
                         </dt>
                         <dd>
-                            Graham Watson
+                            Graham Watson <span class="pronoun">(he)</span>
                         </dd>
                     </div>
                     <div>
@@ -119,7 +119,7 @@
                             Vice President / Secretary / Treasurer
                         </dt>
                         <dd>
-                            Natalie Phillips
+                            Natalie Phillips <span class="pronoun">(she)</span>
                         </dd>
                     </div>
                     <div>
@@ -127,7 +127,7 @@
                             Board Member
                         </dt>
                         <dd>
-                            Beth McCollum
+                            Beth McCollum <span class="pronoun">(they/she)</span>
                         </dd>
                     </div>
                 </dl>
@@ -144,7 +144,7 @@
                             Lead Engineer
                         </dt>
                         <dd>
-                            Graham Watson
+                            Graham Watson <span class="pronoun">(he)</span>
                         </dd>
                     </div>
                     <div>
@@ -152,13 +152,13 @@
                             Engineers
                         </dt>
                         <dd>
-                            Dakota Savage
+                            Dakota Savage <span class="pronoun">(he)</span>
                             <br />
-                            Alec Schimmel
+                            Alec Schimmel <span class="pronoun">(he)</span>
                             <br />
-                            Madison Turley
+                            Madison Turley <span class="pronoun">(she)</span>
                             <br />
-                            Sean Wolfe
+                            Sean Wolfe <span class="pronoun">(he)</span>
                         </dd>
                     </div>
                 </dl>
