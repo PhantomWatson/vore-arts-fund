@@ -6,7 +6,7 @@
 
 <div class="users form">
     <fieldset>
-        <?= $this->Form->create(null, ['id' => 'forgot-password-form', 'action' => 'forgot_password']) ?>
+        <?= $this->Form->create(null, ['id' => 'forgot-password-form']) ?>
         <?= $this->Form->control(
             'User.email',
             [
