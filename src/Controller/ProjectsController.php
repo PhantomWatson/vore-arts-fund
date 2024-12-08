@@ -80,13 +80,13 @@ class ProjectsController extends AppController
         // Check if applications can be accepted
         /** @var FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->find('current')->first();
-        $budget = $fundingCycle->funding_available;
-        $budgetFormatted = $fundingCycle->funding_available_formatted;
         if (is_null($fundingCycle)) {
             $this->viewBuilder()->setTemplate('applications_not_being_accepted');
 
             return null;
         }
+        $budget = $fundingCycle->funding_available;
+        $budgetFormatted = $fundingCycle->funding_available_formatted;
 
         // Show nonstandard error message and redirect if unauthenticated
         $identity = $this->Authentication->getIdentity();
