@@ -26,6 +26,10 @@ use Cake\ORM\Entity;
  * @property float $voting_score
  * @property int $amount_awarded
  * @property string $status_summary
+ * @property \Cake\I18n\FrozenTime $loan_agreement_date
+ * @property \Cake\I18n\FrozenTime $loan_due_date
+ * @property int $loan_agreement_version
+ * @property string $tin
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -72,6 +76,8 @@ class Project extends Entity
         Project::STATUS_NOT_AWARDED,
     ];
 
+    // When, starting from the signing of the loan agreement, the loan is automatically considered canceled
+    const DUE_DATE = '5 years';
 
     /**
      * Returns TRUE if this project can be viewed by the public

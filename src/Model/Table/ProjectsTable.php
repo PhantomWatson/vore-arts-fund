@@ -141,6 +141,25 @@ class ProjectsTable extends Table
             ->notEmptyString('check_name')
             ->requirePresence('check_name', 'create');
 
+        $validator
+            ->scalar('loan_agreement_date')
+            ->notEmptyString('loan_agreement_date')
+            ->dateTime('loan_agreement_date');
+
+        $validator
+            ->scalar('loan_due_date')
+            ->notEmptyString('loan_due_date')
+            ->dateTime('loan_due_date');
+
+        $validator
+            ->integer('loan_agreement_version')
+            ->greaterThan('loan_agreement_version', 0)
+            ->notEmptyString('loan_agreement_version');
+
+        $validator
+            ->scalar('tin')
+            ->notEmptyString('tin');
+
         // Actually saved to the users table, but integrated into the project form
         $validator
             ->scalar('address')
