@@ -12881,6 +12881,8 @@ section.funding-cycles th {
 #privacy h1,
 #privacy .h1 {
   margin-bottom: 1em;
+  margin-top: 130px;
+  padding-top: 130px;
 }
 
 .report .final {

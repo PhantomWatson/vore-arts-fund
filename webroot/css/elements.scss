@@ -85,5 +85,5 @@ body {
 }
 
 main {
-    padding-top: 130px;
+    padding-top: $padding-top-to-avoid-navbar-overlapping;
 }

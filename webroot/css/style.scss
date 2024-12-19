@@ -807,6 +807,8 @@ section.funding-cycles {
     h1 {
         @extend .border-bottom;
         margin-bottom: 1em;
+        margin-top: $padding-top-to-avoid-navbar-overlapping;
+        padding-top: $padding-top-to-avoid-navbar-overlapping;
     }
 }
 
