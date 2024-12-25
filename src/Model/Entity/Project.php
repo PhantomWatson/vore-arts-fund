@@ -16,20 +16,23 @@ use Cake\ORM\Entity;
  * @property string $title
  * @property int $category_id
  * @property string $description
- * @property int $amount_requested
- * @property string $amount_requested_formatted
+ * @property int $amount_requested In dollars
+ * @property string $amount_requested_formatted e.g. $1,234
  * @property bool $accept_partial_payout
  * @property int $funding_cycle_id
  * @property string $check_name
  * @property int $status_id
  * @property string $status_name
  * @property float $voting_score
- * @property int $amount_awarded
+ * @property int $amount_awarded In dollars
+ * @property int $amount_awarded_formatted e.g. $1,234
  * @property string $status_summary
  * @property \Cake\I18n\FrozenTime $loan_agreement_date
  * @property \Cake\I18n\FrozenTime $loan_due_date
  * @property int $loan_agreement_version
  * @property string $tin
+ * @property string $address
+ * @property string $zipcode
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -292,24 +295,6 @@ class Project extends Entity
         return ($this->accept_partial_payout ? 'Up to ' : '') . '$' . number_format($this->amount_requested);
     }
 
-    /**
-     * Returns sum (gross, in dollars) of loan-type transactions for this  project
-     *
-     * Ignores canceled checks
-     * Requires project to have a transactions property
-     *
-     * @return int
-     */
-    protected function _getAmountAwarded()
-    {
-        $sum = 0;
-        /** @var Transaction $transaction */
-        foreach ($this->transactions ?? [] as $transaction) {
-            $sum += $transaction->amount_gross;
-        }
-        return round($sum / 100);
-    }
-
     protected function _getStatusSummary()
     {
         $retval = '';
@@ -327,5 +312,10 @@ class Project extends Entity
         $retval .= $isPast ? 'requested ' : 'is requesting ';
         $retval .= strtolower($this->amount_requested_formatted);
         return $retval;
+    }
+
+    protected function _getAmountAwardedFormatted(): string
+    {
+        return '$' . number_format($this->amount_requested);
     }
 }

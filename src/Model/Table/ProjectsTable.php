@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use App\Model\Entity\Note;
 use App\Model\Entity\Project;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
@@ -160,11 +159,11 @@ class ProjectsTable extends Table
             ->scalar('tin')
             ->notEmptyString('tin');
 
-        // Actually saved to the users table, but integrated into the project form
         $validator
             ->scalar('address')
             ->maxLength('address', 50)
             ->notEmptyString('address');
+
         $validator
             ->scalar('zipcode')
             ->maxLength('zipcode', 10)
