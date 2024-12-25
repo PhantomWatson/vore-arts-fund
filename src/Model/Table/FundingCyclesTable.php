@@ -151,48 +151,56 @@ class FundingCyclesTable extends Table
     {
         $rules->add(
             function (FundingCycle $entity, $options) {
-                !$this->exists([
-                    'id !=' => $entity->id ?? 0,
-                    'OR' => [
-                        [
-                            'application_begin <=' => $entity->application_begin,
-                            'application_end >=' => $entity->application_begin,
-                        ],
-                        [
-                            'application_begin <=' => $entity->application_end,
-                            'application_end >=' => $entity->application_end,
+                $fundingCycle = $this
+                    ->find()
+                    ->where([
+                        'id !=' => $entity->id ?? 0,
+                        'OR' => [
+                            [
+                                'application_begin <=' => $entity->application_begin,
+                                'application_end >=' => $entity->application_begin,
+                            ],
+                            [
+                                'application_begin <=' => $entity->application_end,
+                                'application_end >=' => $entity->application_end,
+                            ]
                         ]
-                    ]
-                ]);
+                    ])
+                    ->first();
+                if (!$fundingCycle) {
+                    return true;
+                }
+                return 'Application period overlaps with funding cycle #' . $fundingCycle->id;
             },
             'applicationPeriodDoesntOverlap',
-            [
-                'errorField' => 'application_begin',
-                'message' => 'Application period overlaps with another funding cycle'
-            ]
+            ['errorField' => 'application_begin']
         );
 
         $rules->add(
             function (FundingCycle $entity, $options) {
-                !$this->exists([
-                    'id !=' => $entity->id ?? 0,
-                    'OR' => [
-                        [
-                            'vote_begin <=' => $entity->vote_begin,
-                            'vote_end >=' => $entity->vote_begin,
-                        ],
-                        [
-                            'vote_begin <=' => $entity->vote_end,
-                            'vote_end >=' => $entity->vote_end,
+                $fundingCycle = $this
+                    ->find()
+                    ->where([
+                        'id !=' => $entity->id ?? 0,
+                        'OR' => [
+                            [
+                                'vote_begin <=' => $entity->vote_begin,
+                                'vote_end >=' => $entity->vote_begin,
+                            ],
+                            [
+                                'vote_begin <=' => $entity->vote_end,
+                                'vote_end >=' => $entity->vote_end,
+                            ]
                         ]
-                    ]
-                ]);
+                    ])
+                    ->first();
+                if (!$fundingCycle) {
+                    return true;
+                }
+                return 'Voting period overlaps with funding cycle #' . $fundingCycle->id;
             },
             'votingPeriodDoesntOverlap',
-            [
-                'errorField' => 'vote_begin',
-                'message' => 'Voting period overlaps with another funding cycle'
-            ]
+            ['errorField' => 'vote_begin']
         );
 
         return $rules;
