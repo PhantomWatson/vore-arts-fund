@@ -13007,4 +13007,13 @@ section.funding-cycles th {
   margin-top: 1.125rem;
 }
 
+section.loan-agreement {
+  border-bottom: 1px solid #aaa;
+  margin-bottom: 2em;
+  padding-bottom: 2em;
+}
+section.loan-agreement:last-child {
+  border-bottom: none;
+}
+
 /*# sourceMappingURL=style.css.map */

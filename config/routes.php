@@ -96,6 +96,9 @@ $routes->prefix('my', function (RouteBuilder $builder) {
     $builder->connect('/projects/withdraw/{id}', ['controller' => 'Projects', 'action' => 'withdraw'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
+    $builder->connect('/projects/loan-agreement/{id}', ['controller' => 'Projects', 'action' => 'loanAgreement'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);
 });
 
 // Admin routes

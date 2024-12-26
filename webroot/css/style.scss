@@ -997,3 +997,13 @@ section.funding-cycles {
 .verification__already-verified {
     margin-top: 1.125rem; // To match fieldset margin-top
 }
+
+section.loan-agreement {
+    border-bottom: 1px solid #aaa;
+    margin-bottom: 2em;
+    padding-bottom: 2em;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}

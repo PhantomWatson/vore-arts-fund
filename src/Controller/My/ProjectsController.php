@@ -209,4 +209,95 @@ class ProjectsController extends BaseProjectsController
 
         return null;
     }
+
+    public function loanAgreement()
+    {
+        $projectId = $this->getRequest()->getParam('id');
+        $project = $this->Projects->get($projectId, ['contain' => 'Users']);
+
+        $this->title('Loan Agreement');
+        $this->addBreadcrumb($project->title, []);
+
+        if ($project->loan_agreement_date) {
+            // Show signed agreement, using the version signed
+        } else {
+            $this->newLoanAgreement($project);
+        }
+    }
+
+    /**
+     * @param Project $project
+     * @return void
+     */
+    public function newLoanAgreement($project)
+    {
+        $setupComplete = false;
+        $version = $this->getLatestAgreementVersion();
+
+        // Confirm loan recipient info
+        if ($this->getRequest()->getData('setup')) {
+            $setupComplete = $this->newLoanAgreementSetup($project);
+
+        // Agree to terms and enter TIN
+        } elseif ($this->getRequest()->getData('agreement')) {
+            $data = [
+                'tin' => $this->request->getData('tin'),
+                'loan_agreement_date' => new \DateTime(),
+                'loan_due_date' => new \DateTime(\App\Model\Entity\Project::DUE_DATE),
+                'loan_agreement_version' => $version
+            ];
+            $this->Projects->patchEntity($project, $data);
+            if ($this->Projects->save($project)) {
+                $setupComplete = true;
+            }
+        }
+
+
+        $this->set(compact('project'));
+
+        $this->viewBuilder()->setTemplate(
+            $setupComplete
+                ? 'loan_agreements' . DS . 'loan_agreement_' . $version
+                : 'loan_agreement_setup'
+        );
+    }
+
+    /**
+     * @param Project $project
+     * @return bool
+     */
+    public function newLoanAgreementSetup($project)
+    {
+        $this->Projects->patchEntity(
+            $project,
+            $this->request->getData(),
+            ['fields' => ['check_name', 'address', 'zipcode']]
+        );
+        if ($this->Projects->save($project)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns the latest loan agreement version number
+     *
+     * Assumes that the loan agreement template directory only contains files named loan_agreement_1.php,
+     * loan_agreement_2.php, etc.
+     *
+     * @return int
+     */
+    private function getLatestAgreementVersion()
+    {
+        $templateDir = ROOT . DS . 'templates' . DS . 'My' . DS . 'Projects' . DS . 'loan_agreements';
+        $files = array_diff(scandir($templateDir), ['.', '..']);
+        $versionNumbers = array_map(
+            function ($file) {
+                return (int)str_replace(['loan_agreement_', '.php'], '', $file);
+            },
+            $files
+        );
+        return max($versionNumbers);
+    }
 }
