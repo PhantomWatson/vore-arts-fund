@@ -215,6 +215,7 @@ class ProjectsController extends BaseProjectsController
         $projectId = $this->getRequest()->getParam('id');
         $project = $this->Projects->get($projectId, ['contain' => 'Users']);
 
+
         $this->title('Loan Agreement');
         $this->addBreadcrumb($project->title, []);
 
@@ -251,7 +252,6 @@ class ProjectsController extends BaseProjectsController
                 $setupComplete = true;
             }
         }
-
 
         $this->set(compact('project'));
 

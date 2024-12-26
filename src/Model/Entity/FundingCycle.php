@@ -140,7 +140,8 @@ class FundingCycle extends Entity
                 case Project::STATUS_ACCEPTED:
                 case Project::STATUS_REJECTED:
                 case Project::STATUS_REVISION_REQUESTED:
-                case Project::STATUS_AWARDED:
+                case Project::STATUS_AWARDED_NOT_YET_DISBURSED:
+                case Project::STATUS_AWARDED_AND_DISBURSED:
                 case Project::STATUS_NOT_AWARDED:
                     $retval['submitted']++;
                     break;
@@ -148,13 +149,17 @@ class FundingCycle extends Entity
             switch ($project->status_id) {
                 // Accepted
                 case Project::STATUS_ACCEPTED:
-                case Project::STATUS_AWARDED:
+                case Project::STATUS_AWARDED_NOT_YET_DISBURSED:
+                case Project::STATUS_AWARDED_AND_DISBURSED:
                 case Project::STATUS_NOT_AWARDED:
                     $retval['accepted']++;
                     break;
             }
-            if ($project->status_id === Project::STATUS_AWARDED) {
-                $retval['awarded']++;
+            switch ($project->status_id) {
+                case Project::STATUS_AWARDED_NOT_YET_DISBURSED:
+                case Project::STATUS_AWARDED_AND_DISBURSED:
+                    $retval['awarded']++;
+                    break;
             }
         }
 

@@ -356,7 +356,14 @@ class ProjectsController extends AppController
                     'queryBuilder' => function (Query $q) {
                         return $q
                             ->where(function (QueryExpression $exp) {
-                                return $exp->in('status_id', [Project::STATUS_ACCEPTED, Project::STATUS_AWARDED]);
+                                return $exp->in(
+                                    'status_id',
+                                    [
+                                        Project::STATUS_ACCEPTED,
+                                        Project::STATUS_AWARDED_NOT_YET_DISBURSED,
+                                        Project::STATUS_AWARDED_AND_DISBURSED,
+                                    ]
+                                );
                             })
                             ->orderAsc('title');
                     },

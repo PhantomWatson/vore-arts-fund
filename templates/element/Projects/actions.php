@@ -14,7 +14,7 @@ $withdrawWhen = [
     Project::STATUS_ACCEPTED,
 ];
 $reportWhen = [
-    Project::STATUS_AWARDED,
+    Project::STATUS_AWARDED_AND_DISBURSED,
 ];
 ?>
 <?php if (in_array($project->status_id, $updateWhen)): ?>

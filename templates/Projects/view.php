@@ -39,7 +39,7 @@ $isOwner = $this->getRequest()->getParam('prefix') == 'My';
 
 <?= $this->Image->initViewer() ?>
 
-<?php if ($project->status_id == \App\Model\Entity\Project::STATUS_AWARDED): ?>
+<?php if ($project->isDisbursed()): ?>
     <section class="card">
         <div class="card-body">
             <h1 class="card-title">

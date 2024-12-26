@@ -54,7 +54,8 @@ class Project extends Entity
     const STATUS_ACCEPTED = 2;
     const STATUS_REJECTED = 3;
     const STATUS_REVISION_REQUESTED = 4;
-    const STATUS_AWARDED = 6;
+    const STATUS_AWARDED_NOT_YET_DISBURSED = 5;
+    const STATUS_AWARDED_AND_DISBURSED = 6;
     const STATUS_NOT_AWARDED = 7;
     const STATUS_WITHDRAWN = 8;
 
@@ -75,7 +76,8 @@ class Project extends Entity
 
     const VIEWABLE_STATUSES = [
         Project::STATUS_ACCEPTED,
-        Project::STATUS_AWARDED,
+        Project::STATUS_AWARDED_NOT_YET_DISBURSED,
+        Project::STATUS_AWARDED_AND_DISBURSED,
         Project::STATUS_NOT_AWARDED,
     ];
 
@@ -118,7 +120,8 @@ class Project extends Entity
             self::STATUS_ACCEPTED           => 'Accepted',
             self::STATUS_REJECTED           => 'Not Accepted',
             self::STATUS_REVISION_REQUESTED => 'Revision Requested',
-            self::STATUS_AWARDED            => 'Awarded',
+            self::STATUS_AWARDED_NOT_YET_DISBURSED => 'Awarded (Disbursement Pending)',
+            self::STATUS_AWARDED_AND_DISBURSED     => 'Awarded',
             self::STATUS_NOT_AWARDED        => 'Not Awarded',
             self::STATUS_WITHDRAWN          => 'Withdrawn',
         ];
@@ -132,35 +135,39 @@ class Project extends Entity
         return [
             self::STATUS_DRAFT => [
                 'icon' => self::ICON_SAVE,
-                'label' => 'Save this application as a draft'
+                'label' => 'Save this application as a draft',
             ],
             self::STATUS_UNDER_REVIEW => [
                 'icon' => self::ICON_SUBMIT,
-                'label' => 'Submit this application for review'
+                'label' => 'Submit this application for review',
             ],
             self::STATUS_ACCEPTED => [
                 'icon' => self::ICON_ACCEPTED,
-                'label' => 'Accept this application'
+                'label' => 'Accept this application',
             ],
             self::STATUS_REJECTED => [
                 'icon' => self::ICON_REJECTED,
-                'label' => 'Reject this application'
+                'label' => 'Reject this application',
             ],
             self::STATUS_REVISION_REQUESTED => [
                 'icon' => self::ICON_REVISION_REQUESTED,
-                'label' => 'Request revision'
+                'label' => 'Request revision',
             ],
-            self::STATUS_AWARDED => [
+            self::STATUS_AWARDED_NOT_YET_DISBURSED => [
                 'icon' => self::ICON_FUND,
-                'label' => 'Award funding to this project'
+                'label' => 'Award funding to this project',
+            ],
+            self::STATUS_AWARDED_AND_DISBURSED => [
+                'icon' => self::ICON_FUND,
+                'label' => 'Mark project as having had funding disbursed',
             ],
             self::STATUS_NOT_AWARDED => [
                 'icon' => self::ICON_REJECTED,
-                'label' => 'Decline to award funding to this project'
+                'label' => 'Decline to award funding to this project',
             ],
             self::STATUS_WITHDRAWN => [
                 'icon' => self::ICON_WITHDRAW,
-                'label' => 'Withdraw this application'
+                'label' => 'Withdraw this application',
             ],
         ];
     }
@@ -189,12 +196,17 @@ class Project extends Entity
                 ];
             case self::STATUS_ACCEPTED:
                 return [
-                    self::STATUS_AWARDED,
+                    self::STATUS_AWARDED_NOT_YET_DISBURSED,
                     self::STATUS_NOT_AWARDED,
                     self::STATUS_WITHDRAWN,
                 ];
+            case self::STATUS_AWARDED_NOT_YET_DISBURSED:
+                return [
+                    self::STATUS_AWARDED_AND_DISBURSED,
+                    self::STATUS_WITHDRAWN,
+                ];
             case self::STATUS_REJECTED:
-            case self::STATUS_AWARDED:
+            case self::STATUS_AWARDED_AND_DISBURSED:
             case self::STATUS_NOT_AWARDED:
             case self::STATUS_WITHDRAWN:
                 return [];
@@ -340,5 +352,26 @@ class Project extends Entity
             $files
         );
         return $versionNumbers ? max($versionNumbers) : 0;
+    }
+
+    /**
+     * Returns TRUE if this project has been given funding, or if we intend to fund it
+     *
+     * @return bool
+     */
+    public function isAwarded(): bool
+    {
+        return in_array(
+            $this->status_id,
+            [
+                self::STATUS_AWARDED_NOT_YET_DISBURSED,
+                self::STATUS_AWARDED_AND_DISBURSED,
+            ]
+        );
+    }
+
+    public function isDisbursed(): bool
+    {
+        return $this->status_id == self::STATUS_AWARDED_AND_DISBURSED;
     }
 }

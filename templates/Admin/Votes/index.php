@@ -77,7 +77,7 @@ $fundingAvailable = $fundingCycle->funding_available;
                         if ($isPartial) {
                             $toAward .= ' (partial payout)';
                         }
-                        if ($project->status_id == Project::STATUS_AWARDED) {
+                        if ($project->isDisbursed()) {
                             $toAward = '<span class="voting-results__award voting-results__award--awarded">'
                                 . '<i class="fa-solid fa-circle-check"></i> '
                                 . $toAward . ' awarded</span>';

@@ -71,7 +71,7 @@ $projectsWereDisplayed = false;
                         </h2>
                         <p class="projects-index__project-details">
                             <?= $project->status_summary ?>
-                            <?php if ($project->status_id == Project::STATUS_AWARDED): ?>
+                            <?php if ($project->isAwarded()): ?>
                                 <br />
                                 Awarded
                                 <?= $project->amount_awarded
