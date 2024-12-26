@@ -232,7 +232,7 @@ class ProjectsController extends BaseProjectsController
     public function newLoanAgreement($project)
     {
         $setupComplete = false;
-        $version = $this->getLatestAgreementVersion();
+        $version = Project::getLatestTermsVersion();
 
         // Confirm loan recipient info
         if ($this->getRequest()->getData('setup')) {
@@ -257,7 +257,7 @@ class ProjectsController extends BaseProjectsController
 
         $this->viewBuilder()->setTemplate(
             $setupComplete
-                ? 'loan_agreements' . DS . 'loan_agreement_' . $version
+                ? 'loan_agreement'
                 : 'loan_agreement_setup'
         );
     }
@@ -278,26 +278,5 @@ class ProjectsController extends BaseProjectsController
         }
 
         return false;
-    }
-
-    /**
-     * Returns the latest loan agreement version number
-     *
-     * Assumes that the loan agreement template directory only contains files named loan_agreement_1.php,
-     * loan_agreement_2.php, etc.
-     *
-     * @return int
-     */
-    private function getLatestAgreementVersion()
-    {
-        $templateDir = ROOT . DS . 'templates' . DS . 'My' . DS . 'Projects' . DS . 'loan_agreements';
-        $files = array_diff(scandir($templateDir), ['.', '..']);
-        $versionNumbers = array_map(
-            function ($file) {
-                return (int)str_replace(['loan_agreement_', '.php'], '', $file);
-            },
-            $files
-        );
-        return max($versionNumbers);
     }
 }

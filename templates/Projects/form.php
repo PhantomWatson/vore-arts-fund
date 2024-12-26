@@ -119,20 +119,50 @@ function getAgreementCheckedValue($key, $data, $project) {
 
     <fieldset>
         <legend>
-            Loan Terms
+            Application Terms
         </legend>
-
-        <?= $this->element('loan_terms') ?>
+        <ol>
+            <li>
+                Reports about the status of this project must be submitted to the Vore Arts Fund at least annually and
+                upon its completion. A form is provided on this website for submitting these reports, and loan
+                recipients will be emailed reminders when reports are due.
+            </li>
+            <li>
+                By applying for a loan, you grant the Vore Arts Fund the right to publicly release the provided
+                information and media (excluding mailing address) to the public, which it may do for purposes such
+                as transparency and promotion.
+            </li>
+            <li>
+                The Vore Arts Fund does not claim project ownership nor a business relationship with the applicant.
+                Applicants and loan recipients retain all ownership of and copyright to their intellectual property.
+            </li>
+            <li>
+                Neither the acceptance of an application nor the funding of a project by the Vore Arts Fund constitutes support or endorsement of the views,
+                opinions, or claims of applicants and loan recipients.
+            </li>
+        </ol>
         <div class="form-check required">
             <input type="hidden" value="0" name="loan-terms-agree" />
             <input class="form-check-input" type="checkbox" value="1" id="loan-terms-agree-checkbox" required="required"
                    name="loan-terms-agree"
-                   <?= getAgreementCheckedValue('loan-terms-agree', $data, $project) ?>
+                <?= getAgreementCheckedValue('loan-terms-agree', $data, $project) ?>
             >
             <label class="form-check-label" for="loan-terms-agree-checkbox">
                 I agree to these terms
             </label>
         </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>
+            Loan Terms
+        </legend>
+
+        <p>
+            You will be asked to agree to these terms and provide your tax ID number before receiving a loan.
+        </p>
+
+        <?= $this->element('loan_terms') ?>
     </fieldset>
 
     <fieldset>

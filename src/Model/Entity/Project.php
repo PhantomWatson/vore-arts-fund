@@ -318,4 +318,27 @@ class Project extends Entity
     {
         return '$' . number_format($this->amount_requested);
     }
+
+    /**
+     * Returns the latest loan terms version number
+     *
+     * Assumes that src/LoanTerms contains files named loan_terms_1.php, loan_terms_2.php, etc.
+     *
+     * @return int
+     */
+    public static function getLatestTermsVersion()
+    {
+        $templateDir = APP . 'LoanTerms';
+        $files = array_diff(scandir($templateDir), ['.', '..']);
+        $files = array_filter($files, function ($file) {
+            return str_contains($file, 'loan_terms_');
+        });
+        $versionNumbers = array_map(
+            function ($file) {
+                return (int)str_replace(['loan_terms_', '.php'], '', $file);
+            },
+            $files
+        );
+        return $versionNumbers ? max($versionNumbers) : 0;
+    }
 }
