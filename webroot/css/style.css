@@ -12881,7 +12881,15 @@ section.funding-cycles th {
 #privacy h1,
 #privacy .h1 {
   margin-bottom: 1em;
-  margin-top: 130px;
+}
+#terms h1, #terms .h1,
+#terms h2,
+#terms .h2,
+#privacy h1,
+#privacy .h1,
+#privacy h2,
+#privacy .h2 {
+  margin-top: -130px;
   padding-top: 130px;
 }
 
@@ -13007,13 +13015,11 @@ section.funding-cycles th {
   margin-top: 1.125rem;
 }
 
-section.loan-agreement {
-  border-bottom: 1px solid #aaa;
-  margin-bottom: 2em;
-  padding-bottom: 2em;
+.loan-agreement > li {
+  font-weight: bold;
 }
-section.loan-agreement:last-child {
-  border-bottom: none;
+.loan-agreement > li > ol {
+  font-weight: normal;
 }
 
 /*# sourceMappingURL=style.css.map */

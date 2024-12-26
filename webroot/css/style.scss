@@ -807,7 +807,10 @@ section.funding-cycles {
     h1 {
         @extend .border-bottom;
         margin-bottom: 1em;
-        margin-top: $padding-top-to-avoid-navbar-overlapping;
+    }
+    h1,
+    h2 {
+        margin-top: -$padding-top-to-avoid-navbar-overlapping;
         padding-top: $padding-top-to-avoid-navbar-overlapping;
     }
 }
@@ -998,12 +1001,12 @@ section.funding-cycles {
     margin-top: 1.125rem; // To match fieldset margin-top
 }
 
-section.loan-agreement {
-    border-bottom: 1px solid #aaa;
-    margin-bottom: 2em;
-    padding-bottom: 2em;
+.loan-agreement {
+    > li {
+        font-weight: bold;
 
-    &:last-child {
-        border-bottom: none;
+        > ol {
+            font-weight: normal;
+        }
     }
 }
