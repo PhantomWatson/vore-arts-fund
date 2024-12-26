@@ -134,6 +134,22 @@ class ProjectsTable extends Table
             ->integer('status_id')
             ->inList('status_id', array_keys(Project::getStatuses()), 'Invalid status');
 
+        $validator->add('status_id', 'notAwardingZeroDollars', [
+            'rule' => function ($value, $context) {
+                if (!isset($context['data']['amount_awarded'])) {
+                    return 'Must include loan amount when declaring a project awarded/disbursed';
+                }
+                switch ($value) {
+                    case Project::STATUS_AWARDED_NOT_YET_DISBURSED:
+                    case Project::STATUS_AWARDED_AND_DISBURSED:
+                        return $context['data']['amount_awarded'] > 0;
+                    default:
+                        return true;
+                }
+            },
+            'message' => 'You must set the award amount before marking this project as being awarded'
+        ]);
+
         $validator
             ->scalar('check_name')
             ->maxLength('check_name', 50)
