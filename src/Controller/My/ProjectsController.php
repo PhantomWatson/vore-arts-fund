@@ -215,7 +215,7 @@ class ProjectsController extends BaseProjectsController
         $projectId = $this->getRequest()->getParam('id');
         $project = $this->Projects->get($projectId, ['contain' => 'Users']);
 
-        if (!$project->isAwarded()) {
+        if (!$project->isAwarded() || !($project->amount_awarded > 0)) {
             $this->Flash->error('This project is not marked as having been awarded a loan.');
             $this->setResponse($this->getResponse()->withStatus(404));
             return $this->redirect([
