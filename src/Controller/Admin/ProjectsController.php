@@ -98,12 +98,12 @@ class ProjectsController extends AdminController
 
             // Updating status
             if ($data['status_id'] ?? false) {
-                $project->status_id = (int)$data['status_id'];
+                $project = $this->Projects->patchEntity($project, ['status_id' => (int)$data['status_id']]);
                 if ($this->Projects->save($project)) {
                     $this->Flash->success('Status updated');
                     $this->dispatchStatusChangeEvent($project, $noteBody);
                 } else {
-                    $this->Flash->error('Error updating status');
+                    $this->Flash->error('Error updating status: ' . $this->getEntityErrorDetails($project));
                     $successfullySaved = false;
                 }
             }
