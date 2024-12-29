@@ -24,7 +24,7 @@ $amount = $project->amount_awarded_formatted;
     <?= $this->Form->create($project) ?>
     <section class="loan-agreement">
         <h2>
-            Signature
+            Tax ID number
         </h2>
 
         <p>
