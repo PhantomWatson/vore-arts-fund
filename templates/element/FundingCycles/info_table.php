@@ -25,6 +25,14 @@
     </tr>
     <tr>
         <th>
+            Loans awarded
+        </th>
+        <td>
+            <?= $fundingCycle->name ?>
+        </td>
+    </tr>
+    <tr>
+        <th>
             Budget
         </th>
         <td>

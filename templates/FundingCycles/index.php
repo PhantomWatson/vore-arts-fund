@@ -6,10 +6,6 @@
 ?>
 
 <?php if ($fundingCycles->count()): ?>
-    <p>
-        Soon after each funding cycle's voting deadline, funding is disbursed to the applicants chosen by the voting
-        public.
-    </p>
     <?php foreach ($fundingCycles as $fundingCycle): ?>
         <section class="funding-cycles">
             <h2>
