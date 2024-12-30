@@ -5,7 +5,11 @@
 ?>
 
 <p class="alert alert-info">
-    Sorry, but applications are not being accepted at the moment. Please check back later, or visit the
+    Sorry, but applications are not being accepted at the moment.
+    <?= $this->Html->link(
+        'Sign up for our mailing list',
+        ['controller' => 'MailingList', 'action' => 'signup'],
+    ) ?> or visit the
     <?= $this->Html->link(
         'Funding Cycles',
         [
