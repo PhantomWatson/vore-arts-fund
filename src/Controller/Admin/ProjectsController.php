@@ -179,6 +179,48 @@ class ProjectsController extends AdminController
         return null;
     }
 
+    public function markAwarded($projectId)
+    {
+        // Activate event listener
+        $mailListener = new MailListener();
+        $this->getEventManager()->on($mailListener);
+
+        $projectId = $this->request->getParam('id');
+        $project = $this->Projects->get($projectId);
+        if (!$project) {
+            $this->Flash->error('Project not found');
+            return $this->redirect(['action' => 'review', 'id' => $projectId]);
+        }
+        if ($project->status_id != Project::STATUS_ACCEPTED) {
+            $statuses = Project::getStatuses();
+            $this->Flash->error(
+                'Can\'t mark project as awarded unless if its status is ' . $statuses[Project::STATUS_ACCEPTED]
+                . '. Its status is currently ' . $statuses[$project->status_id] . '.'
+            );
+            return $this->redirect(['action' => 'review', 'id' => $projectId]);
+        }
+
+        if ($this->getRequest()->is('post')) {
+            $data = $this->getRequest()->getData();
+            if (!($data['amount_awarded'] ?? false)) {
+                $this->Flash->error('Amount awarded is required.');
+                return null;
+            }
+
+            $project = $this->Projects->patchEntity($project, [
+                'status_id' => Project::STATUS_AWARDED_NOT_YET_DISBURSED,
+                'amount_awarded' => $data['amount_awarded'],
+            ]);
+            if ($this->Projects->save($project)) {
+                $this->Flash->success('Status updated');
+                $this->dispatchStatusChangeEvent($project);
+                return $this->redirect(['action' => 'review', 'id' => $projectId]);
+            }
+            $this->Flash->error('Error updating status: ' . $this->getEntityErrorDetails($project));
+        }
+        return null;
+    }
+
     /**
      * Returns the note type corresponding to a status that a project is being changed to
      *
@@ -199,7 +241,7 @@ class ProjectsController extends AdminController
      * @param string|null $noteBody
      * @return void
      */
-    private function dispatchStatusChangeEvent(Project $project, ?string $noteBody): void
+    private function dispatchStatusChangeEvent(Project $project, ?string $noteBody = null): void
     {
         switch ($project->status_id) {
             case Project::STATUS_ACCEPTED:
@@ -211,7 +253,10 @@ class ProjectsController extends AdminController
             case Project::STATUS_REJECTED:
                 $event = new Event('Project.rejected', $this, compact('project', 'noteBody'));
                 break;
-            default;
+            case Project::STATUS_AWARDED_NOT_YET_DISBURSED:
+                $event = new Event('Project.funded', $this, compact('project'));
+                break;
+            default:
                 return;
         }
         $this->getEventManager()->dispatch($event);
