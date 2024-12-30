@@ -165,11 +165,6 @@ class PagesController extends AppController
                 '<strong>Welcome beta testers!</strong> staging.voreartsfund.org is exclusively used for <em>fake</em> applications and testing new website features. Check out <a href="https://docs.google.com/document/d/1BtZUQg6w3LaaumHRdgMXJC8EVIEu3GhzELijZdlebaU/edit?usp=sharing">these instructions</a> for helping out this project!',
                 ['escape' => false]
             );
-        } else {
-            $this->Flash->set(
-                '<strong>Attention beta testers!</strong> Please visit <a href="https://staging.voreartsfund.org">the staging site</a> to help us test out our system by submitting and voting on fake applications and giving us your valuable feedback.',
-                ['escape' => false]
-            );
         }
     }
 
