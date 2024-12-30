@@ -159,7 +159,7 @@ function getAgreementCheckedValue($key, $data, $project) {
         </legend>
 
         <p>
-            You will be asked to agree to these terms and provide your tax ID number before receiving a loan.
+            You will be asked to agree to these terms and provide your tax ID number before receiving a loan (but not right now).
         </p>
 
         <?= $this->element('loan_terms') ?>
