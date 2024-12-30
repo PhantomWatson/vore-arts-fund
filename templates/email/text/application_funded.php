@@ -3,13 +3,12 @@
  * @var \App\Model\Entity\Project $project
  * @var \App\Model\Entity\FundingCycle $fundingCycle
  * @var \App\View\AppView $this
- * @var int $amount
  * @var string $myProjectsUrl
  * @var string $supportEmail
  * @var string $userName
  */
 ?>
-Congratulations, <?= $userName ?>! We've tallied the votes for the <?= $fundingCycle->name ?> funding cycle, and we're thrilled to tell you that the community ranked your application for funding for <?= $project->title ?> high enough that it was selected to receive a $<?= number_format($amount) ?> loan!
+Congratulations, <?= $userName ?>! We've tallied the votes for the <?= $fundingCycle->name ?> funding cycle, and we're thrilled to tell you that the community ranked your application for funding for <?= $project->title ?> high enough that it was selected to receive a <?= $project->amount_awarded_formatted ?> loan!
 
 This means that we'll be mailing your loan check out shortly, made out to you and sent to the address you gave us. It might take a little while for it to reach you, but if you don't receive it by two weeks from now, please email <?= $supportEmail ?>.
 

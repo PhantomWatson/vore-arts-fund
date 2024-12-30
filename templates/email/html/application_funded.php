@@ -13,7 +13,7 @@
     Congratulations, <?= $userName ?>! We've tallied the votes for the <?= $fundingCycle->name ?> funding cycle, and
     we're thrilled to tell you that the community ranked your application for funding for
     <strong><?= $project->title ?></strong> high enough that it was selected to receive a
-    $<?= number_format($amount) ?> loan!
+    <?= $project->amount_awarded_formatted ?> loan!
 </p>
 
 <p>
