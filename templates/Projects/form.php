@@ -185,7 +185,7 @@ function getAgreementCheckedValue($key, $data, $project) {
 
         <div class="form-group select required">
             <label for="description">
-                Description of project
+                Description of your project (please provide a detailed proposal, including goals, audience, and timeline)
             </label>
             <?= $this->Form->textarea(
                 'description',
@@ -195,9 +195,6 @@ function getAgreementCheckedValue($key, $data, $project) {
                     'type' => 'textarea',
                 ]
             ) ?>
-            <p class="footnote">
-                What are you trying to accomplish?
-            </p>
         </div>
 
         <?php foreach ($questions as $i => $question): ?>
