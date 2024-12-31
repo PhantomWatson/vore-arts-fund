@@ -183,23 +183,21 @@ function getAgreementCheckedValue($key, $data, $project) {
             ['empty' => true, 'required' => true]
         ) ?>
 
-        <div class="input-with-footnote">
-            <div class="form-group select required">
-                <label for="description">
-                    Description of project
-                </label>
-                <?= $this->Form->textarea(
-                    'description',
-                    [
-                        'id' => 'description',
-                        'required' => true,
-                        'type' => 'textarea',
-                    ]
-                ) ?>
-                <p class="footnote">
-                    What are you trying to accomplish?
-                </p>
-            </div>
+        <div class="form-group select required">
+            <label for="description">
+                Description of project
+            </label>
+            <?= $this->Form->textarea(
+                'description',
+                [
+                    'id' => 'description',
+                    'required' => true,
+                    'type' => 'textarea',
+                ]
+            ) ?>
+            <p class="footnote">
+                What are you trying to accomplish?
+            </p>
         </div>
 
         <?php foreach ($questions as $i => $question): ?>

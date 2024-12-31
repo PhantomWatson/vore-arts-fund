@@ -12097,14 +12097,6 @@ main {
   margin-bottom: 2em;
 }
 
-.input-with-footnote .form-group,
-.input-with-footnote .input-group {
-  margin-bottom: 0;
-}
-.input-with-footnote .footnote {
-  margin-bottom: 2rem;
-}
-
 form .footnote {
   margin-bottom: 0;
 }
@@ -12647,8 +12639,8 @@ div.message.hidden {
 .apply .accept-partial label[for=accept-partial-payout-0]:not(:first-child):after, .apply .accept-partial label[for=accept-partial-payout-1]:not(:first-child):after {
   content: "";
 }
-.apply fieldset .form-group:last-child,
-.apply fieldset .footnote {
+.apply fieldset > .form-group:last-child,
+.apply fieldset > .footnote {
   margin-bottom: 0;
 }
 .apply input[name=amount_requested] {

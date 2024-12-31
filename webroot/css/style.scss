@@ -518,8 +518,8 @@ div.message {
     }
 
     fieldset {
-        .form-group:last-child,
-        .footnote {
+        > .form-group:last-child,
+        > .footnote {
             margin-bottom: 0;
         }
     }
