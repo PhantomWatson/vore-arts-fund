@@ -4,6 +4,9 @@
         arts in Muncie, Indiana
     </li>
     <li>
+        must demonstrate a clear and achievable plan for implementation
+    </li>
+    <li>
         can be reasonably expected to generate enough money to fully repay the loan awarded to it within a year
         of receiving that funding
     </li>
