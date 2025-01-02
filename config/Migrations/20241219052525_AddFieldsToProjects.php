@@ -76,8 +76,9 @@ class AddFieldsToProjects extends AbstractMigration
                 'tin',
                 'text',
                 [
-                    'null' => false,
+                    'null' => true,
                     'after' => 'loan_agreement_version',
+                    'default' => null,
                 ]
             );
         $table->update();
