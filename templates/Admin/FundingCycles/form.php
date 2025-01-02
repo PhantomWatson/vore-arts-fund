@@ -14,54 +14,6 @@ $fieldType = 'date';
             between the application deadline and the beginning of voting.
         </p>
 
-        <table class="table table-bordered" id="cycles-chart">
-            <thead>
-            <tr>
-                <th>Cycle</th>
-                <?php foreach (explode(' ', 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec') as $month): ?>
-                    <th><?= $month ?></th>
-                <?php endforeach; ?>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="spring">
-                <th>Spring</th>
-                <td>App</td>
-                <td>Rev</td>
-                <td>Vote</td>
-                <td>Disb</td>
-                <td colspan="6" class="blank"></td>
-                <td colspan="2">App</td>
-            </tr>
-            <tr class="summer">
-                <th>Summer</th>
-                <td class="blank"></td>
-                <td colspan="3">App</td>
-                <td>Rev</td>
-                <td>Vote</td>
-                <td>Disb</td>
-                <td colspan="5" class="blank"></td>
-            </tr>
-            <tr class="fall">
-                <th>Fall</th>
-                <td colspan="4" class="blank"></td>
-                <td colspan="3">App</td>
-                <td>Rev</td>
-                <td>Vote</td>
-                <td>Disb</td>
-                <td colspan="2" class="blank"></td>
-            </tr>
-            <tr class="winter">
-                <th>Winter</th>
-                <td>Disb</td>
-                <td colspan="6" class="blank"></td>
-                <td colspan="3">App</td>
-                <td>Rev</td>
-                <td>Vote</td>
-            </tr>
-            </tbody>
-        </table>
-
         <p>
             <label for="wizard-checkbox">
                 <input type="checkbox" id="wizard-checkbox" /> Use wizard
