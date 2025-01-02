@@ -42,11 +42,16 @@ class Answer extends Entity
         'question' => true,
     ];
 
+    /**
+     * Returns the answer with stripped tags + added line/paragraph breaks + linked URLs and email addresses
+     *
+     * @return string
+     */
     protected function _getFormattedAnswer(): string
     {
-        $answer = $this->answer;
-
         $textHelper = new TextHelper(new View());
+        $answer = $this->answer;
+        $answer = strip_tags($answer);
         $answer = $textHelper->autoParagraph($answer);
         return $textHelper->autoLink($answer, ['escape' => false]);
     }
