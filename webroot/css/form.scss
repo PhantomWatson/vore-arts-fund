@@ -54,3 +54,12 @@ form {
 .btn-primary {
     color: #fff !important;
 }
+
+.input-with-footnote {
+    > .form-group {
+        margin-bottom: 0;
+    }
+    > .footnote {
+        margin-bottom: 2em;
+    }
+}

@@ -12111,6 +12111,13 @@ form .footnote {
   color: #fff !important;
 }
 
+.input-with-footnote > .form-group {
+  margin-bottom: 0;
+}
+.input-with-footnote > .footnote {
+  margin-bottom: 2em;
+}
+
 /* Bootstrap overrides */
 /* Weirdly necessary to avoid stuff like "color: ;" and warnings */
 .vote-projects h2, .vote-projects .h2 {
