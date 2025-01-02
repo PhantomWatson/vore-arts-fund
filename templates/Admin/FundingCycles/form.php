@@ -83,22 +83,15 @@ $fieldType = 'date';
                     </select>
                 </div>
                 <div class="col-12">
-                    <select id="wizard-quarter" class="form-control">
+                    <select id="wizard-month" class="form-control">
                         <option value="">
-                            Quarter
+                            Month when application period begins
                         </option>
-                        <option value="1">
-                            Spring
-                        </option>
-                        <option value="2">
-                            Summer
-                        </option>
-                        <option value="3">
-                            Fall
-                        </option>
-                        <option value="4">
-                            Winter
-                        </option>
+                        <?php for ($month = 1; $month <= 12; $month++): ?>
+                            <option value="<?= $month ?>">
+                                <?= date('F', mktime(0, 0, 0, $month, 1)) ?>
+                            </option>
+                        <?php endfor; ?>
                     </select>
                 </div>
                 <div class="col-12">
