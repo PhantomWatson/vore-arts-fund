@@ -110,7 +110,9 @@ $fieldType = 'date';
     <?= $this->Form->control('vote_begin', ['type' => $fieldType, 'value' => $fundingCycle->vote_begin_local]) ?>
     <?= $this->Form->control('vote_end', ['type' => $fieldType, 'value' => $fundingCycle->vote_end_local]) ?>
     <?= $this->Form->control('funding_available', ['label' => 'Funding available (in dollars)']) ?>
-    <?= $this->Form->control('is_finalized', ['label' => 'Is finalized (distribution has concluded)']) ?>
+    <?php if (!$fundingCycle->isNew()): ?>
+        <?= $this->Form->control('is_finalized', ['label' => 'Is finalized (distribution has concluded)']) ?>
+    <?php endif; ?>
 </fieldset>
 <button type="submit" class="btn btn-primary">
     Submit
