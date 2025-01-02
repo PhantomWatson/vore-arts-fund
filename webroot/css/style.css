@@ -12064,6 +12064,8 @@ main {
   padding-top: 130px;
 }
 
+/* Bootstrap overrides */
+/* Weirdly necessary to avoid stuff like "color: ;" and warnings */
 .form .error-message {
   color: rgba(0, 0, 0, 0.54);
   display: block;
@@ -12094,7 +12096,7 @@ main {
 }
 
 .form-group {
-  margin-bottom: 2em;
+  margin-bottom: 2rem;
 }
 
 form .footnote {
@@ -12115,7 +12117,7 @@ form .footnote {
   margin-bottom: 0;
 }
 .input-with-footnote > .footnote {
-  margin-bottom: 2em;
+  margin-bottom: 2rem;
 }
 
 /* Bootstrap overrides */
