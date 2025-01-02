@@ -1,5 +1,9 @@
 @import "variables";
 
+.form-control::placeholder {
+    opacity: 0.75;
+}
+
 .form {
     .error-message {
         color: rgba(0, 0, 0, 0.54);
