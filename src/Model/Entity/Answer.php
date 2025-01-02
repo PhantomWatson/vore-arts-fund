@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\View\Helper\TextHelper;
+use Cake\View\View;
 
 /**
  * Answer Entity
@@ -12,6 +14,7 @@ use Cake\ORM\Entity;
  * @property int $project_id
  * @property int $question_id
  * @property string $answer
+ * @property string $formatted_answer
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -38,4 +41,13 @@ class Answer extends Entity
         'project' => true,
         'question' => true,
     ];
+
+    protected function _getFormattedAnswer(): string
+    {
+        $answer = $this->answer;
+
+        $textHelper = new TextHelper(new View());
+        $answer = $textHelper->autoParagraph($answer);
+        return $textHelper->autoLink($answer, ['escape' => false]);
+    }
 }

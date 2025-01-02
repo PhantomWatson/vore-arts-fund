@@ -41,12 +41,13 @@ use Cake\Utility\Hash;
         <h3>
             <?= $question->question ?>
         </h3>
-        <p class="<?= !$answer || !current($answer)->answer ? 'no-answer' : null ?>">
-            <?php if ($answer): ?>
-                <?= current($answer)->answer ?>
-            <?php else: ?>
+
+        <?php if ($answer): ?>
+            <?= current($answer)->formatted_answer ?>
+        <?php else: ?>
+            <p class="no-answer">
                 No answer
-            <?php endif; ?>
-        </p>
+            </p>
+        <?php endif; ?>
     </section>
 <?php endforeach; ?>
