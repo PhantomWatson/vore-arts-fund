@@ -28,9 +28,13 @@ function setDateTime(input, month, year, dateDescription) {
       date.setUTCDate(1);
       date.setUTCHours(0, 0, 0);
       break;
-    case 'middle':
+    case 'end of first half':
       date.setUTCDate(14);
       date.setUTCHours(23, 59, 59);
+      break;
+    case 'start of second half':
+      date.setUTCDate(15);
+      date.setUTCHours(0, 0, 0);
       break;
     case 'end':
       date.setUTCDate((new Date(year, monthIndex + 1, 0)).getUTCDate());
@@ -52,7 +56,7 @@ form.addEventListener('submit', (event) => {
 
   setDateTime(applicationBegin, applicationBeginMonth, year, 'start');
   setDateTime(applicationEnd, applicationBeginMonth, year, 'end');
-  setDateTime(resubmitDeadline, applicationBeginMonth + 1, year, 'middle');
-  setDateTime(voteBegin, applicationBeginMonth + 2, year, 'start');
-  setDateTime(voteEnd, applicationBeginMonth + 2, year, 'end');
+  setDateTime(resubmitDeadline, applicationBeginMonth + 1, year, 'end of first half');
+  setDateTime(voteBegin, applicationBeginMonth + 1, year, 'start of second half');
+  setDateTime(voteEnd, applicationBeginMonth + 1, year, 'end');
 });
