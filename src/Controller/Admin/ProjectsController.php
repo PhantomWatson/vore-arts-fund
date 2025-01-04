@@ -212,7 +212,7 @@ class ProjectsController extends AdminController
                 return;
         }
         $this->getEventManager()->dispatch($event);
-        $this->messageSent = true;
+        $this->Flash->success('Message sent to applicant');
     }
 
     /**
@@ -231,6 +231,7 @@ class ProjectsController extends AdminController
             ]
         );
         $this->getEventManager()->dispatch($event);
+        $this->Flash->success('Message sent to applicant');
     }
 
     /**
@@ -241,8 +242,6 @@ class ProjectsController extends AdminController
     {
         // Assume save was successful unless if an error is encountered
         $successfullySaved = true;
-
-        $this->messageSent = false;
 
         $data = $this->request->getData();
 
@@ -271,20 +270,21 @@ class ProjectsController extends AdminController
             $note = $notesTable->newEntity($data);
 
             if ($notesTable->save($note)) {
-                if ($note->type == Note::TYPE_MESSAGE) {
-                    $this->dispatchMessageSentEvent($project, $note->body);
-                    $this->messageSent = true;
-                } elseif (!$this->messageSent) {
-                    $this->Flash->success('Note added');
+                switch ($note->type) {
+                    case Note::TYPE_NOTE:
+                        $this->Flash->success('Note added');
+                        break;
+                    case Note::TYPE_MESSAGE:
+                        $this->dispatchMessageSentEvent($project, $note->body);
+                        break;
                 }
             } else {
-                $this->Flash->error('Error adding note. Details: ' . print_r($note->getErrors(), true));
+                $this->Flash->error(
+                    'Error ' (($note->type == Note::TYPE_NOTE) ? 'adding note' : 'sending message')
+                    . 'Details: ' . print_r($note->getErrors(), true)
+                );
                 $successfullySaved = false;
             }
-        }
-
-        if ($this->messageSent) {
-            $this->Flash->success('Message sent to applicant');
         }
 
         // POST/Redirect/GET pattern
