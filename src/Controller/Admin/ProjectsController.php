@@ -83,60 +83,10 @@ class ProjectsController extends AdminController
         $transactionsTable = $this->getTableLocator()->get('Transactions');
         $transactions = $transactionsTable->find('forProject', ['project_id' => $project->id]);
 
-
-        /** @var NotesTable $notesTable */
-        $notesTable = $this->fetchTable('Notes');
         if (!$this->request->is('get')) {
-            // Assume save was successful unless if an error is encountered
-            $successfullySaved = true;
-
-            $this->messageSent = false;
-
-            $data = $this->request->getData();
-
-            $noteBody = $data['body'] ?? null;
-
-            // Updating status
-            if ($data['status_id'] ?? false) {
-                $project = $this->Projects->patchEntity($project, ['status_id' => (int)$data['status_id']]);
-                if ($this->Projects->save($project)) {
-                    $this->Flash->success('Status updated');
-                    $this->dispatchStatusChangeEvent($project, $noteBody);
-                } else {
-                    $this->Flash->error('Error updating status: ' . $this->getEntityErrorDetails($project));
-                    $successfullySaved = false;
-                }
-            }
-
-            // Adding note / sending message
-            if ($noteBody) {
-                $user = $this->getAuthUser();
-                $data['user_id'] = $user?->id;
-                $data['project_id'] = $projectId;
-                $note = $notesTable->newEntity($data);
-                if ($notesTable->save($note)) {
-                    if ($note->type == Note::TYPE_MESSAGE) {
-                        $this->dispatchMessageSentEvent($project, $note->body);
-                        $this->messageSent = true;
-                    } elseif (!$this->messageSent) {
-                        $this->Flash->success('Note added');
-                    }
-                } else {
-                    $this->Flash->error('Error adding note. Details: ' . print_r($note->getErrors(), true));
-                    $successfullySaved = false;
-                }
-            }
-
-            if ($this->messageSent) {
-                $this->Flash->success('Message sent to applicant');
-            }
-
-            // POST/Redirect/GET pattern
-            if ($successfullySaved) {
-                return $this->redirect([
-                    'action' => 'review',
-                    'id' => $projectId,
-                ]);
+            $redirect = $this->processReview($project);
+            if ($redirect) {
+                return $redirect;
             }
         }
 
@@ -146,6 +96,8 @@ class ProjectsController extends AdminController
         // Set view vars
         $questionsTable = $this->fetchTable('Questions');
         $questions = $questionsTable->find('forProject')->toArray();
+        /** @var NotesTable $notesTable */
+        $notesTable = $this->fetchTable('Notes');
         $notes = $notesTable
             ->find()
             ->where(['project_id' => $projectId])
@@ -279,5 +231,70 @@ class ProjectsController extends AdminController
             ]
         );
         $this->getEventManager()->dispatch($event);
+    }
+
+    /**
+     * @param Project $project
+     * @return Response|null
+     */
+    private function processReview(Project $project)
+    {
+        // Assume save was successful unless if an error is encountered
+        $successfullySaved = true;
+
+        $this->messageSent = false;
+
+        $data = $this->request->getData();
+
+        $noteBody = $data['body'] ?? null;
+
+        // Updating status
+        if ($data['status_id'] ?? false) {
+            $project = $this->Projects->patchEntity($project, ['status_id' => (int)$data['status_id']]);
+            if ($this->Projects->save($project)) {
+                $this->Flash->success('Status updated');
+                $this->dispatchStatusChangeEvent($project, $noteBody);
+            } else {
+                $this->Flash->error('Error updating status: ' . $this->getEntityErrorDetails($project));
+                $successfullySaved = false;
+            }
+        }
+
+        // Adding note / sending message
+        if ($noteBody) {
+            $user = $this->getAuthUser();
+            $data['user_id'] = $user?->id;
+            $data['project_id'] = $project->id;
+
+            /** @var NotesTable $notesTable */
+            $notesTable = $this->fetchTable('Notes');
+            $note = $notesTable->newEntity($data);
+
+            if ($notesTable->save($note)) {
+                if ($note->type == Note::TYPE_MESSAGE) {
+                    $this->dispatchMessageSentEvent($project, $note->body);
+                    $this->messageSent = true;
+                } elseif (!$this->messageSent) {
+                    $this->Flash->success('Note added');
+                }
+            } else {
+                $this->Flash->error('Error adding note. Details: ' . print_r($note->getErrors(), true));
+                $successfullySaved = false;
+            }
+        }
+
+        if ($this->messageSent) {
+            $this->Flash->success('Message sent to applicant');
+        }
+
+        // POST/Redirect/GET pattern
+        if ($successfullySaved) {
+            return $this->redirect([
+                'action' => 'review',
+                'id' => $project->id,
+            ]);
+        }
+
+        return null;
     }
 }
