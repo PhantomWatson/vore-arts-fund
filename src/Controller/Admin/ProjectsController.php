@@ -228,8 +228,8 @@ class ProjectsController extends AdminController
     private function processReview(Project $project): ?Response
     {
         $data = $this->request->getData();
-        $messageBody = $data['message'] ?? null;
-        $statusId = (int)($data['status_id'] ?? null);
+        $messageBody = $this->request->getData('message');
+        $statusId = (int)$this->request->getData('status_id');
 
         // Validate
         if (!$statusId) {
@@ -249,9 +249,19 @@ class ProjectsController extends AdminController
                 return null;
             }
         }
+        if ($statusId == Project::STATUS_ACCEPTED && !$this->request->getData('amount_awarded')) {
+            $this->Flash->error('Amount awarded is required.');
+            return null;
+        }
 
         // Update status
         $project->status_id = $statusId;
+        if ($statusId == Project::STATUS_ACCEPTED) {
+            $project = $this->Projects->patchEntity(
+                $project,
+                ['amount_awarded' => $this->getRequest()->getData('amount_awarded')]
+            );
+        }
 
         if ($this->Projects->save($project)) {
             $this->Flash->success('Status updated');
