@@ -47,7 +47,7 @@ $body = match ($statusId) {
                     <?php endif; ?>
 
                     <?php if ($statusId == Project::STATUS_AWARDED_NOT_YET_DISBURSED): ?>
-                        <div class="form-group required">
+                        <div class="form-group">
                             <label>
                                 Amount to award
                                 <br />
