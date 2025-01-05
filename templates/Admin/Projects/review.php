@@ -11,14 +11,8 @@ use App\Model\Entity\Project;
  * @var \App\View\AppView $this
  * @var int[] $statusActions
  * @var int[] $validStatusIds
- * @var string $title
  * @var \App\Model\Entity\Transaction[]|\Cake\ORM\ResultSet $transactions
  */
-
-function getActionName($statusId, array $statusActions): string
-{
-    return array_search($statusId, $statusActions);
-}
 
 $transactionsTabLabel = 'Transactions' . ($transactions->isEmpty() ? null : ' (' . $transactions->count() . ')');
 $tabs = [
@@ -30,14 +24,6 @@ $tabs = [
 
 $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 ?>
-
-<div class="col-md-6 mb-3 card" id="review-action-column">
-    <div class="card-body">
-        <section class="mb-0">
-            <div id="root"></div>
-        </section>
-    </div>
-</div>
 
 <ul class="nav nav-tabs" id="review-tabs" role="tablist">
     <?php foreach ($tabs as $label => $tabId): ?>
@@ -58,7 +44,49 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
     <div class="tab-pane show active" id="overview-section" role="tabpanel" aria-labelledby="overview-tab">
         <table class="table project-overview-table">
             <tbody>
-                <?= $this->element('Projects/overview_admin') ?>
+                <tr>
+                    <th>
+                        Status
+                    </th>
+                    <td>
+                        <?= $project->status_name ?>
+                        <div class="dropdown review-inline-dropdown">
+                            <button class="btn btn-primary dropdown-toggle"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                            >
+                                Update
+                            </button>
+                            <ul class="dropdown-menu" id="status-change">
+                                <?php foreach ($validStatusIds as $statusId): ?>
+                                    <li>
+                                        <button class="dropdown-item review-dropdown-item"
+                                                data-status-id="<?= $statusId ?>"
+                                                type="button"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#review-modal-<?= $statusId ?>"
+                                        >
+                                            <?= $statusActions[$statusId]['icon'] ?>
+                                            <?= $statusActions[$statusId]['label'] ?>
+                                        </button>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+
+                <?= $this->element('Projects/overview_public') ?>
+
+                <tr>
+                    <th>
+                        Make check out to
+                    </th>
+                    <td>
+                        <?= $project->check_name ?: '<span class="no-answer">No answer</span>' ?>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -125,9 +153,8 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
     </div>
 </div>
 
-<script>
-    window.statusActions = <?= json_encode($statusActions) ?>;
-    window.validStatusIds = <?= json_encode($validStatusIds) ?>;
-</script>
-<?= $this->element('load_app_files', ['dir' => 'review']) ?>
+<?php foreach ($validStatusIds as $statusId): ?>
+    <?= $this->element('Admin/Projects/review_modal', compact('statusId', 'project')) ?>
+<?php endforeach; ?>
+
 <?= $this->Image->initViewer() ?>

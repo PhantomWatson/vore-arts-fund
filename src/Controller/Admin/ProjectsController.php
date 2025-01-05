@@ -190,20 +190,23 @@ class ProjectsController extends AdminController
 
     /**
      * @param Project $project
-     * @param string|null $noteBody
+     * @param string|null $messageBody
      * @return void
      */
-    private function dispatchStatusChangeEvent(Project $project, ?string $noteBody = null): void
+    private function dispatchStatusChangeEvent(Project $project, ?string $messageBody = null): void
     {
         switch ($project->status_id) {
             case Project::STATUS_ACCEPTED:
                 $event = new Event('Project.accepted', $this, compact('project'));
                 break;
             case Project::STATUS_REVISION_REQUESTED:
-                $event = new Event('Project.revisionRequested', $this, compact('project', 'noteBody'));
+                $event = new Event('Project.revisionRequested', $this, compact('project', 'messageBody'));
                 break;
             case Project::STATUS_REJECTED:
-                $event = new Event('Project.rejected', $this, compact('project', 'noteBody'));
+                $event = new Event('Project.rejected', $this, compact('project', 'messageBody'));
+                break;
+            case Project::STATUS_NOT_AWARDED:
+                $event = new Event('Project.notFunded', $this, compact('project'));
                 break;
             case Project::STATUS_AWARDED_NOT_YET_DISBURSED:
                 $event = new Event('Project.funded', $this, compact('project'));
@@ -238,63 +241,91 @@ class ProjectsController extends AdminController
      * @param Project $project
      * @return Response|null
      */
-    private function processReview(Project $project)
+    private function processReview(Project $project): ?Response
     {
-        // Assume save was successful unless if an error is encountered
-        $successfullySaved = true;
-
         $data = $this->request->getData();
+        $messageBody = $data['message'] ?? null;
+        $statusId = (int)($data['status_id'] ?? null);
 
-        $noteBody = $data['body'] ?? null;
-
-        // Updating status
-        if ($data['status_id'] ?? false) {
-            $project = $this->Projects->patchEntity($project, ['status_id' => (int)$data['status_id']]);
-            if ($this->Projects->save($project)) {
-                $this->Flash->success('Status updated');
-                $this->dispatchStatusChangeEvent($project, $noteBody);
-            } else {
-                $this->Flash->error('Error updating status: ' . $this->getEntityErrorDetails($project));
-                $successfullySaved = false;
+        // Validate
+        if (!$statusId) {
+            $this->Flash->error('Error updating status: No new status selected');
+            return null;
+        }
+        $validNewStatusIds = Project::getValidStatusOptions($project->status_id);
+        if ($statusId != $project->status_id && !in_array($statusId, $validNewStatusIds)) {
+            $this->Flash->error(
+                'Can\'t change status from ' . Project::getStatus($project->status_id)
+                . ' to ' . Project::getStatus($statusId)
+            );
+        }
+        if (in_array($statusId, Project::getStatusesNeedingMessages())) {
+            if (!$data['message'] ?? false) {
+                $this->Flash->error('Message is required.');
+                return null;
             }
         }
 
-        // Adding note / sending message
-        if ($noteBody) {
-            $user = $this->getAuthUser();
-            $data['user_id'] = $user?->id;
-            $data['project_id'] = $project->id;
+        // Update status
+        $project->status_id = $statusId;
+        if ($this->Projects->save($project)) {
+            $this->Flash->success('Status updated');
+            $this->dispatchStatusChangeEvent($project, $messageBody);
 
-            /** @var NotesTable $notesTable */
-            $notesTable = $this->fetchTable('Notes');
-            $note = $notesTable->newEntity($data);
-
-            if ($notesTable->save($note)) {
-                switch ($note->type) {
-                    case Note::TYPE_NOTE:
-                        $this->Flash->success('Note added');
-                        break;
-                    case Note::TYPE_MESSAGE:
-                        $this->dispatchMessageSentEvent($project, $note->body);
-                        break;
-                }
-            } else {
-                $this->Flash->error(
-                    'Error ' (($note->type == Note::TYPE_NOTE) ? 'adding note' : 'sending message')
-                    . 'Details: ' . print_r($note->getErrors(), true)
-                );
-                $successfullySaved = false;
+            // Save note
+            if (in_array($statusId, Project::getStatusesNeedingMessages())) {
+                $this->saveNote($messageBody, $this->getNoteType($statusId), $project);
             }
+        } else {
+            $this->Flash->error('Error updating status: ' . $this->getEntityErrorDetails($project));
+            return null;
         }
 
-        // POST/Redirect/GET pattern
-        if ($successfullySaved) {
-            return $this->redirect([
-                'action' => 'review',
-                'id' => $project->id,
-            ]);
+        // POST-redirect-GET pattern
+        return $this->redirect([
+            'action' => 'review',
+            'id' => $project->id,
+        ]);
+    }
+
+    private function saveNote(string $noteBody, string $noteType, Project $project): bool
+    {
+        $user = $this->getAuthUser();
+
+        /** @var NotesTable $notesTable */
+        $notesTable = $this->fetchTable('Notes');
+        $message = $notesTable->newEntity([
+            'type' => $noteType,
+            'body' => $noteBody,
+            'user_id' => $user->id,
+            'project_id' => $project->id,
+        ]);
+
+        if ($notesTable->save($message)) {
+            return true;
         }
 
-        return null;
+        $this->Flash->error(
+            'Error sending message'
+            . 'Details: ' . $this->getEntityErrorDetails($message)
+        );
+        return false;
+    }
+
+    private function processSendMessage(Project $project): bool
+    {
+        $messageBody = $data['message'] ?? null;
+        if (!$messageBody) {
+            $this->Flash->error('Message is required.');
+            return false;
+        }
+
+        // Create note / send message
+        if ($this->saveNote($messageBody, Note::TYPE_MESSAGE, $project)) {
+            $this->dispatchMessageSentEvent($project, $messageBody);
+            return true;
+        }
+
+        return false;
     }
 }

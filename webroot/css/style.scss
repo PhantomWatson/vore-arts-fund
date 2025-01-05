@@ -613,6 +613,18 @@ div.message {
     }
 }
 
+.review-inline-dropdown {
+    display: inline;
+    margin-left: 1em;
+}
+
+.review-dropdown-item {
+    i {
+        margin-right: 0.25em;
+        width: 1.5em;
+    }
+}
+
 #review-action-column {
     section {
         margin-bottom: $section-spacer;
@@ -629,6 +641,11 @@ div.message {
 
 .project-overview-table {
     width: auto;
+
+    th,
+    td {
+        vertical-align: middle;
+    }
 }
 
 #review-notes {

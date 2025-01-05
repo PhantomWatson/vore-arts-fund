@@ -173,6 +173,19 @@ class Project extends Entity
     }
 
     /**
+     * @param int $statusId
+     * @return array [icon, label]
+     */
+    public static function getStatusAction(int $statusId): array
+    {
+        $actions = self::getStatusActions();
+        if (key_exists($statusId, $actions)) {
+            return $actions[$statusId];
+        }
+        throw new InternalErrorException("Unrecognized status: $statusId");
+    }
+
+    /**
      * Takes a current status and returns an array of valid statuses that this project can be changed to
      *
      * @param int $currentStatusId
@@ -216,6 +229,8 @@ class Project extends Entity
     }
 
     /**
+     * Returns the name of a status
+     *
      * @param int $statusId
      * @return string
      * @throws \Cake\Http\Exception\InternalErrorException
@@ -227,6 +242,14 @@ class Project extends Entity
             return $statuses[$statusId];
         }
         throw new InternalErrorException("Status #$statusId not recognized");
+    }
+
+    public static function getStatusesNeedingMessages(): array
+    {
+        return [
+            self::STATUS_REVISION_REQUESTED,
+            self::STATUS_REJECTED,
+        ];
     }
 
     /**

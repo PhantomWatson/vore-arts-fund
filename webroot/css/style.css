@@ -12717,6 +12717,16 @@ div.message.hidden {
   width: 1.5em;
 }
 
+.review-inline-dropdown {
+  display: inline;
+  margin-left: 1em;
+}
+
+.review-dropdown-item i {
+  margin-right: 0.25em;
+  width: 1.5em;
+}
+
 #review-action-column section {
   margin-bottom: 2rem;
 }
@@ -12729,6 +12739,10 @@ div.message.hidden {
 
 .project-overview-table {
   width: auto;
+}
+.project-overview-table th,
+.project-overview-table td {
+  vertical-align: middle;
 }
 
 #review-notes {
