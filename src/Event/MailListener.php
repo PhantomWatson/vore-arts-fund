@@ -171,8 +171,15 @@ class MailListener implements EventListenerInterface
                     'controller' => 'Projects',
                     'action' => 'index'
                 ], true),
+                'loanAgreementUrl' => Router::url([
+                    'prefix' => 'My',
+                    'controller' => 'Projects',
+                    'action' => 'loanAgreement',
+                    'id' => $project->id,
+                ], true),
                 'supportEmail' => Configure::read('supportEmail'),
                 'userName' => $name,
+                'replyUrl' => $this->getReplyUrl($project),
             ],
             [
                 'subject' => self::$subjectPrefix . 'Application Funded',
@@ -224,12 +231,7 @@ class MailListener implements EventListenerInterface
                 'project' => $project,
                 'userName' => $name,
                 'message' => $message,
-                'replyUrl' => Router::url([
-                    'prefix' => 'My',
-                    'controller' => 'Projects',
-                    'action' => 'messages',
-                    'id' => $project->id
-                ])
+                'replyUrl' => $this->getReplyUrl($project),
             ],
             [
                 'subject' => self::$subjectPrefix . 'Message from review committee',
@@ -237,6 +239,19 @@ class MailListener implements EventListenerInterface
                 'from_name' => $this->fromName,
                 'from_email' => $this->fromEmail,
             ],
+        );
+    }
+
+    private function getReplyUrl(Project $project): string
+    {
+        return Router::url(
+            [
+                'prefix' => 'My',
+                'controller' => 'Projects',
+                'action' => 'messages',
+                'id' => $project->id
+            ],
+            true
         );
     }
 }
