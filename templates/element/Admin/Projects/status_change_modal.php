@@ -14,7 +14,7 @@ $body = match ($statusId) {
     Project::STATUS_AWARDED_NOT_YET_DISBURSED => 'This will send a congratulations message to the applicant telling them that they\'ve been awarded funding pending the submission of a loan agreement. Only submit this change if the voting results for this cycle support awarding funding, and enter the amount of funding that will be awarded.',
     Project::STATUS_AWARDED_AND_DISBURSED => 'This will mark this project as having had funding disbursed. <strong>Only make this change if a check for ' .  $project->amount_awarded_formatted . ' has been written and sent to the applicant.</strong>',
     Project::STATUS_NOT_AWARDED => 'This will send a consolation message to the applicant telling them that this cycle\'s voting and/or the available budget did not result in their project receiving funding.',
-    Project::STATUS_WITHDRAWN => 'This will withdraw this application from consideration.',
+    Project::STATUS_WITHDRAWN => 'This will withdraw this application from consideration. The applicant will not be automatically notified of this.',
     default => 'Uh oh. Unrecognized status ID: ' . $statusId,
 }
 // @codingStandardsIgnoreEnd
