@@ -12,7 +12,7 @@ use Cake\ORM\Entity;
  * @property int $user_id
  * @property int $project_id
  * @property string $body
- * @property string $type
+ * @property int $type
  * @property string $typeWithIcon
  * @property \Cake\I18n\FrozenTime $created
  *
@@ -21,10 +21,11 @@ use Cake\ORM\Entity;
  */
 class Note extends Entity
 {
-    public const TYPE_NOTE = 'note';
-    public const TYPE_REVISION_REQUEST = 'revision request';
-    public const TYPE_REJECTION = 'rejection';
-    public const TYPE_MESSAGE = 'message';
+    public const TYPE_NOTE = 1;
+    public const TYPE_MESSAGE_TO_APPLICANT = 2;
+    public const TYPE_MESSAGE_FROM_APPLICANT = 3;
+    public const TYPE_REVISION_REQUEST = 4;
+    public const TYPE_REJECTION = 5;
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -55,25 +56,28 @@ class Note extends Entity
         return in_array($this->type, [
             self::TYPE_REJECTION,
             self::TYPE_REVISION_REQUEST,
-            self::TYPE_MESSAGE,
+            self::TYPE_MESSAGE_TO_APPLICANT,
         ]);
     }
 
-    public static function getNoteTypePublicName(string $type): string
+    public static function getNoteTypePublicName(int $type): string
     {
         return match ($type) {
             self::TYPE_NOTE => 'Internal note',
             self::TYPE_REJECTION => 'Your project could not be accepted',
-            self::TYPE_MESSAGE => 'Message from the review committee',
-            default => ucfirst($type),
+            self::TYPE_MESSAGE_TO_APPLICANT => 'Message from the review committee',
+            self::TYPE_MESSAGE_FROM_APPLICANT => 'Message from the applicant',
+            self::TYPE_REVISION_REQUEST => 'Revision request',
+            default => 'Note (type unknown)',
         };
     }
 
-    public static function getNoteTypeIcon(string $type): string
+    public static function getNoteTypeIcon(int $type): string
     {
         return match ($type) {
             self::TYPE_NOTE => Project::ICON_NOTE,
-            self::TYPE_MESSAGE => Project::ICON_MESSAGE,
+            self::TYPE_MESSAGE_TO_APPLICANT,
+            self::TYPE_MESSAGE_FROM_APPLICANT => Project::ICON_MESSAGE,
             self::TYPE_REVISION_REQUEST => Project::ICON_REVISION_REQUESTED,
             self::TYPE_REJECTION => Project::ICON_REJECTED,
             default => Project::ICON_UNKNOWN,

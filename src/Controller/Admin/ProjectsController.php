@@ -322,7 +322,7 @@ class ProjectsController extends AdminController
             $this->Flash->error('Message body is required.');
             return false;
         }
-        if (!in_array($type, [Note::TYPE_NOTE, Note::TYPE_MESSAGE])) {
+        if (!in_array($type, [Note::TYPE_NOTE, Note::TYPE_MESSAGE_TO_APPLICANT])) {
             $this->Flash->error('Invalid note type: ' . $type);
             return false;
         }
@@ -332,7 +332,7 @@ class ProjectsController extends AdminController
             return false;
         }
 
-        if ($type != Note::TYPE_MESSAGE) {
+        if ($type != Note::TYPE_MESSAGE_TO_APPLICANT) {
             $this->Flash->success('Note saved');
             return true;
         }

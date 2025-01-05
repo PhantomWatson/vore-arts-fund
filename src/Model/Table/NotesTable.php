@@ -100,11 +100,7 @@ class NotesTable extends Table
     public function findNotInternal($query)
     {
         return $query->where(function (QueryExpression $exp) {
-            return $exp->in('type', [
-                Note::TYPE_REVISION_REQUEST,
-                Note::TYPE_MESSAGE,
-                Note::TYPE_REJECTION,
-            ]);
+            return $exp->notIn('type', [Note::TYPE_NOTE]);
         });
     }
 }

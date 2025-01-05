@@ -178,7 +178,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 <?php foreach ($validStatusIds as $statusId): ?>
     <?= $this->element('Admin/Projects/status_change_modal', compact('statusId', 'project')) ?>
 <?php endforeach; ?>
-<?php foreach ([Note::TYPE_NOTE, Note::TYPE_MESSAGE] as $noteType): ?>
+<?php foreach ([Note::TYPE_NOTE, Note::TYPE_MESSAGE_TO_APPLICANT] as $noteType): ?>
     <?= $this->element('Admin/Projects/note_or_message_modal', compact('project', 'noteType')) ?>
 <?php endforeach; ?>
 
