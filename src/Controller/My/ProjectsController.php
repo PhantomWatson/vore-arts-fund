@@ -9,6 +9,8 @@ use App\Model\Entity\Project;
 use App\Model\Table\NotesTable;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\ForbiddenException;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
@@ -287,5 +289,40 @@ class ProjectsController extends BaseProjectsController
         }
 
         return false;
+    }
+    public function sendMessage(): Response
+    {
+        $projectId = $this->request->getParam('id');
+        $project = $this->Projects->get($projectId);
+        $noteBody = $this->request->getData('body');
+        if (!$noteBody) {
+            $this->Flash->error('Message body is required.');
+            return $this->redirect(['action' => 'messages', 'id' => $projectId]);
+        }
+
+        $user = $this->getAuthUser();
+        if ($project->user_id != $user->id) {
+            throw new NotFoundException('Invalid project selected');
+        }
+
+        /** @var NotesTable $notesTable */
+        $notesTable = $this->fetchTable('Notes');
+        $message = $notesTable->newEntity([
+            'type' => Note::TYPE_MESSAGE_FROM_APPLICANT,
+            'body' => $noteBody,
+            'user_id' => $user->id,
+            'project_id' => $project->id,
+        ]);
+
+        if ($notesTable->save($message)) {
+            $this->Flash->success('Message sent');
+        } else {
+            $this->Flash->error(
+                'Error sending message'
+                . 'Details: ' . $this->getEntityErrorDetails($message)
+            );
+        }
+
+        return $this->redirect(['action' => 'messages', 'id' => $projectId]);
     }
 }

@@ -91,6 +91,7 @@ $routes->prefix('my', function (RouteBuilder $builder) {
         'delete',
         'withdraw',
         'loanAgreement',
+        'sendMessage',
     ];
     foreach ($actions as $action) {
         $builder->connect(

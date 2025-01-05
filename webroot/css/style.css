@@ -13041,4 +13041,11 @@ section.funding-cycles th {
   font-weight: normal;
 }
 
+.project-notes__send-message span {
+  margin-right: 1em;
+}
+.project-notes__send-message button {
+  vertical-align: inherit;
+}
+
 /*# sourceMappingURL=style.css.map */
