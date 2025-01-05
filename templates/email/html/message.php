@@ -4,16 +4,8 @@
  * @var string $message
  * @var \App\View\AppView $this
  * @var string $userName
+ * @var string $replyUrl
  */
-
-use Cake\Routing\Router;
-
-$replyUrl = Router::url([
-    'prefix' => 'My',
-    'controller' => 'Projects',
-    'action' => 'messages',
-    'id' => $project->id
-]);
 
 ?>
 <p>

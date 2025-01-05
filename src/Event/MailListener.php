@@ -223,7 +223,13 @@ class MailListener implements EventListenerInterface
             [
                 'project' => $project,
                 'userName' => $name,
-                'message' => $message
+                'message' => $message,
+                'replyUrl' => Router::url([
+                    'prefix' => 'My',
+                    'controller' => 'Projects',
+                    'action' => 'messages',
+                    'id' => $project->id
+                ])
             ],
             [
                 'subject' => self::$subjectPrefix . 'Message from review committee',
