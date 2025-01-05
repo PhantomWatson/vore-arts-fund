@@ -5,7 +5,6 @@
  */
 
 use App\Model\Entity\Note;
-use App\Model\Entity\Project;
 
 $isAdmin = $this->getRequest()->getParam('prefix') == 'Admin';
 ?>
@@ -13,7 +12,8 @@ $isAdmin = $this->getRequest()->getParam('prefix') == 'Admin';
 <article class="note">
     <header class="note-header row">
         <p class="note-type col-6">
-            <?= $note->typeWithIcon ?>
+            <?= Note::getNoteTypeIcon($note->type) ?>
+            <?= Note::getNoteTypePublicName($note->type, $isAdmin) ?>
         </p>
         <p class="note-date col-6">
             <?php if ($isAdmin): ?>

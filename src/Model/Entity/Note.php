@@ -60,13 +60,17 @@ class Note extends Entity
         ]);
     }
 
-    public static function getNoteTypePublicName(int $type): string
+    public static function getNoteTypePublicName(int $type, bool $isAdmin = false): string
     {
         return match ($type) {
             self::TYPE_NOTE => 'Internal note',
             self::TYPE_REJECTION => 'Your project could not be accepted',
-            self::TYPE_MESSAGE_TO_APPLICANT => 'Message from the review committee',
-            self::TYPE_MESSAGE_FROM_APPLICANT => 'Message from the applicant',
+            self::TYPE_MESSAGE_TO_APPLICANT => $isAdmin
+                ? 'Message to applicant'
+                : 'Message from the review committee',
+            self::TYPE_MESSAGE_FROM_APPLICANT => $isAdmin
+                ? 'Message from the applicant'
+                : 'Message to the review committee',
             self::TYPE_REVISION_REQUEST => 'Revision request',
             default => 'Note (type unknown)',
         };
