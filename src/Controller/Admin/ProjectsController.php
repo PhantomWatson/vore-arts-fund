@@ -180,9 +180,9 @@ class ProjectsController extends AdminController
      * Returns the note type corresponding to a status that a project is being changed to
      *
      * @param int|null $statusId
-     * @return string
+     * @return int
      */
-    private function getNoteType($statusId): string
+    private function getNoteType($statusId): int
     {
         return match ((int) $statusId) {
             Project::STATUS_REVISION_REQUESTED => Note::TYPE_REVISION_REQUEST,
@@ -273,7 +273,7 @@ class ProjectsController extends AdminController
         ]);
     }
 
-    private function saveNote(string $noteBody, string $noteType, Project $project): bool
+    private function saveNote(string $noteBody, int $noteType, Project $project): bool
     {
         $user = $this->getAuthUser();
 
