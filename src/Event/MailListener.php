@@ -157,7 +157,7 @@ class MailListener implements EventListenerInterface
      * @return void
      * @throws InternalErrorException
      */
-    public function mailProjectFunded(Event $event, Project $project, int $amount)
+    public function mailProjectFunded(Event $event, Project $project)
     {
         list($email, $name) = $this->getRecipientFromProject($project);
         EmailQueue::enqueue(
