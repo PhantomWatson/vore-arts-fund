@@ -256,11 +256,8 @@ class ProjectsController extends AdminController
 
         // Update status
         $project->status_id = $statusId;
-        if ($statusId == Project::STATUS_ACCEPTED) {
-            $project = $this->Projects->patchEntity(
-                $project,
-                ['amount_awarded' => $this->getRequest()->getData('amount_awarded')]
-            );
+        if ($statusId == Project::STATUS_AWARDED_NOT_YET_DISBURSED) {
+            $project->amount_awarded = (int)$this->getRequest()->getData('amount_awarded');
         }
 
         if ($this->Projects->save($project)) {
