@@ -88,6 +88,9 @@ class ProjectsController extends AdminController
             if ($redirect) {
                 return $redirect;
             }
+
+            // Re-fetch to clear invalid changes
+            $project = $this->Projects->getForViewing($projectId);
         }
 
         $statusActions = Project::getStatusActions();
@@ -249,6 +252,7 @@ class ProjectsController extends AdminController
 
         // Update status
         $project->status_id = $statusId;
+
         if ($this->Projects->save($project)) {
             $this->Flash->success('Status updated');
             $this->dispatchStatusChangeEvent($project, $messageBody);
