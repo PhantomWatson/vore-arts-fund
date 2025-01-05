@@ -49,12 +49,8 @@ $host = $this->getRequest()->host() ?: 'voreartsfund.org';
                            style="border-collapse: separate;mso-table-lspace: 0pt;mso-table-rspace: 0pt;width: 100%;">
                         <tr>
                             <td class="content-block"
-                                style="font-family: Helvetica, sans-serif;font-size: 16px;vertical-align: top;color: #9a9ea6;text-align: center;">
-                                <a href="https://<?= $host ?>"
-                                   style="color: #9a9ea6;text-decoration: underline;font-size: 16px;text-align: center;">
-                                    <img src="https://<?= $host ?>/img/logo/logo.wordmark.v5.white.email.png"
-                                         alt="Vore Arts Fund" title="Vore Arts Fund">
-                                </a>
+                                style="font-family: Helvetica, sans-serif;font-size: 12px;vertical-align: top;color: #9a9ea6;text-align: center;">
+                                This email was sent by <a href="https://<?= $host ?>">VoreArtsFund.org</a>
                             </td>
                         </tr>
                     </table>
