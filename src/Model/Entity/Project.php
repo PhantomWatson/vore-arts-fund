@@ -351,7 +351,7 @@ class Project extends Entity
 
     protected function _getAmountAwardedFormatted(): string
     {
-        return '$' . number_format($this->amount_requested);
+        return '$' . number_format($this->amount_awarded);
     }
 
     /**
