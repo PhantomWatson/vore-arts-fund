@@ -131,24 +131,6 @@ class ProjectsTable extends Table
             ->notEmptyString('accept_partial_payout');
 
         $validator
-            ->integer('status_id')
-            ->inList('status_id', array_keys(Project::getStatuses()), 'Invalid status');
-
-        $validator->add('status_id', 'notAwardingZeroDollars', [
-            'rule' => function ($value, $context) {
-                switch ($value) {
-                    case Project::STATUS_AWARDED_NOT_YET_DISBURSED:
-                        return ($context['data']['amount_awarded'] ?? 0) > 0
-                            ? true
-                            : 'Must include loan amount when declaring a project awarded';
-                    default:
-                        return true;
-                }
-            },
-            'message' => 'You must set the award amount before marking this project as being awarded'
-        ]);
-
-        $validator
             ->scalar('check_name')
             ->maxLength('check_name', 50)
             ->notEmptyString('check_name')
@@ -198,6 +180,27 @@ class ProjectsTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['category_id'], 'Categories'));
         $rules->add($rules->existsIn(['funding_cycle_id'], 'FundingCycles'));
+        $rules->add(
+            function ($entity, $options) {
+                return in_array($entity->status_id, Project::getStatuses())
+                    ? true
+                    : 'Invalid status: ' . $entity->status_id;
+            },
+            'validStatus',
+            ['errorField' => 'status_id'],
+        );
+        $rules->add(
+            function ($entity, $options) {
+                if ($entity->status_id == Project::STATUS_AWARDED_NOT_YET_DISBURSED) {
+                    return $entity->amount_awarded > 0
+                        ? true
+                        : 'Must include loan amount when declaring a project awarded';
+                }
+                return true;
+            },
+            'mustIncludeAmountAwardedWhenAwarded',
+            ['errorField' => 'amount_awarded'],
+        );
 
         return $rules;
     }
