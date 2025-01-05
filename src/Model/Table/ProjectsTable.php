@@ -181,8 +181,8 @@ class ProjectsTable extends Table
         $rules->add($rules->existsIn(['category_id'], 'Categories'));
         $rules->add($rules->existsIn(['funding_cycle_id'], 'FundingCycles'));
         $rules->add(
-            function ($entity, $options) {
-                return in_array($entity->status_id, Project::getStatuses())
+            function ($entity) {
+                return in_array($entity->status_id, array_keys(Project::getStatuses()))
                     ? true
                     : 'Invalid status: ' . $entity->status_id;
             },
@@ -190,7 +190,7 @@ class ProjectsTable extends Table
             ['errorField' => 'status_id'],
         );
         $rules->add(
-            function ($entity, $options) {
+            function ($entity) {
                 if ($entity->status_id == Project::STATUS_AWARDED_NOT_YET_DISBURSED) {
                     return $entity->amount_awarded > 0
                         ? true
