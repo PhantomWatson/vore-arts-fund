@@ -16,8 +16,11 @@ $body = match ($statusId) {
     Project::STATUS_NOT_AWARDED => 'This will send a consolation message to the applicant telling them that this cycle\'s voting and/or the available budget did not result in their project receiving funding.',
     Project::STATUS_WITHDRAWN => 'This will withdraw this application from consideration. The applicant will not be automatically notified of this.',
     default => 'Uh oh. Unrecognized status ID: ' . $statusId,
-}
+};
 // @codingStandardsIgnoreEnd
+
+$minAwardable = $project->accept_partial_payout ? 1 : $project->amount_requested;
+$maxAwardable = min($project->amount_requested, $project->funding_cycle->funding_available);
 ?>
 
 
@@ -47,6 +50,9 @@ $body = match ($statusId) {
                     <?php endif; ?>
 
                     <?php if ($statusId == Project::STATUS_AWARDED_NOT_YET_DISBURSED): ?>
+                        <p>
+                            We can award between $<?= number_format($minAwardable) ?> and $<?= number_format($maxAwardable) ?> to this project.
+                        </p>
                         <div class="form-group">
                             <label>
                                 Amount to award
@@ -54,8 +60,8 @@ $body = match ($statusId) {
                                 <input class="form-control" type="number" name="amount_awarded" required="required"
                                        data-validity-message="Required"
                                        value="<?= $project->amount_awarded ?>"
-                                       max="<?= $project->amount_requested ?>"
-                                       min="<?= $project->accept_partial_payout ? 1 : $project->amount_requested ?>">
+                                       max="<?= $maxAwardable ?>"
+                                       min="<?= $minAwardable ?>">
                             </label>
                         </div>
                     <?php endif; ?>
