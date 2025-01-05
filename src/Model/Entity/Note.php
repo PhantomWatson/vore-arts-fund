@@ -71,6 +71,7 @@ class Note extends Entity
 
         $editedTypeName = match ($this->type) {
             Note::TYPE_REJECTION => 'Your project could not be accepted',
+            Note::TYPE_NOTE => 'Internal note',
             default => ucfirst($this->type),
         };
 
