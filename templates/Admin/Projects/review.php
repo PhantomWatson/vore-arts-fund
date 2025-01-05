@@ -50,30 +50,32 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                     </th>
                     <td>
                         <?= $project->status_name ?>
-                        <div class="dropdown review-inline-dropdown">
-                            <button class="btn btn-primary dropdown-toggle"
-                                    type="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                            >
-                                Update
-                            </button>
-                            <ul class="dropdown-menu" id="status-change">
-                                <?php foreach ($validStatusIds as $statusId): ?>
-                                    <li>
-                                        <button class="dropdown-item review-dropdown-item"
-                                                data-status-id="<?= $statusId ?>"
-                                                type="button"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#review-modal-<?= $statusId ?>"
-                                        >
-                                            <?= $statusActions[$statusId]['icon'] ?>
-                                            <?= $statusActions[$statusId]['label'] ?>
-                                        </button>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
+                        <?php if ($validStatusIds): ?>
+                            <div class="dropdown review-inline-dropdown">
+                                <button class="btn btn-primary dropdown-toggle"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                >
+                                    Update
+                                </button>
+                                <ul class="dropdown-menu" id="status-change">
+                                    <?php foreach ($validStatusIds as $statusId): ?>
+                                        <li>
+                                            <button class="dropdown-item review-dropdown-item"
+                                                    data-status-id="<?= $statusId ?>"
+                                                    type="button"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#review-modal-<?= $statusId ?>"
+                                            >
+                                                <?= $statusActions[$statusId]['icon'] ?>
+                                                <?= $statusActions[$statusId]['label'] ?>
+                                            </button>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
                     </td>
                 </tr>
 
