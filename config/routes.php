@@ -24,6 +24,7 @@
 use App\BotCatcher;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
+use Cake\Utility\Inflector;
 
 /** @var \Cake\Routing\RouteBuilder $routes */
 $routes->setRouteClass(DashedRoute::class);
@@ -116,8 +117,17 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
     $builder->connect('/projects/{id}', ['controller' => 'Projects', 'action' => 'index'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
-    $builder->connect('/projects/review/{id}', ['controller' => 'Projects', 'action' => 'review']);
-    $builder->connect('/projects/set-status/{id}', ['controller' => 'Projects', 'action' => 'setStatus']);
+    $actions = [
+        'review',
+        'setStatus',
+        'newNote',
+    ];
+    foreach ($actions as $action) {
+        $builder->connect(
+            '/projects/' . Inflector::dasherize($action) . '/{id}',
+            ['controller' => 'Projects', 'action' => $action]
+        );
+    }
 
     // Votes
     $builder->connect('/votes/{id}', ['controller' => 'Votes', 'action' => 'index'])

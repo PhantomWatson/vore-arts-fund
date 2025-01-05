@@ -220,25 +220,6 @@ class ProjectsController extends AdminController
 
     /**
      * @param Project $project
-     * @param string $message
-     * @return void
-     */
-    private function dispatchMessageSentEvent(Project $project, string $message): void
-    {
-        $event = new Event(
-            'Note.messageSent',
-            $this,
-            [
-                'project' => $project,
-                'message' => $message,
-            ]
-        );
-        $this->getEventManager()->dispatch($event);
-        $this->Flash->success('Message sent to applicant');
-    }
-
-    /**
-     * @param Project $project
      * @return Response|null
      */
     private function processReview(Project $project): ?Response
@@ -312,20 +293,63 @@ class ProjectsController extends AdminController
         return false;
     }
 
-    private function processSendMessage(Project $project): bool
+    /**
+     * Used for both private notes and messages to the applicant
+     *
+     * @return Response
+     */
+    public function newNote()
     {
-        $messageBody = $data['message'] ?? null;
-        if (!$messageBody) {
-            $this->Flash->error('Message is required.');
+        $this->processNewNote();
+        return $this->redirect([
+            'action' => 'review',
+            'id' => $this->request->getParam('id'),
+        ]);
+    }
+
+    /**
+     * Used for both private notes and messages to the applicant
+     *
+     * @return bool
+     */
+    private function processNewNote(): bool
+    {
+        $projectId = $this->request->getParam('id');
+        $project = $this->Projects->get($projectId);
+        $noteBody = $this->request->getData('body');
+        $type = $this->request->getData('type');
+        if (!$noteBody) {
+            $this->Flash->error('Message body is required.');
+            return false;
+        }
+        if (!in_array($type, [Note::TYPE_NOTE, Note::TYPE_MESSAGE])) {
+            $this->Flash->error('Invalid note type: ' . $type);
             return false;
         }
 
-        // Create note / send message
-        if ($this->saveNote($messageBody, Note::TYPE_MESSAGE, $project)) {
-            $this->dispatchMessageSentEvent($project, $messageBody);
+        if (!$this->saveNote($noteBody, $type, $project)) {
+            $this->Flash->error('Error saving ' . ($type == Note::TYPE_NOTE ? 'note' : 'message'));
+            return false;
+        }
+
+        if ($type != Note::TYPE_MESSAGE) {
+            $this->Flash->success('Note saved');
             return true;
         }
 
-        return false;
+        // Dispatch event to trigger email
+        $mailListener = new MailListener();
+        $this->getEventManager()->on($mailListener);
+        $event = new Event(
+            'Note.messageSent',
+            $this,
+            [
+                'project' => $project,
+                'message' => $noteBody,
+            ]
+        );
+        $this->getEventManager()->dispatch($event);
+        $this->Flash->success('Message sent to applicant');
+        return true;
     }
 }

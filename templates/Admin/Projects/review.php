@@ -140,6 +140,26 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
             <h3>
                 Notes & Messages
             </h3>
+            <p>
+                <button class="btn btn-primary"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#review-modal-note"
+                >
+                    <?= Project::ICON_NOTE ?>
+                    &nbsp;
+                    Add a note
+                </button>
+                <button class="btn btn-primary"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#review-modal-message"
+                >
+                    <?= Project::ICON_MESSAGE ?>
+                    &nbsp;
+                    Send a message
+                </button>
+            </p>
             <div id="review-notes">
                 <?php if ($notes->isEmpty()): ?>
                     None found for this project
@@ -155,6 +175,9 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 
 <?php foreach ($validStatusIds as $statusId): ?>
     <?= $this->element('Admin/Projects/status_change_modal', compact('statusId', 'project')) ?>
+<?php endforeach; ?>
+<?php foreach ([Note::TYPE_NOTE, Note::TYPE_MESSAGE] as $noteType): ?>
+    <?= $this->element('Admin/Projects/note_or_message_modal', compact('project', 'noteType')) ?>
 <?php endforeach; ?>
 
 <?= $this->Image->initViewer() ?>
