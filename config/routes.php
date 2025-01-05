@@ -85,21 +85,21 @@ $routes->prefix('my', function (RouteBuilder $builder) {
     $builder->connect('/projects/{id}', ['controller' => 'Projects', 'action' => 'view'])
         ->setPatterns(['id' => '\d+'])
         ->setPass(['id']);
-    $builder->connect('/projects/messages/{id}', ['controller' => 'Projects', 'action' => 'messages'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);
-    $builder->connect('/projects/edit/{id}', ['controller' => 'Projects', 'action' => 'edit'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);
-    $builder->connect('/projects/delete/{id}', ['controller' => 'Projects', 'action' => 'delete'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);
-    $builder->connect('/projects/withdraw/{id}', ['controller' => 'Projects', 'action' => 'withdraw'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);
-    $builder->connect('/projects/loan-agreement/{id}', ['controller' => 'Projects', 'action' => 'loanAgreement'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);
+    $actions = [
+        'messages',
+        'edit',
+        'delete',
+        'withdraw',
+        'loanAgreement',
+    ];
+    foreach ($actions as $action) {
+        $builder->connect(
+            '/projects/' . Inflector::dasherize($action) . '/{id}',
+            ['controller' => 'Projects', 'action' => $action]
+        )
+            ->setPatterns(['id' => '\d+'])
+            ->setPass(['id']);
+    }
 });
 
 // Admin routes
