@@ -163,21 +163,14 @@ class MailListener implements EventListenerInterface
         EmailQueue::enqueue(
             $email,
             [
-                'amount' => $amount,
                 'project' => $project,
                 'fundingCycle' => $this->fundingCyclesTable->get($project->funding_cycle_id),
-                'myProjectsUrl' => Router::url([
-                    'prefix' => 'My',
-                    'controller' => 'Projects',
-                    'action' => 'index'
-                ], true),
                 'loanAgreementUrl' => Router::url([
                     'prefix' => 'My',
                     'controller' => 'Projects',
                     'action' => 'loanAgreement',
                     'id' => $project->id,
                 ], true),
-                'supportEmail' => Configure::read('supportEmail'),
                 'userName' => $name,
                 'replyUrl' => $this->getReplyUrl($project),
             ],
@@ -252,6 +245,30 @@ class MailListener implements EventListenerInterface
                 'id' => $project->id
             ],
             true
+        );
+    }
+
+    public function mailFundingDisbursed(Project $project)
+    {
+        list($email, $name) = $this->getRecipientFromProject($project);
+        EmailQueue::enqueue(
+            $email,
+            [
+                'project' => $project,
+                'myProjectsUrl' => Router::url([
+                    'prefix' => 'My',
+                    'controller' => 'Projects',
+                    'action' => 'index'
+                ], true),
+                'userName' => $name,
+                'replyUrl' => $this->getReplyUrl($project),
+            ],
+            [
+                'subject' => self::$subjectPrefix . 'Your check is on its way',
+                'template' => 'funding_disbursed',
+                'from_name' => $this->fromName,
+                'from_email' => $this->fromEmail,
+            ],
         );
     }
 }
