@@ -16,7 +16,6 @@ $action = Router::url([
 ]);
 ?>
 
-
 <div class="modal fade" id="review-modal-<?= $typeForId ?>" tabindex="-1"
      aria-labelledby="review-modal-<?= $typeForId ?>-label" aria-hidden="true">
     <form method="post" action="<?= $action ?>">
