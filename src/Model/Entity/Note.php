@@ -61,15 +61,19 @@ class Note extends Entity
 
     protected function _getTypeWithIcon()
     {
-        $retval = '';
-        $retval .= match ($this->type) {
+        $icon = match ($this->type) {
             Note::TYPE_NOTE => Project::ICON_NOTE,
             Note::TYPE_MESSAGE => Project::ICON_MESSAGE,
             Note::TYPE_REVISION_REQUEST => Project::ICON_REVISION_REQUESTED,
             Note::TYPE_REJECTION => Project::ICON_REJECTED,
             default => Project::ICON_UNKNOWN,
         };
-        $retval .= ' ' . ucfirst($this->type);
-        return $retval;
+
+        $editedTypeName = match ($this->type) {
+            Note::TYPE_REJECTION => 'Your project could not be accepted',
+            default => ucfirst($this->type),
+        };
+
+        return  "$icon $editedTypeName";
     }
 }
