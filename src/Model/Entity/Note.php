@@ -50,7 +50,7 @@ class Note extends Entity
      *
      * @return bool
      */
-    public function triggersEmail()
+    public function triggersEmail(): bool
     {
         return in_array($this->type, [
             self::TYPE_REJECTION,
@@ -59,22 +59,29 @@ class Note extends Entity
         ]);
     }
 
-    protected function _getTypeWithIcon()
+    public static function getNoteTypePublicName(string $type): string
     {
-        $icon = match ($this->type) {
-            Note::TYPE_NOTE => Project::ICON_NOTE,
-            Note::TYPE_MESSAGE => Project::ICON_MESSAGE,
-            Note::TYPE_REVISION_REQUEST => Project::ICON_REVISION_REQUESTED,
-            Note::TYPE_REJECTION => Project::ICON_REJECTED,
+        return match ($type) {
+            self::TYPE_NOTE => 'Internal note',
+            self::TYPE_REJECTION => 'Your project could not be accepted',
+            self::TYPE_MESSAGE => 'Message from the review committee',
+            default => ucfirst($type),
+        };
+    }
+
+    public static function getNoteTypeIcon(string $type): string
+    {
+        return match ($type) {
+            self::TYPE_NOTE => Project::ICON_NOTE,
+            self::TYPE_MESSAGE => Project::ICON_MESSAGE,
+            self::TYPE_REVISION_REQUEST => Project::ICON_REVISION_REQUESTED,
+            self::TYPE_REJECTION => Project::ICON_REJECTED,
             default => Project::ICON_UNKNOWN,
         };
+    }
 
-        $editedTypeName = match ($this->type) {
-            Note::TYPE_REJECTION => 'Your project could not be accepted',
-            Note::TYPE_NOTE => 'Internal note',
-            default => ucfirst($this->type),
-        };
-
-        return  "$icon $editedTypeName";
+    protected function _getTypeWithIcon(): string
+    {
+        return  self::getNoteTypeIcon($this->type) . ' ' . self::getNoteTypePublicName($this->type);
     }
 }
