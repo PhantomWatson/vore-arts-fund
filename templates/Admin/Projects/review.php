@@ -154,7 +154,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 </div>
 
 <?php foreach ($validStatusIds as $statusId): ?>
-    <?= $this->element('Admin/Projects/review_modal', compact('statusId', 'project')) ?>
+    <?= $this->element('Admin/Projects/status_change_modal', compact('statusId', 'project')) ?>
 <?php endforeach; ?>
 
 <?= $this->Image->initViewer() ?>
