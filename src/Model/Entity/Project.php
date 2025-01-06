@@ -417,4 +417,22 @@ class Project extends Entity
             ['project' => $this]
         ));
     }
+
+    public function dispatchWithdrawnEvent()
+    {
+        EventManager::instance()->on(new AlertListener());
+
+        EventManager::instance()->dispatch(new Event(
+            'Project.withdrawn',
+            $this,
+            ['project' => $this]
+        ));
+    }
+
+    public function statusWasJustChangedTo($status)
+    {
+        $wasnt = $this->getOriginal('status_id') != $status;
+        $is = $this->status_id == $status;
+        return $wasnt && $is;
+    }
 }
