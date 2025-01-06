@@ -3,10 +3,14 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Event\AlertListener;
+use Cake\Event\Event;
+use Cake\Event\EventManager;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
 
 /**
  * Project Entity
@@ -396,5 +400,21 @@ class Project extends Entity
     public function isDisbursed(): bool
     {
         return $this->status_id == self::STATUS_AWARDED_AND_DISBURSED;
+    }
+
+    public function dispatchSubmittedEvent()
+    {
+        EventManager::instance()->on(new AlertListener());
+
+        // Add required related resources
+        if (!$this->user) {
+            $this->user = TableRegistry::getTableLocator()->get('Users')->get($this->user_id);
+        }
+
+        EventManager::instance()->dispatch(new Event(
+            'Project.submitted',
+            $this,
+            ['project' => $this]
+        ));
     }
 }

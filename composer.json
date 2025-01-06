@@ -19,7 +19,8 @@
         "stripe/stripe-php": "^8.0",
         "twbs/bootstrap": "^5.0",
         "twilio/sdk": "^7.4",
-        "ext-gd": "*"
+        "ext-gd": "*",
+        "ext-curl": "*"
     },
     "require-dev": {
         "cakephp/bake": "^2.3",

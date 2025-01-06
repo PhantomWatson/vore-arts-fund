@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\Project;
+use ArrayObject;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\ResultSetInterface;
+use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -349,5 +351,14 @@ class ProjectsTable extends Table
         return $query->where(function (QueryExpression $exp) {
             return $exp->in('status', Project::VIEWABLE_STATUSES);
         });
+    }
+
+    public function afterSave(Event $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        $wasntSubmitted = $entity->getOriginal('status_id') != Project::STATUS_UNDER_REVIEW;
+        $isSubmitted = $entity->status_id == Project::STATUS_UNDER_REVIEW;
+        if ($wasntSubmitted && $isSubmitted) {
+            $entity->dispatchSubmittedEvent();
+        }
     }
 }
