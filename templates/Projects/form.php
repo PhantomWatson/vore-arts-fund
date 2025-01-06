@@ -8,8 +8,6 @@
  * @var string $deadline
  * @var string $fromNow
  * @var string[] $categories
- * @var string $budgetFormatted
- * @var int $budget
  */
 
 use App\Model\Entity\Image;
@@ -265,7 +263,7 @@ function getAgreementCheckedValue($key, $data, $project) {
         </div>
 
         <p class="alert alert-danger mt-2" style="display: none;" id="insufficient-budget-warning">
-            The funding cycle that you are applying in only has <?= $budgetFormatted ?> budgeted, so it cannot fully
+            The funding cycle that you are applying in only has <?= $fundingCycle->funding_available_formatted ?> budgeted, so it cannot fully
             fund your project.
         </p>
     </fieldset>
@@ -348,8 +346,8 @@ function getAgreementCheckedValue($key, $data, $project) {
 <?= $this->element('load_app_files', ['dir' => 'image-uploader']) ?>
 
 <script>
-    const budget = <?= json_encode($budget) ?>;
-    const budgetFormatted = <?= json_encode($budgetFormatted) ?>;
+    const budget = <?= json_encode($fundingCycle->funding_available) ?>;
+    const budgetFormatted = <?= json_encode($fundingCycle->funding_available_formatted) ?>;
     const radioButtons = document.querySelectorAll('input[name=accept_partial_payout]');
     const budgetWarning = document.getElementById('insufficient-budget-warning');
     const amountRequested = document.querySelector('input[name=amount_requested]');

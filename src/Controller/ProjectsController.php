@@ -85,8 +85,6 @@ class ProjectsController extends AppController
 
             return null;
         }
-        $budget = $fundingCycle->funding_available;
-        $budgetFormatted = $fundingCycle->funding_available_formatted;
 
         // Show nonstandard error message and redirect if unauthenticated
         $identity = $this->Authentication->getIdentity();
@@ -124,7 +122,7 @@ class ProjectsController extends AppController
             $project->check_name = $user->name;
         }
 
-        $this->set(compact('project', 'budget', 'budgetFormatted'));
+        $this->set(compact('project'));
 
         return null;
     }
