@@ -31,6 +31,7 @@ class Slack
     {
         $slackChannel = match ($alertType) {
             Alert::TYPE_APPLICATIONS => '#applications',
+            Alert::TYPE_TRANSACTIONS => '#transactions',
             default => false
         };
         if ($slackChannel) {

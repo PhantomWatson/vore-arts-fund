@@ -3,6 +3,7 @@ namespace App\Alert;
 
 class Alert {
     const TYPE_APPLICATIONS = 'applications';
+    const TYPE_TRANSACTIONS = 'transactions';
 
     public string $content = '';
 

@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Event\AlertListener;
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\Event\EventInterface;
+use Cake\Event\EventManager;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
@@ -75,6 +78,7 @@ class TransactionsController extends ApiController
         $succeeded = false;
         switch ($event->type) {
             case 'charge.succeeded':
+                $this->dispatchChargeSucceededEvent((string)$payload);
                 $charge = $event->data->object;
                 $this->writeToStripeLog('Charge: ' . print_r($charge, true));
                 if (get_class($charge) == \Stripe\Charge::class) {
@@ -97,5 +101,16 @@ class TransactionsController extends ApiController
     private function writeToStripeLog(string $message, $level = 'info'): void
     {
         Log::write($level, $message, ['scope' => 'stripe']);
+    }
+
+    private function dispatchChargeSucceededEvent(string $payload)
+    {
+        EventManager::instance()->on(new AlertListener());
+
+        EventManager::instance()->dispatch(new Event(
+            'Stripe.chargeSucceeded',
+            $this,
+            compact('payload')
+        ));
     }
 }
