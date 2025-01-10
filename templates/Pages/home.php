@@ -63,6 +63,42 @@
                     </p>
                 </div>
             </section>
+            <section class="card">
+                <div class="card-body">
+                    <h1 class="card-title">
+                        Follow us
+                    </h1>
+                    <ul class="list-unstyled social-media-links">
+                        <li>
+                            <a href="https://www.facebook.com/VoreArtsFund">
+                                <i class="fa-brands fa-facebook" title="Facebook" aria-hidden="true"></i>
+                                <span class="sr-only">Facebook:</span>
+                                <span class="handle">facebook.com/VoreArtsFund</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://voreartsfund.bsky.social/">
+                                <i class="fa-brands fa-bluesky" title="Bluesky" aria-hidden="true"></i>
+                                <span class="sr-only">Bluesky:</span>
+                                <span class="handle">voreartsfund.bsky.social</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://muncieevents.com/tag/2244-vore-arts-fund">
+                                <i class="icon-me-logo" title="Muncie Events"></i>
+                                <span class="handle">Muncie Events</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/PhantomWatson/vore-arts-fund">
+                                <i class="fa-brands fa-github" title="GitHub" aria-hidden="true"></i>
+                                <span class="sr-only">GitHub:</span>
+                                <span class="handle">PhantomWatson/vore-arts-fund</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
         </div>
     </div>
 

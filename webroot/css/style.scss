@@ -1037,3 +1037,29 @@ section.funding-cycles {
         vertical-align: inherit;
     }
 }
+
+.social-media-links {
+    margin-bottom: 0;
+
+    li {
+        line-height: 30px;
+        min-height: 30px;
+        vertical-align: middle;
+    }
+
+    i.fa-brands,
+    i.icon-me-logo {
+        font-size: 25px;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+
+    a {
+        text-decoration: none;
+
+        .handle {
+            text-decoration: underline;
+            vertical-align: middle;
+        }
+    }
+}
