@@ -328,7 +328,7 @@ class ProjectsController extends AdminController
         $projectId = $this->request->getParam('id');
         $project = $this->Projects->get($projectId);
         $noteBody = $this->request->getData('body');
-        $type = $this->request->getData('type');
+        $type = (int)$this->request->getData('type');
         if (!$noteBody) {
             $this->Flash->error('Message body is required.');
             return false;
