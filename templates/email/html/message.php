@@ -13,7 +13,7 @@
 </p>
 
 <p>
-    you've received a message from the Vore Arts Fund review committee regarding your project
+    You've received a message from the Vore Arts Fund review committee regarding your project
     <strong><?= $project->title ?></strong>:
 </p>
 
