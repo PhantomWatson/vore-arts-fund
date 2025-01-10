@@ -66,13 +66,11 @@
         </div>
     </div>
 
-    <?php if ($isStaging): ?>
-        <?= $this->element('home/voting', [
-            'votingCycle' => $votingInfo['cycle'] ?? null,
-            'votingProjectCount' => $votingInfo['projectCount'] ?? null,
-            'hasVoted' => $hasVoted,
-        ]) ?>
+    <?= $this->element('home/voting', [
+        'votingCycle' => $votingInfo['cycle'] ?? null,
+        'votingProjectCount' => $votingInfo['projectCount'] ?? null,
+        'hasVoted' => $hasVoted,
+    ]) ?>
 
-        <?= $this->element('home/applying') ?>
-    <?php endif; ?>
+    <?= $this->element('home/applying') ?>
 </div>
