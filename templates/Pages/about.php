@@ -116,7 +116,7 @@
                     </div>
                     <div>
                         <dt>
-                            Vice President / Secretary / Treasurer
+                            Vice President
                         </dt>
                         <dd>
                             Natalie Phillips <span class="pronoun">(she)</span>
@@ -124,10 +124,18 @@
                     </div>
                     <div>
                         <dt>
-                            Board Member
+                            Treasurer
                         </dt>
                         <dd>
                             Beth McCollum <span class="pronoun">(they/she)</span>
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>
+                            Secretary
+                        </dt>
+                        <dd>
+                            Katy Wolfe <span class="pronoun">(she)</span>
                         </dd>
                     </div>
                 </dl>
