@@ -33,21 +33,6 @@
             </section>
             <section>
                 <h1>
-                    Survey
-                </h1>
-                <p>
-                    <strong>
-                        We need all artists, performers, art educators, and event organizers living in Muncie to help us
-                        out
-                    </strong>
-                    by filling out
-                    <a href="https://forms.gle/4sEd18q21JiutEE2A">a super-short survey about what you do</a>, what you
-                    need, and what kind of impact the Vore Arts Fund would have on your work. We would love it if you
-                    would help share this survey with other folks in the local arts and entertainment community, too!
-                </p>
-            </section>
-            <section>
-                <h1>
                     Coverage on Indiana Public Radio
                 </h1>
                 <p>
