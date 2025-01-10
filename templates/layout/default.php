@@ -33,10 +33,10 @@ $title = $title ?? $this->fetch('title');
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 
-    <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
-    <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
-    <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
-    <link rel="stylesheet" href="/fontawesome/css/regular.min.css" />
+    <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css?t=1736535900" />
+    <link rel="stylesheet" href="/fontawesome/css/brands.min.css?t=1736535900" />
+    <link rel="stylesheet" href="/fontawesome/css/solid.min.css?t=1736535900" />
+    <link rel="stylesheet" href="/fontawesome/css/regular.min.css?t=1736535900" />
     <link rel="stylesheet" href="/muncie-events-icon-font/css/icons.css" />
 
     <script src="https://unpkg.com/@popperjs/core@2"></script>
