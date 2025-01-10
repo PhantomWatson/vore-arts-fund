@@ -165,57 +165,7 @@ function getAgreementCheckedValue($key, $data, $project) {
 
     <fieldset>
         <legend>
-            Project
-        </legend>
-        <?= $this->Form->control('title', [
-            'required' => true,
-            'label' => 'The title of your project',
-            'templateVars' => [
-                'footnote' => 'This could be the actual title that your finished work will have or just a description of what you\'re trying to pay for, like "Canvases and paint" or "Fix theater sound system"'
-            ],
-            'type' => 'inputWithFootnote'
-        ]) ?>
-
-        <?= $this->Form->control(
-            'category_id',
-            ['empty' => true, 'required' => true]
-        ) ?>
-
-        <div class="form-group select required">
-            <label for="description">
-                Description of your project (please provide a detailed proposal, including goals, audience, and timeline)
-            </label>
-            <?= $this->Form->textarea(
-                'description',
-                [
-                    'id' => 'description',
-                    'required' => true,
-                    'type' => 'textarea',
-                ]
-            ) ?>
-        </div>
-
-        <?php foreach ($questions as $i => $question): ?>
-            <div class="form-group select required">
-                <label for="<?= "question-$i" ?>">
-                    <?= $question->question ?>
-                </label>
-                <?= $this->Form->hidden("answers.$i.question_id", ['value' => $question->id]) ?>
-                <?= $this->Form->textarea(
-                    "answers.$i.answer",
-                    [
-                        'id' => "question-$i",
-                        'required' => true,
-                        'type' => 'textarea',
-                    ]
-                ) ?>
-            </div>
-        <?php endforeach; ?>
-    </fieldset>
-
-    <fieldset>
-        <legend>
-            Payout
+            Funding Request
         </legend>
         <div class="form-group required">
             <label for="amount-requested">
@@ -266,6 +216,56 @@ function getAgreementCheckedValue($key, $data, $project) {
             The funding cycle that you are applying in only has <?= $fundingCycle->funding_available_formatted ?> budgeted, so it cannot fully
             fund your project.
         </p>
+    </fieldset>
+
+    <fieldset>
+        <legend>
+            Project
+        </legend>
+        <?= $this->Form->control('title', [
+            'required' => true,
+            'label' => 'The title of your project',
+            'templateVars' => [
+                'footnote' => 'This could be the actual title that your finished work will have or just a description of what you\'re trying to pay for, like "Canvases and paint" or "Fix theater sound system"'
+            ],
+            'type' => 'inputWithFootnote'
+        ]) ?>
+
+        <?= $this->Form->control(
+            'category_id',
+            ['empty' => true, 'required' => true]
+        ) ?>
+
+        <div class="form-group select required">
+            <label for="description">
+                Description of your project (please provide a detailed proposal, including goals, audience, and timeline)
+            </label>
+            <?= $this->Form->textarea(
+                'description',
+                [
+                    'id' => 'description',
+                    'required' => true,
+                    'type' => 'textarea',
+                ]
+            ) ?>
+        </div>
+
+        <?php foreach ($questions as $i => $question): ?>
+            <div class="form-group select required">
+                <label for="<?= "question-$i" ?>">
+                    <?= $question->question ?>
+                </label>
+                <?= $this->Form->hidden("answers.$i.question_id", ['value' => $question->id]) ?>
+                <?= $this->Form->textarea(
+                    "answers.$i.answer",
+                    [
+                        'id' => "question-$i",
+                        'required' => true,
+                        'type' => 'textarea',
+                    ]
+                ) ?>
+            </div>
+        <?php endforeach; ?>
     </fieldset>
 
     <fieldset>
