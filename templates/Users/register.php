@@ -26,8 +26,8 @@ $this->append(
                 This can be your name or the name of your organization
             </p>
         </div>
-        <?= $this->Form->control('email', ['type' => 'email']) ?>
-        <?= $this->Form->control('password') ?>
+        <?= $this->Form->control('registerEmail', ['type' => 'email', 'label' => 'Email']) ?>
+        <?= $this->Form->control('registerPassword', ['type' => 'password', 'label' => 'Password']) ?>
         <?= $this->element('phone_input') ?>
         <div class="g-recaptcha" data-sitekey="<?= \Cake\Core\Configure::read('recaptcha.siteKey') ?>"></div>
         <button type="submit" class="btn btn-primary">

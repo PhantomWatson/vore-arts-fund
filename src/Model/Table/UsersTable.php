@@ -89,6 +89,18 @@ class UsersTable extends Table
             ->requirePresence('password', 'create')
             ->notEmptyString('password');
 
+        /* Using different names than the actual auth fields so the authentication middleware doesn't log the user in
+         * if they try to register an existing account */
+        $validator
+            ->email('registerEmail')
+            ->requirePresence('registerEmail', 'create')
+            ->notEmptyString('registerEmail');
+        $validator
+            ->scalar('registerPassword')
+            ->maxLength('registerPassword', 200)
+            ->requirePresence('registerPassword', 'create')
+            ->notEmptyString('registerPassword');
+
         $validator
             ->boolean('is_admin')
             ->requirePresence('is_admin', 'create')

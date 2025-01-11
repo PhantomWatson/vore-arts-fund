@@ -133,6 +133,8 @@ class UsersController extends AppController
 
         if ($this->request->is('post') && $this->recaptchaResponseIsValid()) {
             $data = $this->request->getData();
+            $data['email'] = $data['registerEmail'] ?? '';
+            $data['password'] = $data['registerPassword'] ?? '';
 
             $data['phone'] = User::cleanPhone($data['phone']);
             $user = $this->Users->patchEntity($user, $data);
