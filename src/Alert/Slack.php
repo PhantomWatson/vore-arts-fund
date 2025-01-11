@@ -77,18 +77,43 @@ class Slack
     }
 
     /**
-     * Sends a message to Slack
+     * Sends a message to Slack using the legacy incoming webhook
+     *
+     * @return bool
+     */
+    public function sendLegacy()
+    {
+        $data = 'payload=' . json_encode([
+                'channel' => $this->channel,
+                'text' => $this->content,
+                'username' => $this->username
+            ]);
+        $url = Configure::read('slackWebhookUrl');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $this->curlResult = curl_exec($ch);
+        curl_close($ch);
+
+        // Reset content
+        $this->content = '';
+
+        return $this->curlResult == 'ok';
+    }
+
+    /**
+     * Sends a message to Slack using the Slack Poster app
      *
      * @return bool
      */
     public function send()
     {
         $data = 'payload=' . json_encode([
-            'channel' => $this->channel,
             'text' => $this->content,
             'username' => $this->username
         ]);
-        $url = Configure::read('slackWebhookUrl');
+        $url = Configure::read('slackWebhookUrls.' . $this->channel);
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);

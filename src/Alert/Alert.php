@@ -44,6 +44,7 @@ class Alert {
         $slack->content = $this->content;
         require_once(ROOT . DS . 'config' . DS . 'environment.php');
         $slack->declareEnvironment(getEnvironment());
+        $slack->sendLegacy(); // Trying both of these until it's confirmed that both work the same
         $slack->send();
     }
 }
