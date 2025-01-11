@@ -2,7 +2,6 @@
 namespace App\Alert;
 
 use Cake\Core\Configure;
-use Cake\Log\Log;
 
 class Slack
 {
@@ -11,15 +10,15 @@ class Slack
      */
     const MAX_LENGTH = 39000;
     public $content;
-    public $curlResult;
-    private $channel;
     private $url;
-    public $username = 'Automated Alerts';
 
-    public function __construct($alertType)
+    public function __construct($channel)
     {
-        $this->channel = $this->getSlackChannel($alertType);
-        $this->url = Configure::read('slackWebhookUrls.' . $this->channel);
+        $urls = Configure::read('slackWebhookUrls');
+        $this->url = $urls[$channel] ?? $urls['default'];
+        if (!isset($urls[$channel])) {
+            $this->addLine('Unknown alert channel: ' . $channel);
+        }
     }
 
     /**
@@ -37,25 +36,6 @@ class Slack
         }
 
         $this->content = "*($environment environment)*\n" . $this->content;
-    }
-
-    /**
-     * @param $alertType
-     * @return string
-     */
-    public function getSlackChannel($alertType)
-    {
-        $slackChannel = match ($alertType) {
-            Alert::TYPE_APPLICATIONS => '#applications',
-            Alert::TYPE_TRANSACTIONS => '#transactions',
-            default => false
-        };
-        if ($slackChannel) {
-            return $slackChannel;
-        }
-
-        $this->addLine('Unknown alert channel: ' . $alertType);
-        return '#errors';
     }
 
     /**
@@ -106,9 +86,9 @@ class Slack
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $this->curlResult = curl_exec($ch);
+        $curlResult = curl_exec($ch);
         curl_close($ch);
 
-        return $this->curlResult == 'ok';
+        return $curlResult == 'ok';
     }
 }
