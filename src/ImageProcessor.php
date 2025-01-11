@@ -101,7 +101,6 @@ class ImageProcessor
             self::MAX_WIDTH_FULL,
             self::MAX_HEIGHT_FULL
         );
-        Log::debug('Resizing original: ' . print_r([$newWidth, $newHeight], true));
         $this->makeResizedCopy($destination, $newWidth, $newHeight, self::QUALITY_FULL);
     }
 
