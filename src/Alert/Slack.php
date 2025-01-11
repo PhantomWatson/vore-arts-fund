@@ -2,6 +2,7 @@
 namespace App\Alert;
 
 use Cake\Core\Configure;
+use Cake\Log\Log;
 
 class Slack
 {
@@ -12,15 +13,30 @@ class Slack
     public $content;
     public $curlResult;
     private $channel;
+    private $url;
     public $username = 'Automated Alerts';
 
-    public function declareEnvironment($environment)
+    public function __construct($alertType)
     {
+        $this->channel = $this->getSlackChannel($alertType);
+        $this->url = Configure::read('slackWebhookUrls.' . $this->channel);
+    }
+
+    /**
+     * If this isn't the production environment, declares the environment at the top of the message
+     *
+     * @return void
+     */
+    public function prependEnvironmentToMessage(): void
+    {
+        require_once(ROOT . DS . 'config' . DS . 'environment.php');
+        $environment = getEnvironment();
+
         if ($environment == 'production') {
             return;
         }
 
-        $this->username .= " ($environment)";
+        $this->content = "*($environment environment)*\n" . $this->content;
     }
 
     /**
@@ -40,11 +56,6 @@ class Slack
 
         $this->addLine('Unknown alert channel: ' . $alertType);
         return '#errors';
-    }
-
-    public function setChannel($alertType)
-    {
-        $this->channel = $this->getSlackChannel($alertType);
     }
 
     /**
@@ -76,30 +87,9 @@ class Slack
         );
     }
 
-    /**
-     * Sends a message to Slack using the legacy incoming webhook
-     *
-     * @return bool
-     */
-    public function sendLegacy()
+    private function beforeSend()
     {
-        $data = 'payload=' . json_encode([
-                'channel' => $this->channel,
-                'text' => $this->content,
-                'username' => $this->username
-            ]);
-        $url = Configure::read('slackWebhookUrl');
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $this->curlResult = curl_exec($ch);
-        curl_close($ch);
-
-        // Reset content
-        $this->content = '';
-
-        return $this->curlResult == 'ok';
+        $this->prependEnvironmentToMessage();
     }
 
     /**
@@ -109,20 +99,15 @@ class Slack
      */
     public function send()
     {
-        $data = 'payload=' . json_encode([
-            'text' => $this->content,
-            'username' => $this->username
-        ]);
-        $url = Configure::read('slackWebhookUrls.' . $this->channel);
-        $ch = curl_init($url);
+        $this->beforeSend();
+
+        $data = 'payload=' . json_encode(['text' => $this->content]);
+        $ch = curl_init($this->url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $this->curlResult = curl_exec($ch);
         curl_close($ch);
-
-        // Reset content
-        $this->content = '';
 
         return $this->curlResult == 'ok';
     }

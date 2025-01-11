@@ -39,12 +39,11 @@ class Alert {
         }
 
         // Send through Slack
-        $slack = new Slack();
-        $slack->setChannel($alertType);
+        $slack = new Slack($alertType);
         $slack->content = $this->content;
-        require_once(ROOT . DS . 'config' . DS . 'environment.php');
-        $slack->declareEnvironment(getEnvironment());
-        $slack->sendLegacy(); // Trying both of these until it's confirmed that both work the same
         $slack->send();
+
+        // Reset content
+        $slack->content = '';
     }
 }
