@@ -291,23 +291,28 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             /** @var \App\Model\Entity\User $user */
             $data = $this->request->getData();
-            $data['User']['email'] = strtolower(trim($data['User']['email']));
-            $user = $this->Users->findByEmail($data['User']['email'])->first();
+            $email = strtolower(trim($data['User']['email'] ?? ''));
+            if (!$email) {
+                $this->Flash->error('Please enter an email addres to continue.');
+                return $this->redirect(['action' => 'forgotPassword']);
+            }
+
+            $user = $this->Users->findByEmail($email)->first();
             if (empty($user)) {
                 $this->Flash->error('Sorry, the email address entered was not found.');
 
                 return $this->redirect(['action' => 'forgotPassword']);
-            } else {
-                $user = $this->__generatePasswordToken($user);
-                $this->Users->save($user);
-                $this->__sendForgotPasswordEmail($user);
-                $this->Flash->success(
-                    'Password reset instructions have been sent to your email address. ' .
-                    'You have 24 hours to complete the request.'
-                );
-
-                return $this->redirect(['action' => 'login']);
             }
+
+            $user = $this->__generatePasswordToken($user);
+            $this->Users->save($user);
+            $this->__sendForgotPasswordEmail($user);
+            $this->Flash->success(
+                'Password reset instructions have been sent to your email address. ' .
+                'You have 24 hours to complete the request.'
+            );
+
+            return $this->redirect(['action' => 'login']);
         }
 
         $this->title('Forgot Password');
