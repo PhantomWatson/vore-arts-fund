@@ -87,7 +87,7 @@ const Project = (props) => {
                     {answer.question.question}
                   </h2>
                   <p className="vote-project-a">
-                    {answer.answer}
+                    {answer.answer.replace(/\n/g, '<br />')}
                   </p>
                 </section>
               );
