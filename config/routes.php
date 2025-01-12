@@ -117,7 +117,7 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
     $builder->connect('/projects', ['controller' => 'Projects', 'action' => 'index']);
     $builder->connect('/projects/{id}', ['controller' => 'Projects', 'action' => 'index'])
         ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);
+        ->setPass(['id']); // Funding cycle ID
     $actions = [
         'review',
         'setStatus',
@@ -128,6 +128,23 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
             '/projects/' . Inflector::dasherize($action) . '/{id}',
             ['controller' => 'Projects', 'action' => $action]
         );
+    }
+
+    // Transactions
+    $builder->connect('/transactions/{id}', ['controller' => 'Transactions', 'action' => 'view'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id']);
+    $actions = [
+        'edit',
+        'delete',
+    ];
+    foreach ($actions as $action) {
+        $builder->connect(
+            '/transactions/' . Inflector::dasherize($action) . '/{id}',
+            ['controller' => 'Transactions', 'action' => $action]
+        )
+            ->setPatterns(['id' => '\d+'])
+            ->setPass(['id']);
     }
 
     // Votes

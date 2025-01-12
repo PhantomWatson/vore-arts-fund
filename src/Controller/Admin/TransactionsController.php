@@ -130,12 +130,12 @@ class TransactionsController extends AdminController
     /**
      * Edit method
      *
-     * @param string|null $id Transaction id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit()
     {
+        $id = $this->request->getParam('id');
         $transaction = $this->Transactions->get($id, [
             'contain' => [],
         ]);
@@ -169,12 +169,12 @@ class TransactionsController extends AdminController
     /**
      * Delete method
      *
-     * @param string|null $id
      * @return \Cake\Http\Response|null|void Redirects to index
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found
      */
-    public function delete($id = null)
+    public function delete()
     {
+        $id = $this->request->getParam('id');
         $this->request->allowMethod(['post', 'delete']);
         $report = $this->Transactions->get($id);
         if ($this->Transactions->delete($report)) {

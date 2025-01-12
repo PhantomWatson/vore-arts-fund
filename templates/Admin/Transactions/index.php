@@ -36,7 +36,7 @@
                         $transaction->has('project')
                             ? $this->Html->link(
                                 $transaction->project->title,
-                                ['controller' => 'Projects', 'action' => 'view', $transaction->project->id]
+                                ['controller' => 'Projects', 'action' => 'view', 'id' => $transaction->project->id]
                             )
                             : ''
                     ?>
@@ -45,18 +45,18 @@
                 <td class="actions">
                     <?= $this->Html->link(
                         'View',
-                        ['action' => 'view', $transaction->id],
+                        ['action' => 'view', 'id' => $transaction->id],
                         ['class' => 'btn btn-sm btn-secondary'],
                     ) ?>
                     <?= $this->Html->link(
                         'Edit',
-                        ['action' => 'edit', $transaction->id],
+                        ['action' => 'edit', 'id' => $transaction->id],
                         ['class' => 'btn btn-sm btn-secondary'],
                     ) ?>
                     <?php if (isset($_GET['delete'])): ?>
                         <?= $this->Form->postLink(
                             'Delete',
-                            ['action' => 'delete', $transaction->id],
+                            ['action' => 'delete', 'id' => $transaction->id],
                             [
                                 'confirm' => 'Are you sure you want to delete that transaction?',
                                 'class' => 'btn btn-sm btn-danger'
