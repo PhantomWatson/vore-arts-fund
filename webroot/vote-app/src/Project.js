@@ -87,7 +87,14 @@ const Project = (props) => {
                     {answer.question.question}
                   </h2>
                   <p className="vote-project-a">
-                    {answer.answer.replace(/\n/g, '<br />')}
+                    {answer.answer.split('\n').map((line, key) => {
+                      return (
+                        <React.Fragment key={key}>
+                          {line}
+                          <br />
+                        </React.Fragment>
+                      );
+                    })}
                   </p>
                 </section>
               );
