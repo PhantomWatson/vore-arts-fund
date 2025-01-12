@@ -94,6 +94,7 @@ class AlertListener implements EventListenerInterface
                 'Name: ' . ($name === false ? 'Unknown' : $name),
                 'Email: ' . ($email === false ? 'Unknown' : $email),
             ]);
+            $this->alert->addLine('');
             $this->alert->addLine('Recorded transaction info:');
             if ($transaction) {
                 $url = Router::url([
@@ -109,17 +110,20 @@ class AlertListener implements EventListenerInterface
                         $transaction->project_id
                             ? sprintf(
                                 '<%s|%s>',
-                                Router::url([
-                                    'prefix' => 'Admin',
-                                    'controller' => 'Projects',
-                                    'action' => 'view',
-                                    'id' => $transaction->project_id,
-                                ]),
+                                Router::url(
+                                    [
+                                        'prefix' => 'Admin',
+                                        'controller' => 'Projects',
+                                        'action' => 'view',
+                                        'id' => $transaction->project_id,
+                                    ],
+                                    true
+                                ),
                                 $transaction->project->title,
                             )
                             : 'none'
                     ),
-                    'Net amount: ' . ($transaction->net_amount_formatted),
+                    'Net amount: ' . ($transaction->dollar_amount_net_formatted),
                 ]);
             }
         }
