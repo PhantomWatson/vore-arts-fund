@@ -95,36 +95,37 @@ class AlertListener implements EventListenerInterface
                 'Email: ' . ($email === false ? 'Unknown' : $email),
             ]);
             $this->alert->addLine('');
-            $this->alert->addLine('Recorded transaction info:');
             if ($transaction) {
+                $this->alert->addLine('Recorded transaction info:');
                 $url = Router::url([
                     'prefix' => 'Admin',
                     'controller' => 'Transactions',
                     'action' => 'view',
                     'id' => $transaction->id,
                 ]);
+                $project = $transaction->project_id
+                    ? sprintf(
+                        '<%s|%s>',
+                        Router::url(
+                            [
+                                'prefix' => 'Admin',
+                                'controller' => 'Projects',
+                                'action' => 'review',
+                                'id' => $transaction->project_id,
+                            ],
+                            true
+                        ),
+                        $transaction->project->title,
+                    )
+                    : 'none';
                 $this->alert->addList([
                     "<$url|View transaction>",
                     'Transaction type: ' . $transaction->type_name,
-                    'Associated project: ' . (
-                        $transaction->project_id
-                            ? sprintf(
-                                '<%s|%s>',
-                                Router::url(
-                                    [
-                                        'prefix' => 'Admin',
-                                        'controller' => 'Projects',
-                                        'action' => 'review',
-                                        'id' => $transaction->project_id,
-                                    ],
-                                    true
-                                ),
-                                $transaction->project->title,
-                            )
-                            : 'none'
-                    ),
+                    "Associated project: $project",
                     'Net amount: ' . ($transaction->dollar_amount_net_formatted),
                 ]);
+            } else {
+                $this->alert->addLine('*Error: No transaction recorded in database*');
             }
         }
 
