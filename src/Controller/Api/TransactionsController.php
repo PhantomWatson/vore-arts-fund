@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Event\AlertListener;
+use App\Model\Entity\Transaction;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventInterface;
@@ -78,14 +79,15 @@ class TransactionsController extends ApiController
         $succeeded = false;
         switch ($event->type) {
             case 'charge.succeeded':
-                $this->dispatchChargeSucceededEvent((string)$payload);
                 $charge = $event->data->object;
                 $this->writeToStripeLog('Charge: ' . print_r($charge, true));
                 if (get_class($charge) == \Stripe\Charge::class) {
-                    $succeeded = $this->Transactions->addPayment($charge);
+                    $transaction = $this->Transactions->addPayment($charge);
+                    $succeeded = $transaction !== false;
                 } else {
                     $this->writeToStripeLog('Cannot save charge: Not a \Stripe\Charge object', 'error');
                 }
+                $this->dispatchChargeSucceededEvent((string)$payload, $transaction ?? null);
                 break;
             default:
                 $msg = 'Received unknown event type ' . $event->type;
@@ -103,14 +105,14 @@ class TransactionsController extends ApiController
         Log::write($level, $message, ['scope' => 'stripe']);
     }
 
-    private function dispatchChargeSucceededEvent(string $payload)
+    private function dispatchChargeSucceededEvent(string $payload, ?Transaction $transaction)
     {
         EventManager::instance()->on(new AlertListener());
 
         EventManager::instance()->dispatch(new Event(
             'Stripe.chargeSucceeded',
             $this,
-            compact('payload')
+            compact('payload', 'transaction')
         ));
     }
 }

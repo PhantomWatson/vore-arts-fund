@@ -126,9 +126,9 @@ class TransactionsTable extends Table
      * TODO: Check metadata for project_id and update type and project_id as appropriate
      *
      * @param \Stripe\Charge $charge
-     * @return bool
+     * @return Transaction|false
      */
-    public function addPayment(\Stripe\Charge $charge): bool
+    public function addPayment(\Stripe\Charge $charge): Transaction|false
     {
         $transaction = $this->newEntity([
             'amount_gross' => $charge->amount_captured,
@@ -140,7 +140,7 @@ class TransactionsTable extends Table
             'name' => $charge->metadata['name'] ?? '',
         ]);
         if ($this->save($transaction)) {
-            return true;
+            return $transaction;
         }
         self::logStripeError(
             'Can\'t save charge. Details: ' . print_r($transaction->getErrors(), true),

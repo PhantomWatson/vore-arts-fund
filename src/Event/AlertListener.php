@@ -5,6 +5,7 @@ namespace App\Event;
 use App\Alert\Alert;
 use App\Alert\Slack;
 use App\Model\Entity\Project;
+use App\Model\Entity\Transaction;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Routing\Router;
@@ -69,7 +70,7 @@ class AlertListener implements EventListenerInterface
         $this->alert->send(Alert::TYPE_APPLICATIONS);
     }
 
-    public function alertStripeChargeSucceeded(Event $event, string $payload)
+    public function alertStripeChargeSucceeded(Event $event, string $payload, ?Transaction $transaction = null)
     {
         $this->alert->addLine('Stripe charge succeeded');
 
@@ -80,19 +81,47 @@ class AlertListener implements EventListenerInterface
             $this->alert->addline("json_last_error() was $jsonError)");
         } else {
             $chargeId = $data['data']['object']['id'] ?? false;
-            $amount = $data['data']['object']['amount'] ?? false;
+            $cents = $data['data']['object']['amount'] ?? false;
             $name = $data['data']['object']['metadata']['name'] ?? false;
             $email = $data['data']['object']['billing_details']['email'] ?? false;
             $this->alert->addList([
                 'Charge ID: ' . ($chargeId === false ? 'Unknown' : $chargeId),
                 'Amount: ' . (
-                    $amount === false
+                    $cents === false
                     ? 'Unknown'
-                    : ('$' . number_format(round($amount, 2)))
+                    : ('$' . number_format(round($cents / 100, 2)))
                 ),
                 'Name: ' . ($name === false ? 'Unknown' : $name),
                 'Email: ' . ($email === false ? 'Unknown' : $email),
             ]);
+            $this->alert->addLine('Recorded transaction info:');
+            if ($transaction) {
+                $url = Router::url([
+                    'prefix' => 'Admin',
+                    'controller' => 'Transactions',
+                    'action' => 'view',
+                    'id' => $transaction->id,
+                ]);
+                $this->alert->addList([
+                    "<$url|View transaction>",
+                    'Transaction type: ' . $transaction->type_name,
+                    'Associated project: ' . (
+                        $transaction->project_id
+                            ? sprintf(
+                                '<%s|%s>',
+                                Router::url([
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Projects',
+                                    'action' => 'view',
+                                    'id' => $transaction->project_id,
+                                ]),
+                                $transaction->project->title,
+                            )
+                            : 'none'
+                    ),
+                    'Net amount: ' . ($transaction->net_amount_formatted),
+                ]);
+            }
         }
 
         $this->alert->send(Alert::TYPE_TRANSACTIONS);
