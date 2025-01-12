@@ -97,12 +97,15 @@ class AlertListener implements EventListenerInterface
             $this->alert->addLine('');
             if ($transaction) {
                 $this->alert->addLine('Recorded transaction info:');
-                $url = Router::url([
-                    'prefix' => 'Admin',
-                    'controller' => 'Transactions',
-                    'action' => 'view',
-                    'id' => $transaction->id,
-                ]);
+                $transactionUrl = Router::url(
+                    [
+                        'prefix' => 'Admin',
+                        'controller' => 'Transactions',
+                        'action' => 'view',
+                        'id' => $transaction->id,
+                    ],
+                    true
+                );
                 $project = $transaction->project_id
                     ? sprintf(
                         '<%s|%s>',
@@ -119,7 +122,7 @@ class AlertListener implements EventListenerInterface
                     )
                     : 'none';
                 $this->alert->addList([
-                    "<$url|View transaction>",
+                    "<$transactionUrl|View transaction>",
                     'Transaction type: ' . $transaction->type_name,
                     "Associated project: $project",
                     'Net amount: ' . ($transaction->dollar_amount_net_formatted),
