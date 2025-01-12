@@ -114,7 +114,7 @@ class AlertListener implements EventListenerInterface
                                     [
                                         'prefix' => 'Admin',
                                         'controller' => 'Projects',
-                                        'action' => 'view',
+                                        'action' => 'review',
                                         'id' => $transaction->project_id,
                                     ],
                                     true
