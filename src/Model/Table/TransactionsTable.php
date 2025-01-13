@@ -131,7 +131,7 @@ class TransactionsTable extends Table
      */
     public function addPayment(\Stripe\Charge $charge): Transaction|false
     {
-        $transaction = $this->newEntity([
+        $data = [
             'amount_gross' => $charge->amount_captured,
             'amount_net' => self::getNetAmount($charge->balance_transaction),
             'date' => new FrozenTime(),
@@ -139,12 +139,14 @@ class TransactionsTable extends Table
             'project_id' => null,
             'meta' => json_encode($charge),
             'name' => $charge->metadata['name'] ?? '',
-        ]);
+        ];
+        $transaction = $this->newEntity($data);
         if ($this->save($transaction)) {
             return $transaction;
         }
         self::logStripeError(
-            'Can\'t save charge. Details: ' . print_r($transaction->getErrors(), true),
+            "Can't save charge.\nData: " . print_r($data, true)
+            . "\nError details: " . print_r($transaction->getErrors(), true),
         );
         return false;
     }
