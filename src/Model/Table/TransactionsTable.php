@@ -6,10 +6,13 @@ namespace App\Model\Table;
 use App\Alert\Alert;
 use App\Model\Entity\Transaction;
 use Cake\Core\Configure;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\I18n\FrozenTime;
 use Cake\Log\Log;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Routing\Router;
 use Cake\Validation\Validator;
 use Stripe\Exception\ApiErrorException;
 use Stripe\StripeClient;
@@ -194,5 +197,22 @@ class TransactionsTable extends Table
             ->find()
             ->where(['project_id' => $options['project_id']])
             ->orderAsc('created');
+    }
+
+    public function afterSave(Event $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        /** @var Transaction $entity */
+        $alert = new Alert();
+        $alert->addLine(sprintf(
+            '<%s|Transaction #%s> saved',
+            Router::url([
+                'prefix' => 'Admin',
+                'controller' => 'Transactions',
+                'action' => 'view',
+                'id' => $entity->id
+            ]),
+            $entity->id,
+        ));
+        $alert->send(Alert::TYPE_TRANSACTIONS);
     }
 }
