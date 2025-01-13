@@ -102,7 +102,7 @@ class UsersController extends AppController
      */
     public function recaptchaResponseIsValid(): bool
     {
-        $captchaResponse = $_POST['g-recaptcha-response'];
+        $captchaResponse = $_POST['g-recaptcha-response'] ?? null;
         $recaptcha = new ReCaptcha(
             Configure::read('recaptcha.secretKey'),
             new CurlPost(),
