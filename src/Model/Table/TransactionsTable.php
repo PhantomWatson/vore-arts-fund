@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Alert\Alert;
 use App\Model\Entity\Transaction;
 use Cake\Core\Configure;
 use Cake\I18n\FrozenTime;
@@ -177,6 +178,12 @@ class TransactionsTable extends Table
             $msg,
             ['scope' => 'stripe']
         );
+
+        // Send alert to administrators
+        $alert = new Alert();
+        $alert->addLine($msg);
+        $alert->addLine(print_r(debug_backtrace(limit: 5), true));
+        $alert->send(Alert::TYPE_ERRORS);
     }
 
     protected function findForProject($query, $options)
