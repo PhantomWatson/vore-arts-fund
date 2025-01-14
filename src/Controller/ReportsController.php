@@ -48,12 +48,12 @@ class ReportsController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Report id.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view()
     {
+        $id = $this->request->getParam('id');
         $report = $this->Reports->get($id, [
             'contain' => ['Users', 'Projects'],
         ]);
@@ -64,7 +64,7 @@ class ReportsController extends AppController
                 'prefix' => false,
                 'controller' => 'Reports',
                 'action' => 'project',
-                $report->project->id,
+                'id' => $report->project->id,
             ]
         );
         $this->setCurrentBreadcrumb($report->created->format('F j, Y'));
@@ -100,8 +100,9 @@ class ReportsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function submit($projectId = null)
+    public function submit()
     {
+        $projectId = $this->request->getParam('id');
         if ($projectId && !$this->isOwnProject($projectId)) {
             $this->Flash->error('Sorry, but you are not authorized to access that project.');
             $this->setResponse($this->getResponse()->withStatus(403));
@@ -143,12 +144,12 @@ class ReportsController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $reportId Report id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($reportId = null)
+    public function edit()
     {
+        $reportId = $this->request->getParam('id');
         $report = $this->Reports->get($reportId, [
             'contain' => ['Projects'],
         ]);
@@ -190,12 +191,12 @@ class ReportsController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Report id.
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete()
     {
+        $id = $this->request->getParam('id');
         $this->request->allowMethod(['post', 'delete']);
         $report = $this->Reports->get($id);
 
@@ -218,11 +219,11 @@ class ReportsController extends AppController
     }
 
     /**
-     * @param $projectId
      * @return void
      */
-    public function project($projectId = null): void
+    public function project(): void
     {
+        $projectId = $this->request->getParam('id');
         $reports = $this->Reports
             ->find()
             ->where(['Reports.project_id' => $projectId])

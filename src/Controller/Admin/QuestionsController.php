@@ -80,12 +80,12 @@ class QuestionsController extends AdminController
     /**
      * Edit method
      *
-     * @param string|null $id Question id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit()
     {
+        $id = $this->request->getParam('id');
         $question = $this->Questions->get($id, [
             'contain' => [],
         ]);
@@ -110,12 +110,12 @@ class QuestionsController extends AdminController
     /**
      * Delete method
      *
-     * @param string|null $id Question id.
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete()
     {
+        $id = $this->request->getParam('id');
         $this->request->allowMethod(['post', 'delete']);
         $question = $this->Questions->get($id);
         if ($this->Questions->delete($question)) {

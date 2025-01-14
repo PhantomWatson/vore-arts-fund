@@ -32,8 +32,9 @@ class VotesController extends AppController
      *
      * @return Response|null
      */
-    public function index($fundingCycleId = null)
+    public function index()
     {
+        $fundingCycleId = $this->request->getParam('id');
         // Get specified cycle, or the only current cycle, or prompt user to select a cycle
         /**
          * @var FundingCyclesTable $fundingCyclesTable

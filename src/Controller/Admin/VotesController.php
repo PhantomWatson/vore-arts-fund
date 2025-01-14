@@ -37,8 +37,9 @@ class VotesController extends AdminController
      *
      * @return void
      */
-    public function index($fundingCycleId = null)
+    public function index()
     {
+        $fundingCycleId = $this->request->getParam('id');
         /** @var FundingCyclesTable $fundingCyclesTable */
         $fundingCyclesTable = $this->fetchTable('FundingCycles');
         $projectsTable = $this->fetchTable('Projects');

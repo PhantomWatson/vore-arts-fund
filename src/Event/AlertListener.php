@@ -39,7 +39,7 @@ class AlertListener implements EventListenerInterface
                     'prefix' => 'Admin',
                     'controller' => 'Projects',
                     'action' => 'review',
-                    $project->id
+                    'id' => $project->id
                 ], true),
                 Slack::encode($project->title),
             ),
@@ -61,7 +61,7 @@ class AlertListener implements EventListenerInterface
                     'prefix' => 'Admin',
                     'controller' => 'Projects',
                     'action' => 'review',
-                    $project->id
+                    'id' => $project->id
                 ], true),
                 Slack::encode($project->title),
             ),

@@ -159,8 +159,9 @@ class FundingCyclesController extends AdminController
         return null;
     }
 
-    public function projects($fundingCycleId)
+    public function projects()
     {
+        $fundingCycleId = $this->request->getParam('id');
         $fundingCycle = $this->FundingCycles->get($fundingCycleId);
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
         $projects = $projectsTable

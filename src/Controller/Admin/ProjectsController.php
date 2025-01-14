@@ -126,7 +126,7 @@ class ProjectsController extends AdminController
                 'prefix' => 'Admin',
                 'controller' => 'Projects',
                 'action' => 'index',
-                $project->funding_cycle_id,
+                'id' => $project->funding_cycle_id,
             ]
         );
         $this->setCurrentBreadcrumb($project->title);

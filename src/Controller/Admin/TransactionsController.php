@@ -45,12 +45,12 @@ class TransactionsController extends AdminController
     /**
      * View method
      *
-     * @param string|null $id Transaction id.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view()
     {
+        $id = $this->request->getParam('id');
         $transaction = $this->Transactions->get($id, [
             'contain' => ['Projects'],
         ]);

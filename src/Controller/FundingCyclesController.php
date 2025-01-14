@@ -54,7 +54,6 @@ class FundingCyclesController extends AppController
     /**
      * Shows a single Funding Cycle
      *
-     * @param int $id FundingCycle ID
      * @return void
      */
     public function view(): void

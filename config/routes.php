@@ -26,53 +26,64 @@ use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Utility\Inflector;
 
+function buildRoutes(RouteBuilder &$builder, array $controllers)
+{
+    foreach ($controllers as $controller => $actions) {
+        foreach ($actions as $path => $action) {
+            if (str_contains($path, '{id}')) {
+                $builder->connect($path, ['controller' => $controller, 'action' => $action])
+                    ->setPatterns(['id' => '\d+'])
+                    ->setPass(['id']);
+            } else {
+                $builder->connect($path, ['controller' => $controller, 'action' => $action]);
+            }
+        }
+    }
+}
+
 /** @var \Cake\Routing\RouteBuilder $routes */
 $routes->setRouteClass(DashedRoute::class);
 
 $routes->scope('/', function (RouteBuilder $builder) {
-    // Pages
-    $builder->connect('/', ['controller' => 'Pages', 'action' => 'home']);
-    $builder->connect('/about', ['controller' => 'Pages', 'action' => 'about']);
-    $builder->connect('/contact', ['controller' => 'Pages', 'action' => 'contact']);
-    $builder->connect('/privacy', ['controller' => 'Pages', 'action' => 'privacy']);
-    $builder->connect('/terms', ['controller' => 'Pages', 'action' => 'terms']);
-    $builder->connect('/maintenance', ['controller' => 'Pages', 'action' => 'maintenanceMode']);
-
-    // Projects
-    $builder->connect('/project/{id}', ['controller' => 'Projects', 'action' => 'view']);
-    $builder->connect('/apply', ['controller' => 'Projects', 'action' => 'apply']);
-
-    // Votes
-    $builder->connect('/vote', ['controller' => 'Votes', 'action' => 'index']);
-    $builder->connect('/vote/{id}', ['controller' => 'Votes', 'action' => 'index'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);
-
-    // Users
-    $builder->connect('/register', ['controller' => 'Users', 'action' => 'register']);
-    $builder->connect('/forgot-password', ['controller' => 'Users', 'action' => 'forgotPassword']);
-    $builder->connect('/login', ['controller' => 'Users', 'action' => 'login']);
-    $builder->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
-    $builder->connect('/account', ['controller' => 'Users', 'action' => 'account']);
-    $builder->connect('/account/update', ['controller' => 'Users', 'action' => 'changeAccountInfo']);
-    $builder->connect('/account/password', ['controller' => 'Users', 'action' => 'updatePassword']);
-    $builder->connect('/account/verify', ['controller' => 'Users', 'action' => 'verify']);
-    $builder->connect('/account/verify/resend', ['controller' => 'Users', 'action' => 'verifyResend']);
-
-    // Funding Cycles
-    $builder->connect('/funding-cycles', ['controller' => 'FundingCycles', 'action' => 'index']);
-    $builder->connect('/funding-cycle/{id}', ['controller' => 'FundingCycles', 'action' => 'view']);
-
-    // Reports
-    $builder->connect('/report/:id', ['controller' => 'Reports', 'action' => 'view'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);
-    $builder->connect('/reports/for-project/:id', ['controller' => 'Reports', 'action' => 'project'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);
-    $builder->connect('/reports/submit/:id', ['controller' => 'Reports', 'action' => 'submit'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);
+    $controllers = [
+        'Pages' => [
+            '/' => 'home',
+            '/about' => 'about',
+            '/contact' => 'contact',
+            '/privacy' => 'privacy',
+            '/terms' => 'terms',
+            '/maintenance' => 'maintenanceMode',
+        ],
+        'Projects' => [
+            '/project/{id}' => 'view',
+            '/apply' => 'apply',
+        ],
+        'Votes' => [
+            '/vote' => 'index',
+            '/vote/{id}' => 'index',
+        ],
+        'Users' => [
+            '/register' => 'register',
+            '/forgot-password' => 'forgotPassword',
+            '/login' => 'login',
+            '/logout' => 'logout',
+            '/account' => 'account',
+            '/account/update' => 'changeAccountInfo',
+            '/account/password' => 'updatePassword',
+            '/account/verify' => 'verify',
+            '/account/verify/resend' => 'verifyResend',
+        ],
+        'FundingCycles' => [
+            '/funding-cycles' => 'index',
+            '/funding-cycle/{id}' => 'view',
+        ],
+        'Reports' => [
+            '/report/{id}' => 'view',
+            '/reports/for-project/{id}' => 'project',
+            '/reports/submit/{id}' => 'submit',
+        ],
+    ];
+    buildRoutes($builder, $controllers);
 
     BotCatcher::connectBotRoutes($builder);
 
@@ -81,76 +92,55 @@ $routes->scope('/', function (RouteBuilder $builder) {
 
 // "My Foo" routes
 $routes->prefix('my', function (RouteBuilder $builder) {
-    $builder->connect('/projects', ['controller' => 'Projects', 'action' => 'index']);
-    $builder->connect('/projects/{id}', ['controller' => 'Projects', 'action' => 'view'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);
-    $actions = [
-        'messages',
-        'edit',
-        'delete',
-        'withdraw',
-        'loanAgreement',
-        'sendMessage',
+    $controllers = [
+        'Projects' => [
+            '/projects'  => 'index',
+            '/projects/{id}' => 'view',
+            '/projects/messages/{id}' => 'messages',
+            '/projects/edit/{id}' => 'edit',
+            '/projects/delete/{id}' => 'delete',
+            '/projects/withdraw/{id}' => 'withdraw',
+            '/projects/loan-agreement/{id}' => 'loanAgreement',
+            '/projects/send-message/{id}' => 'sendMessage',
+        ],
     ];
-    foreach ($actions as $action) {
-        $builder->connect(
-            '/projects/' . Inflector::dasherize($action) . '/{id}',
-            ['controller' => 'Projects', 'action' => $action]
-        )
-            ->setPatterns(['id' => '\d+'])
-            ->setPass(['id']);
-    }
+    buildRoutes($builder, $controllers);
+    $builder->fallbacks(DashedRoute::class);
 });
 
 // Admin routes
 $routes->prefix('admin', function (RouteBuilder $builder) {
-    // Admin
-    $builder->connect('/', ['controller' => 'Admin', 'action' => 'index']);
-
-    // Funding cycles
-    $builder->connect('/funding-cycles', ['controller' => 'FundingCycles', 'action' => 'index']);
-    $builder->connect('/funding-cycles/add', ['controller' => 'FundingCycles', 'action' => 'add']);
-    $builder->connect('/funding-cycles/edit/{id}', ['controller' => 'FundingCycles', 'action' => 'edit']);
-
-    // Projects
-    $builder->connect('/projects', ['controller' => 'Projects', 'action' => 'index']);
-    $builder->connect('/projects/{id}', ['controller' => 'Projects', 'action' => 'index'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']); // Funding cycle ID
-    $actions = [
-        'review',
-        'setStatus',
-        'newNote',
+    $controllers = [
+        'Admin' => [
+            '/' => 'index',
+        ],
+        'FundingCycles' => [
+            '/funding-cycles' => 'index',
+            '/funding-cycles/add' => 'add',
+            '/funding-cycles/edit/{id}' => 'edit',
+            '/funding-cycles/projects/{id}' => 'projects',
+        ],
+        'Projects' => [
+            '/projects' => 'index',
+            '/projects/{id}' => 'index', // Funding cycle ID
+            '/projects/review/{id}' => 'review',
+            '/projects/set-status/{id}' => 'setStatus',
+            '/projects/new-note/{id}' => 'newNote',
+        ],
+        'Questions' => [
+            '/questions/edit/{id}' => 'edit',
+            '/questions/delete/{id}' => 'delete',
+        ],
+        'Transactions' => [
+            '/transactions/{id}' => 'view',
+            '/transactions/edit/{id}' => 'edit',
+            '/transactions/delete/{id}' => 'delete',
+        ],
+        'Votes' => [
+            '/votes/{id}' => 'index',
+        ],
     ];
-    foreach ($actions as $action) {
-        $builder->connect(
-            '/projects/' . Inflector::dasherize($action) . '/{id}',
-            ['controller' => 'Projects', 'action' => $action]
-        );
-    }
-
-    // Transactions
-    $builder->connect('/transactions/{id}', ['controller' => 'Transactions', 'action' => 'view'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);
-    $actions = [
-        'edit',
-        'delete',
-    ];
-    foreach ($actions as $action) {
-        $builder->connect(
-            '/transactions/' . Inflector::dasherize($action) . '/{id}',
-            ['controller' => 'Transactions', 'action' => $action]
-        )
-            ->setPatterns(['id' => '\d+'])
-            ->setPass(['id']);
-    }
-
-    // Votes
-    $builder->connect('/votes/{id}', ['controller' => 'Votes', 'action' => 'index'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id']);
+    buildRoutes($builder, $controllers);
 
     $builder->fallbacks(DashedRoute::class);
 });
