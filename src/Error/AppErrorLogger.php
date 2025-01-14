@@ -30,10 +30,8 @@ class AppErrorLogger extends \Cake\Error\ErrorLogger implements ErrorLoggerInter
      */
     public function logError(PhpError $error, ?ServerRequestInterface $request = null, bool $includeTrace = false): void
     {
-        // Only send error alert to Slack if not in the dev environment
-        require_once(ROOT . DS . 'config' . DS . 'environment.php');
-        $environment = getEnvironment();
-        if ($environment != 'development') {
+
+        if (!$this->isDevelopmentEnvironment()) {
             $message = $error->getMessage();
             if ($request) {
                 $message .= $this->getRequestContext($request);
@@ -45,6 +43,13 @@ class AppErrorLogger extends \Cake\Error\ErrorLogger implements ErrorLoggerInter
         }
 
         parent::logError($error, $request, $includeTrace);
+    }
+
+    private function isDevelopmentEnvironment(): bool
+    {
+        require_once(ROOT . DS . 'config' . DS . 'environment.php');
+        $environment = getEnvironment();
+        return $environment == 'development';
     }
 
     /**
@@ -60,11 +65,13 @@ class AppErrorLogger extends \Cake\Error\ErrorLogger implements ErrorLoggerInter
         ?ServerRequestInterface $request = null,
         bool $includeTrace = false
     ): void {
-        $message = $this->getMessage($exception, false, $includeTrace);
-        if ($request !== null) {
-            $message .= $this->getRequestContext($request);
+        if (!$this->isDevelopmentEnvironment()) {
+            $message = $this->getMessage($exception, false, $includeTrace);
+            if ($request !== null) {
+                $message .= $this->getRequestContext($request);
+            }
+            $this->sendAlert($message);
         }
-        $this->sendAlert($message);
         parent::logException($exception, $request, $includeTrace);
     }
 }
