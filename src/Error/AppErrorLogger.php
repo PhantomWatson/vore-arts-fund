@@ -30,14 +30,20 @@ class AppErrorLogger extends \Cake\Error\ErrorLogger implements ErrorLoggerInter
      */
     public function logError(PhpError $error, ?ServerRequestInterface $request = null, bool $includeTrace = false): void
     {
-        $message = $error->getMessage();
-        if ($request) {
-            $message .= $this->getRequestContext($request);
+        // Only send error alert to Slack if not in the dev environment
+        require_once(ROOT . DS . 'config' . DS . 'environment.php');
+        $environment = getEnvironment();
+        if ($environment != 'development') {
+            $message = $error->getMessage();
+            if ($request) {
+                $message .= $this->getRequestContext($request);
+            }
+            if ($includeTrace) {
+                $message .= "\nTrace:\n" . $error->getTraceAsString() . "\n";
+            }
+            $this->sendAlert($message);
         }
-        if ($includeTrace) {
-            $message .= "\nTrace:\n" . $error->getTraceAsString() . "\n";
-        }
-        $this->sendAlert($message);
+
         parent::logError($error, $request, $includeTrace);
     }
 
