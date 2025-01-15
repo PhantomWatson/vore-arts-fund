@@ -115,6 +115,16 @@ class Project extends Entity
     }
 
     /**
+     * Returns TRUE if reports can be submitted for this proejct
+     *
+     * @return bool
+     */
+    public function isReportable(): bool
+    {
+        return $this->status_id == self::STATUS_AWARDED_AND_DISBURSED;
+    }
+
+    /**
      * @return string[]
      */
     public static function getStatuses(): array
@@ -201,6 +211,11 @@ class Project extends Entity
     {
         switch ($currentStatusId) {
             case self::STATUS_DRAFT:
+                return [
+                    self::STATUS_DELETED,
+                    self::STATUS_UNDER_REVIEW,
+                    self::STATUS_WITHDRAWN,
+                ];
             case self::STATUS_REVISION_REQUESTED:
                 return [
                     self::STATUS_UNDER_REVIEW,
@@ -224,14 +239,24 @@ class Project extends Entity
                     self::STATUS_AWARDED_AND_DISBURSED,
                     self::STATUS_WITHDRAWN,
                 ];
+            case self::STATUS_WITHDRAWN:
+                return [self::STATUS_DELETED];
+
+            // "Final" statuses
             case self::STATUS_REJECTED:
             case self::STATUS_AWARDED_AND_DISBURSED:
             case self::STATUS_NOT_AWARDED:
-            case self::STATUS_WITHDRAWN:
+            case self::STATUS_DELETED:
                 return [];
         }
 
         throw new InternalErrorException("Unrecognized status: $currentStatusId");
+    }
+
+    public function canTransitionTo($statusId)
+    {
+        $options = self::getValidStatusOptions($statusId);
+        return key_exists($statusId, $options);
     }
 
     /**

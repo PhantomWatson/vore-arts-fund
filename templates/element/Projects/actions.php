@@ -5,24 +5,8 @@
 
 use App\Model\Entity\Project;
 
-$updateWhen = [
-    Project::STATUS_DRAFT,
-    Project::STATUS_REVISION_REQUESTED,
-];
-$deleteWhen = [
-    Project::STATUS_DRAFT,
-    Project::STATUS_REVISION_REQUESTED,
-    Project::STATUS_WITHDRAWN,
-];
-$withdrawWhen = [
-    Project::STATUS_UNDER_REVIEW,
-    Project::STATUS_ACCEPTED,
-];
-$reportWhen = [
-    Project::STATUS_AWARDED_AND_DISBURSED,
-];
 ?>
-<?php if (in_array($project->status_id, $updateWhen)): ?>
+<?php if ($project->isUpdatable()): ?>
     <?= $this->Html->link(
         '<i class="fa-solid fa-pencil"></i> Update / Submit',
         [
@@ -36,7 +20,7 @@ $reportWhen = [
         ]
     ) ?>
 <?php endif; ?>
-<?php if (in_array($project->status_id, $deleteWhen)): ?>
+<?php if ($project->canTransitionTo(Project::STATUS_DELETED)): ?>
     <?= $this->Form->postLink(
         '<i class="fa-solid fa-trash"></i> Delete',
         [
@@ -52,7 +36,7 @@ $reportWhen = [
         ]
     ) ?>
 <?php endif; ?>
-<?php if (in_array($project->status_id, $withdrawWhen)): ?>
+<?php if ($project->canTransitionTo(Project::STATUS_WITHDRAWN)): ?>
     <?= $this->Form->postLink(
         Project::ICON_WITHDRAW . ' Withdraw',
         [
@@ -67,7 +51,7 @@ $reportWhen = [
         ]
     ) ?>
 <?php endif; ?>
-<?php if (in_array($project->status_id, $reportWhen)): ?>
+<?php if ($project->isReportable()): ?>
     <?= $this->Html->link(
         Project::ICON_REPORT . ' Submit report',
         [
