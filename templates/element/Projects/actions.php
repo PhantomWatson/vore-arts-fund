@@ -9,6 +9,11 @@ $updateWhen = [
     Project::STATUS_DRAFT,
     Project::STATUS_REVISION_REQUESTED,
 ];
+$deleteWhen = [
+    Project::STATUS_DRAFT,
+    Project::STATUS_REVISION_REQUESTED,
+    Project::STATUS_WITHDRAWN,
+];
 $withdrawWhen = [
     Project::STATUS_UNDER_REVIEW,
     Project::STATUS_ACCEPTED,
@@ -30,6 +35,8 @@ $reportWhen = [
             'escape' => false
         ]
     ) ?>
+<?php endif; ?>
+<?php if (in_array($project->status_id, $deleteWhen)): ?>
     <?= $this->Form->postLink(
         '<i class="fa-solid fa-trash"></i> Delete',
         [
