@@ -132,7 +132,7 @@ class ReportsController extends AppController
             );
         }
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
-        $project = $projectsTable->get($projectId);
+        $project = $projectsTable->getNotDeleted($projectId);
         $this->set(compact('report', 'project'));
         $this->viewBuilder()->setTemplate('form');
         $this->title('Submit report for ' . $project->title);
@@ -157,6 +157,12 @@ class ReportsController extends AppController
         if (!$this->isOwnProject($report->project_id)) {
             $this->Flash->error('Sorry, but you are not authorized to access that project.');
             $this->setResponse($this->getResponse()->withStatus(403));
+            return $this->redirect('/');
+        }
+
+        if ($report->project->isDeleted()) {
+            $this->Flash->error('Project not found');
+            $this->setResponse($this->getResponse()->withStatus(404));
             return $this->redirect('/');
         }
 
@@ -232,7 +238,7 @@ class ReportsController extends AppController
             ->all();
         $this->set(compact('reports'));
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
-        $project = $projectsTable->get($projectId);
+        $project = $projectsTable->getNotDeleted($projectId);
         $this->title($project->title);
 
         $this->addBreadcrumbForProject($project);

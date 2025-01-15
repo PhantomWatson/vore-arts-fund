@@ -102,7 +102,7 @@ class TransactionsController extends AdminController
     private function setupForm(): void
     {
         $projects = $this->Transactions->Projects
-            ->find()
+            ->find('notDeleted')
             ->find('notFinalized')
             ->select([
                 'Projects.id',

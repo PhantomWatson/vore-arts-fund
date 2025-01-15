@@ -67,7 +67,7 @@ class ProjectsController extends BaseProjectsController
     {
         $this->getRequest()->allowMethod('post');
         $id = $this->request->getParam('id');
-        $project = $this->Projects->get($id);
+        $project = $this->Projects->getNotDeleted($id);
         $project->status_id = Project::STATUS_WITHDRAWN;
         if ($this->Projects->save($project)) {
             $this->Flash->success('Application withdrawn.');
@@ -128,15 +128,15 @@ class ProjectsController extends BaseProjectsController
     }
 
     /**
-     * Page for removing an application
+     * Page for marking an application as deleted
      *
      * @return Response
      */
     public function delete()
     {
         $id = $this->request->getParam('id');
-        $project = $this->Projects->get($id);
-        if ($this->request->is(['delete', 'post']) && $this->Projects->delete($project)) {
+        $project = $this->Projects->getNotDeleted($id);
+        if ($this->request->is(['delete', 'post']) && $this->Projects->markDeleted($project)) {
             $this->Flash->success('Application has been deleted');
         } else {
             $this->Flash->error(
@@ -152,7 +152,7 @@ class ProjectsController extends BaseProjectsController
         $this->title('My Projects');
         $user = $this->getAuthUser();
         $projects = $this->Projects
-            ->find()
+            ->find('notDeleted')
             ->where(['user_id' => $user->id])
             ->orderDesc('Projects.created')
             ->contain([
@@ -186,7 +186,7 @@ class ProjectsController extends BaseProjectsController
         $projectId = $this->request->getParam('id');
 
         /** @var Project $project */
-        $project = $this->Projects->get($projectId);
+        $project = $this->Projects->getNotDeleted($projectId);
 
         /** @var NotesTable $notesTable */
         $notesTable = TableRegistry::getTableLocator()->get('Notes');
@@ -213,7 +213,7 @@ class ProjectsController extends BaseProjectsController
     public function loanAgreement()
     {
         $projectId = $this->getRequest()->getParam('id');
-        $project = $this->Projects->get($projectId, ['contain' => 'Users']);
+        $project = $this->Projects->getNotDeleted($projectId, ['contain' => 'Users']);
 
         if (!$project->isAwarded() || !($project->amount_awarded > 0)) {
             $this->Flash->error('This project is not marked as having been awarded a loan.');
@@ -291,7 +291,7 @@ class ProjectsController extends BaseProjectsController
     public function sendMessage(): Response
     {
         $projectId = $this->request->getParam('id');
-        $project = $this->Projects->get($projectId);
+        $project = $this->Projects->getNotDeleted($projectId);
         $noteBody = $this->request->getData('body');
         if (!$noteBody) {
             $this->Flash->error('Message body is required.');

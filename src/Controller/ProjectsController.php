@@ -278,10 +278,16 @@ class ProjectsController extends AppController
         $id = $this->request->getParam('id');
         /** @var Project $project */
         $project = $this->Projects
-            ->find()
+            ->find('notDeleted')
             ->where(['id' => $id])
             ->contain(['Answers'])
             ->first();
+
+        if (!$project) {
+            $this->Flash->error('Project not found');
+            $this->setResponse($this->getResponse()->withStatus(404));
+            return $this->redirect('/');
+        }
 
         if (!$project->isViewable()) {
             $this->Flash->error('Sorry, but that application is not available to view');
@@ -300,9 +306,15 @@ class ProjectsController extends AppController
     protected function _view()
     {
         $projectId = $this->request->getParam('id');
-        if (!$this->Projects->exists(['Projects.id' => $projectId])) {
+        $exists = $this->Projects->exists([
+            'Projects.id' => $projectId,
+            'Projects.status_id != ' => Project::STATUS_DELETED
+        ]);
+        if (!$exists) {
             $this->Flash->error('Sorry, but that application was not found');
-            return $this->redirect('/');
+            return $this->redirect([
+                'action' => 'index'
+            ]);
         }
 
         $project = $this->Projects->getForViewing($projectId);

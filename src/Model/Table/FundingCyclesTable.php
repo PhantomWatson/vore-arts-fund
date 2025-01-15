@@ -350,6 +350,7 @@ class FundingCyclesTable extends Table
         }
 
         $projectCount = $this->Projects
+            ->find('notDeleted')
             ->find('forVoting', ['funding_cycle_id' => $cycle->id])
             ->all()
             ->count();

@@ -7,6 +7,7 @@ use App\Model\Entity\Project;
 use ArrayObject;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Event\Event;
 use Cake\ORM\Query;
@@ -216,7 +217,7 @@ class ProjectsTable extends Table
     public function getForForm($projectId)
     {
         return $this
-            ->find()
+            ->find('notDeleted')
             ->where(['Projects.id' => $projectId])
             ->contain([
                 'Answers',
@@ -234,7 +235,7 @@ class ProjectsTable extends Table
      */
     public function getForViewing($projectId)
     {
-        return $this->get(
+        return $this->getNotDeleted(
             $projectId,
             [
                 'contain' => [
@@ -267,6 +268,7 @@ class ProjectsTable extends Table
     public function findForVoting(Query $query, array $options)
     {
         return $query
+            ->find('notDeleted')
             ->select([
                 'Projects.accept_partial_payout',
                 'Projects.amount_requested',
@@ -361,5 +363,43 @@ class ProjectsTable extends Table
         } elseif ($entity->statusWasJustChangedTo(Project::STATUS_WITHDRAWN)) {
             $entity->dispatchWithdrawnEvent();
         }
+    }
+
+    /**
+     * "Soft-deletes" a project, saving it with the "deleted" status
+     *
+     * @param Project $project
+     * @return Project|false
+     */
+    public function markDeleted(Project $project)
+    {
+        $project->status_id = Project::STATUS_DELETED;
+        return $this->save($project);
+    }
+
+    /**
+     * @param int $projectId
+     * @return Project
+     * @throws RecordNotFoundException
+     */
+    public function getNotDeleted($projectId, array $options = []): Project
+    {
+        $project = $this->get($projectId, $options);
+        if ($project->isDeleted()) {
+            throw new RecordNotFoundException('Project not found');
+        }
+        return $project;
+    }
+
+    /**
+     * Modifies a query to exclude soft-deleted projects
+     *
+     * @param Query $query
+     * @param array $options
+     * @return Query
+     */
+    public function findNotDeleted(Query $query, array $options)
+    {
+        return $query->where(['Projects.status_id !=' => Project::STATUS_DELETED]);
     }
 }

@@ -50,7 +50,7 @@ class ProjectsController extends AdminController
         if ($fundingCycleId) {
             $projects = $this
                 ->Projects
-                ->find()
+                ->find('notDeleted')
                 ->where(['funding_cycle_id' => $fundingCycleId])
                 ->all();
         }
@@ -141,9 +141,10 @@ class ProjectsController extends AdminController
         $this->getEventManager()->on($mailListener);
 
         $projectId = $this->request->getParam('id');
-        $project = $this->Projects->get($projectId);
+        $project = $this->Projects->getNotDeleted($projectId);
         if (!$project) {
             $this->Flash->error('Project not found');
+            $this->setResponse($this->getResponse()->withStatus(404));
             return $this->redirect(['action' => 'review', 'id' => $projectId]);
         }
         if ($project->status_id != Project::STATUS_ACCEPTED) {
@@ -326,7 +327,7 @@ class ProjectsController extends AdminController
     private function processNewNote(): bool
     {
         $projectId = $this->request->getParam('id');
-        $project = $this->Projects->get($projectId);
+        $project = $this->Projects->getNotDeleted($projectId);
         $noteBody = $this->request->getData('body');
         $type = (int)$this->request->getData('type');
         if (!$noteBody) {

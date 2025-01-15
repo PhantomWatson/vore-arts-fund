@@ -62,6 +62,7 @@ class Project extends Entity
     const STATUS_AWARDED_AND_DISBURSED = 6;
     const STATUS_NOT_AWARDED = 7;
     const STATUS_WITHDRAWN = 8;
+    const STATUS_DELETED = 9;
 
     const ICON_ACCEPTED = '<i class="fa-solid fa-thumbs-up"></i>';
     const ICON_REJECTED = '<i class="fa-solid fa-heart-crack"></i>';
@@ -128,6 +129,7 @@ class Project extends Entity
             self::STATUS_AWARDED_AND_DISBURSED     => 'Awarded',
             self::STATUS_NOT_AWARDED        => 'Not Awarded',
             self::STATUS_WITHDRAWN          => 'Withdrawn',
+            self::STATUS_DELETED           => 'Deleted',
         ];
     }
 
@@ -434,5 +436,10 @@ class Project extends Entity
         $wasnt = $this->getOriginal('status_id') != $status;
         $is = $this->status_id == $status;
         return $wasnt && $is;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->status_id == self::STATUS_DELETED;
     }
 }
