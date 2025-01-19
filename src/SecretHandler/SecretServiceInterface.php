@@ -4,6 +4,6 @@ namespace App\SecretHandler;
 
 interface SecretServiceInterface
 {
-    public function getTin($secretId);
-    public function setTin($projectId, $tin);
+    public function getTin($secretId): string|false;
+    public function setTin($projectId, $tin): bool;
 }

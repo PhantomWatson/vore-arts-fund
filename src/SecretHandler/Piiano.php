@@ -58,30 +58,17 @@ class Piiano implements SecretServiceInterface
     }
 
     /**
-     * Temporary code, used to confirm that this Piiano user does NOT have read-access
+     * We're only using write-only access. Retrieving TINs will require logging in to Piiano and using their interface.
      *
      * @param string $secretId
      * @return string|false
      */
     public function getTin($secretId): string|false
     {
-        $ch = curl_init($this->getApiUrlBase(). '/' . $secretId . '?' . $this->getReason());
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-        curl_setopt(
-            $ch,
-            CURLOPT_HTTPHEADER,
-            [
-                'Content-Type: application/json',
-                'Authorization: Bearer ' . $this->getApiKey()
-            ]
-        );
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $curlResult = curl_exec($ch);
-        curl_close($ch);
-        var_dump(json_decode($curlResult)); exit;
+        return false;
     }
 
-    private function getApiUrlBase()
+    private function getApiUrlBase(): string
     {
         $piianoEnv = $this->getMode();
         $url = Configure::read('Piiano.' . $piianoEnv . '.endpoint');
@@ -93,7 +80,7 @@ class Piiano implements SecretServiceInterface
         return $url;
     }
 
-    private function getReason()
+    private function getReason(): string
     {
         return 'reason=' . ($this->environment == 'production' ? 'AppFunctionality' : 'Maintenance');
     }
@@ -109,7 +96,7 @@ class Piiano implements SecretServiceInterface
         return $apiKey;
     }
 
-    private function getPostPayload($projectId, $tin)
+    private function getPostPayload($projectId, $tin): array
     {
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
         $project = $projectsTable->get($projectId);
