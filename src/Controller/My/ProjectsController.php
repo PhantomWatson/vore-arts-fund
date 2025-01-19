@@ -15,6 +15,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 
 /**
  * ProjectsController
@@ -348,7 +349,16 @@ class ProjectsController extends BaseProjectsController
                     ? "Loan agreement submitted for $projectName"
                     : "Failure to save loan agreement for $projectName"
             );
-            if (!$success) {
+            if ($success) {
+                $alert->addLine(sprintf(
+                    'Time to send a check and <%s|record the disbursement>',
+                    Router::url([
+                        'prefix' => 'Admin',
+                        'controller' => 'Transactions',
+                        'action' => 'add',
+                    ], true),
+                ));
+            } else {
                 $alert->addLine('Submitted data:');
                 $alert->addLine('```' . print_r($data, true) . '```');
                 $alert->addLine('Entity errors:');
