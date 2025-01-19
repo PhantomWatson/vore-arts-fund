@@ -52,16 +52,19 @@ class Piiano implements SecretServiceInterface
         $curlResult = curl_exec($ch);
         curl_close($ch);
 
-        // Send alert
         $success = $curlResult && (json_decode($curlResult)->id ?? null);
-        $alertSafePayload = $this->getPostPayload($projectId, '(TIN redacted)');
-        $alert = new Alert();
-        $alert->addLine($success ? 'Saved TIN' : 'Failure to save TIN');
-        $alert->addLine('Payload:');
-        $alert->addLine('```' . print_r($alertSafePayload, true) . '```');
-        $alert->addLine('cURL result:');
-        $alert->addLine('```' . print_r($curlResult, true) . '```');
-        $alert->send(Alert::TYPE_APPLICATIONS);
+
+        // Send failure alert
+        if (!$success) {
+            $alertSafePayload = $this->getPostPayload($projectId, '(TIN redacted)');
+            $alert = new Alert();
+            $alert->addLine('Failure to save TIN');
+            $alert->addLine('Payload:');
+            $alert->addLine('```' . print_r($alertSafePayload, true) . '```');
+            $alert->addLine('cURL result:');
+            $alert->addLine('```' . print_r($curlResult, true) . '```');
+            $alert->send(Alert::TYPE_APPLICATIONS);
+        }
 
         return $success ? json_decode($curlResult)->id : false;
     }
