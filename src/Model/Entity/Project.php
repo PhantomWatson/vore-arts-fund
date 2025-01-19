@@ -481,9 +481,6 @@ class Project extends Entity
      */
     public function isAgreeable(): bool
     {
-        if (!($this->isAwarded() || $this->isDisbursed())) {
-            return false;
-        }
-        return !$this->loan_agreement_date;
+        return $this->isAwarded() && !$this->loan_agreement_date;
     }
 }
