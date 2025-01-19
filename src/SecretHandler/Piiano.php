@@ -25,7 +25,16 @@ class Piiano implements SecretServiceInterface
         return Configure::read('Piiano.mode');
     }
 
-    public function setTin($projectId, $tin): bool
+    /**
+     * Returns the new Piiano object ID on success, or FALSE on failure
+     *
+     * Also sends a Slack message on both success and failure
+     *
+     * @param int $projectId
+     * @param string $tin
+     * @return string|false
+     */
+    public function setTin($projectId, $tin): string|false
     {
         // Send request
         $ch = curl_init($this->getApiUrlBase() . '?' . $this->getReason());
@@ -52,9 +61,9 @@ class Piiano implements SecretServiceInterface
         $alert->addLine('```' . print_r($alertSafePayload, true) . '```');
         $alert->addLine('cURL result:');
         $alert->addLine('```' . print_r($curlResult, true) . '```');
-        $alert->send($success ? Alert::TYPE_APPLICATIONS : Alert::TYPE_ERRORS);
+        $alert->send(Alert::TYPE_APPLICATIONS);
 
-        return $success;
+        return $success ? json_decode($curlResult)->id : false;
     }
 
     /**

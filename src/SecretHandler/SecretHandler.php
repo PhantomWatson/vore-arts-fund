@@ -14,7 +14,7 @@ class SecretHandler
         $this->piiService = new Piiano();
     }
 
-    public function setTin($projectId, $tin)
+    public function setTin($projectId, $tin): string|false
     {
         return $this->piiService->setTin($projectId, $tin);
     }

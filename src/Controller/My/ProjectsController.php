@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace App\Controller\My;
 
+use App\Alert\Alert;
 use App\Controller\ProjectsController as BaseProjectsController;
 use App\Model\Entity\Note;
 use App\Model\Entity\Project;
 use App\Model\Table\NotesTable;
+use App\SecretHandler\SecretHandler;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
@@ -250,15 +252,34 @@ class ProjectsController extends BaseProjectsController
 
         // Agree to terms and enter TIN
         } elseif ($this->getRequest()->getData('agreement')) {
-            $data = [
-                'tin' => $this->request->getData('tin'),
-                'loan_agreement_date' => new \DateTime(),
-                'loan_due_date' => new \DateTime(\App\Model\Entity\Project::DUE_DATE),
-                'loan_agreement_version' => $version
-            ];
-            $this->Projects->patchEntity($project, $data);
-            if ($this->Projects->save($project)) {
-                $setupComplete = true;
+            $secretHandler = new SecretHandler();
+            $secretId = $secretHandler->setTin($project->id, $this->request->getData('tin'));
+            if ($secretId) {
+                $data = [
+                    'loan_agreement_date' => new \DateTime(),
+                    'loan_due_date' => new \DateTime(\App\Model\Entity\Project::DUE_DATE),
+                    'loan_agreement_version' => $version
+                ];
+                $project = $this->Projects->patchEntity($project, $data);
+                $project->tin = $secretId;
+                if ($this->Projects->save($project)) {
+                    $setupComplete = true;
+                } else {
+                    $alert = new Alert();
+                    $alert->addLine('Failure to save loan agreement for project #' . $project->id);
+                    $alert->addLine('Submitted data:');
+                    $alert->addLine('```' . print_r($data, true) . '```');
+                    $alert->addLine('Entity errors:');
+                    $alert->addLine('```' . print_r($project->getErrors(), true) . '```');
+                    $alert->send(Alert::TYPE_APPLICATIONS);
+                }
+            }
+            if (!$setupComplete) {
+                $this->Flash->error(
+                    'There was an error submitting your loan agreement, and our website support staff has been notified.'
+                    . $this->errorTryAgainContactMsg,
+                    ['escape' => false]
+                );
             }
         }
 
