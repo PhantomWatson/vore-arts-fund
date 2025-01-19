@@ -76,7 +76,7 @@ class ProjectsController extends BaseProjectsController
         } else {
             $this->Flash->error('There was an error withdrawing your application.');
         }
-        return $this->redirect(['action' => 'index']);
+        return $this->redirectToIndex();
     }
 
     /**
@@ -116,7 +116,7 @@ class ProjectsController extends BaseProjectsController
             }
 
             if ($this->processProject($project, $data)) {
-                return $this->redirect(['action' => 'index']);
+                return $this->redirectToIndex();
             }
         } else {
             $user = $this->getAuthUser();
@@ -220,11 +220,7 @@ class ProjectsController extends BaseProjectsController
         if (!$project->isAwarded() || !($project->amount_awarded > 0)) {
             $this->Flash->error('This project is not marked as having been awarded a loan.');
             $this->setResponse($this->getResponse()->withStatus(404));
-            return $this->redirect([
-                'prefix' => 'My',
-                'controller' => 'Projects',
-                'action' => 'index',
-            ]);
+            return $this->redirectToIndex();
         }
 
         $this->title('Loan Agreement');
@@ -235,6 +231,15 @@ class ProjectsController extends BaseProjectsController
         } else {
             $this->newLoanAgreement($project);
         }
+    }
+
+    private function redirectToIndex(): ?Response
+    {
+        return $this->redirect([
+            'prefix' => 'My',
+            'controller' => 'Projects',
+            'action' => 'index',
+        ]);
     }
 
     /**
