@@ -34,6 +34,20 @@ use Cake\Routing\Router;
         </thead>
         <tbody>
             <?php foreach ($projects as $project): ?>
+                <?php
+                    $status = $project->status_name;
+                    if ($project->isAgreeable()) {
+                        $link = $this->Html->link(
+                            'Submit loan agreement',
+                            [
+                                'controller' => 'Projects',
+                                'action' => 'loanAgreement',
+                                'id' => $project->id,
+                            ]
+                        );
+                        $status .= "<br /><strong>$link</strong>";
+                    }
+                ?>
                 <tr>
                     <td class="cell--project">
                         <?= $this->Html->link(
@@ -54,7 +68,7 @@ use Cake\Routing\Router;
                                     ) ?>)
                                 </li>
                                 <li>
-                                    Status: <?= $project->status_name ?>
+                                    Status: <?= $status ?>
                                 </li>
                                 <?php if (count($project->notes)): ?>
                                     <li>
@@ -91,7 +105,7 @@ use Cake\Routing\Router;
                         <?= $this->element('FundingCycles/link', ['fundingCycle' => $project->funding_cycle]) ?>
                     </td>
                     <td class="cell--status">
-                        <?= $project->status_name ?>
+                        <?= $status ?>
                     </td>
                     <td class="cell--messages">
                         <?php if (count($project->notes)): ?>
