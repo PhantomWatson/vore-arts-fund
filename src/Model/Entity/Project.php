@@ -89,6 +89,8 @@ class Project extends Entity
     // When, starting from the signing of the loan agreement, the loan is automatically considered canceled
     const DUE_DATE = '5 years';
 
+    const ZIPCODE_REGEX = '^\d{5}([ \-]\d{4})?$';
+
     /**
      * Returns TRUE if this project can be viewed by the public
      *
@@ -481,6 +483,6 @@ class Project extends Entity
      */
     public function isAgreeable(): bool
     {
-        return $this->isAwarded() && !$this->loan_agreement_date;
+        return $this->isAwarded() && $this->amount_awarded > 0 && !$this->loan_agreement_date;
     }
 }

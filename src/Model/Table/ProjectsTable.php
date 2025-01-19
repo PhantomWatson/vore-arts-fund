@@ -140,12 +140,10 @@ class ProjectsTable extends Table
             ->requirePresence('check_name', 'create');
 
         $validator
-            ->scalar('loan_agreement_date')
             ->notEmptyString('loan_agreement_date')
             ->dateTime('loan_agreement_date');
 
         $validator
-            ->scalar('loan_due_date')
             ->notEmptyString('loan_due_date')
             ->dateTime('loan_due_date');
 

@@ -101,6 +101,9 @@ $routes->prefix('my', function (RouteBuilder $builder) {
             '/projects/delete/{id}' => 'delete',
             '/projects/withdraw/{id}' => 'withdraw',
             '/projects/loan-agreement/{id}' => 'loanAgreement',
+            '/projects/verify-check-details/{id}' => 'verifyCheckDetails',
+            '/projects/sign-loan-agreement/{id}' => 'signLoanAgreement',
+            '/projects/view-loan-agreement/{id}' => 'viewLoanAgreement',
             '/projects/send-message/{id}' => 'sendMessage',
         ],
     ];

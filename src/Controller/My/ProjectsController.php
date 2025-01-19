@@ -10,6 +10,7 @@ use App\Model\Entity\Project;
 use App\Model\Table\NotesTable;
 use App\SecretHandler\SecretHandler;
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\Query;
@@ -217,20 +218,30 @@ class ProjectsController extends BaseProjectsController
         $projectId = $this->getRequest()->getParam('id');
         $project = $this->Projects->getNotDeleted($projectId, ['contain' => 'Users']);
 
-        if (!$project->isAwarded() || !($project->amount_awarded > 0)) {
-            $this->Flash->error('This project is not marked as having been awarded a loan.');
-            $this->setResponse($this->getResponse()->withStatus(404));
-            return $this->redirectToIndex();
-        }
-
         $this->title('Loan Agreement');
         $this->addBreadcrumb($project->title, []);
 
-        if ($project->loan_agreement_date) {
-            // Show signed agreement, using the version signed
-        } else {
-            $this->newLoanAgreement($project);
+        if ($project->isAgreeable()) {
+            return $this->redirect(['action' => 'verifyCheckDetails', 'id' => $projectId]);
         }
+        if ($project->loan_agreement_date) {
+            return $this->redirect(['action' => 'viewLoanAgreement', 'id' => $projectId]);
+        }
+        throw new InternalErrorException('Loan agreement is not signed nor signable but auth checks passed.');
+    }
+
+    public function viewLoanAgreement()
+    {
+        $projectId = $this->getRequest()->getParam('id');
+        $project = $this->Projects->getNotDeleted($projectId, ['contain' => 'Users']);
+        $this->title('Loan Agreement');
+        $this->addBreadcrumb($project->title, [
+            'prefix' => 'My',
+            'controller' => 'Projects',
+            'action' => 'view',
+            'id' => $projectId,
+        ]);
+        $this->set(compact('project'));
     }
 
     private function redirectToIndex(): ?Response
@@ -242,78 +253,124 @@ class ProjectsController extends BaseProjectsController
         ]);
     }
 
-    /**
-     * @param Project $project
-     * @return void
-     */
-    public function newLoanAgreement($project)
+    public function verifyCheckDetails()
     {
-        $setupComplete = false;
-        $version = Project::getLatestTermsVersion();
+        $projectId = $this->getRequest()->getParam('id');
+        $project = $this->Projects->getNotDeleted($projectId, ['contain' => 'Users']);
 
-        // Confirm loan recipient info
-        if ($this->getRequest()->getData('setup')) {
-            $setupComplete = $this->newLoanAgreementSetup($project);
-
-        // Agree to terms and enter TIN
-        } elseif ($this->getRequest()->getData('agreement')) {
-            $secretHandler = new SecretHandler();
-            $secretId = $secretHandler->setTin($project->id, $this->request->getData('tin'));
-            if ($secretId) {
-                $data = [
-                    'loan_agreement_date' => new \DateTime(),
-                    'loan_due_date' => new \DateTime(\App\Model\Entity\Project::DUE_DATE),
-                    'loan_agreement_version' => $version
-                ];
-                $project = $this->Projects->patchEntity($project, $data);
-                $project->tin = $secretId;
-                if ($this->Projects->save($project)) {
-                    $setupComplete = true;
-                } else {
-                    $alert = new Alert();
-                    $alert->addLine('Failure to save loan agreement for project #' . $project->id);
-                    $alert->addLine('Submitted data:');
-                    $alert->addLine('```' . print_r($data, true) . '```');
-                    $alert->addLine('Entity errors:');
-                    $alert->addLine('```' . print_r($project->getErrors(), true) . '```');
-                    $alert->send(Alert::TYPE_APPLICATIONS);
-                }
-            }
-            if (!$setupComplete) {
-                $this->Flash->error(
-                    'There was an error submitting your loan agreement, and our website support staff has been notified.'
-                    . $this->errorTryAgainContactMsg,
-                    ['escape' => false]
-                );
-            }
+        if (!$project->isAgreeable()) {
+            $this->Flash->error('A loan agreement cannot be signed for this project at this time.');
+            $this->setResponse($this->getResponse()->withStatus(404));
+            return $this->redirectToIndex();
         }
 
+        if (!$this->getRequest()->is('get')) {
+            $this->Projects->patchEntity(
+                $project,
+                $this->request->getData(),
+                ['fields' => ['check_name', 'address', 'zipcode']]
+            );
+
+            if ($this->Projects->save($project)) {
+                return $this->redirect(['action' => 'signLoanAgreement', 'id' => $projectId]);
+            }
+            $this->Flash->error(
+                'There was an error submitting your check details. ' . $this->errorTryAgainContactMsg,
+                ['escape' => false]
+            );
+        }
+
+        $this->title('Verify Check Details');
+        $this->addBreadcrumb($project->title, [
+            'prefix' => 'My',
+            'controller' => 'Projects',
+            'action' => 'view',
+            'id' => $projectId,
+        ]);
+        $this->set(compact('project'));
+    }
+
+    public function signLoanAgreement()
+    {
+        $projectId = $this->getRequest()->getParam('id');
+        $project = $this->Projects->getNotDeleted($projectId, ['contain' => 'Users']);
+
+        if ($project->loan_agreement_date) {
+            $this->redirect(['action' => 'viewLoanAgreement', 'id' => $projectId]);
+        }
+
+        $this->title('Loan Agreement');
+        $this->addBreadcrumb($project->title, [
+            'prefix' => 'My',
+            'controller' => 'Projects',
+            'action' => 'view',
+            'id' => $projectId,
+        ]);
         $this->set(compact('project'));
 
-        $this->viewBuilder()->setTemplate(
-            $setupComplete
-                ? 'loan_agreement'
-                : 'loan_agreement_setup'
-        );
-    }
-
-    /**
-     * @param Project $project
-     * @return bool
-     */
-    public function newLoanAgreementSetup($project)
-    {
-        $this->Projects->patchEntity(
-            $project,
-            $this->request->getData(),
-            ['fields' => ['check_name', 'address', 'zipcode']]
-        );
-        if ($this->Projects->save($project)) {
-            return true;
+        if ($this->getRequest()->is('get')) {
+            return;
         }
 
-        return false;
+        // Validate TIN
+        // TODO: Add specific SSN/EIN regex validation
+        $tin = $this->getRequest()->getData('tin_provide');
+        $tinConfirm = $this->getRequest()->getData('tin_confirm');
+        if (!$tin) {
+            $this->Flash->error('Tax ID number required.');
+            return;
+        }
+        if ($tin != $tinConfirm) {
+            $this->Flash->error('Tax ID numbers did not match');
+            return;
+        }
+
+        // Store TIN
+        $secretHandler = new SecretHandler();
+        $secretId = $secretHandler->setTin($project->id, $tin);
+
+        $success = false;
+        if ($secretId) {
+            $data = [
+                'loan_agreement_date' => new \DateTime(),
+                'loan_due_date' => new \DateTime(\App\Model\Entity\Project::DUE_DATE),
+                'loan_agreement_version' => Project::getLatestTermsVersion()
+            ];
+            $project = $this->Projects->patchEntity($project, $data);
+            $project->tin = $secretId;
+            $success = $this->Projects->save($project);
+
+            // Send alert
+            $alert = new Alert();
+            $projectName = "project #{$project->id} ({$project->title})";
+            $alert->addLine(
+                $success
+                    ? "Loan agreement submitted for $projectName"
+                    : "Failure to save loan agreement for $projectName"
+            );
+            if (!$success) {
+                $alert->addLine('Submitted data:');
+                $alert->addLine('```' . print_r($data, true) . '```');
+                $alert->addLine('Entity errors:');
+                $alert->addLine('```' . print_r($project->getErrors(), true) . '```');
+            }
+            $alert->send(Alert::TYPE_APPLICATIONS);
+        }
+
+        if ($success) {
+            $this->Flash->success(
+                'Loan agreement signed. The Vore Arts Fund staff has been notified, and you should expect an email confirmation that your check is in the mail in the next few days.'
+            );
+            $this->redirect(['action' => 'viewLoanAgreement', 'id' => $projectId]);
+        } else {
+            $this->Flash->error(
+                'There was an error submitting your loan agreement, and our website support staff has been notified. '
+                . $this->errorTryAgainContactMsg,
+                ['escape' => false]
+            );
+        }
     }
+
     public function sendMessage(): Response
     {
         $projectId = $this->request->getParam('id');

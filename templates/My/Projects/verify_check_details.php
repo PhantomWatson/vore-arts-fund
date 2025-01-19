@@ -1,8 +1,11 @@
 <?php
 /**
- * @var \App\Model\Entity\Project $project
+ * @var Project $project
  * @var \App\View\AppView $this
  */
+
+use App\Model\Entity\Project;
+
 $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
 ?>
 
@@ -37,7 +40,10 @@ $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
             'inputContainer' => $defaultFormTemplate['inputContainer'],
         ]); ?>
     </div>
-    <?= $this->Form->control('zipcode', ['label' => 'ZIP code']) ?>
+    <?= $this->Form->control(
+        'zipcode',
+        ['label' => 'ZIP code', 'pattern' => Project::ZIPCODE_REGEX]
+    ) ?>
 </div>
 <input type="hidden" name="setup" value="1" />
 <?= $this->Form->submit('Next', ['class' => 'btn btn-primary']) ?>
