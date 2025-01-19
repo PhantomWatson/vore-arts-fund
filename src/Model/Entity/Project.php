@@ -470,4 +470,20 @@ class Project extends Entity
     {
         return $this->status_id == self::STATUS_DELETED;
     }
+
+    /**
+     * Returns TRUE if a new loan agreement can be submitted for this project
+     *
+     * A new loan agreement can only be signed after a project is given the "awarded" status and before an agreement
+     * has already been submitted
+     *
+     * @return bool
+     */
+    public function isAgreeable(): bool
+    {
+        if (!($this->isAwarded() || $this->isDisbursed())) {
+            return false;
+        }
+        return !$this->loan_agreement_date;
+    }
 }

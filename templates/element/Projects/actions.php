@@ -14,6 +14,22 @@ use App\View\AppView;
     </button>
 
     <ul class="dropdown-menu">
+        <?php if ($project->isAgreeable() || $project->loan_agreement_date): ?>
+            <?= $this->Html->link(
+                $project->isAgreeable()
+                    ? '<i class="fa-solid fa-pencil"></i> Submit loan agreement'
+                    : '<i class="fa-solid fa-file-contract"></i> View loan agreement',
+                [
+                    'controller' => 'Projects',
+                    'action' => 'loanAgreement',
+                    'id' => $project->id,
+                ],
+                [
+                    'class' => 'dropdown-item',
+                    'escape' => false
+                ]
+            ) ?>
+        <?php endif; ?>
         <?php if ($this->getRequest()->getParam('action') != 'view'): ?>
             <?= $this->Html->link(
                 '<i class="fa-solid fa-eye"></i> View project',
