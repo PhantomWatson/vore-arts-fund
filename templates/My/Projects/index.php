@@ -124,27 +124,7 @@ use Cake\Routing\Router;
                         <?php endif; ?>
                     </td>
                     <td>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Actions
-                            </button>
-
-                            <ul class="dropdown-menu">
-                                <?= $this->Html->link(
-                                    '<i class="fa-solid fa-eye"></i> View project',
-                                    [
-                                        'controller' => 'Projects',
-                                        'action' => 'view',
-                                        'id' => $project->id,
-                                    ],
-                                    [
-                                        'class' => 'dropdown-item',
-                                        'escape' => false
-                                    ]
-                                ) ?>
-                                <?= $this->element('Projects/actions', compact('project')) ?>
-                            </ul>
-                        </div>
+                        <?= $this->element('Projects/actions', compact('project')) ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
