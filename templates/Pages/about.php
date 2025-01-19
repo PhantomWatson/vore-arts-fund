@@ -173,4 +173,34 @@
             </section>
         </div>
     </div>
+
+    <article>
+        <h2>
+            Transparency
+        </h2>
+        <p>
+            The Vore Arts Fund is committed to radical transparency. Board meetings are open to the public to attend,
+            and our corporate records are hosted online for public access.
+        </p>
+        <ul>
+            <li>
+                <a href="https://muncieevents.com/tag/2244-vore-arts-fund">Upcoming board meetings</a>
+            </li>
+            <li>
+                <a href="https://drive.google.com/drive/folders/12qrzesRFJqtGFUy-yY7A9eMMvuYpbfPW?usp=sharing">Minutes</a>
+            </li>
+            <li>
+                <a href="https://docs.google.com/document/d/1NqroGwlb--ZSirbxZw0vmS8gvEqQhdjBGiecflSWO8o/edit?usp=drive_link">Bylaws</a>
+            </li>
+            <li>
+                <a href="https://docs.google.com/document/d/1dy-_eFU5J5JgWjS0eXdNWkfw9ukQ6MCCkqOgpQdfAhA/edit?usp=drive_link">Conflict of Interest Policy</a>
+            </li>
+            <li>
+                <a href="https://docs.google.com/document/d/1FBTgQVMzPt9TBxzYdLfTGkleMZaUeMZgeiGYmbHiMuo/edit?usp=drive_link">Document Retention Policy</a>
+            </li>
+            <li>
+                <a href="https://drive.google.com/file/d/1-8fTKG4u6kToYhXAgEc56lgPX3ncoYpj/view?usp=sharing">990-N (2023)</a>
+            </li>
+        </ul>
+    </article>
 </div>
