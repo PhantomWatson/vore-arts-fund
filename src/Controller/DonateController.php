@@ -60,6 +60,8 @@ class DonateController extends AppController
             'title',
             'totalAmount',
         ));
+
+        return null;
     }
 
     public function complete()
