@@ -90,7 +90,7 @@ class ProjectsController extends AppController
         $identity = $this->Authentication->getIdentity();
         if (!$identity) {
             $this->Flash->error('You\'ll need to register an account or log in before applying.');
-            return $this->redirect(['controller' => 'Users', 'action' => 'register']);
+            return $this->redirectToLogin();
         }
 
         // Set up view vars

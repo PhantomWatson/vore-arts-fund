@@ -262,4 +262,13 @@ class AppController extends Controller
             ),
         );
     }
+
+    protected function redirectToLogin(): ?\Cake\Http\Response
+    {
+        return $this->redirect([
+            'controller' => 'Users',
+            'action' => 'login',
+            '?' => ['redirect' => $this->getRequest()->getPath()]
+        ]);
+    }
 }
