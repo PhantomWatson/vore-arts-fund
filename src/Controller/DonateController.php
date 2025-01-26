@@ -35,7 +35,11 @@ class DonateController extends AppController
     {
         $this->addControllerBreadcrumb();
         $request = $this->getRequest();
-        $request->allowMethod(['post']);
+
+        // Bounce user back to index page if accessing with GET
+        if (!$request->is('post')) {
+            return $this->redirect(['action' => 'index']);
+        }
 
         $donationAmount = (int)$request->getData('amount') * 100; // In cents
         if (!$donationAmount) {
