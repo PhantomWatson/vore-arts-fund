@@ -27,7 +27,7 @@
             </label>
         </div>
     </fieldset>
-    <?= $this->Form->submit(__('Login'), ['class' => 'btn btn-primary']) ?>
+    <?= $this->Form->submit('Log in', ['class' => 'btn btn-primary']) ?>
     <?= $this->Html->link(
         'Forgot Password?',
         [
