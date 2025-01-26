@@ -1063,3 +1063,16 @@ section.funding-cycles {
         }
     }
 }
+
+button[type="submit"] {
+    .loading-indicator {
+        display: none;
+    }
+
+    &.loading {
+        .loading-indicator {
+            display: inline-block;
+            margin-left: 1em;
+        }
+    }
+}

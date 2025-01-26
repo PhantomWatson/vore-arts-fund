@@ -13070,4 +13070,12 @@ section.funding-cycles th {
   vertical-align: middle;
 }
 
+button[type=submit] .loading-indicator {
+  display: none;
+}
+button[type=submit].loading .loading-indicator {
+  display: inline-block;
+  margin-left: 1em;
+}
+
 /*# sourceMappingURL=style.css.map */
