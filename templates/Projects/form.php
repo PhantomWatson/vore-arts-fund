@@ -13,6 +13,7 @@
 use App\Model\Entity\Image;
 use App\Model\Entity\Project;
 
+$formId = 'project-form';
 $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 $this->Html->script('/viewerjs/viewer.min.js', ['block' => true]);
 $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
@@ -74,7 +75,7 @@ function getAgreementCheckedValue($key, $data, $project) {
 <?php endif; ?>
 
 <div class="apply">
-    <?= $this->Form->create($project, ['enctype' => 'multipart/form-data']) ?>
+    <?= $this->Form->create($project, ['enctype' => 'multipart/form-data', 'id' => $formId]) ?>
     <fieldset>
         <legend>
             Applicant Eligibility
@@ -344,6 +345,7 @@ function getAgreementCheckedValue($key, $data, $project) {
 </div>
 
 <?= $this->element('load_app_files', ['dir' => 'image-uploader']) ?>
+<?= $this->element('expired_session_handler', compact('formId')) ?>
 
 <script>
     const budget = <?= json_encode($fundingCycle->funding_available) ?>;
