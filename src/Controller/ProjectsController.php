@@ -418,7 +418,7 @@ class ProjectsController extends AppController
         ];
         $data = $this->getRequest()->getData();
         foreach ($agreements as $agreement) {
-            if (!$data[$agreement] ?? false) {
+            if (!(isset($data[$agreement]) && $data[$agreement])) {
                 $this->Flash->error('You must agree to all terms in order to apply for funding.');
                 return false;
             }
