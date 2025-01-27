@@ -112,8 +112,8 @@ class ProjectsController extends BaseProjectsController
             $data = $this->request->getData();
 
             // If saving, status doesn't change. Otherwise, it's submitted for review.
-            $savingToDraft = isset($data['save']);
-            if (!$savingToDraft) {
+            $submittingForReview = ($data['save-mode'] ?? null) == 'submit';
+            if ($submittingForReview) {
                 $project->status_id = Project::STATUS_UNDER_REVIEW;
             }
 

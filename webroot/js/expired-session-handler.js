@@ -110,9 +110,20 @@ class ExpiredSessionHandler {
     return true;
   }
 
+  getSaveMode() {
+    return document.querySelector('input[name="save-mode"]:checked').value;
+  }
+
   initializeBaseFormSubmit(formId) {
     this.baseForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      if (this.getSaveMode() === 'submit') {
+        const warningMsg = 'Are you sure you\'re ready to submit this application for review? You won\'t be able to edit it while it\'s being reviewed.';
+        if (!confirm(warningMsg)) {
+          return;
+        }
+      }
 
       this.baseSubmitBtn = e.submitter;
       this.showFormSubmitLoadingIndicator(this.baseSubmitBtn);

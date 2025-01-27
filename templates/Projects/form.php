@@ -326,19 +326,26 @@ function getAgreementCheckedValue($key, $data, $project) {
         <?= $this->Form->control('zipcode', ['label' => 'ZIP code']) ?>
     </fieldset>
 
-    <?= $this->Form->submit(
-        'Save draft',
-        [
-            'name' => 'save',
-            'class' => 'btn btn-secondary',
-        ]
-    ) ?>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="save-mode" id="save-draft" value="draft"
+            <?= ($this->getRequest()->getData('save-mode') ?? 'draft') == 'draft' ? 'checked' : null ?>>
+        <label class="form-check-label" for="save-draft">
+            Save as draft without submitting
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="save-mode" value="submit" id="save-submit"
+            <?= ($this->getRequest()->getData('save-mode') ?? null) == 'submit' ? 'checked' : null ?>>
+        <label class="form-check-label" for="save-submit">
+            Submit to review committee
+        </label>
+    </div>
+
     <?= $this->Form->button(
-        'Submit for review',
+        'Submit',
         [
             'type' => 'submit',
             'class' => 'btn btn-primary',
-            'confirm' => 'Are you sure you\'re ready to submit this application for review? You won\'t be able to edit it while it\'s being reviewed.',
         ]
     ) ?>
     <?= $this->Form->end() ?>
