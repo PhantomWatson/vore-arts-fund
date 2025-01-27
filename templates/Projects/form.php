@@ -396,5 +396,12 @@ function getAgreementCheckedValue($key, $data, $project) {
     document.querySelectorAll('input[name="save-mode"]').forEach(button => {
         button.addEventListener('change', toggleSaveModeOptionHighlight);
     });
-    toggleSaveModeOptionHighlight();
+    document.addEventListener('DOMContentLoaded', () => {
+        toggleSaveModeOptionHighlight();
+
+        // Workaround for this not working automatically without the delay when navigating back
+        setTimeout(() => {
+            toggleSaveModeOptionHighlight();
+        }, 1000);
+    });
 </script>
