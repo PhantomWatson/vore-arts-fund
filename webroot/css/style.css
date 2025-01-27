@@ -13078,4 +13078,16 @@ button[type=submit].loading .loading-indicator {
   margin-left: 1em;
 }
 
+.save-mode {
+  font-size: 1.5em;
+}
+.save-mode .icon {
+  display: inline-block;
+  text-align: center;
+  width: 1.5em;
+}
+.save-mode label {
+  font-weight: normal;
+}
+
 /*# sourceMappingURL=style.css.map */

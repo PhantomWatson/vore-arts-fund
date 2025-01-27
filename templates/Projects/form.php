@@ -18,6 +18,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 $this->Html->script('/viewerjs/viewer.min.js', ['block' => true]);
 $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
 $data = $this->getRequest()->getData();
+$saveMode = $data['save-mode'] ?? null;
 $preloadImageData = array_map(function (Image $image) {
     return [
         'id' => $image->id,
@@ -326,19 +327,23 @@ function getAgreementCheckedValue($key, $data, $project) {
         <?= $this->Form->control('zipcode', ['label' => 'ZIP code']) ?>
     </fieldset>
 
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="save-mode" id="save-draft" value="draft"
-            <?= ($this->getRequest()->getData('save-mode') ?? 'draft') == 'draft' ? 'checked' : null ?>>
-        <label class="form-check-label" for="save-draft">
-            Save as draft without submitting
-        </label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="save-mode" value="submit" id="save-submit"
-            <?= ($this->getRequest()->getData('save-mode') ?? null) == 'submit' ? 'checked' : null ?>>
-        <label class="form-check-label" for="save-submit">
-            Submit to review committee
-        </label>
+    <div class="form-group save-mode">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="save-mode" id="save-draft" value="save"
+                <?= $saveMode != 'submit' ? 'checked' : null ?>>
+            <label class="form-check-label" for="save-draft">
+                <span class="icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                Save as draft without submitting
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="save-mode" value="submit" id="save-submit"
+                <?= $saveMode == 'submit' ? 'checked' : null ?>>
+            <label class="form-check-label" for="save-submit">
+                <span class="icon"><i class="fa-solid fa-paper-plane"></i></span>
+                Submit to review committee
+            </label>
+        </div>
     </div>
 
     <?= $this->Form->button(
@@ -372,4 +377,24 @@ function getAgreementCheckedValue($key, $data, $project) {
     amountRequested.addEventListener('change', () => {
         toggleWarning();
     });
+
+    const toggleSaveModeOptionHighlight = () => {
+        document.querySelectorAll('input[name="save-mode"]').forEach(radioBtn => {
+            // Embolden checked option
+            radioBtn.parentElement.querySelector('label').style.fontWeight = radioBtn.checked ? 'bold' : 'normal';
+
+            if (!radioBtn.checked) {
+                return;
+            }
+
+            // Update submit button text
+            const submitBtn = document.getElementById(<?= json_encode($formId) ?>)
+                .querySelector('button[type="submit"]');
+            submitBtn.innerHTML = radioBtn.value[0].toUpperCase() + radioBtn.value.slice(1);
+        });
+    }
+    document.querySelectorAll('input[name="save-mode"]').forEach(button => {
+        button.addEventListener('change', toggleSaveModeOptionHighlight);
+    });
+    toggleSaveModeOptionHighlight();
 </script>
