@@ -275,6 +275,9 @@ class ProjectsController extends AdminController
         }
 
         // POST-redirect-GET pattern
+        if ($project->status_id == Project::STATUS_DELETED) {
+            return $this->redirect(['action' => 'index']);
+        }
         return $this->redirect([
             'action' => 'review',
             'id' => $project->id,

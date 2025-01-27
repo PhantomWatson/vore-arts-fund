@@ -75,6 +75,7 @@ class Project extends Entity
     const ICON_SUBMIT = '<i class="fa-solid fa-share-from-square"></i>';
     const ICON_WITHDRAW = '<i class="fa-solid fa-ban"></i>';
     const ICON_REPORT = '<i class="fa-solid fa-file-lines"></i>';
+    const ICON_DELETE = '<i class="fa-solid fa-trash"></i>';
 
     /** @var int Maximum amount that can be requested (in dollars) */
     const MAXIMUM_ALLOWED_REQUEST = 1000000; // One million dollars
@@ -187,6 +188,10 @@ class Project extends Entity
                 'icon' => self::ICON_WITHDRAW,
                 'label' => 'Withdraw this application',
             ],
+            self::STATUS_DELETED => [
+                'icon' => self::ICON_DELETE,
+                'label' => 'Delete this application',
+            ],
         ];
     }
 
@@ -214,9 +219,9 @@ class Project extends Entity
         switch ($currentStatusId) {
             case self::STATUS_DRAFT:
                 return [
-                    self::STATUS_DELETED,
                     self::STATUS_UNDER_REVIEW,
                     self::STATUS_WITHDRAWN,
+                    self::STATUS_DELETED,
                 ];
             case self::STATUS_REVISION_REQUESTED:
                 return [
