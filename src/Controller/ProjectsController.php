@@ -169,9 +169,10 @@ class ProjectsController extends AppController
         if ($project->id) {
             $data = $this->applyProjectIdToAnswers($data, $project->id);
         }
-        $savingToDraft = isset($data['save']);
-        $project->status_id = $savingToDraft ? Project::STATUS_DRAFT : Project::STATUS_UNDER_REVIEW;
-        $verb = $savingToDraft ? 'saved' : 'submitted';
+
+        $submittingForReview = ($data['save-mode'] ?? null) == 'submit';
+        $project->status_id = $submittingForReview ? Project::STATUS_UNDER_REVIEW : Project::STATUS_DRAFT;
+        $verb = $submittingForReview ? 'submitted' : 'saved';
         $hasErrors = false;
         $project = $this->Projects->patchEntity($project, $data, ['associated' => ['Answers']]);
         if ($this->Projects->save($project)) {
