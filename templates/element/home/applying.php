@@ -6,19 +6,17 @@
  */
 ?>
 
-<div class="row">
-    <div class="col">
-        <section class="card">
-            <div class="card-body">
-                <h1>
-                    <?php if ($fundingCycle): ?>
-                        <?= $fundingCycle->name ?> Funding Cycle
-                    <?php else: ?>
-                        Applications not currently being accepted
-                    <?php endif; ?>
-                </h1>
+<?php if ($fundingCycle): ?>
+    <div class="row">
+        <div class="col">
+            <section class="card">
+                <div class="card-body">
+                    <h1>
+                        <?php if ($fundingCycle): ?>
+                            <?= $fundingCycle->name ?> Funding Cycle
+                        <?php endif; ?>
+                    </h1>
 
-                <?php if ($fundingCycle): ?>
                     <?php if ($fundingCycleIsCurrent): ?>
                         <p>
                             <?= $this->Html->link(
@@ -45,13 +43,8 @@
                         ) ?>
                         page for more information about upcoming opportunities to apply for funding.
                     </p>
-                <?php else: ?>
-                    <p>
-                        We're not currently accepting applications, but please check back later for opportunities to apply
-                        for funding or to cast your votes in an upcoming funding cycle.
-                    </p>
-                <?php endif; ?>
-            </div>
-        </section>
+                </div>
+            </section>
+        </div>
     </div>
-</div>
+<?php endif; ?>
