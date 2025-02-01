@@ -76,7 +76,7 @@ class VotesController extends AppController
         $title = $projects
             ? 'Vote on Funding Applications'
             : ($nextCycle
-                ? 'Voting begins ' . $nextCycle->vote_begin->format('F j, Y')
+                ? 'Voting begins ' . $nextCycle->vote_begin_local->format('F j, Y')
                 : 'Check back later for voting info'
             );
         $this->title($title);
