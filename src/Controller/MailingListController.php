@@ -39,11 +39,15 @@ class MailingListController extends AppController
      *
      * @return void
      */
-    public function signup(): void
+    public function signup()
     {
+        // MailChimp signup form
+        return $this->redirect('http://eepurl.com/i8XaZA');
+        /*
         $title = 'Sign up for the mailing list';
         $this->set(compact('title'));
         $this->setCurrentBreadcrumb('Sign up');
+        */
     }
 
     /**
