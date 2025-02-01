@@ -24,10 +24,13 @@ class AdminController extends AppController
      * @param \Cake\Event\EventInterface $event Event.
      * @return \Cake\Http\Response|null|void
      */
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
         $user = $this->getAuthUser();
+        if (!$user) {
+            return $this->redirect('/login');
+        }
         if (!($user->is_admin ?? false)) {
             throw new ForbiddenException();
         }
