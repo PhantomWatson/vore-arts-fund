@@ -7,6 +7,32 @@
 
 $votesTable = \Cake\ORM\TableRegistry::getTableLocator()->get('Votes');
 $hasVoted = $authUser && $votesTable->hasVoted($authUser->id, $fundingCycle->id);
+$resultsSummary = '';
+$projectSummary = $fundingCycle->getProjectsSummary();
+if ($projectSummary) {
+    $resultsSummary .= sprintf(
+        '%s %s submitted',
+        $projectSummary['submitted'],
+        __n('application', 'applications', $projectSummary['submitted'])
+    );
+    $isAll = false;
+    if ($projectSummary['submitted']) {
+        $isAll = $projectSummary['accepted'] == $projectSummary['submitted'];
+        $resultsSummary .= sprintf(
+            ', %s accepted',
+            $isAll ? 'all' : $projectSummary['accepted']
+        );
+
+        if ($projectSummary['accepted']) {
+            $isAll = $projectSummary['awarded'] == $projectSummary['submitted'];
+            $resultsSummary .= sprintf(
+                ', %s awarded',
+                $isAll ? 'all' : $projectSummary['awarded']
+            );
+        }
+        $resultsSummary .= (!$isAll || !$fundingCycle->is_finalized) ? ' so far' : null;
+    }
+}
 ?>
 <table class="table table-striped funding-cycle-info_table">
     <tbody>
@@ -79,40 +105,13 @@ $hasVoted = $authUser && $votesTable->hasVoted($authUser->id, $fundingCycle->id)
             <?= $fundingCycle->funding_available_formatted ?>
         </td>
     </tr>
-    <?php $projectSummary = $fundingCycle->getProjectsSummary(); ?>
-    <?php if ($projectSummary): ?>
+    <?php if ($resultsSummary): ?>
         <tr>
             <th>
                 Results
             </th>
             <td>
-                <?php
-                    echo $projectSummary['submitted']
-                        . ' '
-                        . __n('application', 'applications', $projectSummary['submitted'])
-                        . ' submitted';
-                    if ($projectSummary['submitted']) {
-                        echo ', ';
-                        echo $projectSummary['accepted'] == $projectSummary['submitted']
-                            ? 'all'
-                            : $projectSummary['accepted'];
-                        echo ' accepted';
-                        if (
-                            $projectSummary['submitted'] != $projectSummary['accepted']
-                            && $fundingCycle->vote_begin_local->isFuture()
-                        ) {
-                            echo ' so far';
-                        }
-
-                        if ($projectSummary['accepted']) {
-                            echo ', ';
-                            echo $projectSummary['awarded'] == $projectSummary['submitted']
-                                ? 'all'
-                                : $projectSummary['awarded'];
-                            echo ' awarded';
-                        }
-                    }
-                ?>
+                <?= $resultsSummary ?>
             </td>
         </tr>
     <?php endif; ?>
