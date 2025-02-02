@@ -246,6 +246,11 @@ class FundingCyclesTable extends Table
      */
     public function findCurrent(Query $query)
     {
+        return $this->findCurrentApplying($query);
+    }
+
+    public function findCurrentApplying(Query $query)
+    {
         $now = date('Y-m-d H:i:s');
 
         return $query
