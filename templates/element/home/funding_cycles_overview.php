@@ -11,7 +11,7 @@
             <section class="card">
                 <div class="card-body">
                     <h1>
-                        Applications not currently being accepted
+                        Check back later for funding opportunities
                     </h1>
                     <p>
                         We're not currently accepting applications, but please check back later for opportunities to apply
