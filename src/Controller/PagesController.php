@@ -137,6 +137,7 @@ class PagesController extends AppController
             ->find('currentAndFuture')
             ->orderAsc('application_end')
             ->limit(2)
+            ->contain(['Projects'])
             ->all();
 
         $isStaging = str_contains($_SERVER['HTTP_HOST'], 'staging.');
