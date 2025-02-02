@@ -1090,3 +1090,11 @@ button[type="submit"] {
         font-weight: normal;
     }
 }
+
+.funding-cycle-info_table {
+    th {
+        text-align: right;
+        white-space: nowrap;
+        width: 1%;
+    }
+}

@@ -130,33 +130,21 @@ class PagesController extends AppController
      */
     public function home()
     {
-        // Get "currently applying" info
         /** @var FundingCyclesTable $fundingCyclesTable */
         $fundingCyclesTable = $this->fetchTable('FundingCycles');
         /** @var \App\Model\Entity\FundingCycle $fundingCycle */
-        $fundingCycle = $fundingCyclesTable
+        $fundingCycles = $fundingCyclesTable
             ->find('currentAndFuture')
             ->orderAsc('application_end')
-            ->first();
-        $fundingCycleIsCurrent = $fundingCycle && $fundingCycle->application_begin->isPast();
+            ->limit(2)
+            ->all();
 
-        // Get info for "currently voting" info
-        $currentVotingInfo = $fundingCyclesTable->getCurrentVotingInfo();
-        /** @var VotesTable $votesTable */
-        $votesTable = $this->fetchTable('Votes');
-        $user = $this->getAuthUser();
-        $hasVoted = $user
-            && ($currentVotingInfo['cycle'] ?? false)
-            && $votesTable->hasVoted($user->id, $currentVotingInfo['cycle']->id);
         $isStaging = str_contains($_SERVER['HTTP_HOST'], 'staging.');
 
         $this->set([
-            'fundingCycle' => $fundingCycle,
-            'fundingCycleIsCurrent' => $fundingCycleIsCurrent,
-            'hasVoted' => $hasVoted,
+            'fundingCycles' => $fundingCycles,
             'isStaging' => $isStaging,
             'title' => '',
-            'votingInfo' => $currentVotingInfo,
         ]);
 
         // Display beta testing message

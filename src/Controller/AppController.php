@@ -79,13 +79,14 @@ class AppController extends Controller
      */
     protected function setGlobalViewVars(): void
     {
-        $user = $this->getAuthUser();
-        $isLoggedIn = (bool)$user;
-        $isAdmin = $user->is_admin ?? false;
+        $authUser = $this->getAuthUser();
+        $isLoggedIn = (bool)$authUser;
+        $isAdmin = $authUser->is_admin ?? false;
         $projectsTable = $this->getTableLocator()->get('Projects');
-        $hasProjects = $user && $projectsTable->exists(['user_id' => $user->id]);
+        $hasProjects = $authUser && $projectsTable->exists(['user_id' => $authUser->id]);
 
         $this->set(compact(
+            'authUser',
             'hasProjects',
             'isAdmin',
             'isLoggedIn',

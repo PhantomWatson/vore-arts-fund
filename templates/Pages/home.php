@@ -3,8 +3,6 @@
  * @var \App\Model\Entity\FundingCycle $fundingCycle
  * @var \App\View\AppView $this
  * @var bool $fundingCycleIsCurrent
- * @var array|null $votingInfo
- * @var bool $hasVoted
  * @var bool $isStaging
  */
 ?>
@@ -102,11 +100,5 @@
         </div>
     </div>
 
-    <?= $this->element('home/voting', [
-        'votingCycle' => $votingInfo['cycle'] ?? null,
-        'votingProjectCount' => $votingInfo['projectCount'] ?? null,
-        'hasVoted' => $hasVoted,
-    ]) ?>
-
-    <?= $this->element('home/applying') ?>
+    <?= $this->element('home/funding_cycles_overview') ?>
 </div>
