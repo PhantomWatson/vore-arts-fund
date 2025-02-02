@@ -20,10 +20,6 @@
                         up-front costs of producing for-profit art, music, theater, and art education.
                     </p>
                     <p>
-                        We're currently fundraising for our first funding cycle, and applications for funding are
-                        not yet open to the public. Stay tuned for updates.
-                    </p>
-                    <p>
                         Please email <a href="mailto:info@voreartsfund.org">info@voreartsfund.org</a> if you have any
                         questions.
                     </p>
