@@ -2,6 +2,7 @@
 /**
  * @var \App\Model\Entity\FundingCycle[] $fundingCycles
  * @var \App\View\AppView $this
+ * @var string[] $cycleCategories
  */
 ?>
 
@@ -23,14 +24,17 @@
     </div>
 <?php endif; ?>
 
-<?php foreach ($fundingCycles as $fundingCycle): ?>
+<?php foreach ($fundingCycles as $cycleCategory => $fundingCycle): ?>
     <div class="row">
         <div class="col">
             <section class="card">
                 <div class="card-body">
                     <h1>
-                        <?= $fundingCycle->name ?> Funding Cycle
+                        <?= $cycleCategories[$cycleCategory] ?>
                     </h1>
+                    <h2>
+                        <?= $fundingCycle->name ?> Funding Cycle
+                    </h2>
                     <?= $this->element('FundingCycles/info_table', compact('fundingCycle')) ?>
                 </div>
             </section>

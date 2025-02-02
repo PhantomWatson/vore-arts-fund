@@ -125,25 +125,63 @@ class PagesController extends AppController
         $this->title('Privacy Policy');
     }
 
+    private function setupFundingCyclesOverview(): void
+    {
+        /** @var FundingCyclesTable $fundingCyclesTable */
+        $fundingCyclesTable = $this->fetchTable('FundingCycles');
+
+        $cycleCategories = [
+            'currentApplying' => 'Now accepting applications',
+            'currentVoting' => 'Public voting now underway',
+            'nextVoting' => 'Upcoming public vote',
+            'future' => 'Next application period',
+        ];
+
+        $fundingCycles = [];
+        foreach (array_keys($cycleCategories) as $finder) {
+            $cycle = $fundingCyclesTable
+                ->find($finder)
+                ->orderAsc('application_end')
+                ->contain(['Projects'])
+                ->first();
+
+            if (!$cycle) {
+                continue;
+            }
+
+            $fundingCycles[$finder] = $cycle;
+        }
+
+        // This category should override => this category, if they're the same
+        $overrides = [
+            'currentApplying' => 'nextVoting',
+            'future' => 'nextVoting',
+        ];
+        foreach ($overrides as $keepCategory => $ditchCategory) {
+            if (
+                isset($fundingCycles[$keepCategory]) && isset($fundingCycles[$ditchCategory])
+                && $fundingCycles[$keepCategory]->id == $fundingCycles[$ditchCategory]->id
+            ) {
+                unset($fundingCycles[$ditchCategory]);
+            }
+        }
+
+        $this->set([
+            'cycleCategories' => $cycleCategories,
+            'fundingCycles' => $fundingCycles,
+        ]);
+    }
+
     /**
      * @return void
      */
     public function home()
     {
-        /** @var FundingCyclesTable $fundingCyclesTable */
-        $fundingCyclesTable = $this->fetchTable('FundingCycles');
-        /** @var \App\Model\Entity\FundingCycle $fundingCycle */
-        $fundingCycles = $fundingCyclesTable
-            ->find('currentAndFuture')
-            ->orderAsc('application_end')
-            ->limit(2)
-            ->contain(['Projects'])
-            ->all();
+        $this->setupFundingCyclesOverview();
 
         $isStaging = str_contains($_SERVER['HTTP_HOST'], 'staging.');
 
         $this->set([
-            'fundingCycles' => $fundingCycles,
             'isStaging' => $isStaging,
             'title' => '',
         ]);

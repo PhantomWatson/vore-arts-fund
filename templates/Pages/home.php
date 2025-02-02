@@ -4,6 +4,7 @@
  * @var \App\View\AppView $this
  * @var bool $fundingCycleIsCurrent
  * @var bool $isStaging
+ * @var string[] $cycleCategories
  */
 ?>
 <div id="home">
