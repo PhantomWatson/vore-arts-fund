@@ -282,7 +282,7 @@ class FundingCyclesTable extends Table
     }
 
     /**
-     * Modifies a query to return all funding cycles whose applications end in the future
+     * Modifies a query to return all funding cycles whose voting periods end in the future
      *
      * @param \Cake\ORM\Query $query
      * @return \Cake\ORM\Query
@@ -292,7 +292,7 @@ class FundingCyclesTable extends Table
         $now = date('Y-m-d H:i:s');
 
         return $query
-            ->where(['FundingCycles.application_end >=' => $now]);
+            ->where(['FundingCycles.vote_end >=' => $now]);
     }
 
     /**
