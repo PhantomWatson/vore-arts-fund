@@ -5,7 +5,6 @@
  * @var int $fundingCycleId
  */
 ?>
-
 <?php if ($fundingCycles): ?>
     <?= $this->element('funding_cycle_selector', [
         'url' => [
@@ -44,9 +43,13 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-    <?php else: ?>
+    <?php elseif ($fundingCycleId): ?>
         <p class="alert alert-info">
             No applications have been received for this funding cycle
+        </p>
+    <?php else: ?>
+        <p class="alert alert-info">
+            Please select a funding cycle
         </p>
     <?php endif; ?>
 <?php else: ?>
