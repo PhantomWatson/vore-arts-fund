@@ -43,7 +43,7 @@ class ProjectsController extends AdminController
         $projects = [];
 
         if (!$fundingCycleId) {
-            $currentCycle = $fundingCyclesTable->find('current')->first();
+            $currentCycle = $fundingCyclesTable->find('nextVoting')->first();
             $fundingCycleId = $currentCycle ? $currentCycle->id : null;
         }
 
