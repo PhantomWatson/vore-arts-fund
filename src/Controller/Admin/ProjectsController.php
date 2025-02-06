@@ -250,10 +250,6 @@ class ProjectsController extends AdminController
                 return null;
             }
         }
-        if ($statusId == Project::STATUS_ACCEPTED && !$this->request->getData('amount_awarded')) {
-            $this->Flash->error('Amount awarded is required.');
-            return null;
-        }
 
         // Update status
         $project->status_id = $statusId;
