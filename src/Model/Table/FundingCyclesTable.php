@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\FundingCycle;
+use Cake\Core\Configure;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
@@ -151,6 +152,9 @@ class FundingCyclesTable extends Table
     {
         $rules->add(
             function (FundingCycle $entity, $options) {
+                if (Configure::read('allowCycleOverlap')) {
+                    return true;
+                }
                 $fundingCycle = $this
                     ->find()
                     ->where([
@@ -178,6 +182,9 @@ class FundingCyclesTable extends Table
 
         $rules->add(
             function (FundingCycle $entity, $options) {
+                if (Configure::read('allowCycleOverlap')) {
+                    return true;
+                }
                 $fundingCycle = $this
                     ->find()
                     ->where([
