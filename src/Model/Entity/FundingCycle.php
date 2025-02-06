@@ -78,43 +78,43 @@ class FundingCycle extends Entity
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|FrozenTime
+     * @return \Cake\Chronos\ChronosInterface|FrozenTime|null
      */
     protected function _getApplicationBeginLocal()
     {
-        return $this->application_begin->setTimezone(\App\Application::LOCAL_TIMEZONE);
+        return $this->application_begin?->setTimezone(\App\Application::LOCAL_TIMEZONE);
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|FrozenTime
+     * @return \Cake\Chronos\ChronosInterface|FrozenTime|null
      */
     protected function _getApplicationEndLocal()
     {
-        return $this->application_end->setTimezone(\App\Application::LOCAL_TIMEZONE);
+        return $this->application_end?->setTimezone(\App\Application::LOCAL_TIMEZONE);
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|FrozenTime
+     * @return \Cake\Chronos\ChronosInterface|FrozenTime|null
      */
     protected function _getResubmitDeadlineLocal()
     {
-        return $this->resubmit_deadline->setTimezone(\App\Application::LOCAL_TIMEZONE);
+        return $this->resubmit_deadline?->setTimezone(\App\Application::LOCAL_TIMEZONE);
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|FrozenTime
+     * @return \Cake\Chronos\ChronosInterface|FrozenTime|null
      */
     protected function _getVoteBeginLocal()
     {
-        return $this->vote_begin->setTimezone(\App\Application::LOCAL_TIMEZONE);
+        return $this->vote_begin?->setTimezone(\App\Application::LOCAL_TIMEZONE);
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|FrozenTime
+     * @return \Cake\Chronos\ChronosInterface|FrozenTime|null
      */
     protected function _getVoteEndLocal()
     {
-        return $this->vote_end->setTimezone(\App\Application::LOCAL_TIMEZONE);
+        return $this->vote_end?->setTimezone(\App\Application::LOCAL_TIMEZONE);
     }
 
     /**
