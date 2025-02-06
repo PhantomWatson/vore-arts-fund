@@ -32,6 +32,7 @@ use Cake\ORM\TableRegistry;
  * @property int $amount_awarded_formatted e.g. $1,234
  * @property string $status_summary
  * @property \Cake\I18n\FrozenTime $loan_agreement_date
+ * @property \Cake\I18n\FrozenTime $loan_agreement_date_local
  * @property \Cake\I18n\FrozenTime $loan_due_date
  * @property int $loan_agreement_version
  * @property string $tin
@@ -489,5 +490,13 @@ class Project extends Entity
     public function isAgreeable(): bool
     {
         return $this->isAwarded() && $this->amount_awarded > 0 && !$this->loan_agreement_date;
+    }
+
+    /**
+     * @return \Cake\Chronos\ChronosInterface|FrozenTime|null
+     */
+    protected function _getLoanAgreementDateLocal()
+    {
+        return $this->loan_agreement_date->setTimezone(\App\Application::LOCAL_TIMEZONE);
     }
 }

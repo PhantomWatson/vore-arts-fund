@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Project;
 use App\Model\Entity\User;
 use Cake\Core\Configure;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -158,5 +160,22 @@ class UsersTable extends Table
         $rules->add($rules->isUnique(['email'], 'This email address is already registered'));
 
         return $rules;
+    }
+
+    public function findForArtMart(Query $query, array $options)
+    {
+        return $query->select(['id', 'name'])
+            ->matching('Projects', function (\Cake\Database\Query $query) {
+                return $query->where(['status_id' => Project::STATUS_AWARDED_AND_DISBURSED]);
+            })
+            ->contain([
+                'Projects' => function (Query $query) {
+                    return $query
+                        ->select(['id', 'title', 'amount_awarded', 'loan_agreement_date', 'user_id'])
+                        ->where(['status_id' => Project::STATUS_AWARDED_AND_DISBURSED])
+                        ->orderDesc('loan_agreement_date');
+                }
+            ])
+            ->orderAsc('name');
     }
 }

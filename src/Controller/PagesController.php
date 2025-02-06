@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\Project;
+use App\Model\Entity\Transaction;
 use App\Model\Table\FundingCyclesTable;
 use App\Model\Table\VotesTable;
 use Cake\Core\Configure;
+use Cake\Database\Query;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
@@ -209,5 +212,15 @@ class PagesController extends AppController
     {
         $this->viewBuilder()->setLayout('ajax');
         $this->response = $this->response->withStatus(404);
+    }
+
+    public function artMart()
+    {
+        $users = $this->fetchTable('Users')
+            ->find('forArtMart')
+            ->all();
+
+        $this->set(compact('users'));
+        $this->title('Funding recipients eligible for Art Mart discount');
     }
 }

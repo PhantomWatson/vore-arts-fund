@@ -53,6 +53,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
             '/privacy' => 'privacy',
             '/terms' => 'terms',
             '/maintenance' => 'maintenanceMode',
+            '/art-mart' => 'artMart',
         ],
         'Projects' => [
             '/project/{id}' => 'view',
