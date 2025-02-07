@@ -91,6 +91,7 @@ class VotesController extends ApiController
 
         $projectCount = count($data['projects']);
         $projectsTable = $this->fetchTable('Projects');
+        $newVotes = [];
         foreach ($data['projects'] as $i => $projectId) {
             /** @var \App\Model\Entity\Vote $vote */
             $vote = $this->Votes->newEmptyEntity();
@@ -112,6 +113,17 @@ class VotesController extends ApiController
                 );
             }
 
+            // Check all votes for errors before saving any votes, since any saved vote will block the user from
+            // re-submitting votes in this funding cycle
+            $error = $vote->getErrors();
+            if ($error || !$this->Votes->rulesChecker()->check($vote, 'create')) {
+                throw new InternalErrorException(
+                    'There was an error submitting your votes. Details: ' . print_r($error, true)
+                );
+            }
+            $newVotes[] = $vote;
+        }
+        foreach ($newVotes as $vote) {
             if (!$this->Votes->save($vote)) {
                 $error = $vote->getErrors();
                 throw new InternalErrorException(
