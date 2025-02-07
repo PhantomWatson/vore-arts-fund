@@ -7,8 +7,6 @@ class API {
   }
 
   static async getProjects(setErrorMsg) {
-    //return this.getDummyProjects();
-
     let retval = null;
     const url = this.getBasePath() + '/api/projects';
     const fetchOptions = {
