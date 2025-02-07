@@ -7,6 +7,6 @@ const paths = {
   nodeModulesPath: path.resolve(__dirname, "./node_modules"),
 };
 
-const defaultConfig = require("../../config/webpack/webpack.default.js");
+const defaultConfig = require("./webpack.default.js");
 
 module.exports = (env) => defaultConfig(env, paths);
