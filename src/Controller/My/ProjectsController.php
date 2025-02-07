@@ -289,6 +289,7 @@ class ProjectsController extends BaseProjectsController
             'id' => $projectId,
         ]);
         $this->set(compact('project'));
+        return null;
     }
 
     public function signLoanAgreement()
