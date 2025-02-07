@@ -1,6 +1,5 @@
 <?php
 /**
- * @var \App\Model\Entity\Project[] $projects
  * @var \App\Model\Entity\FundingCycle[] $cyclesCurrentlyVoting
  * @var \App\Model\Entity\FundingCycle|null $cycle
  * @var \App\Model\Entity\FundingCycle|null $nextCycle

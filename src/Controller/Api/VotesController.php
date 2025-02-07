@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Model\Entity\Project;
-use App\Model\Entity\FundingCycle;
 use App\Model\Entity\Vote;
 use App\Model\Table\FundingCyclesTable;
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
@@ -83,8 +83,12 @@ class VotesController extends ApiController
             }
         }
 
-        /** @var FundingCycle $fundingCycle */
         $fundingCycleId = $data['fundingCycleId'];
+        $alreadyVoted = $this->Votes->hasVoted($userId, $fundingCycleId);
+        if ($alreadyVoted && !Configure::read('allowRepeatVoting')) {
+            throw new ForbiddenException('You have already voted in this funding cycle');
+        }
+
         $projectCount = count($data['projects']);
         $projectsTable = $this->fetchTable('Projects');
         foreach ($data['projects'] as $i => $projectId) {

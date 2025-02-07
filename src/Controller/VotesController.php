@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Model\Entity\FundingCycle;
 use App\Model\Entity\User;
 use App\Model\Table\FundingCyclesTable;
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 
@@ -59,21 +60,23 @@ class VotesController extends AppController
             $cycle = $cyclesCurrentlyVoting->first();
         }
 
-        $projects = $cycle
-            ? $this->fetchTable('Projects')
+        $hasProjects = $cycle
+            ? (bool)$this->fetchTable('Projects')
                 ->find('forVoting', ['funding_cycle_id' => $cycle->id])
-                ->all()
+                ->select(['existing' => 1])
+                ->limit(1)
+                ->disableHydration()
                 ->toArray()
             : [];
         $user = $this->getAuthUser();
         $isVerified = $user ? $user->is_verified : false;
         $hasVoted = $user && $cycle && $this->Votes->hasVoted($user->id, $cycle->id);
         $nextCycle = $fundingCyclesTable->find('nextVoting')->first();
-        $showUpcoming = $hasVoted || !$cycle || !$projects;
-        $canVote = $user && $user->is_verified && !$showUpcoming && $projects;
+        $showUpcoming = $hasVoted || !$cycle || !$hasProjects;
+        $canVote = $user && $user->is_verified && !$showUpcoming && $hasProjects;
 
         $this->setCurrentBreadcrumb('Vote');
-        $title = $projects
+        $title = $hasProjects
             ? 'Vote on Funding Applications'
             : ($nextCycle
                 ? 'Voting begins ' . $nextCycle->vote_begin_local->format('F j, Y')
@@ -87,22 +90,27 @@ class VotesController extends AppController
             'hasVoted',
             'isVerified',
             'nextCycle',
-            'projects',
             'showUpcoming',
             'toLoad',
         ));
         $this->viewBuilder()->setLayout('vote');
-
+        $repeatVotesAllows = Configure::read('allowRepeatVoting');
         if (!$user) {
             $template = 'not_logged_in';
         } elseif (!$isVerified) {
             $template = 'not_verified';
-        } elseif ($hasVoted) {
+        } elseif ($hasVoted && !$repeatVotesAllows) {
             $template = 'already_voted';
-        } elseif (!$projects) {
+        } elseif (!$hasProjects) {
             $template = 'no_projects';
         } else {
             $template = 'index';
+            if ($hasVoted && $repeatVotesAllows) {
+                $this->Flash->set(
+                    'You\'ve already voted for this funding cycle, but the '
+                    . getEnvironment() . ' environment allows repeat voting.'
+                );
+            }
         }
         $this->viewBuilder()->setTemplate($template);
 
