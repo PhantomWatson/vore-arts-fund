@@ -87,7 +87,7 @@ class Piiano implements SecretServiceInterface
         if (!$url) {
             throw new InternalErrorException('Piiano endpoint not set');
         }
-        $collectionName = 'borrowers';
+        $collectionName = Configure::read('Piiano.' . $piianoEnv . '.collectionName');
         $url .= "/api/pvlt/1.0/data/collections/$collectionName/objects";
         return $url;
     }
