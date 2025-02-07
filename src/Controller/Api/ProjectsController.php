@@ -40,7 +40,10 @@ class ProjectsController extends ApiController
         }
         /** @var FundingCyclesTable $fundingCyclesTable */
         $fundingCyclesTable = $this->fetchTable('FundingCycles');
-        $fundingCycle = $fundingCyclesTable->find('currentVoting')->first();
+        $fundingCycleId = $this->getRequest()->getQuery('fundingCycleId');
+        $fundingCycle = $fundingCycleId
+            ? $fundingCyclesTable->get($fundingCycleId)
+            : $fundingCyclesTable->find('currentVoting')->first();
         $projects = $fundingCycle
             ? $this->Projects->find('forVoting', ['funding_cycle_id' => $fundingCycle->id])->all()
             : [];

@@ -44,8 +44,6 @@ class VotesController extends AppController
          * @var User|null $user
          */
         $fundingCyclesTable = $this->fetchTable('FundingCycles');
-        $cyclesCurrentlyVoting = $fundingCyclesTable->find('currentVoting');
-        $this->set(compact('cyclesCurrentlyVoting'));
         if ($fundingCycleId) {
             try {
                 $cycle = $fundingCyclesTable->get($fundingCycleId);
@@ -53,10 +51,14 @@ class VotesController extends AppController
                 $this->Flash->error("Sorry, we couldn't find funding cycle #$fundingCycleId.");
                 return $this->redirect(['action' => 'index']);
             }
-        } elseif ($cyclesCurrentlyVoting->all()->count() > 1) {
-            $this->set('title', 'Select funding cycle');
-            return $this->render('chooseCycle');
         } else {
+            $cyclesCurrentlyVoting = $fundingCyclesTable->find('currentVoting');
+            $hasMultiplePossibleCycles = $cyclesCurrentlyVoting->all()->count() > 1;
+            if ($hasMultiplePossibleCycles) {
+                $this->set('title', 'Select funding cycle');
+                $this->set(compact('cyclesCurrentlyVoting'));
+                return $this->render('chooseCycle');
+            }
             $cycle = $cyclesCurrentlyVoting->first();
         }
 
@@ -71,8 +73,10 @@ class VotesController extends AppController
         $user = $this->getAuthUser();
         $isVerified = $user ? $user->is_verified : false;
         $hasVoted = $user && $cycle && $this->Votes->hasVoted($user->id, $cycle->id);
+        $repeatVotesAllows = Configure::read('allowRepeatVoting');
+        $blockedFromRepeatVoting = $hasVoted && !$repeatVotesAllows;
         $nextCycle = $fundingCyclesTable->find('nextVoting')->first();
-        $showUpcoming = $hasVoted || !$cycle || !$hasProjects;
+        $showUpcoming = $blockedFromRepeatVoting || !$cycle || !$hasProjects;
         $canVote = $user && $user->is_verified && !$showUpcoming && $hasProjects;
 
         $this->setCurrentBreadcrumb('Vote');
@@ -94,12 +98,12 @@ class VotesController extends AppController
             'toLoad',
         ));
         $this->viewBuilder()->setLayout('vote');
-        $repeatVotesAllows = Configure::read('allowRepeatVoting');
+
         if (!$user) {
             $template = 'not_logged_in';
         } elseif (!$isVerified) {
             $template = 'not_verified';
-        } elseif ($hasVoted && !$repeatVotesAllows) {
+        } elseif ($blockedFromRepeatVoting) {
             $template = 'already_voted';
         } elseif (!$hasProjects) {
             $template = 'no_projects';

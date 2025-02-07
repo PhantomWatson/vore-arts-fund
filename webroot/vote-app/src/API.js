@@ -8,7 +8,11 @@ class API {
 
   static async getProjects(setErrorMsg) {
     let retval = null;
-    const url = this.getBasePath() + '/api/projects';
+    const fundingCycleId = window.location.pathname.split('/').pop();
+    let url = this.getBasePath() + '/api/projects';
+    if (!isNaN(fundingCycleId)) {
+      url += '?fundingCycleId=' + fundingCycleId;
+    }
     const fetchOptions = {
       headers: {'Content-Type': 'application/json'}
     };
