@@ -8,6 +8,10 @@ $amount = $project->amount_awarded_formatted;
 
 <?= $this->element('Projects/loan_agreement_preamble', compact('project')) ?>
 
+<p>
+    This loan agreement will remain available on this website for you to access after signing.
+</p>
+
 <?= $this->element('loan_terms', compact('amount', 'dueDate')) ?>
 
 <?= $this->Form->create($project) ?>
