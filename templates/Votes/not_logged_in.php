@@ -9,23 +9,12 @@
  * @var bool $isLoggedIn
  * @var bool $isVerified
  * @var bool $showUpcoming
+ * @var bool $hasProjects
  */
-$count = count($projects);
 ?>
 
-<?php if ($projects): ?>
+<?php if ($hasProjects): ?>
     <p>
-        There
-        <?= __n('is currently', 'are currently', $count) ?>
-        <?= $this->Html->link(
-            __n('one project', "$count projects", $count),
-            [
-                'prefix' => false,
-                'controller' => 'Projects',
-                'action' => 'index',
-            ]
-        ) ?>
-        to vote on!
         Please
         <?= $this->Html->link(
             'log in',

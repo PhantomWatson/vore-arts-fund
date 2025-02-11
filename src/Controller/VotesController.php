@@ -96,6 +96,7 @@ class VotesController extends AppController
             'nextCycle',
             'showUpcoming',
             'toLoad',
+            'hasProjects',
         ));
         $this->viewBuilder()->setLayout('vote');
 
