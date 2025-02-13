@@ -44,6 +44,7 @@ class PagesController extends AppController
             'home',
             'privacy',
             'terms',
+            'artMart',
         ]);
     }
 
