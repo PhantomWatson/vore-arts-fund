@@ -80,7 +80,7 @@ class ProjectsController extends AppController
         // Check if applications can be accepted
         /** @var FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->find('current')->first();
-        if (true || is_null($fundingCycle)) {
+        if (is_null($fundingCycle)) {
             $nextFundingCycle = $this->FundingCycles->find('nextApplying')->first();
             $this->set(compact('nextFundingCycle'));
             $this->viewBuilder()->setTemplate('applications_not_being_accepted');
