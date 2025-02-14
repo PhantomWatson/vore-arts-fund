@@ -343,7 +343,7 @@ class FundingCyclesTable extends Table
      * @param \Cake\ORM\Query $query
      * @return \Cake\ORM\Query
      */
-    public function findNextProject(Query $query)
+    public function findNextApplying(Query $query)
     {
         $now = date('Y-m-d H:i:s');
 

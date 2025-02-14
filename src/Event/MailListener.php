@@ -137,7 +137,7 @@ class MailListener implements EventListenerInterface
             $email,
             [
                 'project' => $project,
-                'fundingCycle' => $this->fundingCyclesTable->find('nextProject')->first(),
+                'fundingCycle' => $this->fundingCyclesTable->find('nextApplying')->first(),
                 'note' => $note,
                 'userName' => $name,
             ],
@@ -196,7 +196,7 @@ class MailListener implements EventListenerInterface
             $email,
             [
                 'project' => $project,
-                'fundingCycle' => $this->fundingCyclesTable->find('nextProject')->first(),
+                'fundingCycle' => $this->fundingCyclesTable->find('nextApplying')->first(),
                 'userName' => $name,
             ],
             [
