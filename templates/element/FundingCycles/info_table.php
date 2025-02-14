@@ -93,17 +93,20 @@ if ($projectSummary) {
                     <?php if ($hasVoted): ?>
                         <strong>Thanks for voting!</strong>
                     <?php elseif ($fundingCycle->vote_begin->isFuture()): ?>
-                        <?php
-                            $days = $fundingCycle->vote_begin->diffInDays(new FrozenTime());
-                            echo $days
-                                ? sprintf(
-                                    '%s %s %s',
-                                    number_format($days),
-                                    __n('day', 'days', $days),
-                                    'until voting begins'
-                                )
-                                : 'Check back shortly to cast your votes!';
-                        ?>
+                        <?php if ($fundingCycle->application_end->isPast()): ?>
+                            <?php
+                                // Only show voting countdown if application period has ended
+                                $days = $fundingCycle->vote_begin->diffInDays(new FrozenTime());
+                                echo $days
+                                    ? sprintf(
+                                        '%s %s %s',
+                                        number_format($days),
+                                        __n('day', 'days', $days),
+                                        'until voting begins'
+                                    )
+                                    : 'Check back shortly to cast your votes!';
+                            ?>
+                        <?php endif; ?>
                     <?php elseif ($fundingCycle->isCurrentlyVoting()): ?>
                         <?= $this->Html->link(
                             'Cast your votes',
