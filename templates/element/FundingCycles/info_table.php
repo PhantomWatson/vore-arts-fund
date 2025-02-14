@@ -93,12 +93,26 @@ if ($projectSummary) {
                     <div class="col-md-6">
                         <?php if ($hasVoted): ?>
                             <strong>Thanks for voting!</strong>
+                        <?php elseif ($fundingCycle->vote_begin->isFuture()): ?>
+                            <?php
+                                $days = $fundingCycle->vote_begin->diffInDays(new FrozenTime());
+                                echo $days
+                                    ? sprintf(
+                                        '%s %s %s',
+                                        number_format($days),
+                                        __n('day', 'days', $days),
+                                        'until voting begins'
+                                    )
+                                    : 'Check back shortly to cast your votes!';
+                            ?>
                         <?php elseif ($fundingCycle->isCurrentlyVoting()): ?>
                             <?= $this->Html->link(
                                 'Cast your votes',
                                 ['controller' => 'Votes', 'action' => 'index', 'prefix' => false],
                                 ['class' => 'btn btn-primary']
                             ) ?>
+                        <?php else: ?>
+                            (Closed)
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
