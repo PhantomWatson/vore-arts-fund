@@ -199,7 +199,7 @@ class TransactionsTable extends Table
             ->orderAsc('created');
     }
 
-    public function afterSave(Event $event, EntityInterface $entity, ArrayObject $options): void
+    public function afterSave(Event $event, EntityInterface $entity, $options): void
     {
         /** @var Transaction $entity */
         $alert = new Alert();
