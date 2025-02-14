@@ -5,6 +5,8 @@
  * @var \App\View\AppView $this
  */
 
+use Cake\I18n\FrozenTime;
+
 $votesTable = \Cake\ORM\TableRegistry::getTableLocator()->get('Votes');
 $hasVoted = $authUser && $votesTable->hasVoted($authUser->id, $fundingCycle->id);
 $resultsSummary = '';
@@ -47,8 +49,20 @@ if ($projectSummary) {
                     to
                     <?= $fundingCycle->application_end_local->format('F j, Y') ?>
                 </div>
-                <?php if ($fundingCycle->isCurrentlyApplying()): ?>
-                    <div class="col-md-6">
+                <div class="col-md-6">
+                    <?php if ($fundingCycle->application_begin->isFuture()): ?>
+                        <?php
+                            $days = $fundingCycle->application_begin->diffInDays(new FrozenTime());
+                            echo $days
+                                ? sprintf(
+                                    '%s %s %s',
+                                    number_format($days),
+                                    __n('day', 'days', $days),
+                                    'until applications open'
+                                )
+                                : 'Check back shortly for an application link!';
+                        ?>
+                    <?php elseif ($fundingCycle->isCurrentlyApplying()): ?>
                         <?= $this->Html->link(
                             'Apply for funding',
                             [
@@ -57,8 +71,10 @@ if ($projectSummary) {
                             ],
                             ['class' => 'btn btn-primary']
                         ) ?>
-                    </div>
-                <?php endif; ?>
+                    <?php else: ?>
+                        (Closed)
+                    <?php endif; ?>
+                </div>
             </div>
         </td>
     </tr>
