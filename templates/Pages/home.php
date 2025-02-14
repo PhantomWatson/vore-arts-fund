@@ -82,13 +82,6 @@
                                 <span class="handle">Muncie Events</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="https://github.com/PhantomWatson/vore-arts-fund">
-                                <i class="fa-brands fa-github" title="GitHub" aria-hidden="true"></i>
-                                <span class="sr-only">GitHub:</span>
-                                <span class="handle">PhantomWatson/vore-arts-fund</span>
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </section>
