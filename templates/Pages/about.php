@@ -1,10 +1,11 @@
 <?php
 /**
  * @var \App\View\AppView $this
+ * @var \App\Model\Entity\User[] $boardMembers
  */
 ?>
 
-<div id="about">
+<div class="about">
     <article>
         <h2>
             What is the Vore Arts Fund?
@@ -30,7 +31,7 @@
         <h2>
             Where did the name come from?
         </h2>
-        <img src="/img/phil.jpg" alt="Photo of Phil Vore" title="Phil Vore" />
+        <img src="/img/phil.jpg" alt="Photo of Phil Vore" title="Phil Vore" class="about-phil" />
         <p>
             <strong>Phil Vore</strong> served as a director on the boards of the Full Circle Arts Co-op and the Muncie Arts and Culture
             Council from 2007 until his death in 2017, and during that time he championed the idea that such nonprofits
@@ -98,82 +99,78 @@
             bankrupt you.
         </p>
     </article>
+</div>
 
-    <div class="row">
-        <div class="col-sm-6">
-            <section class="credits">
-                <h2>
-                    Board of Directors
-                </h2>
-                <dl>
-                    <div>
-                        <dt>
-                            President
-                        </dt>
-                        <dd>
-                            Graham Watson <span class="pronoun">(he)</span>
-                        </dd>
-                    </div>
-                    <div>
-                        <dt>
-                            Vice President
-                        </dt>
-                        <dd>
-                            Natalie Phillips <span class="pronoun">(she)</span>
-                        </dd>
-                    </div>
-                    <div>
-                        <dt>
-                            Treasurer
-                        </dt>
-                        <dd>
-                            Beth McCollum <span class="pronoun">(they/she)</span>
-                        </dd>
-                    </div>
-                    <div>
-                        <dt>
-                            Secretary
-                        </dt>
-                        <dd>
-                            Katy Wolfe <span class="pronoun">(she)</span>
-                        </dd>
-                    </div>
-                </dl>
-            </section>
+<?php if ($boardMembers): ?>
+    <section id="meet-the-board">
+        <h2>
+            Meet Our Board of Directors
+        </h2>
+        <div class="row">
+            <?php foreach ($boardMembers as $boardMember): ?>
+                <div class="col-lg-6">
+                    <article class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">
+                                <span class="name">
+                                    <?= $boardMember->name ?>
+                                </span>
+                                <span class="title">
+                                    <?= ($boardMember->bio ?? false) ? $boardMember->bio->title : 'Director' ?>
+                                </span>
+                            </h3>
+                            <div class="card-text">
+                                <?php if ($boardMember->bio ?? false): ?>
+                                    <?= $boardMember->bio->formatted_bio ?>
+                                <?php else: ?>
+                                    <p>
+                                        Bio coming soon!
+                                    </p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            <?php endforeach; ?>
         </div>
-        <div class="col-sm-6">
-            <section class="credits">
-                <h2>
-                    Website
-                </h2>
-                <dl>
-                    <div>
-                        <dt>
-                            Lead Engineer
-                        </dt>
-                        <dd>
-                            Graham Watson <span class="pronoun">(he)</span>
-                        </dd>
-                    </div>
-                    <div>
-                        <dt>
-                            Engineers
-                        </dt>
-                        <dd>
-                            Dakota Savage <span class="pronoun">(he)</span>
-                            <br />
-                            Alec Schimmel <span class="pronoun">(he)</span>
-                            <br />
-                            Madison Turley <span class="pronoun">(she)</span>
-                            <br />
-                            Sean Wolfe <span class="pronoun">(he)</span>
-                        </dd>
-                    </div>
-                </dl>
-            </section>
-        </div>
+    </section>
+<?php endif; ?>
+
+<div class="row">
+    <div class="col-lg-6">
+        <section class="credits">
+            <h2>
+                Volunteers
+            </h2>
+            <dl>
+                <div>
+                    <dt>
+                        Lead Engineer
+                    </dt>
+                    <dd>
+                        Graham Watson <span class="pronoun">(he)</span>
+                    </dd>
+                </div>
+                <div>
+                    <dt>
+                        Engineers
+                    </dt>
+                    <dd>
+                        Dakota Savage <span class="pronoun">(he)</span>
+                        <br />
+                        Alec Schimmel <span class="pronoun">(he)</span>
+                        <br />
+                        Madison Turley <span class="pronoun">(she)</span>
+                        <br />
+                        Sean Wolfe <span class="pronoun">(he)</span>
+                    </dd>
+                </div>
+            </dl>
+        </section>
     </div>
+</div>
 
+<div class="about">
     <article>
         <h2>
             Transparency

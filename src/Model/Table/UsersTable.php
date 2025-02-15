@@ -60,6 +60,9 @@ class UsersTable extends Table
         $this->hasMany('Votes', [
             'foreignKey' => 'user_id',
         ]);
+        $this->hasOne('Bios', [
+            'foreignKey' => 'user_id',
+        ]);
     }
 
     /**
@@ -177,5 +180,22 @@ class UsersTable extends Table
                 }
             ])
             ->orderAsc('name');
+    }
+
+    public function getBoardMembers()
+    {
+        $boardMemberUserIds = Configure::read('boardMemberUserIds');
+        return $this
+            ->find()
+            ->select([
+                'Users.id',
+                'Users.name',
+                'Bios.title',
+                'Bios.bio',
+                'Bios.image',
+            ])
+            ->where(['Users.id IN' => $boardMemberUserIds])
+            ->contain(['Bios'])
+            ->all();
     }
 }

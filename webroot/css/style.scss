@@ -799,12 +799,12 @@ section.funding-cycles {
     }
 }
 
-#about {
+.about {
     article {
         margin-bottom: 3em;
     }
 
-    img {
+    img.about-phil {
         float: right;
         margin-bottom: 1em;
         margin-left: 1em;
@@ -1096,5 +1096,24 @@ button[type="submit"] {
         text-align: right;
         white-space: nowrap;
         width: 1%;
+    }
+}
+
+#meet-the-board {
+    article {
+        margin-bottom: $section-spacer;
+    }
+
+    .name {
+        display: inline-block;
+        margin-right: 0.5em;
+    }
+
+    .title {
+        @extend .text-muted;
+
+        display: inline-block;
+        font-size: 60%;
+        text-transform: uppercase;
     }
 }

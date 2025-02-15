@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Authentication\PasswordHasher\DefaultPasswordHasher;
+use Cake\Core\Configure;
 use Cake\ORM\Entity;
 
 /**
@@ -21,11 +22,13 @@ use Cake\ORM\Entity;
  * @property string|null $reset_password_token
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
+ * @property bool $is_super_admin
  *
  * @property \App\Model\Entity\Project[] $projects
  * @property \App\Model\Entity\Message[] $messages
  * @property \App\Model\Entity\Note[] $notes
  * @property \App\Model\Entity\Vote[] $votes
+ * @property \App\Model\Entity\Bio $bio
  */
 class User extends Entity
 {
@@ -102,5 +105,10 @@ class User extends Entity
         }
 
         return $phone;
+    }
+
+    protected function _getIsSuperAdmin(): bool
+    {
+        return $this->id == Configure::read('superAdminUserId');
     }
 }

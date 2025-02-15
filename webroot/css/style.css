@@ -8551,7 +8551,7 @@ fieldset:disabled .vote-rank button,
   color: rgba(var(--bs-body-color-rgb), var(--bs-text-opacity)) !important;
 }
 
-.text-muted, .footnote,
+.text-muted, #meet-the-board .title, .footnote,
 .pronoun {
   --bs-text-opacity: 1;
   color: var(--bs-secondary-color) !important;
@@ -12878,10 +12878,10 @@ section.funding-cycles th {
   vertical-align: middle;
 }
 
-#about article {
+.about article {
   margin-bottom: 3em;
 }
-#about img {
+.about img.about-phil {
   float: right;
   margin-bottom: 1em;
   margin-left: 1em;
@@ -13094,6 +13094,19 @@ button[type=submit].loading .loading-indicator {
   text-align: right;
   white-space: nowrap;
   width: 1%;
+}
+
+#meet-the-board article {
+  margin-bottom: 2rem;
+}
+#meet-the-board .name {
+  display: inline-block;
+  margin-right: 0.5em;
+}
+#meet-the-board .title {
+  display: inline-block;
+  font-size: 60%;
+  text-transform: uppercase;
 }
 
 /*# sourceMappingURL=style.css.map */
