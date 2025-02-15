@@ -205,12 +205,15 @@ class TransactionsTable extends Table
         $alert = new Alert();
         $alert->addLine(sprintf(
             '<%s|Transaction #%s> saved',
-            Router::url([
-                'prefix' => 'Admin',
-                'controller' => 'Transactions',
-                'action' => 'view',
-                'id' => $entity->id
-            ]),
+            Router::url(
+                [
+                    'prefix' => 'Admin',
+                    'controller' => 'Transactions',
+                    'action' => 'view',
+                    'id' => $entity->id
+                ],
+                true
+            ),
             $entity->id,
         ));
         $alert->send(Alert::TYPE_TRANSACTIONS);
