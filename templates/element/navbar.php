@@ -40,6 +40,13 @@ $loggedInLinks = [
         ['class' => 'dropdown-item']
     ]
 ];
+if ($isAdmin) {
+    $loggedInLinks[] = [
+        'Bio',
+        ['prefix' => 'My', 'controller' => 'Bios', 'action' => 'edit'],
+        ['class' => 'dropdown-item']
+    ];
+}
 if ($hasProjects) {
     $loggedInLinks[] = [
         'My Projects',

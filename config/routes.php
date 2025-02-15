@@ -107,6 +107,9 @@ $routes->prefix('my', function (RouteBuilder $builder) {
             '/projects/view-loan-agreement/{id}' => 'viewLoanAgreement',
             '/projects/send-message/{id}' => 'sendMessage',
         ],
+        'Bios' => [
+            '/bio' => 'edit',
+        ],
     ];
     buildRoutes($builder, $controllers);
     $builder->fallbacks(DashedRoute::class);
