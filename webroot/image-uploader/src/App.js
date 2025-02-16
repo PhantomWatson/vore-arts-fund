@@ -132,7 +132,7 @@ function App(props) {
   return (
     <div className="image-upload">
       <div className="image-upload__input">
-        <input type="file" id="file-upload" className="form-control" aria-label="Select an image to upload" />
+        <input type="file" id="file-upload" accept="image/*" className="form-control" aria-label="Select an image to upload" />
         <button type="button" id="upload-button" onClick={handleUpload} className="btn btn-secondary">
           Upload
           {isUploading && <i className="loading-indicator fa-solid fa-spinner fa-spin-pulse" title="Loading"></i>}
