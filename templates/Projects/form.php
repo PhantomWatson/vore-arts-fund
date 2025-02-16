@@ -277,7 +277,7 @@ function getAgreementCheckedValue($key, $data, $project) {
         <p>
             Have images to help convey what your project is? Upload up to five of them here.
         </p>
-        <div id="image-uploader-root" ></div>
+        <div id="image-uploader-root"></div>
         <p>
             Sexually explicit or disturbingly violent imagery may not be included in an application and may result
             in disqualification.
