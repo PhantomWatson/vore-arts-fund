@@ -1,5 +1,6 @@
 import './App.css';
 import {useEffect, useRef, useState} from 'react';
+import Viewer from 'viewerjs';
 
 function App(props) {
   const [images, setImages] = useState(props.images);
@@ -82,7 +83,7 @@ function App(props) {
   };
 
   const handleRemove = async (key) => {
-    if (!confirm('Are you sure you want to delete this image?')) {
+    if (!window.confirm('Are you sure you want to delete this image?')) {
       return;
     }
 
