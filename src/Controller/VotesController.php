@@ -62,7 +62,7 @@ class VotesController extends AppController
             $cycle = $cyclesCurrentlyVoting->first();
         }
 
-        $hasProjects = $cycle
+        $fundingCycleHasProjects = $cycle
             ? (bool)$this->fetchTable('Projects')
                 ->find('forVoting', ['funding_cycle_id' => $cycle->id])
                 ->select(['existing' => 1])
@@ -76,11 +76,11 @@ class VotesController extends AppController
         $repeatVotesAllows = Configure::read('allowRepeatVoting');
         $blockedFromRepeatVoting = $hasVoted && !$repeatVotesAllows;
         $nextCycle = $fundingCyclesTable->find('nextVoting')->first();
-        $showUpcoming = $blockedFromRepeatVoting || !$cycle || !$hasProjects;
-        $canVote = $user && $user->is_verified && !$showUpcoming && $hasProjects;
+        $showUpcoming = $blockedFromRepeatVoting || !$cycle || !$fundingCycleHasProjects;
+        $canVote = $user && $user->is_verified && !$showUpcoming && $fundingCycleHasProjects;
 
         $this->setCurrentBreadcrumb('Vote');
-        $title = $hasProjects
+        $title = $fundingCycleHasProjects
             ? 'Vote on Funding Applications'
             : ($nextCycle
                 ? 'Voting begins ' . $nextCycle->vote_begin_local->format('F j, Y')
@@ -88,6 +88,7 @@ class VotesController extends AppController
             );
         $this->title($title);
         $toLoad = $this->getAppFiles('vote-app');
+
         $this->set(compact(
             'canVote',
             'cycle',
@@ -96,7 +97,7 @@ class VotesController extends AppController
             'nextCycle',
             'showUpcoming',
             'toLoad',
-            'hasProjects',
+            'fundingCycleHasProjects',
         ));
         $this->viewBuilder()->setLayout('vote');
 
@@ -106,7 +107,7 @@ class VotesController extends AppController
             $template = 'not_verified';
         } elseif ($blockedFromRepeatVoting) {
             $template = 'already_voted';
-        } elseif (!$hasProjects) {
+        } elseif (!$fundingCycleHasProjects) {
             $template = 'no_projects';
         } else {
             $template = 'index';
