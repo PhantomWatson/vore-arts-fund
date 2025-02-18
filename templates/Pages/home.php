@@ -26,13 +26,15 @@
             </section>
             <section>
                 <h1>
-                    Coverage on Indiana Public Radio
+                    Coverage on Newslink Indiana
                 </h1>
                 <p>
-                    We'd like to thank Thomas Ouellette and Indiana Public Radio for
-                    <a href="https://indianapublicradio.org/news/2024/05/a-new-fund-aims-at-helping-struggling-artists-bring-their-projects-to-life/">their recent story about the Vore Arts Fund</a>.
-                    Also worth reading is <a href="https://indianapublicradio.org/news/2023/10/new-national-study-highlights-economic-impact-of-arts-culture-on-indiana-cities/">their coverage of National Arts and Economic Prosperity 6</a>,
-                    a 2023 study that measured the economic impact of the support given by arts and culture nonprofits.
+                    We'd like to thank Jack Wolff and Newslink Indiana for
+                    <a href="https://www.youtube.com/live/5xXTsDKwtTg?si=tk8-PQvUPiWLdRM-&t=490">
+                        their recent coverage of the Vore Arts Fund
+                    </a>,
+                    including an interview with President Graham Watson, Vice-President Natalie Phillips, and artist
+                    Jennifer Amos.
                 </p>
             </section>
         </div>
