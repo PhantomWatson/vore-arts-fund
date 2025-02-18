@@ -185,6 +185,10 @@ class UsersTable extends Table
     public function getBoardMembers()
     {
         $boardMemberUserIds = Configure::read('boardMemberUserIds');
+        if (!$boardMemberUserIds) {
+            return [];
+        }
+
         return $this
             ->find()
             ->select([
