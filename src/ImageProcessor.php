@@ -3,10 +3,12 @@
 namespace App;
 
 use App\Model\Entity\Image;
+use App\Model\Entity\User;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Log\Log;
 use Cake\Utility\Security;
+use Cake\Utility\Text;
 
 class ImageProcessor
 {
@@ -48,6 +50,31 @@ class ImageProcessor
         // Resize and save fullsize image
         $destination = Image::PROJECT_IMAGES_DIR . DS . $this->filename;
         $this->resizeOriginal($destination);
+    }
+
+    /**
+     * @param string[] $sourceFile
+     * @return void
+     * @throws InternalErrorException
+     * @throws BadRequestException
+     */
+    public function processHeadshotUpload(array $sourceFile, User $user): void
+    {
+        if (!is_file($sourceFile['tmp_name'])) {
+            throw new InternalErrorException('No file was uploaded');
+        }
+
+        $this->sourceFilePath = $sourceFile['tmp_name'];
+        $this->setExtension($sourceFile['name']);
+        $this->filename = substr(Text::slug($user->name), 0, 30) . '.' . $this->extension;
+
+        // Resize and save thumbnail
+        $dir = Image::BIO_HEADSHOTS_DIR . DS . $user->id;
+        if (!is_dir($dir)) {
+            mkdir($dir);
+        }
+        $destination = $dir . DS . $this->filename;
+        $this->resizeThumb($destination);
     }
 
     /**

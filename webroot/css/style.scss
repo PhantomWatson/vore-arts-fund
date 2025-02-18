@@ -1117,3 +1117,11 @@ button[type="submit"] {
         text-transform: uppercase;
     }
 }
+
+.upload-headshot {
+    img {
+        display: block;
+        margin: auto;
+        max-width: 100%;
+    }
+}

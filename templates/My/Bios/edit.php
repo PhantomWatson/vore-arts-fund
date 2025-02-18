@@ -5,8 +5,8 @@
  */
 ?>
 
+<?= $this->Form->create($bio, ['enctype' => 'multipart/form-data']) ?>
 <fieldset>
-    <?= $this->Form->create($bio) ?>
     <?= $this->Form->control('title') ?>
 
     <div class="form-group text required">
@@ -17,8 +17,26 @@
         </p>
         <?= $this->Form->textarea('bio') ?>
     </div>
-
-    <?= $this->Form->submit('Submit', ['class' => 'btn btn-primary']) ?>
-    <?= $this->Form->end() ?>
 </fieldset>
+
+<fieldset class="upload-headshot">
+    <legend>
+        <?= ($bio->isNew() || !$bio->image) ? 'Upload a Headshot' : 'Update Headshot' ?>
+    </legend>
+    <div class="row">
+        <div class="col-8">
+            <div class="image-upload__input">
+                <input type="file" class="form-control" aria-label="Select an image to upload" name="image-file" />
+            </div>
+        </div>
+        <div class="col-4">
+            <?php if ($bio->image) : ?>
+                <?= $this->Html->image('/img/bios/' . $bio->user_id . '/' . $bio->image, ['alt' => 'Headshot']) ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</fieldset>
+
+<?= $this->Form->submit('Submit', ['class' => 'btn btn-primary']) ?>
+<?= $this->Form->end() ?>
 

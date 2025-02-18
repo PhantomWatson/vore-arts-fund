@@ -75,10 +75,6 @@ class BiosTable extends Table
             ->scalar('bio')
             ->maxLength('bio', 2000);
 
-        $validator
-            ->scalar('image')
-            ->maxLength('image', 100);
-
         return $validator;
     }
 

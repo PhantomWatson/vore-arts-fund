@@ -13109,4 +13109,10 @@ button[type=submit].loading .loading-indicator {
   text-transform: uppercase;
 }
 
+.upload-headshot img {
+  display: block;
+  margin: auto;
+  max-width: 100%;
+}
+
 /*# sourceMappingURL=style.css.map */
