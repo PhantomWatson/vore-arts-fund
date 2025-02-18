@@ -56,6 +56,9 @@ bin/cake
 # Project directories
 /webroot/img/projects
 
+# Headshots
+/webroot/img/bios
+
 # Other
 /webroot/sample
 /config/environment.php
