@@ -134,6 +134,50 @@
             <?php endforeach; ?>
         </div>
     </section>
+<?php else: ?>
+    <div class="row">
+        <div class="col-sm-6">
+            <section class="credits">
+                <h2>
+                    Board of Directors
+                </h2>
+                <dl>
+                    <div>
+                        <dt>
+                            President
+                        </dt>
+                        <dd>
+                            Graham Watson <span class="pronoun">(he)</span>
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>
+                            Vice President
+                        </dt>
+                        <dd>
+                            Natalie Phillips <span class="pronoun">(she)</span>
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>
+                            Treasurer
+                        </dt>
+                        <dd>
+                            Beth McCollum <span class="pronoun">(they/she)</span>
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>
+                            Secretary
+                        </dt>
+                        <dd>
+                            Katy Wolfe <span class="pronoun">(she)</span>
+                        </dd>
+                    </div>
+                </dl>
+            </section>
+        </div>
+    </div>
 <?php endif; ?>
 
 <div class="row">
