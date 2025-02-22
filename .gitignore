@@ -57,7 +57,7 @@ bin/cake
 /webroot/img/projects
 
 # Headshots
-/webroot/img/bios
+/webroot/img/bios/*/*
 
 # Other
 /webroot/sample
