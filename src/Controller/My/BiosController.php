@@ -38,7 +38,7 @@ class BiosController extends AppController
                 $this->Flash->success('Bio updated');
 
                 $file = $_FILES['image-file'] ?? null;
-                if ($file) {
+                if ($file['tmp_name']) {
                     $imageProcessor = new ImageProcessor();
                     $imageProcessor->processHeadshotUpload($file, $user);
                     $bio->image = $imageProcessor->filename;
