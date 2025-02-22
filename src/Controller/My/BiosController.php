@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\My;
 
 use App\Controller\AppController;
+use App\ImageProcessor;
 
 /**
  * Bios Controller
@@ -31,13 +32,24 @@ class BiosController extends AppController
         $this->set(compact('bio'));
 
         if (!$this->request->is(['get'])) {
-            $bio = $this->Bios->patchEntity($bio, $this->request->getData(), ['fields' => ['bio', 'image', 'title']]);
+            $data = $this->request->getData();
+            $bio = $this->Bios->patchEntity($bio, $data, ['fields' => ['bio', 'title']]);
             if ($this->Bios->save($bio)) {
                 $this->Flash->success('Bio updated');
 
+                $file = $_FILES['image-file'] ?? null;
+                if ($file) {
+                    $imageProcessor = new ImageProcessor();
+                    $imageProcessor->processHeadshotUpload($file, $user);
+                    $bio->image = $imageProcessor->filename;
+                    if (!$this->Bios->save($bio)) {
+                        $this->Flash->error('But there as an error uploading your headshot');
+                    }
+                }
+
                 return $this->redirect(['action' => 'edit']);
             }
-            $this->Flash->error(__('Your bio could not be updated'));
+            $this->Flash->error('Your bio could not be updated');
         }
         $this->title('Update Bio');
     }

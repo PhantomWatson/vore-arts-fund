@@ -15,6 +15,7 @@ use Cake\View\View;
  * @property string $title
  * @property string $bio
  * @property string $formatted_bio
+ * @property string|false $image_url
  * @property string|null $image
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
@@ -52,5 +53,13 @@ class Bio extends Entity
         $bio = $this->bio;
         $bio = $textHelper->autoParagraph($bio);
         return $textHelper->autoLink($bio, ['escape' => false]);
+    }
+
+    protected function _getImageUrl(): string|false
+    {
+        if ($this->image) {
+            return '/img/bios/' . $this->user_id . '/' . $this->image;
+        }
+        return false;
     }
 }

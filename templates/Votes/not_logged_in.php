@@ -9,11 +9,11 @@
  * @var bool $isLoggedIn
  * @var bool $isVerified
  * @var bool $showUpcoming
- * @var bool $hasProjects
+ * @var bool $fundingCycleHasProjects
  */
 ?>
 
-<?php if ($hasProjects): ?>
+<?php if ($fundingCycleHasProjects): ?>
     <p>
         Please
         <?= $this->Html->link(

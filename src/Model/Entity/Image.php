@@ -22,6 +22,8 @@ class Image extends Entity
     public const THUMB_PREFIX = 'thumb_';
     public const PROJECT_IMAGES_DIR = WWW_ROOT . 'img' . DS . 'projects';
 
+    public const BIO_HEADSHOTS_DIR = WWW_ROOT . 'img' . DS . 'bios';
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
