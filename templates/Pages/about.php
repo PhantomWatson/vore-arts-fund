@@ -121,6 +121,15 @@
                             </h3>
                             <div class="card-text">
                                 <?php if ($boardMember->bio ?? false): ?>
+                                    <?= $boardMember->bio->image
+                                        ? $this->Html->image(
+                                            $boardMember->bio->image_url,
+                                            [
+                                                'alt' => "Headshot of $boardMember->name",
+                                                'class' => 'bio-headshot float-md-end mb-4 mb-md-2 ms-md-2',
+                                            ]
+                                        ) : null
+                                    ?>
                                     <?= $boardMember->bio->formatted_bio ?>
                                 <?php else: ?>
                                     <p>

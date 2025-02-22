@@ -13108,6 +13108,9 @@ button[type=submit].loading .loading-indicator {
   font-size: 60%;
   text-transform: uppercase;
 }
+#meet-the-board .bio-headshot {
+  max-width: 300px;
+}
 
 .upload-headshot img {
   display: block;

@@ -197,6 +197,7 @@ class UsersTable extends Table
                 'Bios.title',
                 'Bios.bio',
                 'Bios.image',
+                'Bios.user_id', // Needed for displaying images
             ])
             ->where(['Users.id IN' => $boardMemberUserIds])
             ->contain(['Bios'])
