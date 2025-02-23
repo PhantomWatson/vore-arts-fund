@@ -51,6 +51,24 @@ class BiosController extends AppController
             }
             $this->Flash->error('Your bio could not be updated');
         }
+
+        $this->setRichTextEditorFilePaths();
         $this->title('Update Bio');
+    }
+
+    private function setRichTextEditorFilePaths()
+    {
+        $dir = 'rich-text-editor' . DS . 'dist' . DS . 'assets';
+        $files = is_dir(WWW_ROOT . $dir) ? scandir(WWW_ROOT . $dir) : false;
+        if ($files) {
+            foreach ($files as $file) {
+                if (preg_match('/\.js$/', $file) === 1) {
+                    $this->set(['rteJsPath' => "/$dir/$file"]);
+                }
+                if (preg_match('/\.css$/', $file) === 1) {
+                    $this->set(['rteCssPath' => "/$dir/$file"]);
+                }
+            }
+        }
     }
 }

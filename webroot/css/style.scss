@@ -1129,3 +1129,41 @@ button[type="submit"] {
         max-width: 100%;
     }
 }
+
+#rte-root {
+    .button-group {
+        margin-bottom: 0.25rem;
+
+        button {
+            margin-right: 0.25rem;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+.tiptap {
+    min-height: 150px;
+
+    mark {
+        background-color: #FAF594;
+        border-radius: 0.4rem;
+        box-decoration-break: clone;
+        padding: 0.1rem 0.3rem;
+    }
+}
+
+.ProseMirror-focused {
+    outline: none;
+}
+
+.form-control:has(.ProseMirror-focused) {
+    // Copy of Bootstrap's form-control:focus
+    color: $input-focus-color;
+    background-color: $input-focus-bg;
+    border-color: $input-focus-border-color;
+    outline: 0;
+    box-shadow: $input-focus-box-shadow;
+}

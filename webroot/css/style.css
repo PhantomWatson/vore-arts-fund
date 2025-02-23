@@ -13118,4 +13118,36 @@ button[type=submit].loading .loading-indicator {
   max-width: 100%;
 }
 
+#rte-root .button-group {
+  margin-bottom: 0.25rem;
+}
+#rte-root .button-group button {
+  margin-right: 0.25rem;
+}
+#rte-root .button-group button:last-child {
+  margin-right: 0;
+}
+
+.tiptap {
+  min-height: 150px;
+}
+.tiptap mark, .tiptap .mark {
+  background-color: #FAF594;
+  border-radius: 0.4rem;
+  box-decoration-break: clone;
+  padding: 0.1rem 0.3rem;
+}
+
+.ProseMirror-focused {
+  outline: none;
+}
+
+.form-control:has(.ProseMirror-focused) {
+  color: var(--bs-body-color);
+  background-color: white;
+  border-color: #8dad88;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(26, 91, 17, 0.25);
+}
+
 /*# sourceMappingURL=style.css.map */
