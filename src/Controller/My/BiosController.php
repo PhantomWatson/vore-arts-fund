@@ -65,9 +65,6 @@ class BiosController extends AppController
                 if (preg_match('/\.js$/', $file) === 1) {
                     $this->set(['rteJsPath' => "/$dir/$file"]);
                 }
-                if (preg_match('/\.css$/', $file) === 1) {
-                    $this->set(['rteCssPath' => "/$dir/$file"]);
-                }
             }
         }
     }

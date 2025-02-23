@@ -5,9 +5,6 @@
  * @var string $rteJsPath
  * @var string $rteCssPath
  */
-if ($rteCssPath) {
-    $this->Html->css($rteCssPath, ['block' => true]);
-}
 if ($rteJsPath) {
     $this->Html->script($rteJsPath, ['block' => true, 'type' => 'module']);
 }
@@ -21,7 +18,6 @@ if ($rteJsPath) {
         <label for="bio">Bio</label>
         <p>
             Start your bio with your name and write a third-person summary of your background and role in the community.
-            HTML is allowed.
         </p>
         <?= $this->Form->textarea('bio', ['data-rte-target' => 1]) ?>
         <div id="rte-root"></div>

@@ -69,8 +69,16 @@ const extensions = [
     getLinkConfiguration()
 ];
 
+function getUnescapedInnerHTML(html: string): string {
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = html;
+    return tempElement.textContent ?? '';
+}
+
 const target = document.querySelector('[data-rte-target]') as HTMLElement;
-const content = target ? '<p>'+target.innerHTML+'</p>' : '<p></p>';
+const content = target
+    ? getUnescapedInnerHTML(target.innerHTML)
+    : '<p></p>';
 // Hide the original <textarea> that's being updated
 if (target) {
     target.style.display = 'none';
@@ -81,10 +89,13 @@ const Tiptap = () => {
         extensions,
         content,
     });
-
     if (!editor) {
         return null;
     }
+    editor.on('update', (editor) => {
+        // Not sure why it's editor.editor. This contradicts the docs (https://tiptap.dev/docs/editor/api/events#bind-event-listeners)
+        target.innerHTML = editor.editor.getHTML();
+    });
 
     const setLink = useCallback(() => {
         const previousUrl = editor.getAttributes('link').href;
