@@ -9,6 +9,7 @@ import {Italic} from "@tiptap/extension-italic";
 import {Paragraph} from '@tiptap/extension-paragraph';
 import { Document } from '@tiptap/extension-document';
 import { Text } from '@tiptap/extension-text';
+import sanitizeHtml from 'sanitize-html';
 
 const getLinkConfiguration = () => Link.configure({
     openOnClick: false,
@@ -102,10 +103,12 @@ function getUnescapedInnerHTML(html: string): string {
 }
 
 function stripTags(html: string) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const textContent = doc.body.textContent || "";
-    return textContent.trim();
+    return sanitizeHtml(html, {
+        allowedTags: ['p', 'br', 'b', 'i', 'em', 'strong', 'a'],
+        allowedAttributes: {
+            'a': [ 'href' ]
+        },
+    });
 }
 
 const Tiptap = () => {
