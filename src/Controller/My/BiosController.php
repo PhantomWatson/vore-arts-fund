@@ -33,6 +33,7 @@ class BiosController extends AppController
 
         if (!$this->request->is(['get'])) {
             $data = $this->request->getData();
+            $data['bio'] = strip_tags($data['bio'], '<p><a><strong><em><b><i><br>');
             $bio = $this->Bios->patchEntity($bio, $data, ['fields' => ['bio', 'title']]);
             if ($this->Bios->save($bio)) {
                 $this->Flash->success('Bio updated');
