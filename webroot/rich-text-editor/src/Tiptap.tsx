@@ -70,7 +70,7 @@ const extensions = [
 ];
 
 const target = document.querySelector('[data-rte-target]') as HTMLElement;
-const content = target ? '<p>'+target.innerHTML+'</p>' : '<p>Foo</p>';
+const content = target ? '<p>'+target.innerHTML+'</p>' : '<p></p>';
 // Hide the original <textarea> that's being updated
 if (target) {
     target.style.display = 'none';
