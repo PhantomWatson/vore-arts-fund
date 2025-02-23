@@ -117,8 +117,7 @@ const Tiptap = () => {
         content,
         editorProps: {
             transformPastedHTML(html: string) {
-                const sanitized = stripTags(html);
-                return sanitized;
+                return stripTags(html);
             }
         } as EditorProps,
     });
