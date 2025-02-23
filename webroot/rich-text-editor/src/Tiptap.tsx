@@ -1,8 +1,10 @@
 // src/Tiptap.tsx
-import {EditorContent, useEditor} from '@tiptap/react'
+import {EditorContent, useEditor} from '@tiptap/react';
 import {StarterKit} from "@tiptap/starter-kit";
 import Link from '@tiptap/extension-link';
 import {useCallback} from "react";
+import CharacterCount from '@tiptap/extension-character-count';
+import {EditorProps} from 'prosemirror-view';
 
 const getLinkConfiguration = () => Link.configure({
     openOnClick: false,
@@ -64,17 +66,7 @@ const getLinkConfiguration = () => Link.configure({
     },
 });
 
-const extensions = [
-    StarterKit,
-    getLinkConfiguration()
-];
-
-function getUnescapedInnerHTML(html: string): string {
-    const tempElement = document.createElement('div');
-    tempElement.innerHTML = html;
-    return tempElement.textContent ?? '';
-}
-
+// Target (the textarea replaced by this editor)
 const target = document.querySelector('[data-rte-target]') as HTMLElement;
 const content = target
     ? getUnescapedInnerHTML(target.innerHTML)
@@ -84,10 +76,40 @@ if (target) {
     target.style.display = 'none';
 }
 
+const limit: number = target ? +(target?.getAttribute('maxLength') || 0) : 0;
+let extensions = [
+    getLinkConfiguration(),
+    StarterKit,
+    CharacterCount.configure({
+        limit,
+        mode: 'nodeSize',
+        textCounter: (text) => {return text.length;},
+    }),
+];
+
+function getUnescapedInnerHTML(html: string): string {
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = html;
+    return tempElement.textContent ?? '';
+}
+
+function stripTags(html: string) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const textContent = doc.body.textContent || "";
+    return textContent.trim();
+}
+
 const Tiptap = () => {
     const editor = useEditor({
         extensions,
         content,
+        editorProps: {
+            transformPastedHTML(html: string) {
+                const sanitized = stripTags(html);
+                return sanitized;
+            }
+        } as EditorProps,
     });
     if (!editor) {
         return null;
@@ -96,6 +118,13 @@ const Tiptap = () => {
         // Not sure why it's editor.editor. This contradicts the docs (https://tiptap.dev/docs/editor/api/events#bind-event-listeners)
         target.innerHTML = editor.editor.getHTML();
     });
+
+    /*editor.on('paste', (event: ClipboardEvent, slice: Slice) => {
+        console.log(event.clipboardData);
+        console.log(event.clipboardData?.getData('text/plain'));
+        event.clipboardData!.setData('text/plain', 'blerfle');
+    });*/
+
 
     const setLink = useCallback(() => {
         const previousUrl = editor.getAttributes('link').href;
@@ -121,6 +150,46 @@ const Tiptap = () => {
     }, [editor]);
 
     const btnClasses = 'btn btn-sm btn-secondary ';
+
+    // Character count
+    const percentage = editor
+        ? Math.round((100 / limit) * editor.storage.characterCount.characters())
+        : 0
+
+    const characterCount = (
+        <div className={`character-count ${editor.storage.characterCount.characters() === limit ? 'character-count--warning' : ''}`}>
+            <svg
+                height="20"
+                width="20"
+                viewBox="0 0 20 20"
+            >
+                <circle
+                    r="10"
+                    cx="10"
+                    cy="10"
+                    fill="#e9ecef"
+                />
+                <circle
+                    r="5"
+                    cx="10"
+                    cy="10"
+                    fill="transparent"
+                    stroke="currentColor"
+                    strokeWidth="10"
+                    strokeDasharray={`calc(${percentage} * 31.4 / 100) 31.4`}
+                    transform="rotate(-90) translate(-20)"
+                />
+                <circle
+                    r="6"
+                    cx="10"
+                    cy="10"
+                    fill="white"
+                />
+            </svg>
+
+            {editor.storage.characterCount.characters()} / {limit}
+        </div>
+    );
 
     return (
         <>
@@ -156,6 +225,7 @@ const Tiptap = () => {
                 </button>
             </div>
             <EditorContent editor={editor} className="form-control" />
+            {characterCount}
         </>
     )
 }
