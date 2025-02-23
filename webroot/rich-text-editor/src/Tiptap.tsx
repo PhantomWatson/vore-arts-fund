@@ -127,13 +127,6 @@ const Tiptap = () => {
         target.innerHTML = editor.editor.getHTML();
     });
 
-    /*editor.on('paste', (event: ClipboardEvent, slice: Slice) => {
-        console.log(event.clipboardData);
-        console.log(event.clipboardData?.getData('text/plain'));
-        event.clipboardData!.setData('text/plain', 'blerfle');
-    });*/
-
-
     const setLink = useCallback(() => {
         const previousUrl = editor.getAttributes('link').href;
         const url = window.prompt('URL', previousUrl);
