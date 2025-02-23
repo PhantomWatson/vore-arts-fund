@@ -1,10 +1,14 @@
 // src/Tiptap.tsx
 import {EditorContent, useEditor} from '@tiptap/react';
-import {StarterKit} from "@tiptap/starter-kit";
 import Link from '@tiptap/extension-link';
 import {useCallback} from "react";
 import CharacterCount from '@tiptap/extension-character-count';
 import {EditorProps} from 'prosemirror-view';
+import {Bold} from "@tiptap/extension-bold";
+import {Italic} from "@tiptap/extension-italic";
+import {Paragraph} from '@tiptap/extension-paragraph';
+import { Document } from '@tiptap/extension-document';
+import { Text } from '@tiptap/extension-text';
 
 const getLinkConfiguration = () => Link.configure({
     openOnClick: false,
@@ -78,8 +82,12 @@ if (target) {
 
 const limit: number = target ? +(target?.getAttribute('maxLength') || 0) : 0;
 let extensions = [
+    Document,
+    Text,
+    Bold,
+    Italic,
+    Paragraph,
     getLinkConfiguration(),
-    StarterKit,
     CharacterCount.configure({
         limit,
         mode: 'nodeSize',
