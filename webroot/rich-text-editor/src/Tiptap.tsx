@@ -72,7 +72,7 @@ const getLinkConfiguration = () => Link.configure({
 });
 
 // Target (the textarea replaced by this editor)
-const target = document.querySelector('[data-rte-target]') as HTMLElement;
+const target = document.querySelector('[data-rte-target]') as HTMLTextAreaElement;
 const content = target
     ? getUnescapedInnerHTML(target.innerHTML)
     : '<p></p>';
@@ -91,8 +91,8 @@ let extensions = [
     getLinkConfiguration(),
     CharacterCount.configure({
         limit,
-        mode: 'nodeSize',
-        textCounter: (text) => {return text.length;},
+        mode: 'textSize',
+        textCounter: () => (target.value as string).length,
     }),
 ];
 
