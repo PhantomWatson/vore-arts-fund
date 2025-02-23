@@ -8,7 +8,7 @@ const getLinkConfiguration = () => Link.configure({
     openOnClick: false,
     autolink: true,
     defaultProtocol: 'https',
-    protocols: ['http', 'https'],
+    protocols: ['http', 'https', 'mailto'],
     isAllowedUri: (url, ctx) => {
         try {
             // construct URL
