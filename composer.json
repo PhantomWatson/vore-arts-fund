@@ -21,7 +21,8 @@
         "phantomwatson/cakephp-email-queue": "dev-master",
         "stripe/stripe-php": "^8.0",
         "twbs/bootstrap": "^5.0",
-        "twilio/sdk": "^7.4"
+        "twilio/sdk": "^7.4",
+        "ext-sodium": "*"
     },
     "require-dev": {
         "cakephp/bake": "^2.3",

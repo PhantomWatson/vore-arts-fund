@@ -2,6 +2,8 @@
 
 namespace App\SecretHandler;
 
+use Cake\Datasource\Exception\RecordNotFoundException;
+
 /**
  * Class for handling personally identifiable information (primarily tax ID numbers)
  */
@@ -11,16 +13,31 @@ class SecretHandler
 
     public function __construct()
     {
-        $this->piiService = new Piiano();
+        $this->piiService = new SecretEncrypter();
     }
 
+    /**
+     * @param int $projectId
+     * @param string $tin
+     * @throws \SodiumException
+     * @return string|false
+     */
     public function setTin($projectId, $tin): string|false
     {
-        return $this->piiService->setTin($projectId, $tin);
+        $retval = $this->piiService->setTin($projectId, $tin);
+        sodium_memzero($tin);
+        return $retval;
     }
 
-    public function getTin($secretId)
+    /**
+     * @param int $projectId
+     * @param string $secretKey Base64 encoded
+     * @throws \Exception
+     * @throws RecordNotFoundException
+     * @return string
+     */
+    public function getTin($projectId, $secretKey): string
     {
-        return $this->piiService->getTin($secretId);
+        return $this->piiService->getTin($projectId, $secretKey);
     }
 }

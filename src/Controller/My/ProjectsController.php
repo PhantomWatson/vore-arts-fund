@@ -320,31 +320,50 @@ class ProjectsController extends BaseProjectsController
         $tinConfirm = $this->getRequest()->getData('tin_confirm');
         if (!$tin) {
             $this->Flash->error('Tax ID number required.');
+            sodium_memzero($tinConfirm);
             return;
         }
         if ($tin != $tinConfirm) {
             $this->Flash->error('Tax ID numbers did not match');
+            sodium_memzero($tin);
+            sodium_memzero($tinConfirm);
             return;
         }
 
+        $tinSaveSuccess = false;
+        $success = false;
+        $projectName = "project #{$project->id} ({$project->title})";
+
         // Store TIN
         $secretHandler = new SecretHandler();
-        $secretId = $secretHandler->setTin($project->id, $tin);
+        try {
+            $tinSaveSuccess = (bool)$secretHandler->setTin($project->id, $tin);
+        } catch (\SodiumException $e) {
+            $alert = new Alert();
+            $alert->addLine(
+                '\SodiumException thrown when trying to save encrypted tax ID number for ' . $projectName . ':'
+            );
+            $alert->addLine($e->getMessage());
+            $alert->send(Alert::TYPE_APPLICATIONS);
+        }
+        if (!$tinSaveSuccess) {
+            $alert = new Alert();
+            $alert->addLine('Failed save encrypted tax ID number for ' . $projectName);
+            $alert->send(Alert::TYPE_APPLICATIONS);
+        }
+        sodium_memzero($tin);
+        sodium_memzero($tinConfirm);
 
-        $success = false;
-        if ($secretId) {
-            $data = [
+        if ($tinSaveSuccess) {
+            $loanAgreementData = [
                 'loan_agreement_date' => new \DateTime(),
                 'loan_due_date' => new \DateTime(\App\Model\Entity\Project::DUE_DATE),
                 'loan_agreement_version' => Project::getLatestTermsVersion()
             ];
-            $project = $this->Projects->patchEntity($project, $data);
-            $project->tin = $secretId;
+            $project = $this->Projects->patchEntity($project, $loanAgreementData);
             $success = $this->Projects->save($project);
 
             // Send alert
-            $alert = new Alert();
-            $projectName = "project #{$project->id} ({$project->title})";
             $alert->addLine(
                 $success
                     ? "Loan agreement submitted for $projectName"
@@ -360,8 +379,9 @@ class ProjectsController extends BaseProjectsController
                     ], true),
                 ));
             } else {
+                $alert->addLine('Error submitting loan agreement for ' . $projectName);
                 $alert->addLine('Submitted data:');
-                $alert->addLine('```' . print_r($data, true) . '```');
+                $alert->addLine('```' . print_r($loanAgreementData, true) . '```');
                 $alert->addLine('Entity errors:');
                 $alert->addLine('```' . print_r($project->getErrors(), true) . '```');
             }

@@ -32,6 +32,8 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
 
 RUN docker-php-ext-install mysqli
 
+RUN docker-php-ext-enable sodium
+
 RUN install-php-extensions @composer
 
 RUN pecl install xdebug

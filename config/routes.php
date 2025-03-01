@@ -133,6 +133,7 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
             '/projects/review/{id}' => 'review',
             '/projects/set-status/{id}' => 'setStatus',
             '/projects/new-note/{id}' => 'newNote',
+            '/projects/get-tin/{id}' => 'getTin',
         ],
         'Questions' => [
             '/questions/edit/{id}' => 'edit',

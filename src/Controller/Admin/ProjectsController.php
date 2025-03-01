@@ -7,6 +7,7 @@ use App\Event\MailListener;
 use App\Model\Entity\Note;
 use App\Model\Entity\Project;
 use App\Model\Table\NotesTable;
+use App\SecretHandler\SecretHandler;
 use Cake\Event\Event;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
@@ -362,5 +363,31 @@ class ProjectsController extends AdminController
         $this->getEventManager()->dispatch($event);
         $this->Flash->success('Message sent to applicant');
         return true;
+    }
+
+    /**
+     * @throws \SodiumException
+     */
+    public function getTin()
+    {
+        $projectId = $this->request->getParam('id');
+        $project = $this->Projects->get($projectId);
+        $decrypted = '';
+        if (!$this->getRequest()->is('get')) {
+            $secretKeyBase64 = $this->getRequest()->getData('secret');
+            $secretHandler = new SecretHandler();
+            try {
+                $decrypted = $secretHandler->getTin($projectId, $secretKeyBase64);
+            } catch (\Exception $e) {
+                $this->Flash->error($e->getMessage());
+            }
+        }
+
+        $this->set([
+            'decrypted' => $decrypted,
+            'project' => $project,
+        ]);
+
+        sodium_memzero($decrypted);
     }
 }
