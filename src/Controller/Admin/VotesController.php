@@ -54,7 +54,7 @@ class VotesController extends AdminController
         /** @var Project[] $projects */
         $projects = $fundingCycleId
             ? $projectsTable
-                ->find()
+                ->find('notDeleted')
                 ->where(['funding_cycle_id' => $fundingCycleId])
                 ->contain(['Votes'])
                 ->toArray()
