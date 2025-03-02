@@ -2,6 +2,7 @@
 /**
  * @var \App\Model\Entity\Project $project
  * @var int $statusId
+ * @var \App\View\AppView $this
  */
 use App\Model\Entity\Project;
 
@@ -60,7 +61,7 @@ $maxAwardable = min($project->amount_requested, $project->funding_cycle->funding
                                 <br />
                                 <input class="form-control" type="number" name="amount_awarded" required="required"
                                        data-validity-message="Required"
-                                       value="<?= $project->amount_awarded ?>"
+                                       value="<?= $project->amount_awarded ?: $this->getRequest()->getQuery('amountAwarded') ?>"
                                        max="<?= $maxAwardable ?>"
                                        min="<?= $minAwardable ?>">
                             </label>

@@ -27,16 +27,17 @@ function getToAward(Project $project, $fundingAvailable)
     }
 
     // Determine the fundable amount
-    $toAward = '$' . number_format($canFundFull ? $project->amount_requested : $fundingAvailable);
+    $amountToAward = $canFundFull ? $project->amount_requested : $fundingAvailable;
+    $amountDisplayed = '$' . number_format($amountToAward);
     if (!$canFundFull) {
-        $toAward .= ' (partial payout)';
+        $amountDisplayed .= ' (partial payout)';
     }
 
     // Mark this project as having been funded
     if ($project->isDisbursed()) {
         return '<span class="voting-results__award voting-results__award--awarded">'
             . '<i class="fa-solid fa-circle-check"></i> '
-            . $toAward . ' awarded</span>';
+            . $amountDisplayed . ' awarded</span>';
     }
 
     // Mark this project as needing to be funded
@@ -45,10 +46,13 @@ function getToAward(Project $project, $fundingAvailable)
         'controller' => 'Projects',
         'action' => 'review',
         'id' => $project->id,
+        '?' => [
+            'amountAwarded' => $amountToAward
+        ],
     ]);
     return '<a href="' . $url . '"><span class="voting-results__award voting-results__award--to-award">'
         . '<i class="fa-solid fa-circle-exclamation"></i> '
-        . $toAward . ' to award</span></a>';
+        . $amountDisplayed . ' to award</span></a>';
 }
 
 ?>
