@@ -292,6 +292,10 @@ class ProjectsController extends BaseProjectsController
         return null;
     }
 
+    /**
+     * @throws \SodiumException
+     * @return void
+     */
     public function signLoanAgreement()
     {
         $projectId = $this->getRequest()->getParam('id');
@@ -314,81 +318,18 @@ class ProjectsController extends BaseProjectsController
             return;
         }
 
-        // Validate TIN
-        // TODO: Add specific SSN/EIN regex validation
-        $tin = $this->getRequest()->getData('tin_provide');
-        $tinConfirm = $this->getRequest()->getData('tin_confirm');
+        $tin = $this->getValidatedTin();
         if (!$tin) {
-            $this->Flash->error('Tax ID number required.');
-            sodium_memzero($tinConfirm);
-            return;
-        }
-        if ($tin != $tinConfirm) {
-            $this->Flash->error('Tax ID numbers did not match');
-            sodium_memzero($tin);
-            sodium_memzero($tinConfirm);
             return;
         }
 
-        $tinSaveSuccess = false;
-        $success = false;
-        $projectName = "project #{$project->id} ({$project->title})";
-
-        // Store TIN
-        $secretHandler = new SecretHandler();
-        try {
-            $tinSaveSuccess = (bool)$secretHandler->setTin($project->id, $tin);
-        } catch (\SodiumException $e) {
-            $alert = new Alert();
-            $alert->addLine(
-                '\SodiumException thrown when trying to save encrypted tax ID number for ' . $projectName . ':'
-            );
-            $alert->addLine($e->getMessage());
-            $alert->send(Alert::TYPE_APPLICATIONS);
-        }
-        if (!$tinSaveSuccess) {
-            $alert = new Alert();
-            $alert->addLine('Failed save encrypted tax ID number for ' . $projectName);
-            $alert->send(Alert::TYPE_APPLICATIONS);
-        }
+        $tinSaveSuccess = $this->storeTin($project, $tin);
         sodium_memzero($tin);
         sodium_memzero($tinConfirm);
 
-        if ($tinSaveSuccess) {
-            $loanAgreementData = [
-                'loan_agreement_date' => new \DateTime(),
-                'loan_due_date' => new \DateTime(\App\Model\Entity\Project::DUE_DATE),
-                'loan_agreement_version' => Project::getLatestTermsVersion()
-            ];
-            $project = $this->Projects->patchEntity($project, $loanAgreementData);
-            $success = $this->Projects->save($project);
+        $loanAgreementSaveSuccess = $tinSaveSuccess && $this->saveLoanAgreement($project);
 
-            // Send alert
-            $alert->addLine(
-                $success
-                    ? "Loan agreement submitted for $projectName"
-                    : "Failure to save loan agreement for $projectName"
-            );
-            if ($success) {
-                $alert->addLine(sprintf(
-                    'Time to send a check and <%s|record the disbursement>',
-                    Router::url([
-                        'prefix' => 'Admin',
-                        'controller' => 'Transactions',
-                        'action' => 'add',
-                    ], true),
-                ));
-            } else {
-                $alert->addLine('Error submitting loan agreement for ' . $projectName);
-                $alert->addLine('Submitted data:');
-                $alert->addLine('```' . print_r($loanAgreementData, true) . '```');
-                $alert->addLine('Entity errors:');
-                $alert->addLine('```' . print_r($project->getErrors(), true) . '```');
-            }
-            $alert->send(Alert::TYPE_APPLICATIONS);
-        }
-
-        if ($success) {
+        if ($loanAgreementSaveSuccess) {
             $this->Flash->success(
                 'Loan agreement signed. The Vore Arts Fund staff has been notified, and you should expect an email confirmation that your check is in the mail in the next few days. You are encouraged to save this agreement in your records (we suggest printing to a PDF file), but this agreement will remain available for you to access through this website.'
             );
@@ -436,5 +377,108 @@ class ProjectsController extends BaseProjectsController
         }
 
         return $this->redirect(['action' => 'messages', 'id' => $projectId]);
+    }
+
+    /**
+     * Returns a tax ID number, or FALSE if validation fails
+     *
+     * Adds Flash error messages if appropriate
+     *
+     * @todo Add specific SSN/EIN regex validation
+     * @return string|false
+     * @throws \SodiumException
+     */
+    private function getValidatedTin()
+    {
+        $tin = $this->getRequest()->getData('tin_provide');
+        $tinConfirm = $this->getRequest()->getData('tin_confirm');
+        if (!$tin) {
+            $this->Flash->error('Tax ID number required.');
+            sodium_memzero($tinConfirm);
+            return false;
+        }
+        if ($tin != $tinConfirm) {
+            $this->Flash->error('Tax ID numbers did not match');
+            sodium_memzero($tin);
+            sodium_memzero($tinConfirm);
+            return false;
+        }
+        return $tin;
+    }
+
+    /**
+     * Attempts to save an encrypted tax ID number to the provided project
+     *
+     * @param Project $project
+     * @param string $tin
+     * @return bool
+     * @throws \SodiumException
+     */
+    private function storeTin(Project $project, string $tin)
+    {
+        $tinSaveSuccess = false;
+        $projectName = "project #{$project->id} ({$project->title})";
+        $secretHandler = new SecretHandler();
+        try {
+            $tinSaveSuccess = (bool)$secretHandler->setTin($project->id, $tin);
+        } catch (\SodiumException $e) {
+            $alert = new Alert();
+            $alert->addLine(
+                '\SodiumException thrown when trying to save encrypted tax ID number for ' . $projectName . ':'
+            );
+            $alert->addLine($e->getMessage());
+            $alert->send(Alert::TYPE_APPLICATIONS);
+        }
+        if (!$tinSaveSuccess) {
+            $alert = new Alert();
+            $alert->addLine('Failed save encrypted tax ID number for ' . $projectName);
+            $alert->send(Alert::TYPE_APPLICATIONS);
+        }
+        sodium_memzero($tin);
+
+        return $tinSaveSuccess;
+    }
+
+    /**
+     * @param Project $project
+     * @return bool
+     */
+    private function saveLoanAgreement(Project $project)
+    {
+        $loanAgreementData = [
+            'loan_agreement_date' => new \DateTime(),
+            'loan_due_date' => new \DateTime(\App\Model\Entity\Project::DUE_DATE),
+            'loan_agreement_version' => Project::getLatestTermsVersion()
+        ];
+        $project = $this->Projects->patchEntity($project, $loanAgreementData);
+        $success = (bool)$this->Projects->save($project);
+
+        // Send alert
+        $projectName = "project #{$project->id} ({$project->title})";
+        $alert = new Alert();
+        $alert->addLine(
+            $success
+                ? "Loan agreement submitted for $projectName"
+                : "Failure to save loan agreement for $projectName"
+        );
+        if ($success) {
+            $alert->addLine(sprintf(
+                'Time to send a check and <%s|record the disbursement>',
+                Router::url([
+                    'prefix' => 'Admin',
+                    'controller' => 'Transactions',
+                    'action' => 'add',
+                ], true),
+            ));
+        } else {
+            $alert->addLine('Error submitting loan agreement for ' . $projectName);
+            $alert->addLine('Submitted data:');
+            $alert->addLine('```' . print_r($loanAgreementData, true) . '```');
+            $alert->addLine('Entity errors:');
+            $alert->addLine('```' . print_r($project->getErrors(), true) . '```');
+        }
+        $alert->send(Alert::TYPE_APPLICATIONS);
+
+        return $success;
     }
 }
