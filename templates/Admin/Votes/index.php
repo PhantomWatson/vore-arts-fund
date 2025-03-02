@@ -9,6 +9,40 @@
 use App\Model\Entity\Project;
 
 $fundingAvailable = $fundingCycle->funding_available;
+
+function getToAward(Project $project, $fundingAvailable)
+{
+    $fundable = false;
+    $isPartial = false;
+    if ($project->voting_score == null) {
+        $toAward = 'N/A';
+    } elseif ($project->amount_requested <= $fundingAvailable) {
+        $toAward = '$' . number_format($project->amount_requested);
+        $fundable = true;
+    } elseif ($fundingAvailable && $project->accept_partial_payout) {
+        $toAward = '$' . number_format($fundingAvailable);
+        $fundable = true;
+        $isPartial = true;
+    } else {
+        $toAward = 'Unable to fund';
+    }
+    if ($fundable) {
+        if ($isPartial) {
+            $toAward .= ' (partial payout)';
+        }
+        if ($project->isDisbursed()) {
+            $toAward = '<span class="voting-results__award voting-results__award--awarded">'
+                . '<i class="fa-solid fa-circle-check"></i> '
+                . $toAward . ' awarded</span>';
+        } else {
+            $toAward = '<span class="voting-results__award voting-results__award--to-award">'
+                . '<i class="fa-solid fa-circle-exclamation"></i> '
+                . $toAward . ' to award</span>';
+        }
+    }
+    return $toAward;
+}
+
 ?>
 
 <?= $this->element('funding_cycle_selector', [
@@ -57,36 +91,14 @@ $fundingAvailable = $fundingCycle->funding_available;
         <tbody>
             <?php foreach ($projects as $i => $project): ?>
                 <?php
-                    $fundable = false;
-                    $isPartial = false;
-                    if ($project->voting_score == null) {
-                        $toAward = 'N/A';
-                    } elseif ($project->amount_requested <= $fundingAvailable) {
-                        $toAward = '$' . number_format($project->amount_requested);
+                // Adjust funding available
+                if ($project->voting_score != null) {
+                    if ($project->amount_requested <= $fundingAvailable) {
                         $fundingAvailable -= $project->amount_requested;
-                        $fundable = true;
                     } elseif ($fundingAvailable && $project->accept_partial_payout) {
-                        $toAward = '$' . number_format($fundingAvailable);
                         $fundingAvailable = 0;
-                        $fundable = true;
-                        $isPartial = true;
-                    } else {
-                        $toAward = 'Unable to fund';
                     }
-                    if ($fundable) {
-                        if ($isPartial) {
-                            $toAward .= ' (partial payout)';
-                        }
-                        if ($project->isDisbursed()) {
-                            $toAward = '<span class="voting-results__award voting-results__award--awarded">'
-                                . '<i class="fa-solid fa-circle-check"></i> '
-                                . $toAward . ' awarded</span>';
-                        } else {
-                            $toAward = '<span class="voting-results__award voting-results__award--to-award">'
-                                . '<i class="fa-solid fa-circle-exclamation"></i> '
-                                . $toAward . ' to award</span>';
-                        }
-                    }
+                }
                 ?>
                 <tr>
                     <td>
@@ -104,7 +116,7 @@ $fundingAvailable = $fundingCycle->funding_available;
                         <?= $project->amount_requested_formatted ?>
                     </td>
                     <td>
-                        <?= $toAward ?>
+                        <?= getToAward($project, $fundingAvailable); ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
