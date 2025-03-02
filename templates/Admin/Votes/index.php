@@ -12,35 +12,43 @@ $fundingAvailable = $fundingCycle->funding_available;
 
 function getToAward(Project $project, $fundingAvailable)
 {
-    $fundable = false;
-    $isPartial = false;
-    if ($project->voting_score == null) {
-        $toAward = 'N/A';
-    } elseif ($project->amount_requested <= $fundingAvailable) {
-        $toAward = '$' . number_format($project->amount_requested);
-        $fundable = true;
-    } elseif ($fundingAvailable && $project->accept_partial_payout) {
-        $toAward = '$' . number_format($fundingAvailable);
-        $fundable = true;
-        $isPartial = true;
-    } else {
-        $toAward = 'Unable to fund';
+    // Nothing can be awarded to projects that receive no votes
+    $receivedVotes = $project->voting_score != null;
+    if (!$receivedVotes) {
+        return 'N/A';
     }
-    if ($fundable) {
-        if ($isPartial) {
-            $toAward .= ' (partial payout)';
-        }
-        if ($project->isDisbursed()) {
-            $toAward = '<span class="voting-results__award voting-results__award--awarded">'
-                . '<i class="fa-solid fa-circle-check"></i> '
-                . $toAward . ' awarded</span>';
-        } else {
-            $toAward = '<span class="voting-results__award voting-results__award--to-award">'
-                . '<i class="fa-solid fa-circle-exclamation"></i> '
-                . $toAward . ' to award</span>';
-        }
+
+    // Check if we're financially able to fund this project
+    $canFundFull = $fundingAvailable && $project->amount_requested <= $fundingAvailable;
+    $canFundPartial = $fundingAvailable && $project->accept_partial_payout;
+    $fundable = $canFundFull || $canFundPartial;
+    if (!$fundable) {
+        return 'Unable to fund';
     }
-    return $toAward;
+
+    // Determine the fundable amount
+    $toAward = '$' . number_format($canFundFull ? $project->amount_requested : $fundingAvailable);
+    if (!$canFundFull) {
+        $toAward .= ' (partial payout)';
+    }
+
+    // Mark this project as having been funded
+    if ($project->isDisbursed()) {
+        return '<span class="voting-results__award voting-results__award--awarded">'
+            . '<i class="fa-solid fa-circle-check"></i> '
+            . $toAward . ' awarded</span>';
+    }
+
+    // Mark this project as needing to be funded
+    $url = \Cake\Routing\Router::url([
+        'prefix' => 'Admin',
+        'controller' => 'Projects',
+        'action' => 'review',
+        'id' => $project->id,
+    ]);
+    return '<a href="' . $url . '"><span class="voting-results__award voting-results__award--to-award">'
+        . '<i class="fa-solid fa-circle-exclamation"></i> '
+        . $toAward . ' to award</span></a>';
 }
 
 ?>
