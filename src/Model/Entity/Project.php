@@ -38,6 +38,7 @@ use Cake\ORM\TableRegistry;
  * @property string $tin
  * @property string $address
  * @property string $zipcode
+ * @property bool $requires_tin
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -498,5 +499,15 @@ class Project extends Entity
     protected function _getLoanAgreementDateLocal()
     {
         return $this->loan_agreement_date->setTimezone(\App\Application::LOCAL_TIMEZONE);
+    }
+
+    /**
+     * Virtual field for ->requires_tin; returns TRUE if this project requires collection of a tax ID number
+     *
+     * @return bool
+     */
+    protected function _getRequiresTin()
+    {
+        return $this->amount_awarded >= 600;
     }
 }
