@@ -23,6 +23,8 @@ $body = match ($statusId) {
 
 $minAwardable = $project->accept_partial_payout ? 1 : $project->amount_requested;
 $maxAwardable = min($project->amount_requested, $project->funding_cycle->funding_available);
+$prefilledAwardAmount = $this->getRequest()->getQuery('amountAwarded');
+$blockSubmitting = $statusId == Project::STATUS_AWARDED_NOT_YET_DISBURSED && !$prefilledAwardAmount;
 ?>
 
 
@@ -52,28 +54,46 @@ $maxAwardable = min($project->amount_requested, $project->funding_cycle->funding
                     <?php endif; ?>
 
                     <?php if ($statusId == Project::STATUS_AWARDED_NOT_YET_DISBURSED): ?>
-                        <p>
-                            We can award between $<?= number_format($minAwardable) ?> and $<?= number_format($maxAwardable) ?> to this project.
-                        </p>
-                        <div class="form-group">
-                            <label>
-                                Amount to award
-                                <br />
-                                <input class="form-control" type="number" name="amount_awarded" required="required"
-                                       data-validity-message="Required"
-                                       value="<?= $project->amount_awarded ?: $this->getRequest()->getQuery('amountAwarded') ?>"
-                                       max="<?= $maxAwardable ?>"
-                                       min="<?= $minAwardable ?>">
-                            </label>
-                        </div>
+                        <?php if ($prefilledAwardAmount): ?>
+                            <div class="form-group">
+                                <label>
+                                    Amount to award
+                                    <br />
+                                    <input class="form-control" type="number" name="amount_awarded" required="required"
+                                           data-validity-message="Required"
+                                           value="<?= $prefilledAwardAmount ?>"
+                                           max="<?= $maxAwardable ?>"
+                                           min="<?= $minAwardable ?>"
+                                           disabled="disabled"
+                                    >
+                                </label>
+                            </div>
+                        <?php else: ?>
+                            <p>
+                                We can award between $<?= number_format($minAwardable) ?> and $<?= number_format($maxAwardable) ?> to this project.
+                                Check
+                                <?= $this->Html->link(
+                                    'the voting page for this funding cycle',
+                                    [
+                                        'prefix' => 'Admin',
+                                        'controller' => 'Votes',
+                                        'action' => 'index',
+                                        'id' => $project->funding_cycle_id,
+                                    ]
+                                ) ?>
+                                to determine the appropriate amount.
+                            </p>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="status_id" value="<?= $statusId ?>" />
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">
-                        <?= Project::getStatusAction($statusId)['label'] ?>
-                    </button>
+                    <?php if (!$blockSubmitting): ?>
+                        <button type="submit" class="btn btn-primary">
+                            <?= Project::getStatusAction($statusId)['label'] ?>
+                        </button>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
