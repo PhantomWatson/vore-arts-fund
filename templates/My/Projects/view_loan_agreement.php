@@ -10,9 +10,21 @@ $amount = $project->amount_awarded_formatted;
 
 <?= $this->element('Projects/loan_agreement_preamble', compact('project')) ?>
 
-<p>
-    <strong>Agreement date:</strong>
-    <?= $project->loan_agreement_date->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') ?>
-</p>
+<section class="loan-agreement">
+    <h2>
+        Terms
+    </h2>
+    <?= $this->element('loan_terms', compact('amount', 'dueDate')) ?>
+</section>
 
-<?= $this->element('loan_terms', compact('amount', 'dueDate')) ?>
+<section class="loan-agreement">
+    <h2>
+        Signature
+    </h2>
+    <p>
+        Signed, <?= $project->loan_agreement_signature ?>
+        <br />
+        <?= $project->loan_agreement_date->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') ?>
+    </p>
+</section>
+
