@@ -39,6 +39,7 @@ use Cake\ORM\TableRegistry;
  * @property string $address
  * @property string $zipcode
  * @property bool $requires_tin
+ * @property string $loan_agreement_signature
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *

@@ -318,16 +318,20 @@ class ProjectsController extends BaseProjectsController
             return;
         }
 
-        $tin = $this->getValidatedTin();
-        if (!$tin) {
-            return;
+        if ($project->requires_tin) {
+            $tin = $this->getValidatedTin();
+            if (!$tin) {
+                return;
+            }
+
+            $tinSaveSuccess = $this->storeTin($project, $tin);
+            sodium_memzero($tin);
+            sodium_memzero($tinConfirm);
+
+            $loanAgreementSaveSuccess = $tinSaveSuccess && $this->saveLoanAgreement($project);
+        } else {
+            $loanAgreementSaveSuccess = $this->saveLoanAgreement($project);
         }
-
-        $tinSaveSuccess = $this->storeTin($project, $tin);
-        sodium_memzero($tin);
-        sodium_memzero($tinConfirm);
-
-        $loanAgreementSaveSuccess = $tinSaveSuccess && $this->saveLoanAgreement($project);
 
         if ($loanAgreementSaveSuccess) {
             $this->Flash->success(
@@ -446,6 +450,7 @@ class ProjectsController extends BaseProjectsController
     private function saveLoanAgreement(Project $project)
     {
         $loanAgreementData = [
+            'loan_agreement_signature' => $this->request->getData('loan_agreement_signature'),
             'loan_agreement_date' => new \DateTime(),
             'loan_due_date' => new \DateTime(\App\Model\Entity\Project::DUE_DATE),
             'loan_agreement_version' => Project::getLatestTermsVersion()

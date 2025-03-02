@@ -13034,6 +13034,9 @@ section.funding-cycles th {
   margin-top: 1.125rem;
 }
 
+.loan-agreement {
+  margin-bottom: 2rem;
+}
 .loan-agreement > li {
   font-weight: bold;
 }

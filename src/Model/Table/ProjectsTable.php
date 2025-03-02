@@ -166,6 +166,12 @@ class ProjectsTable extends Table
             ->maxLength('zipcode', 10)
             ->notEmptyString('zipcode');
 
+        $validator
+            ->scalar('loan_agreement_signature')
+            ->maxLength('loan_agreement_signature', 100)
+            ->requirePresence('loan_agreement_signature', false)
+            ->notEmptyString('loan_agreement_signature');
+
         return $validator;
     }
 
