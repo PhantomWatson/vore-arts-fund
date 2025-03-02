@@ -1,6 +1,8 @@
 <?php
 namespace App\Alert;
 
+use Cake\Core\Configure;
+
 class Alert {
     const TYPE_APPLICATIONS = 'applications';
     const TYPE_TRANSACTIONS = 'transactions';
@@ -35,6 +37,10 @@ class Alert {
 
     public function send(string $alertType)
     {
+        if (!Configure::read('enableAlerts', true)) {
+            return;
+        }
+
         // Don't send alerts when running tests
         if (defined('PHPUNIT_RUNNING') && constant('PHPUNIT_RUNNING')) {
             return;
