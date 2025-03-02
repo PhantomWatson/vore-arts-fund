@@ -449,24 +449,19 @@ class ProjectsController extends BaseProjectsController
      */
     private function saveLoanAgreement(Project $project)
     {
-        $loanAgreementData = [
-            'loan_agreement_signature' => $this->request->getData('loan_agreement_signature'),
-            'loan_agreement_date' => new \DateTime(),
-            'loan_due_date' => new \DateTime(\App\Model\Entity\Project::DUE_DATE),
-            'loan_agreement_version' => Project::getLatestTermsVersion()
-        ];
-        $project = $this->Projects->patchEntity($project, $loanAgreementData);
-        $success = (bool)$this->Projects->save($project);
+        $project->loan_agreement_signature = $this->request->getData('loan_agreement_signature');
+        $project->loan_agreement_date = new \DateTime();
+        $project->loan_due_date = new \DateTime(\App\Model\Entity\Project::DUE_DATE);
+        $project->loan_agreement_version = Project::getLatestTermsVersion();
+
+        // Double-check that signature is non-blank
+        $success = $project->loan_agreement_signature && (bool)$this->Projects->save($project);
 
         // Send alert
         $projectName = "project #{$project->id} ({$project->title})";
         $alert = new Alert();
-        $alert->addLine(
-            $success
-                ? "Loan agreement submitted for $projectName"
-                : "Failure to save loan agreement for $projectName"
-        );
         if ($success) {
+            $alert->addLine("Loan agreement submitted for $projectName");
             $alert->addLine(sprintf(
                 'Time to send a check and <%s|record the disbursement>',
                 Router::url([
@@ -475,14 +470,16 @@ class ProjectsController extends BaseProjectsController
                     'action' => 'add',
                 ], true),
             ));
+            $alert->send(Alert::TYPE_APPLICATIONS);
         } else {
+            $alert->addLine("Failure to save loan agreement for $projectName");
             $alert->addLine('Error submitting loan agreement for ' . $projectName);
-            $alert->addLine('Submitted data:');
-            $alert->addLine('```' . print_r($loanAgreementData, true) . '```');
+            $alert->addLine('Project data:');
+            $alert->addLine('```' . print_r($project, true) . '```');
             $alert->addLine('Entity errors:');
             $alert->addLine('```' . print_r($project->getErrors(), true) . '```');
+            $alert->send(Alert::TYPE_ERRORS);
         }
-        $alert->send(Alert::TYPE_APPLICATIONS);
 
         return $success;
     }

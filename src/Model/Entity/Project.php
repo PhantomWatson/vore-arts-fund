@@ -312,9 +312,6 @@ class Project extends Entity
         'answers' => true,
         'images' => true,
         'check_name' => true,
-        'loan_agreement_date' => true,
-        'loan_due_date' => true,
-        'loan_agreement_version' => true,
         '*' => false,
     ];
 
