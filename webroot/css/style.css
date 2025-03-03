@@ -13153,4 +13153,11 @@ button[type=submit].loading .loading-indicator {
   box-shadow: 0 0 0 0.25rem rgba(26, 91, 17, 0.25);
 }
 
+#form__transaction .row {
+  margin-bottom: 2rem;
+}
+#form__transaction .row .form-group {
+  margin-bottom: 0;
+}
+
 /*# sourceMappingURL=style.css.map */

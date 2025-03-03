@@ -1169,3 +1169,13 @@ button[type="submit"] {
     outline: 0;
     box-shadow: $input-focus-box-shadow;
 }
+
+#form__transaction {
+    .row {
+        margin-bottom: 2rem;
+
+        .form-group {
+            margin-bottom: 0;
+        }
+    }
+}

@@ -18,32 +18,91 @@ $types = \App\Model\Entity\Transaction::getTypes();
     ) ?>
 <?php endif; ?>
 <?= $this->Form->create($transaction, ['id' => 'transaction-form']) ?>
-<fieldset>
+<fieldset id="form__transaction">
     <div class="form-group">
         <?= $this->Form->label('Date') ?>
         <?= $this->Form->dateTime('date') ?>
     </div>
 
-    <div class="form-group number">
-        <?php
-            echo $this->Form->label('Type');
-            echo $this->Form->select(
-                'type',
-                $types,
-                [
-                    'empty' => true,
-                    'id' => 'type',
-                ],
-            );
-        ?>
+    <div class="form-group number required">
+        <?= $this->Form->label('Type') ?>
+        <?= $this->Form->select(
+            'type',
+            $types,
+            [
+                'empty' => true,
+                'id' => 'type',
+            ],
+        ) ?>
     </div>
-    <?php
-        echo $this->Form->control('name');
-        echo $this->Form->control('amount_gross', ['type' => 'number', 'min' => 0, 'step' => 0.01]);
-        echo $this->Form->control('amount_net', ['type' => 'number', 'min' => 0, 'step' => 0.01]);
-        echo $this->Form->control('project_id', ['options' => $projects, 'empty' => true]);
-        echo $this->Form->control('meta');
-    ?>
+
+    <label for="name">
+        Name
+    </label>
+    <div class="row">
+        <div class="col-sm-6">
+            <?= $this->Form->control('name', ['label' => false]) ?>
+        </div>
+        <div class="col-sm-6">
+            <p>The person or business that money was paid to or received from</p>
+        </div>
+    </div>
+
+    <div class="required">
+        <label for="amount-gross">
+            Amount (gross)
+        </label>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <?= $this->Form->control('amount_gross', ['label' => false, 'type' => 'number', 'min' => 0, 'step' => 0.01]) ?>
+        </div>
+        <div class="col-sm-6">
+            <p>The amount paid or received</p>
+        </div>
+    </div>
+
+    <div class="required">
+        <label for="amount-net">
+            Amount (net)
+        </label>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <?= $this->Form->control('amount_net', ['label' => false, 'type' => 'number', 'min' => 0, 'step' => 0.01]) ?>
+        </div>
+        <div class="col-sm-6">
+            <p>The gross amount, minus any processing fees</p>
+        </div>
+    </div>
+
+    <label for="project-id">
+        Project
+    </label>
+    <div class="row">
+        <div class="col-sm-6">
+            <?= $this->Form->control('project_id', ['label' => false, 'options' => $projects, 'empty' => true]) ?>
+        </div>
+        <div class="col-sm-6">
+            <p>(Optional) The project that this transaction is associated with</p>
+        </div>
+    </div>
+
+    <label for="meta">
+        Metadata
+    </label>
+    <div class="row">
+        <div class="col-sm-6">
+            <?= $this->Form->control('meta', ['label' => false]) ?>
+        </div>
+        <div class="col-sm-6">
+            <p>
+                This is for any other information about this transaction that's important to remember.
+                For any checks written, the check number should be recorded here.
+            </p>
+        </div>
+    </div>
 </fieldset>
 <button type="submit" class="btn btn-primary">
     <?= $this->getRequest()->getParam('action') == 'edit' ? 'Update' : 'Add' ?>
