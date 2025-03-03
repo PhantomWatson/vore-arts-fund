@@ -183,3 +183,9 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 <?php endforeach; ?>
 
 <?= $this->Image->initViewer() ?>
+
+<?php if ($this->getRequest()->getQuery('amountAwarded')): ?>
+    <script>
+        document.querySelector('button[data-bs-target="#review-modal-5"]').click();
+    </script>
+<?php endif; ?>
