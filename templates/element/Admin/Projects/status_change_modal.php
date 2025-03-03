@@ -12,7 +12,7 @@ $body = match ($statusId) {
     Project::STATUS_ACCEPTED => 'This will send a congratulations message to the applicant and allow this project to be voted on.',
     Project::STATUS_REJECTED => 'This will send a message to the applicant and not allow this project to be voted on. Provide the reason why this application cannot be accepted.',
     Project::STATUS_REVISION_REQUESTED => 'Provide a specific request for what needs to be added or changed in this application before it can be accepted.',
-    Project::STATUS_AWARDED_NOT_YET_DISBURSED => 'This will send a congratulations message to the applicant telling them that they\'ve been awarded funding pending the submission of a loan agreement. Only submit this change if the voting results for this cycle support awarding funding, and enter the amount of funding that will be awarded.',
+    Project::STATUS_AWARDED_NOT_YET_DISBURSED => 'This will send a congratulations message to the applicant telling them that they\'ve been awarded funding pending the submission of a loan agreement. Only submit this change if voting for this cycle has completed and if the results support awarding this project funding.',
     Project::STATUS_AWARDED_AND_DISBURSED => 'This will mark this project as having had funding disbursed. <strong>Only make this change if a check for ' .  $project->amount_awarded_formatted . ' has been written and sent to the applicant.</strong>',
     Project::STATUS_NOT_AWARDED => 'This will send a consolation message to the applicant telling them that this cycle\'s voting and/or the available budget did not result in their project receiving funding.',
     Project::STATUS_WITHDRAWN => 'This will withdraw this application from consideration. The applicant will not be automatically notified of this.',
@@ -71,7 +71,7 @@ $blockSubmitting = $statusId == Project::STATUS_AWARDED_NOT_YET_DISBURSED && !$p
                         <?php else: ?>
                             <p>
                                 We can award between $<?= number_format($minAwardable) ?> and $<?= number_format($maxAwardable) ?> to this project.
-                                Check
+                                To award funding, go to
                                 <?= $this->Html->link(
                                     'the voting page for this funding cycle',
                                     [
@@ -81,7 +81,7 @@ $blockSubmitting = $statusId == Project::STATUS_AWARDED_NOT_YET_DISBURSED && !$p
                                         'id' => $project->funding_cycle_id,
                                     ]
                                 ) ?>
-                                to determine the appropriate amount.
+                                and follow the link for this project that will send you back here with the awardable amount pre-filled.
                             </p>
                         <?php endif; ?>
                     <?php endif; ?>
