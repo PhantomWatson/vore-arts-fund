@@ -102,16 +102,6 @@ function getToAward(Project $project, $fundingAvailable)
         </thead>
         <tbody>
             <?php foreach ($projects as $i => $project): ?>
-                <?php
-                // Adjust funding available
-                if ($project->voting_score != null) {
-                    if ($project->amount_requested <= $fundingAvailable) {
-                        $fundingAvailable -= $project->amount_requested;
-                    } elseif ($fundingAvailable && $project->accept_partial_payout) {
-                        $fundingAvailable = 0;
-                    }
-                }
-                ?>
                 <tr>
                     <td>
                         <?= $project->voting_score == null ? '' : $i + 1 ?>
@@ -131,6 +121,16 @@ function getToAward(Project $project, $fundingAvailable)
                         <?= getToAward($project, $fundingAvailable); ?>
                     </td>
                 </tr>
+                <?php
+                // Adjust funding remaining after this project is funded
+                if ($project->voting_score != null) {
+                    if ($project->amount_requested <= $fundingAvailable) {
+                        $fundingAvailable -= $project->amount_requested;
+                    } elseif ($fundingAvailable && $project->accept_partial_payout) {
+                        $fundingAvailable = 0;
+                    }
+                }
+                ?>
             <?php endforeach; ?>
         </tbody>
     </table>
