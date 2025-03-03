@@ -64,7 +64,7 @@ $blockSubmitting = $statusId == Project::STATUS_AWARDED_NOT_YET_DISBURSED && !$p
                                            value="<?= $prefilledAwardAmount ?>"
                                            max="<?= $maxAwardable ?>"
                                            min="<?= $minAwardable ?>"
-                                           disabled="disabled"
+                                           readonly="readonly"
                                     >
                                 </label>
                             </div>
