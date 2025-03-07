@@ -109,14 +109,12 @@ class ProjectsController extends AdminController
             ->orderDesc('Notes.created')
             ->all();
         $newNote = $notesTable->newEmptyEntity();
-        $toLoad = $this->getAppFiles('review');
         $this->set(compact(
             'statusActions',
             'project',
             'newNote',
             'notes',
             'questions',
-            'toLoad',
             'validStatusIds',
             'transactions',
         ));
