@@ -206,7 +206,7 @@ class AppController extends Controller
         } else {
             $files = is_dir(WWW_ROOT . $jsDir) ? scandir(WWW_ROOT . $jsDir) : [];
             foreach ($files as $file) {
-                if (preg_match('/\.bundle\.js$/', $file) === 1) {
+                if (preg_match('/\.js$/', $file) === 1) {
                     $retval['js'][] = "/$jsDir/$file";
                 }
             }
