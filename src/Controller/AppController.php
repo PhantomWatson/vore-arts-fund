@@ -193,7 +193,7 @@ class AppController extends Controller
      * @param string $cssDir e.g. 'image-uploader/dist/styles'
      * @return array[]
      */
-    protected function getAppFiles(string $jsDir, string $cssDir): array
+    protected function getAppFiles(string $jsDir, string $cssDir = ''): array
     {
         $retval = [
             'js' => [],
@@ -213,7 +213,7 @@ class AppController extends Controller
         }
 
         // CSS
-        $files = is_dir(WWW_ROOT . $cssDir) ? scandir(WWW_ROOT . $cssDir) : [];
+        $files = ($cssDir && is_dir(WWW_ROOT . $cssDir)) ? scandir(WWW_ROOT . $cssDir) : [];
         foreach ($files as $file) {
             if (preg_match('/\.css$/', $file) === 1) {
                 $retval['css'][] = "/$cssDir/$file";
