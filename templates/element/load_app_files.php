@@ -2,7 +2,6 @@
 /**
  * @var \App\View\AppView $this
  * @var string[][] $toLoad
- * @var string $dir
  */
 foreach ($toLoad['js'] as $file) {
     echo $this->Html->script($file);

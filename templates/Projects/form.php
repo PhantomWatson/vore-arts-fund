@@ -356,7 +356,7 @@ function getAgreementCheckedValue($key, $data, $project) {
     <?= $this->Form->end() ?>
 </div>
 
-<?= $this->element('load_app_files', ['dir' => 'image-uploader']) ?>
+<?= $this->element('load_app_files') ?>
 <?= $this->element('expired_session_handler', compact('formId')) ?>
 
 <script>
