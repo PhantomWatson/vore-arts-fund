@@ -5,17 +5,19 @@ namespace App\Controller\Admin;
 
 use App\Application;
 use App\Model\Entity\Project;
+use App\Model\Entity\Transaction;
 use Cake\Event\EventInterface;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Query;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 
 /**
  * Transactions Controller
  *
  * @property \App\Model\Table\TransactionsTable $Transactions
- * @method \App\Model\Entity\Transaction[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method Transaction[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class TransactionsController extends AdminController
 {
@@ -97,6 +99,43 @@ class TransactionsController extends AdminController
             'transaction' => $transaction,
         ]);
         $this->setupForm();
+    }
+
+    public function addReact()
+    {
+        $this->add();
+
+        $cyclesTable = TableRegistry::getTableLocator()->get('FundingCycles');
+        $cycles = $cyclesTable
+            ->find()
+            ->select(['id', 'vote_end']) // vote_end needed to determine the cycle's name
+            ->orderAsc('application_begin')
+            ->toArray();
+        $cyclesRetval = [];
+        foreach ($cycles as $cycle) {
+            $cyclesRetval[$cycle['id']] = ['name' => $cycle->name];
+        }
+
+        $projectsTable = TableRegistry::getTableLocator()->get('Projects');
+        $projects = $projectsTable
+            ->find()
+            ->select(['id', 'title', 'funding_cycle_id'])
+            ->orderAsc('title')
+            ->toArray();
+        foreach ($projects as $project) {
+            $cyclesRetval[$project['funding_cycle_id']]['projects'][] = [
+                'id' => $project['id'],
+                'title' => $project['title'],
+            ];
+        }
+
+        $this->viewBuilder()->setTemplate('form_react');
+        $toLoad = $this->getAppFiles('transaction-form/dist/assets');
+
+        $this->set([
+            'toLoad' => $toLoad,
+            'cycles' => $cyclesRetval,
+        ]);
     }
 
     private function setupForm(): void
