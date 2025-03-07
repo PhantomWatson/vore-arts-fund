@@ -99,7 +99,7 @@ class ProjectsController extends AppController
         $this->viewBuilder()->setTemplate('form');
         $this->setProjectVars();
         $this->setFromNow($fundingCycle->application_end_local);
-        $this->set('toLoad', $this->getAppFiles('image-uploader'));
+        $this->set('toLoad', $this->getAppFiles('image-uploader/dist', 'image-uploader/dist/styles'));
 
         $user = $this->getAuthUser();
 

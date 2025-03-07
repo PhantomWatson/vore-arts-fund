@@ -187,44 +187,36 @@ class AppController extends Controller
     }
 
     /**
-     * Return the names of the JS and CSS files that need to be loaded for a React app
+     * Return the URL paths to the JS and CSS files that need to be loaded for a React app
      *
+     * @param string $jsDir e.g. 'image-uploader/dist'
+     * @param string $cssDir e.g. 'image-uploader/dist/styles'
      * @return array[]
      */
-    protected function getAppFiles($dir): array
+    protected function getAppFiles(string $jsDir, string $cssDir): array
     {
         $retval = [
             'js' => [],
             'css' => [],
         ];
 
-        // These vary for React 17 (dist) vs. 18 (build)
-        $buildDirs = ['dist', 'build/static'];
-
-        $dist = WWW_ROOT . $dir . DS . 'dist';
-
         // JS
         if ($_GET['webpack-dev'] ?? false) {
             $retval['js'][] = 'http://' . $_GET['webpack-dev'] . '/main.bundle.js';
         } else {
-            $files = is_dir($dist) ? scandir($dist) : false;
-            if ($files) {
-                foreach ($files as $file) {
-                    if (preg_match('/\.bundle\.js$/', $file) === 1) {
-                        $retval['js'][] = "/$dir/dist/$file";
-                    }
+            $files = is_dir(WWW_ROOT . $jsDir) ? scandir(WWW_ROOT . $jsDir) : [];
+            foreach ($files as $file) {
+                if (preg_match('/\.bundle\.js$/', $file) === 1) {
+                    $retval['js'][] = "/$jsDir/$file";
                 }
             }
         }
 
         // CSS
-        $stylesDir = $dist . DS . 'styles';
-        $files = is_dir($stylesDir) ? scandir($stylesDir) : false;
-        if ($files) {
-            foreach ($files as $file) {
-                if (preg_match('/\.css$/', $file) === 1) {
-                    $retval['css'][] = "/$dir/dist/styles/$file";
-                }
+        $files = is_dir(WWW_ROOT . $cssDir) ? scandir(WWW_ROOT . $cssDir) : [];
+        foreach ($files as $file) {
+            if (preg_match('/\.css$/', $file) === 1) {
+                $retval['css'][] = "/$cssDir/$file";
             }
         }
 

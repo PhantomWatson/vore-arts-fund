@@ -87,7 +87,7 @@ class VotesController extends AppController
                 : 'Check back later for voting info'
             );
         $this->title($title);
-        $toLoad = $this->getAppFiles('vote-app');
+        $toLoad = $this->getAppFiles('vote-app/dist', 'vote-app/dist/styles');
 
         $this->set(compact(
             'canVote',
