@@ -189,7 +189,7 @@ const App = () => {
                               <optgroup key={'cycle-' + id} label={cycle.name}>
                                 {cycle.projects.map((project) => (
                                     <option key={'project-' + project.id} value={project.id} selected={isSelectedProject(project.id)}>
-                                      {project.title} (#{project.id})
+                                      {project.title}
                                     </option>
                                   ))
                                 }
