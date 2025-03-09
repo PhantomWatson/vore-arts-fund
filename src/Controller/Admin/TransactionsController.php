@@ -92,7 +92,7 @@ class TransactionsController extends AdminController
         $cycles = $cyclesTable
             ->find()
             ->select(['id', 'vote_end']) // vote_end needed to determine the cycle's name
-            ->orderAsc('application_begin')
+            ->orderDesc('application_begin')
             ->toArray();
         $cyclesRetval = [];
         foreach ($cycles as $cycle) {
