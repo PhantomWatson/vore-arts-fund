@@ -13073,6 +13073,11 @@ section.funding-cycles th {
   vertical-align: middle;
 }
 
+button[type=submit] .prevent-multiple-submit__loading-indicator {
+  display: inline-block;
+  margin-left: 1em;
+}
+
 button[type=submit] .loading-indicator {
   display: none;
 }

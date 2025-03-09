@@ -1067,6 +1067,13 @@ section.funding-cycles {
 }
 
 button[type="submit"] {
+    .prevent-multiple-submit__loading-indicator {
+        display: inline-block;
+        margin-left: 1em;
+    }
+}
+
+button[type="submit"] {
     .loading-indicator {
         display: none;
     }
