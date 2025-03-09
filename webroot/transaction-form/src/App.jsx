@@ -1,120 +1,12 @@
 import {useEffect, useState} from 'react'
 import { Formik, Form, Field, useFormikContext } from 'formik';
-
-const testConfig = {
-  action: 'add',
-  cycles: [{id: 1, name: 'Cycle name', projects: [{id: 3, title: 'Project name'}]}],
-  transactionTypes: [{id: 1, name: 'Donation'}, {id: 2, name: 'Bribe'}],
-  endpointUrl: '/api/transactions',
-};
-//window.transactionForm = testConfig;
-
-/*
- * Config values that could be set in window.transactionForm:
- *  - action: add|edit
- *  - cycles: [{id: 1, name: 'Cycle name', projects: [{id: 3, title: 'Project name'}]}],
- *  - transactionTypes: [{id: ..., name:...}]
- *  - endpointURL: ...
- */
-
-const getConfig = () => {
-  const config = window.transactionForm;
-  console.log(config);
-  const action = config.action ?? false;
-  let errorLoadingConfig = '';
-  if (action !== 'add' && action !== 'edit') {
-    errorLoadingConfig += 'Invalid value for window.transactionForm.action. ';
-  }
-  const transactionTypes = config.transactionTypes ?? false;
-  if (!transactionTypes) {
-    errorLoadingConfig += 'window.transactionForm.transactionTypes not set. ';
-  }
-  const endpointUrl = config.endpointUrl ?? false;
-  if (!endpointUrl) {
-    errorLoadingConfig += 'window.transactionForm.endpointUrl not set. ';
-  }
-  const cycles = config.cycles ?? [];
-  const transaction = config.transaction ?? {};
-
-  return {action, transactionTypes, endpointUrl, cycles, transaction, errorLoadingConfig};
-}
+import {TYPE_LOAN, TYPE_DONATION, TYPE_CANCELED_CHECK, TYPE_LOAN_REPAYMENT} from './transactionTypes.js';
+import {guidanceName, guidanceMetadata, guidanceProject, guidanceAmountGross} from './guidance.js';
+import {showAmountNet, showProjectSelector} from './conditionalRendering.js';
+import {getConfig} from './config.js';
 
 // Config
 const {action, transactionTypes, endpointUrl, projects, cycles, transaction, errorLoadingConfig} = getConfig();
-
-// Conditional rendering
-const TYPE_DONATION = 1;
-const TYPE_LOAN_REPAYMENT = 2;
-const TYPE_LOAN = 3;
-const TYPE_CANCELED_CHECK = 4;
-const showProjectSelector = (transactionType) => {
-  switch (+transactionType) {
-    case TYPE_DONATION:
-      return false;
-    default:
-      return true;
-  }
-};
-const showAmountNet = (transactionType) => {
-  switch (+transactionType) {
-    case TYPE_LOAN:
-    case TYPE_CANCELED_CHECK:
-      return false;
-    default:
-      return true;
-  }
-};
-
-// Guidance text
-function guidanceAmountGross(type) {
-  switch (+type) {
-    case TYPE_DONATION:
-    case TYPE_LOAN_REPAYMENT:
-      return 'The total amount paid, including processing fees';
-    case TYPE_CANCELED_CHECK:
-      return 'The value of the check';
-    case TYPE_LOAN:
-      return 'The amount of the loan';
-    default:
-      return 'The amount paid or received';
-  }
-}
-function guidanceProject(type) {
-  switch (+type) {
-    case TYPE_LOAN:
-    case TYPE_LOAN_REPAYMENT:
-      return 'The project that this loan supported';
-    case TYPE_CANCELED_CHECK:
-      return 'The project that this loan was intended for';
-    default:
-      return '(Optional) The project that this transaction is associated with';
-  }
-}
-function guidanceName(type) {
-  switch (+type) {
-    case TYPE_DONATION:
-    case TYPE_LOAN_REPAYMENT:
-      return 'The person paying us (leave blank for anonymous)';
-    case TYPE_CANCELED_CHECK:
-    case TYPE_LOAN:
-      return 'The person the check was payable to';
-    default:
-      return 'The person or business that money was paid to or received from';
-  }
-}
-function guidanceMetadata(type) {
-  switch (+type) {
-    case TYPE_DONATION:
-    case TYPE_LOAN_REPAYMENT:
-      return 'This is for any other information about this transaction that\'s important to remember.';
-    case TYPE_LOAN:
-      return 'Include the check number here';
-    case TYPE_CANCELED_CHECK:
-      return 'Include the check number here, as well as (optionally) the reason why the check was canceled';
-    default:
-      return 'This is for any other information about this transaction that\'s important to remember. For any checks written, the check number should be recorded here.';
-  }
-}
 
 async function setNetToMatchGross(type, value, setFieldValue) {
   if (!showAmountNet(type)) {
