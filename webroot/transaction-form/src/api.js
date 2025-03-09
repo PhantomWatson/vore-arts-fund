@@ -12,7 +12,7 @@ class API {
   }
 
   static async send(endpointUrl, data, method, setErrorMsg) {
-    console.log(JSON.stringify(data));
+    setErrorMsg(null);
     const fetchOptions = {
       method: method,
       headers: {'Content-Type': 'application/json'},
@@ -24,7 +24,9 @@ class API {
     }
 
     const responseJson = await response.json();
-    setErrorMsg(responseJson.error);
+    let errorMsg = responseJson.error ?? null;
+    errorMsg = errorMsg ? errorMsg : 'There was an error processing this form. :(';
+    setErrorMsg(errorMsg);
     return false;
   }
 }
