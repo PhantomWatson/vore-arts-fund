@@ -157,6 +157,19 @@ $routes->prefix('api', function (RouteBuilder $builder) {
     $builder->connect('/projects/{action}', ['controller' => 'Projects']);
     $builder->connect('/votes/{action}', ['controller' => 'Votes']);
     $builder->connect('/stripe/{action}', ['controller' => 'Stripe']);
+    $builder
+        ->connect('/transactions', ['controller' => 'Transactions', 'action' => 'add'])
+        ->setMethods(['POST']);
+    $builder
+        ->connect('/transactions/{id}', ['controller' => 'Transactions', 'action' => 'edit'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id'])
+        ->setMethods(['PATCH']);
+    $builder
+        ->connect('/transactions/{id}', ['controller' => 'Transactions', 'action' => 'delete'])
+        ->setPatterns(['id' => '\d+'])
+        ->setPass(['id'])
+        ->setMethods(['DELETE']);
     $builder->connect('/transactions/{action}', ['controller' => 'Transactions']);
     $builder->fallbacks(DashedRoute::class);
 });

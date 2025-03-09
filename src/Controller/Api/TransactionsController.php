@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Controller\Admin\FundingCyclesController;
 use App\Event\AlertListener;
 use App\Model\Entity\Transaction;
 use Cake\Core\Configure;
@@ -13,6 +14,7 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\MethodNotAllowedException;
+use Cake\Http\Exception\UnauthorizedException;
 use Cake\Log\Log;
 use Stripe\StripeClient;
 
@@ -33,6 +35,7 @@ class TransactionsController extends ApiController
         $this->Authentication->allowUnauthenticated([
             'chargeSucceeded',
         ]);
+        $this->viewBuilder()->setClassName('Json');
     }
 
     /**
@@ -97,7 +100,6 @@ class TransactionsController extends ApiController
 
         $this->set(['result' => $succeeded]);
         $this->viewBuilder()->setOption('serialize', ['result']);
-        $this->viewBuilder()->setClassName('Json');
     }
 
     private function writeToStripeLog(string $message, $level = 'info'): void
@@ -114,5 +116,117 @@ class TransactionsController extends ApiController
             $this,
             compact('payload', 'transaction')
         ));
+    }
+
+    /**
+     * Throws an exception if the current user is not an admin
+     *
+     * @return void
+     */
+    private function restrictToAdmins(): void
+    {
+        $user = $this->getAuthUser();
+        if (!$user) {
+            throw new UnauthorizedException();
+        }
+        if (!($user->is_admin ?? false)) {
+            throw new ForbiddenException();
+        }
+    }
+
+    private function massageData($data)
+    {
+        // Convert dollars to cents
+        $data['amount_gross'] *= 100;
+        $data['amount_net'] *= 100;
+
+        $data['date'] = FundingCyclesController::convertTimeToUtc($data['date']);
+
+        return $data;
+    }
+
+    public function add(): void
+    {
+        $this->response = $this->getResponse()->cors($this->request)
+            ->allowOrigin(['http://localhost:3000'])
+            ->allowMethods(['POST'])
+            ->build();
+        $this->getRequest()->allowMethod('POST');
+        $this->restrictToAdmins();
+        $data = $this->getRequest()->getData();
+
+        $transaction = $this->Transactions->newEntity(
+            $data,
+            ['fields' => ['date', 'type', 'name', 'amount_net', 'amount_gross', 'meta']]
+        );
+        $transaction->user_id = $this->getAuthUser()->id;
+        if ($this->Transactions->save($transaction)) {
+            $this->response = $this->getResponse()->withStatus(201);
+            $this->set(['success' => true]);
+            $this->viewBuilder()->setOption('serialize', 'success');
+            return;
+        }
+
+        // Error
+        $this->response = $this->getResponse()->withStatus(422);
+        $this->set(['error' => $this->getEntityErrorDetails($transaction)]);
+        $this->viewBuilder()->setOption('serialize', ['error']);
+    }
+
+    public function edit(): void
+    {
+        // This path allows PATCH and DELETE, but this method is just for PATCH
+        $this->response = $this->getResponse()->cors($this->request)
+            ->allowOrigin(['http://localhost:3000'])
+            ->allowMethods(['PATCH', 'DELETE'])
+            ->build();
+        $this->getRequest()->allowMethod('PATCH');
+
+        $this->restrictToAdmins();
+
+        $id = $this->request->getParam('id');
+        $transaction = $this->Transactions->get($id);
+        $data = $this->massageData($this->getRequest()->getData());
+
+        $transaction = $this->Transactions->patchEntity(
+            $transaction,
+            $data,
+            ['fields' => ['date', 'type', 'name', 'amount_net', 'amount_gross', 'meta']]
+        );
+        if ($this->Transactions->save($transaction)) {
+            $this->set(['success' => true]);
+            $this->viewBuilder()->setOption('serialize', 'success');
+            return;
+        }
+
+        // Error
+        $this->response = $this->getResponse()->withStatus(422);
+        $this->set(['error' => $this->getEntityErrorDetails($transaction)]);
+        $this->viewBuilder()->setOption('serialize', ['error']);
+    }
+
+    public function delete(): void
+    {
+        // This path allows PATCH and DELETE, but this method is just for DELETE
+        $this->response = $this->getResponse()->cors($this->request)
+            ->allowOrigin(['http://localhost:3000'])
+            ->allowMethods(['PATCH', 'DELETE'])
+            ->build();
+        $this->getRequest()->allowMethod('DELETE');
+
+        $this->restrictToAdmins();
+
+        $id = $this->request->getParam('id');
+        $transaction = $this->Transactions->get($id);
+        if ($this->Transactions->delete($transaction)) {
+            $this->set(['success' => true]);
+            $this->viewBuilder()->setOption('serialize', 'success');
+            return;
+        }
+
+        // Error
+        $this->response = $this->getResponse()->withStatus(400);
+        $this->set(['error' => $this->getEntityErrorDetails($transaction)]);
+        $this->viewBuilder()->setOption('serialize', ['error']);
     }
 }
