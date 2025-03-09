@@ -116,13 +116,17 @@ function guidanceMetadata(type) {
   }
 }
 
+async function setNetToMatchGross(type, value, setFieldValue) {
+  if (!showAmountNet(type)) {
+    await setFieldValue('amount_net', value);
+  }
+}
+
 const App = () => {
   // State
   const [errorMsg, setErrorMsg] = useState('');
   const [showForm, setShowForm] = useState(true);
   const [transactionType, setTransactionType] = useState('');
-
-  const { values } = useFormikContext();
 
   useEffect(() => {
     if (errorLoadingConfig) {
@@ -168,7 +172,8 @@ const App = () => {
       )}
       {showForm && (
         <Formik initialValues={transaction} onSubmit={onSubmit}>
-          {({values}) => (
+          {({values, setFieldValue}) => {
+            return (
             <Form method="POST" id="transaction-form">
               <fieldset id="form__transaction">
                 <div className="form-group">
@@ -220,9 +225,10 @@ const App = () => {
                              name="amount_gross" min="0" step="0.01"
                              required="required"
                              data-validity-message="This field cannot be left empty"
-                             onInvalid={() => {this.setCustomValidity(''); if (!this.value) this.setCustomValidity(this.dataset.validityMessage)}}
-                             onInput={() => {this.setCustomValidity('')}}
-                             id="amount-gross" aria-required="true" />
+                             id="amount-gross"
+                             aria-required="true"
+                             onChange={(e) => {setNetToMatchGross(values.type, e.target.value, setFieldValue)}}
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -232,31 +238,28 @@ const App = () => {
                   </div>
                 </div>
 
-                {showAmountNet(values.type) && (
-                  <>
-                    <div className="required">
-                      <label htmlFor="amount-net">
-                        Amount (net)
-                      </label>
-                    </div>
-                    <div className="row">
-                      <div className="col-sm-6">
-                        <div className="form-group number required">
-                          <Field className="form-control" type="number"
-                                 name="amount_net" min="0" step="0.01"
-                                 required="required"
-                                 data-validity-message="This field cannot be left empty"
-                                 onInvalid={() => {this.setCustomValidity(''); if (!this.value) this.setCustomValidity(this.dataset.validityMessage)}}
-                                 onInput={() => {this.setCustomValidity('')}} id="amount-net"
-                                 aria-required="true" />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <p>The total amount received (gross amount minus any processing fees)</p>
+                <div style={!showAmountNet(values.type) ? {display: 'none'} : null}>
+                  <div className="required">
+                    <label htmlFor="amount-net">
+                      Amount (net)
+                    </label>
+                  </div>
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="form-group number required">
+                        <Field className="form-control" type="number"
+                               name="amount_net" min="0" step="0.01"
+                               required="required"
+                               data-validity-message="This field cannot be left empty"
+                               id="amount-net"
+                               aria-required="true" />
                       </div>
                     </div>
-                  </>
-                )}
+                    <div className="col-sm-6">
+                      <p>The total amount received (gross amount minus any processing fees)</p>
+                    </div>
+                  </div>
+                </div>
 
                 {showProjectSelector(values.type) && (
                   <>
@@ -314,7 +317,8 @@ const App = () => {
                 {action === 'add' ? 'Add' : 'Update'}
               </button>
             </Form>
-          )}
+            );
+          }}
         </Formik>
       )}
     </>
