@@ -153,7 +153,7 @@ class TransactionsController extends ApiController
             ->build();
         $this->getRequest()->allowMethod('POST');
         $this->restrictToAdmins();
-        $data = $this->getRequest()->getData();
+        $data = $this->massageData($this->getRequest()->getData());
 
         $transaction = $this->Transactions->newEntity(
             $data,
