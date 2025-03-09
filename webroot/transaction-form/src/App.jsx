@@ -7,7 +7,7 @@ import {getConfig} from './config.js';
 import API from './api.js';
 
 // Config
-const {action, transactionTypes, endpointUrl, projects, cycles, transaction, errorLoadingConfig} = getConfig();
+const {action, transactionTypes, endpointUrl, cycles, transaction, errorLoadingConfig} = getConfig();
 
 async function setNetToMatchGross(type, value, setFieldValue) {
   await setFieldValue('amount_gross', value);
@@ -15,6 +15,8 @@ async function setNetToMatchGross(type, value, setFieldValue) {
     await setFieldValue('amount_net', value);
   }
 }
+
+const formQuery = '#transaction-form';
 
 const App = () => {
   // State
@@ -28,7 +30,7 @@ const App = () => {
       setShowForm(false);
     }
     if (typeof preventMultipleSubmit !== 'undefined') {
-      preventMultipleSubmit('#transaction-form');
+      preventMultipleSubmit(formQuery);
     }
   }, []);
 
@@ -39,15 +41,21 @@ const App = () => {
       : await API.edit(endpointUrl, values, setErrorMsg);
 
     if (result) {
-      alert('Success');
+      window.location.href = '/admin/transactions';
+      return;
     }
+
+    cancelSubmit(formQuery);
   };
   const onDelete = async () => {
     if (confirm(`Are you sure you want to delete this transaction?`)) {
       const result = await API.delete(endpointUrl, setErrorMsg);
       if (result) {
-        alert('Success');
+        window.location.href = '/admin/transactions';
+        return;
       }
+
+      cancelSubmit(formQuery);
     }
   };
 
