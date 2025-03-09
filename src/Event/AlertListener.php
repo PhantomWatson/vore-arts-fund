@@ -120,13 +120,16 @@ class AlertListener implements EventListenerInterface
                         ),
                         $transaction->project->title,
                     )
-                    : 'none';
-                $this->alert->addList([
+                    : null;
+                $list = [
                     "<$transactionUrl|View transaction>",
                     'Transaction type: ' . $transaction->type_name,
-                    "Associated project: $project",
                     'Net amount: ' . ($transaction->dollar_amount_net_formatted),
-                ]);
+                ];
+                if ($project) {
+                    $list[] = "Associated project: $project";
+                }
+                $this->alert->addList($list);
             } else {
                 $this->alert->addLine('*Error: No transaction recorded in database*');
             }
