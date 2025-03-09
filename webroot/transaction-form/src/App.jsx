@@ -121,29 +121,8 @@ const App = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [showForm, setShowForm] = useState(true);
   const [transactionType, setTransactionType] = useState('');
-  //const [showAmountNet, setShowAmountNet] = useState(true);
-  //const [showProjectSelector, setShowProjectSelector] = useState(true);
 
-  //const { values } = useFormikContext();
-
-  /*useEffect(() => {
-    switch (values.type) {
-      case TYPE_LOAN:
-      case TYPE_CANCELED_CHECK:
-        setShowAmountNet(false);
-        break;
-      default:
-        setShowAmountNet(true);
-    }
-    switch (transactionType) {
-      case TYPE_DONATION:
-        setShowProjectSelector(false);
-        break;
-      default:
-        setShowProjectSelector(true);
-    }
-
-  }, [values]);*/
+  const { values } = useFormikContext();
 
   useEffect(() => {
     if (errorLoadingConfig) {
