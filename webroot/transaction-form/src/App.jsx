@@ -70,7 +70,7 @@ const App = () => {
   return (
     <>
       {errorMsg && (
-        <div className="alert alert-error" onClick="this.classList.add('hidden');">
+        <div className="alert alert-danger" onClick="this.classList.add('hidden');">
           <div className="container">
             {errorMsg}
           </div>
