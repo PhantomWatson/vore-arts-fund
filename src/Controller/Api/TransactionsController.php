@@ -164,6 +164,7 @@ class TransactionsController extends ApiController
             $this->response = $this->getResponse()->withStatus(201);
             $this->set(['success' => true]);
             $this->viewBuilder()->setOption('serialize', 'success');
+            $this->Flash->success('Transaction added');
             return;
         }
 
@@ -196,6 +197,7 @@ class TransactionsController extends ApiController
         if ($this->Transactions->save($transaction)) {
             $this->set(['success' => true]);
             $this->viewBuilder()->setOption('serialize', 'success');
+            $this->Flash->success('Transaction updated');
             return;
         }
 
@@ -221,6 +223,7 @@ class TransactionsController extends ApiController
         if ($this->Transactions->delete($transaction)) {
             $this->set(['success' => true]);
             $this->viewBuilder()->setOption('serialize', 'success');
+            $this->Flash->success('Transaction removed');
             return;
         }
 
