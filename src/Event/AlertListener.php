@@ -95,42 +95,7 @@ class AlertListener implements EventListenerInterface
                 'Email: ' . ($email === false ? 'Unknown' : $email),
             ]);
             $this->alert->addLine('');
-            if ($transaction) {
-                $this->alert->addLine('Recorded transaction info:');
-                $transactionUrl = Router::url(
-                    [
-                        'prefix' => 'Admin',
-                        'controller' => 'Transactions',
-                        'action' => 'view',
-                        'id' => $transaction->id,
-                    ],
-                    true
-                );
-                $project = $transaction->project_id
-                    ? sprintf(
-                        '<%s|%s>',
-                        Router::url(
-                            [
-                                'prefix' => 'Admin',
-                                'controller' => 'Projects',
-                                'action' => 'review',
-                                'id' => $transaction->project_id,
-                            ],
-                            true
-                        ),
-                        $transaction->project->title,
-                    )
-                    : null;
-                $list = [
-                    "<$transactionUrl|View transaction>",
-                    'Transaction type: ' . $transaction->type_name,
-                    'Net amount: ' . ($transaction->dollar_amount_net_formatted),
-                ];
-                if ($project) {
-                    $list[] = "Associated project: $project";
-                }
-                $this->alert->addList($list);
-            } else {
+            if (!$transaction) {
                 $this->alert->addLine('*Error: No transaction recorded in database*');
             }
         }

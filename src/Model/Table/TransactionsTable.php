@@ -7,11 +7,13 @@ use App\Alert\Alert;
 use App\Model\Entity\Transaction;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
 use Cake\I18n\FrozenTime;
 use Cake\Log\Log;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\Validation\Validator;
 use Stripe\Exception\ApiErrorException;
@@ -216,6 +218,37 @@ class TransactionsTable extends Table
             ),
             $entity->id,
         ));
+
+        $details = ['Transaction type: ' . $entity->type_name];
+        if ($entity->amount_net == $entity->amount_gross) {
+            $details[] = 'Amount: ' . $entity->dollar_amount_gross_formatted;
+        } else {
+            $details[] = 'Amount (gross): ' . $entity->dollar_amount_gross_formatted;
+            $details[] = 'Amount (net): ' . $entity->dollar_amount_net_formatted;
+        }
+        if ($entity->project_id) {
+            $projectsTable = TableRegistry::getTableLocator()->get('Projects');
+            try {
+                $project = $projectsTable->get($entity->project_id);
+                $projectDetail = sprintf(
+                    'Project: <%s|%s>',
+                    Router::url(
+                        [
+                            'prefix' => 'Admin',
+                            'controller' => 'Projects',
+                            'action' => 'review',
+                            'id' => $entity->project_id,
+                        ],
+                        true
+                    ),
+                    $project->title,
+                );
+            } catch (RecordNotFoundException $e) {
+                $projectDetail = "Project: (invalid project #{$entity->project_id}) selected)";
+            }
+            $details[] = $projectDetail;
+        }
+        $alert->addList($details);
         $alert->send(Alert::TYPE_TRANSACTIONS);
     }
 }
