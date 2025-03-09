@@ -4,11 +4,13 @@ import {TYPE_LOAN, TYPE_DONATION, TYPE_CANCELED_CHECK, TYPE_LOAN_REPAYMENT} from
 import {guidanceName, guidanceMetadata, guidanceProject, guidanceAmountGross} from './guidance.js';
 import {showAmountNet, showProjectSelector} from './conditionalRendering.js';
 import {getConfig} from './config.js';
+import API from './api.js';
 
 // Config
 const {action, transactionTypes, endpointUrl, projects, cycles, transaction, errorLoadingConfig} = getConfig();
 
 async function setNetToMatchGross(type, value, setFieldValue) {
+  await setFieldValue('amount_gross', value);
   if (!showAmountNet(type)) {
     await setFieldValue('amount_net', value);
   }
@@ -18,8 +20,8 @@ const App = () => {
   // State
   const [errorMsg, setErrorMsg] = useState('');
   const [showForm, setShowForm] = useState(true);
-  const [transactionType, setTransactionType] = useState('');
 
+  // Handle error condition and prevent the form from being submitted multiple times
   useEffect(() => {
     if (errorLoadingConfig) {
       setErrorMsg(errorLoadingConfig);
@@ -31,10 +33,21 @@ const App = () => {
   }, []);
 
   // Handlers
-  const onSubmit = () => {};
-  const onDelete = () => {
-    if (!confirm(`Are you sure you want to delete this transaction?`)) {
-      return;
+  const onSubmit = async (values) => {
+    const result = (action === 'add')
+      ? await API.add(endpointUrl, values, setErrorMsg)
+      : await API.edit(endpointUrl, values, setErrorMsg);
+
+    if (result) {
+      alert('Success');
+    }
+  };
+  const onDelete = async () => {
+    if (confirm(`Are you sure you want to delete this transaction?`)) {
+      const result = await API.delete(endpointUrl, setErrorMsg);
+      if (result) {
+        alert('Success');
+      }
     }
   };
 
@@ -64,8 +77,7 @@ const App = () => {
       )}
       {showForm && (
         <Formik initialValues={transaction} onSubmit={onSubmit}>
-          {({values, setFieldValue}) => {
-            return (
+          {({values, setFieldValue}) => (
             <Form method="POST" id="transaction-form">
               <fieldset id="form__transaction">
                 <div className="form-group">
@@ -209,8 +221,7 @@ const App = () => {
                 {action === 'add' ? 'Add' : 'Update'}
               </button>
             </Form>
-            );
-          }}
+          )}
         </Formik>
       )}
     </>
