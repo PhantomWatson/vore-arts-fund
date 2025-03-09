@@ -34,6 +34,6 @@ $action = $this->getRequest()->getParam('action');
         transactionTypes: <?= json_encode($types) ?>,
         action: <?= json_encode($action) ?>,
         transaction: <?= json_encode($transaction ?? new stdClass()) ?>,
-        endpointUrl: <?= json_encode('/api/transactions' . ($action == 'edit' ? '/ ' . $transaction->id : '')) ?>,
+        endpointUrl: <?= json_encode('/api/transactions' . ($action == 'edit' ? '/' . $transaction->id : '')) ?>,
     };
 </script>
