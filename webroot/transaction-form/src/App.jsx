@@ -31,6 +31,7 @@ const App = () => {
     }
     if (typeof preventMultipleSubmit !== 'undefined') {
       preventMultipleSubmit(formQuery);
+      preventMultipleSubmit('#delete-transaction-form');
     }
   }, []);
 
@@ -55,7 +56,8 @@ const App = () => {
     cancelSubmit(formQuery);
     scrollToTop();
   };
-  const onDelete = async () => {
+  const onDelete = async (event) => {
+    event.preventDefault();
     if (confirm(`Are you sure you want to delete this transaction?`)) {
       const result = await API.delete(endpointUrl, setErrorMsg);
       if (result) {
@@ -86,7 +88,7 @@ const App = () => {
         </div>
       )}
       {action === 'edit' && (
-        <form method="DELETE" onSubmit={onDelete}>
+        <form method="DELETE" onSubmit={onDelete} id="delete-transaction-form">
           <button type="submit" className="btn btn-danger">
             Delete
           </button>
