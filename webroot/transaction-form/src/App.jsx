@@ -35,6 +35,13 @@ const App = () => {
   }, []);
 
   // Handlers
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  };
   const onSubmit = async (values) => {
     const result = (action === 'add')
       ? await API.add(endpointUrl, values, setErrorMsg)
@@ -46,6 +53,7 @@ const App = () => {
     }
 
     cancelSubmit(formQuery);
+    scrollToTop();
   };
   const onDelete = async () => {
     if (confirm(`Are you sure you want to delete this transaction?`)) {
@@ -56,6 +64,7 @@ const App = () => {
       }
 
       cancelSubmit(formQuery);
+      scrollToTop();
     }
   };
 
