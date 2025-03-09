@@ -66,45 +66,28 @@ class TransactionsController extends AdminController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * Loads a React app that uses \App\Controller\Api\TransactionsController to submit the form
+     *
+     * @return void
      */
-    public function add()
+    public function add(): void
     {
         $transaction = $this->Transactions->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $data = $this->request->getData();
-            $user = $this->getAuthUser();
-            $data['user_id'] = $user?->id;
-            $data['date'] = FundingCyclesController::convertTimeToUtc($data['date']);
-
-            // Convert dollars to cents
-            $data['amount_gross'] *= 100;
-            $data['amount_net'] *= 100;
-
-            $transaction = $this->Transactions->patchEntity($transaction, $data);
-            if ($this->Transactions->save($transaction)) {
-                $this->Flash->success(__('The transaction has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The transaction could not be saved. Please, try again.'));
-        }
-
         if (!$transaction->date) {
             $transaction->date = new FrozenTime('now', Application::LOCAL_TIMEZONE);
         }
 
         $this->title('Add Transaction');
+        $this->viewBuilder()->setTemplate('form');
+        $this->setProjectsInCycles();
         $this->set([
+            'toLoad' => $this->getAppFiles('transaction-form/dist/assets'),
             'transaction' => $transaction,
         ]);
-        $this->setupForm();
     }
 
-    public function addReact()
+    private function setProjectsInCycles()
     {
-        $this->add();
-
         $cyclesTable = TableRegistry::getTableLocator()->get('FundingCycles');
         $cycles = $cyclesTable
             ->find()
@@ -118,24 +101,28 @@ class TransactionsController extends AdminController
 
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
         $projects = $projectsTable
-            ->find()
-            ->select(['id', 'title', 'funding_cycle_id'])
-            ->orderAsc('title')
-            ->toArray();
+            ->find('notDeleted')
+            ->find('notFinalized')
+            ->select(['Projects.id', 'Projects.title', 'Projects.funding_cycle_id'])
+            ->contain([
+                'Users' => function (Query $query) {
+                    return $query->select(['Users.id', 'Users.name']);
+                }
+            ])
+            ->orderAsc('Projects.title');
         foreach ($projects as $project) {
-            $cyclesRetval[$project['funding_cycle_id']]['projects'][] = [
-                'id' => $project['id'],
-                'title' => $project['title'],
+            $cyclesRetval[$project->funding_cycle_id]['projects'][] = [
+                'id' => $project->id,
+                'title' => sprintf(
+                    '%s (%s, #%s)',
+                    $project->title,
+                    $project->user->name,
+                    $project->id,
+                ),
             ];
         }
 
-        $this->viewBuilder()->setTemplate('form_react');
-        $toLoad = $this->getAppFiles('transaction-form/dist/assets');
-
-        $this->set([
-            'toLoad' => $toLoad,
-            'cycles' => $cyclesRetval,
-        ]);
+        $this->set(['cycles' => $cyclesRetval]);
     }
 
     private function setupForm(): void
@@ -169,59 +156,28 @@ class TransactionsController extends AdminController
     /**
      * Edit method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * Loads a React app that uses \App\Controller\Api\TransactionsController to submit the form
+     *
+     * @return void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit()
+    public function edit(): void
     {
         $id = $this->request->getParam('id');
-        $transaction = $this->Transactions->get($id, [
-            'contain' => [],
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $data = $this->request->getData();
-
-            // Convert dollars to cents
-            $data['amount_net'] *= 100;
-            $data['amount_gross'] *= 100;
-
-            $transaction = $this->Transactions->patchEntity($transaction, $data);
-            if ($this->Transactions->save($transaction)) {
-                $this->Flash->success(__('The transaction has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The transaction could not be saved. Please, try again.'));
-        }
+        $transaction = $this->Transactions->get($id);
 
         // Convert cents to dollars
         $transaction->amount_net /= 100;
         $transaction->amount_gross /= 100;
 
         $title = 'Update transaction ' . $transaction->id;
-        $this->setCurrentBreadcrumb($title);
         $this->title($title);
-        $this->set(compact('transaction'));
-        $this->setupForm();
-    }
-
-    /**
-     * Delete method
-     *
-     * @return \Cake\Http\Response|null|void Redirects to index
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found
-     */
-    public function delete()
-    {
-        $id = $this->request->getParam('id');
-        $this->request->allowMethod(['post', 'delete']);
-        $report = $this->Transactions->get($id);
-        if ($this->Transactions->delete($report)) {
-            $this->Flash->success('The transaction has been deleted');
-        } else {
-            $this->Flash->error('The transaction could not be deleted');
-        }
-
-        return $this->redirect(['action' => 'index']);
+        $this->setCurrentBreadcrumb($title);
+        $this->viewBuilder()->setTemplate('form');
+        $this->setProjectsInCycles();
+        $this->set([
+            'toLoad' => $this->getAppFiles('transaction-form/dist/assets'),
+            'transaction' => $transaction,
+        ]);
     }
 }
