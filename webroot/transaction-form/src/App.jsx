@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, useFormikContext } from 'formik';
 
 const testConfig = {
   action: 'add',
@@ -42,11 +42,58 @@ const getConfig = () => {
 // Config
 const {action, transactionTypes, endpointUrl, projects, cycles, transaction, errorLoadingConfig} = getConfig();
 
+// Conditional rendering
+const TYPE_DONATION = 1;
+const TYPE_LOAN_REPAYMENT = 2;
+const TYPE_LOAN = 3;
+const TYPE_CANCELED_CHECK = 4;
+const showProjectSelector = (transactionType) => {
+  switch (+transactionType) {
+    case TYPE_DONATION:
+      return false;
+    default:
+      return true;
+  }
+};
+const showAmountNet = (transactionType) => {
+  switch (+transactionType) {
+    case TYPE_LOAN:
+    case TYPE_CANCELED_CHECK:
+      return false;
+    default:
+      return true;
+  }
+};
+
+
 const App = () => {
   // State
   const [errorMsg, setErrorMsg] = useState('');
   const [showForm, setShowForm] = useState(true);
   const [transactionType, setTransactionType] = useState('');
+  //const [showAmountNet, setShowAmountNet] = useState(true);
+  //const [showProjectSelector, setShowProjectSelector] = useState(true);
+
+  //const { values } = useFormikContext();
+
+  /*useEffect(() => {
+    switch (values.type) {
+      case TYPE_LOAN:
+      case TYPE_CANCELED_CHECK:
+        setShowAmountNet(false);
+        break;
+      default:
+        setShowAmountNet(true);
+    }
+    switch (transactionType) {
+      case TYPE_DONATION:
+        setShowProjectSelector(false);
+        break;
+      default:
+        setShowProjectSelector(true);
+    }
+
+  }, [values]);*/
 
   useEffect(() => {
     if (errorLoadingConfig) {
@@ -92,7 +139,7 @@ const App = () => {
       )}
       {showForm && (
         <Formik initialValues={transaction} onSubmit={onSubmit}>
-          {({}) => (
+          {({values}) => (
             <Form method="POST" id="transaction-form">
               <fieldset id="form__transaction">
                 <div className="form-group">
@@ -109,7 +156,7 @@ const App = () => {
                   <Field component="select" className="form-control" name="type" id="type" required="required">
                     <option value=""></option>
                     {Object.entries(transactionTypes).map(([id, name]) => (
-                      <option key={id} value={name}>
+                      <option key={id} value={id}>
                         {name}
                       </option>
                     ))}
@@ -132,7 +179,8 @@ const App = () => {
 
                 <div className="required">
                   <label htmlFor="amount-gross">
-                    Amount (gross)
+                    Amount
+                    {showAmountNet(values.type) && " (gross)"}
                   </label>
                 </div>
 
@@ -153,57 +201,65 @@ const App = () => {
                   </div>
                 </div>
 
-                <div className="required">
-                  <label htmlFor="amount-net">
-                    Amount (net)
-                  </label>
-                </div>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group number required">
-                      <Field className="form-control" type="number"
-                             name="amount_net" min="0" step="0.01"
-                             required="required"
-                             data-validity-message="This field cannot be left empty"
-                             onInvalid={() => {this.setCustomValidity(''); if (!this.value) this.setCustomValidity(this.dataset.validityMessage)}}
-                             onInput={() => {this.setCustomValidity('')}} id="amount-net"
-                             aria-required="true" />
+                {showAmountNet(values.type) && (
+                  <>
+                    <div className="required">
+                      <label htmlFor="amount-net">
+                        Amount (net)
+                      </label>
                     </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <p>The gross amount, minus any processing fees</p>
-                  </div>
-                </div>
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <div className="form-group number required">
+                          <Field className="form-control" type="number"
+                                 name="amount_net" min="0" step="0.01"
+                                 required="required"
+                                 data-validity-message="This field cannot be left empty"
+                                 onInvalid={() => {this.setCustomValidity(''); if (!this.value) this.setCustomValidity(this.dataset.validityMessage)}}
+                                 onInput={() => {this.setCustomValidity('')}} id="amount-net"
+                                 aria-required="true" />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <p>The gross amount, minus any processing fees</p>
+                      </div>
+                    </div>
+                  </>
+                )}
 
-                <label htmlFor="project-id">
-                  Project
-                </label>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group select">
-                      <Field component="select" className="form-control" name="project_id" id="project-id">
-                        <option value=""></option>
-                        {Object.entries(cycles).map(([id, cycle]) => (
-                          cycle.hasOwnProperty('projects')
-                            ? (
-                              <optgroup key={'cycle-' + id} label={cycle.name}>
-                                {cycle.projects.map((project) => (
-                                    <option key={'project-' + project.id} value={project.id} selected={isSelectedProject(project.id)}>
-                                      {project.title}
-                                    </option>
-                                  ))
-                                }
-                              </optgroup>
-                            )
-                            : ''
-                        ))}
-                      </Field>
+                {showProjectSelector(values.type) && (
+                  <>
+                    <label htmlFor="project-id">
+                      Project
+                    </label>
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <div className="form-group select">
+                          <Field component="select" className="form-control" name="project_id" id="project-id">
+                            <option value=""></option>
+                            {Object.entries(cycles).map(([id, cycle]) => (
+                              cycle.hasOwnProperty('projects')
+                                ? (
+                                  <optgroup key={'cycle-' + id} label={cycle.name}>
+                                    {cycle.projects.map((project) => (
+                                      <option key={'project-' + project.id} value={project.id} selected={isSelectedProject(project.id)}>
+                                        {project.title}
+                                      </option>
+                                    ))
+                                    }
+                                  </optgroup>
+                                )
+                                : ''
+                            ))}
+                          </Field>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <p>(Optional) The project that this transaction is associated with</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <p>(Optional) The project that this transaction is associated with</p>
-                  </div>
-                </div>
+                  </>
+                )}
 
                 <label htmlFor="meta">
                   Metadata
