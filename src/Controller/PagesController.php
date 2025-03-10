@@ -46,7 +46,8 @@ class PagesController extends AppController
             'home',
             'privacy',
             'terms',
-            'artMart',
+            'discountEligibility',
+            'partners',
         ]);
     }
 
@@ -223,13 +224,18 @@ class PagesController extends AppController
         $this->response = $this->response->withStatus(404);
     }
 
-    public function artMart()
+    public function discountEligibility()
     {
         $users = $this->fetchTable('Users')
-            ->find('forArtMart')
+            ->find('forDiscountEligibility')
             ->all();
 
         $this->set(compact('users'));
-        $this->title('Funding recipients eligible for Art Mart discount');
+        $this->title('Funding recipients eligible for partner discounts');
+    }
+
+    public function partners()
+    {
+        $this->title('Community Partners');
     }
 }

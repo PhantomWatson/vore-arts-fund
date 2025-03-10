@@ -165,7 +165,7 @@ class UsersTable extends Table
         return $rules;
     }
 
-    public function findForArtMart(Query $query, array $options)
+    public function findForDiscountEligibility(Query $query, array $options)
     {
         return $query->select(['id', 'name'])
             ->matching('Projects', function (\Cake\Database\Query $query) {

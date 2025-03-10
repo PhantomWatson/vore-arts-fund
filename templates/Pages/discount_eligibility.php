@@ -5,7 +5,7 @@
  */
 ?>
 
-<?php if ($users): ?>
+<?php if (count($users)): ?>
     <table class="table">
         <thead>
             <tr>

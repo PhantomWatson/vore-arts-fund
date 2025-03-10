@@ -54,6 +54,8 @@ $routes->scope('/', function (RouteBuilder $builder) {
             '/terms' => 'terms',
             '/maintenance' => 'maintenanceMode',
             '/art-mart' => 'artMart',
+            '/partners' => 'partners',
+            '/discount-eligibility' => 'discountEligibility',
         ],
         'Projects' => [
             '/project/{id}' => 'view',
