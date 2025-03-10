@@ -101,6 +101,24 @@
     </article>
 </div>
 
+<div class="about">
+    <article>
+        <h2>
+            Community Partners
+        </h2>
+        <p>
+            Local businesses have partnered with us to offer special discounts to our funding recipients so our support goes even further. For a full list of partners and discounts offered, visit
+            <?= $this->Html->link(
+                'our Partners page',
+                [
+                    'controller' => 'Pages',
+                    'action' => 'partners',
+                ]
+            ) ?>.
+        </p>
+    </article>
+</div>
+
 <?php if ($boardMembers): ?>
     <section id="meet-the-board">
         <h2>
