@@ -12,16 +12,6 @@ $links = [
         ['class' => 'nav-link']
     ],
     [
-        'Projects',
-        ['controller' => 'Projects', 'action' => 'index', 'prefix' => false],
-        ['class' => 'nav-link']
-    ],
-    [
-        'About',
-        ['controller' => 'Pages', 'action' => 'about', 'prefix' => false],
-        ['class' => 'nav-link']
-    ],
-    [
         'Vote',
         ['controller' => 'Votes', 'action' => 'index', 'prefix' => false],
         ['class' => 'nav-link']
@@ -32,6 +22,29 @@ $links = [
         ['class' => 'nav-link']
     ]
 ];
+
+$aboutLinks = [
+    [
+        'About Us',
+        ['controller' => 'Pages', 'action' => 'about', 'prefix' => false],
+        ['class' => 'dropdown-item']
+    ],
+    [
+        'Projects',
+        ['controller' => 'Projects', 'action' => 'index', 'prefix' => false],
+        ['class' => 'dropdown-item']
+    ],
+    [
+        'Community Partners',
+        ['controller' => 'Pages', 'action' => 'partners', 'prefix' => false],
+        ['class' => 'dropdown-item']
+    ],
+    [
+        'Contact',
+        ['controller' => 'Pages', 'action' => 'contact', 'prefix' => false],
+        ['class' => 'dropdown-item']
+    ],
+] ;
 
 $loggedInLinks = [
     [
@@ -131,6 +144,14 @@ function echoLinks(\App\View\AppView $appView, $links, $navbarItemClass = 'nav-i
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <?php echoLinks($this, $links); ?>
+
+                    <li class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown">About</button>
+                        <ul class="dropdown-menu">
+                            <?php echoLinks($this, $aboutLinks, ''); ?>
+                        </ul>
+                    </li>
+
                     <?php if ($isLoggedIn): ?>
                         <li class="nav-item dropdown">
                             <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Account</button>
