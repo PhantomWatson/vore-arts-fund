@@ -66,7 +66,7 @@ class EmailDatabaseBackupCommand extends Command
 
         $result = shell_exec($command);
         if ($result === null && file_exists($filepath) && filesize($filepath) > 0) {
-            echo 'Database backup created successfully: ' . $filename;
+            echo 'Database backup created successfully: ' . $filename . PHP_EOL;
             $this->emailDatabaseBackup($filepath);
         } else {
             $msg = 'Error creating database backup: ' . ($result ?? 'Unknown error');
@@ -75,7 +75,7 @@ class EmailDatabaseBackupCommand extends Command
                 filesize($filepath) === 0 => ' Backup file is empty',
                 default => ''
             };
-            echo $msg;
+            echo $msg . PHP_EOL;
             $this->emailError($msg);
         }
     }
