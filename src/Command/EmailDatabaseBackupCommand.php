@@ -84,7 +84,7 @@ class EmailDatabaseBackupCommand extends Command
     {
         EmailQueue::enqueue(
             Configure::read('supportEmail'),
-            [],
+            ['content' => 'Database backup attached'],
             [
                 'subject' => 'Vore Arts Fund database backup',
                 'template' => 'default',
