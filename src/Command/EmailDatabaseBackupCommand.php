@@ -87,7 +87,7 @@ class EmailDatabaseBackupCommand extends Command
             Configure::read('supportEmail'),
             ['content' => 'Database backup attached'],
             [
-                'subject' => 'Vore Arts Fund database backup',
+                'subject' => 'Vore Arts Fund database backup (' . getEnvironment() . ')',
                 'template' => 'default',
                 'from_name' => 'Vore Arts Fund',
                 'from_email' => 'noreply@voreartsfund.org',
@@ -102,7 +102,7 @@ class EmailDatabaseBackupCommand extends Command
             Configure::read('supportEmail'),
             ['content' => $msg],
             [
-                'subject' => 'Vore Arts Fund database backup failed',
+                'subject' => 'Vore Arts Fund database backup failed (' . getEnvironment() . ')',
                 'template' => 'default',
                 'from_name' => 'Vore Arts Fund',
                 'from_email' => 'noreply@voreartsfund.org',
