@@ -56,10 +56,11 @@ class EmailDatabaseBackupCommand extends Command
         $filepath = ROOT . DS . 'database_backups' . DS . $filename;
 
         $command = sprintf(
-            'mysqldump --user=%s --password=%s --host=%s %s --ignore-table=email_queue > %s',
+            'mysqldump --user=%s --password=%s --host=%s %s --ignore-table=%.email_queue > %s',
             $user,
             $password,
             $host,
+            $databaseName,
             $databaseName,
             $filepath
         );
