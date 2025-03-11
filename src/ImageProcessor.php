@@ -278,7 +278,7 @@ class ImageProcessor
     private function getGdSourceImage(): \GdImage
     {
         $image = match ($this->extension) {
-            'jpg' => imagecreatefromjpeg($this->sourceFilePath),
+            'jpg', 'jpeg' => imagecreatefromjpeg($this->sourceFilePath),
             'png' => imagecreatefrompng($this->sourceFilePath),
             'gif' => imagecreatefromgif($this->sourceFilePath),
             'webp' => imagecreatefromwebp($this->sourceFilePath),
