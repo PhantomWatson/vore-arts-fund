@@ -72,8 +72,8 @@ class EmailDatabaseBackupCommand extends Command
         } else {
             $msg = 'Error creating database backup: ' . ($result ?? 'Unknown error');
             $msg .= match (true) {
-                !file_exists($filepath) => ' No backup file was created',
-                filesize($filepath) === 0 => ' Backup file is empty',
+                !file_exists($filepath) => "\n No backup file was created",
+                filesize($filepath) === 0 => "\n Backup file is empty",
                 default => ''
             };
             echo $msg . PHP_EOL;
