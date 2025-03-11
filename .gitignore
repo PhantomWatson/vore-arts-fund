@@ -62,6 +62,7 @@ bin/cake
 # Other
 /webroot/sample
 /config/environment.php
+/database_backups
 
 # Dist files for React projects
 /webroot/vote-app/dist/*
