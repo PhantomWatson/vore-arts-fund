@@ -18,17 +18,6 @@
     <tbody>
     <tr>
         <td>
-            <a href="https://www.gordyframing.com/">Gordy Fine Art and Framing</a>
-        </td>
-        <td>
-            Custom framing, readymade frames, photo printing, high-resolution scanning, curation consultation, and exhibition space
-        </td>
-        <td>
-            25% discount
-        </td>
-    </tr>
-    <tr>
-        <td>
             <a href="https://www.artmartmuncie.net">The Art Mart</a>
         </td>
         <td>
@@ -36,6 +25,17 @@
         </td>
         <td>
             20% discount
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="https://www.gordyframing.com/">Gordy Fine Art and Framing</a>
+        </td>
+        <td>
+            Custom framing, readymade frames, photo printing, high-resolution scanning, curation consultation, and exhibition space
+        </td>
+        <td>
+            25% discount
         </td>
     </tr>
     </tbody>
