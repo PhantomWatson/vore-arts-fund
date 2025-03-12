@@ -32,7 +32,7 @@
             <a href="https://www.gordyframing.com/">Gordy Fine Art and Framing</a>
         </td>
         <td>
-            Custom framing, readymade frames, photo printing, high-resolution scanning, curation consultation, and exhibition space
+            Custom framing, readymade frames, photo printing, high-resolution scanning, and curation consultatione
         </td>
         <td>
             25% discount
