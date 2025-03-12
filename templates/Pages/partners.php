@@ -38,6 +38,17 @@
             25% discount
         </td>
     </tr>
+    <tr>
+        <td>
+            <a href="https://www.facebook.com/tribuneshowprint/">Tribune Showprint</a>
+        </td>
+        <td>
+            Letterpress poster printing, digital printing, and graphic design for a variety of printing needs
+        </td>
+        <td>
+            20% discount
+        </td>
+    </tr>
     </tbody>
 </table>
 
