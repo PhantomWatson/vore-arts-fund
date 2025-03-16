@@ -320,13 +320,20 @@ class ProjectsController extends BaseProjectsController
 
         if ($project->requires_tin) {
             $tin = $this->getValidatedTin();
+
+            // Remove sensitive values from the request data
+            $data = $this->request->getData();
+            unset($data['tin_provide']);
+            unset($data['tin_confirm']);
+            $this->request = $this->request->withParsedBody($data);
+            unset($_POST);
+
             if (!$tin) {
                 return;
             }
 
             $tinSaveSuccess = $this->storeTin($project, $tin);
             sodium_memzero($tin);
-            sodium_memzero($tinConfirm);
 
             $loanAgreementSaveSuccess = $tinSaveSuccess && $this->saveLoanAgreement($project);
         } else {
@@ -396,6 +403,7 @@ class ProjectsController extends BaseProjectsController
     {
         $tin = $this->getRequest()->getData('tin_provide');
         $tinConfirm = $this->getRequest()->getData('tin_confirm');
+
         if (!$tin) {
             $this->Flash->error('Tax ID number required.');
             sodium_memzero($tinConfirm);
