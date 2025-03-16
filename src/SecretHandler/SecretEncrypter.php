@@ -41,7 +41,7 @@ class SecretEncrypter implements SecretServiceInterface
         // Save TIN
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
         $project = $projectsTable->get($projectId);
-        $project = $projectsTable->patchEntity($project, ['tin' => $encryptedBase64]);
+        $project->tin = $encryptedBase64;
         return (bool)$projectsTable->save($project);
     }
 
@@ -69,7 +69,8 @@ class SecretEncrypter implements SecretServiceInterface
         }
 
         // Decrypt
-        $decrypted = sodium_crypto_box_seal_open($encryptedTin, $reconstructedKeypair);
+        $encryptedTinBin = sodium_base642bin($encryptedTin, SODIUM_BASE64_VARIANT_ORIGINAL);
+        $decrypted = sodium_crypto_box_seal_open($encryptedTinBin, $reconstructedKeypair);
 
         // Securely erase secrets
         sodium_memzero($secretKey);
