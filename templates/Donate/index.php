@@ -28,6 +28,9 @@ $formAction = \Cake\Routing\Router::url([
                 <h1 class="card-title">
                     Make a one-time donation
                 </h1>
+                <p>
+                    If you provide your name, you will be included in acknowledgements of our valued donors.
+                </p>
                 <?= $this->Form->create(null, ['id' => 'donate-index', 'method' => 'post', 'action' => $formAction]) ?>
                 <?= $this->Form->control('name', ['label' => 'Name (optional)', 'value' => $user?->name]) ?>
                 <div class="row">
