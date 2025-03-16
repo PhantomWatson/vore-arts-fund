@@ -52,7 +52,7 @@ $amount = $project->amount_awarded_formatted;
     <p>
         By entering your name, you signify that you agree to these terms on behalf of the borrower and are authorized to do so.
     </p>
-    <?= $this->Form->control('loan_agreement_signature', ['label' => 'Type your full name']) ?>
+    <?= $this->Form->control('loan_agreement_signature', ['label' => 'Type your full name', 'value' => '']) ?>
 </section>
 
 <?= $this->Form->submit('Submit', ['class' => 'btn btn-primary']) ?>
