@@ -17,7 +17,7 @@
         </p>
     <?php else: ?>
         <p class="alert alert-info">
-            To get the tax ID number for <strong><?= $project->title ?></strong>, enter the decryption key below.
+            To protect the applicant's sensitive data, the tax ID number associated with <strong><?= $project->title ?></strong> is encrypted. To retrieve it, find the decryption key in the organization's secure records and enter it below.
         </p>
 
         <?= $this->Form->create(null) ?>
