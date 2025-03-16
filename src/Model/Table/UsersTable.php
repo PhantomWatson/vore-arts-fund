@@ -189,7 +189,7 @@ class UsersTable extends Table
             return [];
         }
 
-        return $this
+        $results = $this
             ->find()
             ->select([
                 'Users.id',
@@ -202,5 +202,10 @@ class UsersTable extends Table
             ->where(['Users.id IN' => $boardMemberUserIds])
             ->contain(['Bios'])
             ->all();
+
+        // Make order match $boardMemberUserIds
+        return $results->sortBy(function (User $user) use ($boardMemberUserIds) {
+            return array_search($user->id, $boardMemberUserIds);
+        });
     }
 }
