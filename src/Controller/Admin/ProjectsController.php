@@ -118,6 +118,13 @@ class ProjectsController extends AdminController
             'validStatusIds',
             'transactions',
         ));
+        $this->setReviewBreadcrumbs($project);
+
+        return null;
+    }
+
+    private function setReviewBreadcrumbs(Project $project): void
+    {
         $this->title('Project: ' . $project->title);
         $this->addBreadcrumb(
             $project->funding_cycle->name,
@@ -129,8 +136,6 @@ class ProjectsController extends AdminController
             ]
         );
         $this->setCurrentBreadcrumb($project->title);
-
-        return null;
     }
 
     public function markAwarded($projectId)
@@ -369,7 +374,7 @@ class ProjectsController extends AdminController
     public function getTin()
     {
         $projectId = $this->request->getParam('id');
-        $project = $this->Projects->get($projectId);
+        $project = $this->Projects->get($projectId, ['contain' => ['FundingCycles']]);
         $decrypted = '';
         if (!$this->getRequest()->is('get')) {
             $secretKeyBase64 = $this->getRequest()->getData('secret');
@@ -385,6 +390,7 @@ class ProjectsController extends AdminController
             'decrypted' => $decrypted,
             'project' => $project,
         ]);
+        $this->setReviewBreadcrumbs($project);
 
         sodium_memzero($decrypted);
     }
