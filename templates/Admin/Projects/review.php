@@ -89,6 +89,32 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                         <?= $project->check_name ?: '<span class="no-answer">No answer</span>' ?>
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        Tax ID number
+                    </th>
+                    <td>
+                        <?php if ($project->tin): ?>
+                            Collected
+                            <?= $this->Html->link(
+                                'Retrieve',
+                                [
+                                    'controller' => 'Projects',
+                                    'action' => 'getTin',
+                                    'id' => $project->id,
+                                ],
+                                [
+                                    'class' => 'btn btn-secondary btn-sm',
+                                ]
+                            ) ?>
+                        <?php else: ?>
+                            Not collected
+                            <?php if (!$project->requires_tin): ?>
+                                (not required)
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
