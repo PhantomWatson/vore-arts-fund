@@ -206,6 +206,6 @@ class UsersTable extends Table
         // Make order match $boardMemberUserIds
         return $results->sortBy(function (User $user) use ($boardMemberUserIds) {
             return array_search($user->id, $boardMemberUserIds);
-        });
+        }, SORT_ASC);
     }
 }
