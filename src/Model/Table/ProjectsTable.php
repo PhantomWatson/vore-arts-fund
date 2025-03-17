@@ -362,7 +362,9 @@ class ProjectsTable extends Table
     public function afterSave(Event $event, EntityInterface $entity, ArrayObject $options): void
     {
         /** @var Project $entity */
-        if ($entity->statusWasJustChangedTo(Project::STATUS_UNDER_REVIEW)) {
+        if ($entity->status_id == Project::STATUS_UNDER_REVIEW && (
+            $entity->isNew() || $entity->statusWasJustChangedTo(Project::STATUS_UNDER_REVIEW)
+        )) {
             $entity->dispatchSubmittedEvent();
         } elseif ($entity->statusWasJustChangedTo(Project::STATUS_WITHDRAWN)) {
             $entity->dispatchWithdrawnEvent();
