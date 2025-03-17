@@ -56,7 +56,7 @@ class EmailDatabaseBackupCommand extends Command
         $filepath = ROOT . DS . 'database_backups' . DS . $filename;
 
         $command = sprintf(
-            'mysqldump --user=%s --password=%s --host=%s --ignore-table=%s.email_queue %s > %s',
+            'mariadb-dump --user=%s --password=%s --host=%s --ignore-table=%s.email_queue %s > %s',
             $user,
             $password,
             $host,
