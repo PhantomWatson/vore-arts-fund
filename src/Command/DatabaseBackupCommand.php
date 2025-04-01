@@ -13,9 +13,9 @@ use Cake\Core\Configure;
 use EmailQueue\EmailQueue;
 
 /**
- * EmailDatabaseBackup command.
+ * DatabaseBackup command.
  */
-class EmailDatabaseBackupCommand extends Command
+class DatabaseBackupCommand extends Command
 {
     /**
      * Hook method for defining this command's option parser.
@@ -71,7 +71,6 @@ class EmailDatabaseBackupCommand extends Command
         $result = shell_exec($command);
         if ($result === null && file_exists($filepath) && filesize($filepath) > 0) {
             echo 'Database backup created successfully: ' . $filename . PHP_EOL;
-            $this->emailDatabaseBackup($filepath);
             $this->uploadFileToS3($filepath);
         } else {
             $msg = 'Error creating database backup: ' . ($result ?? 'Unknown error');
@@ -135,6 +134,7 @@ class EmailDatabaseBackupCommand extends Command
             ]);
 
             echo 'Database backup uploaded to S3 successfully: ' . $result['ObjectURL'] . PHP_EOL;
+            $this->sendSuccessAlert($result['ObjectURL']);
         } catch (\Aws\Exception\AwsException $e) {
             $msg = 'Error uploading database backup to S3: ' . $e->getMessage() . PHP_EOL;
             echo $msg;
@@ -147,5 +147,12 @@ class EmailDatabaseBackupCommand extends Command
         $alert = new Alert();
         $alert->addLine($msg);
         $alert->send(Alert::TYPE_ERRORS);
+    }
+
+    private function sendSuccessAlert($url): void
+    {
+        $alert = new Alert();
+        $alert->addLine('Database backup created successfully: ' . $url);
+        $alert->send(Alert::TYPE_CRONS);
     }
 }

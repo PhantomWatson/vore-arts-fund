@@ -8,6 +8,7 @@ class Alert {
     const TYPE_TRANSACTIONS = 'transactions';
     const TYPE_APPLICANT_COMMUNICATION = 'applicant_communication';
     const TYPE_ERRORS = 'errors';
+    const TYPE_CRONS = 'crons';
 
     public string $content = '';
 
