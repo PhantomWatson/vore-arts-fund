@@ -48,6 +48,9 @@ class DatabaseBackupCommand extends Command
             if (file_exists(CONFIG . 'app_local_' . $environment . '.php')) {
                 Configure::load('app_local_' . $environment);
             }
+        } else {
+            $this->sendErrorAlert('Cannot back up database: environment.php not found.');
+            return;
         }
         $host = Configure::consume('Datasources.default.host');
         $user = Configure::consume('Datasources.default.username');
