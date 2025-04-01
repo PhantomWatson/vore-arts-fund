@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use Aws\S3\S3Client;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -56,7 +57,8 @@ class EmailDatabaseBackupCommand extends Command
         $filepath = ROOT . DS . 'database_backups' . DS . $filename;
 
         $command = sprintf(
-            'mariadb-dump --user=%s --password=%s --host=%s --ignore-table=%s.email_queue %s > %s',
+            '%s --user=%s --password=%s --host=%s --ignore-table=%s.email_queue --no-tablespaces %s > %s',
+            Configure::read('dbDumpCommand'),
             $user,
             $password,
             $host,
@@ -69,6 +71,7 @@ class EmailDatabaseBackupCommand extends Command
         if ($result === null && file_exists($filepath) && filesize($filepath) > 0) {
             echo 'Database backup created successfully: ' . $filename . PHP_EOL;
             $this->emailDatabaseBackup($filepath);
+            $this->uploadFileToS3($filepath);
         } else {
             $msg = 'Error creating database backup: ' . ($result ?? 'Unknown error');
             $msg .= match (true) {
@@ -108,5 +111,30 @@ class EmailDatabaseBackupCommand extends Command
                 'from_email' => 'noreply@voreartsfund.org',
             ],
         );
+    }
+
+    private function uploadFileToS3($filepath)
+    {
+        $s3 = new S3Client([
+            'version' => 'latest',
+            'region'  => 'us-east-2',
+            'credentials' => [
+                'key'    => Configure::read('s3.accessKey'),
+                'secret' => Configure::read('s3.secretAccessKey'),
+            ],
+        ]);
+
+        $filename = basename($filepath);
+        try {
+            $result = $s3->putObject([
+                'Bucket' => Configure::read('s3.buckets.dbBackups'),
+                'Key'    => $filename,
+                'SourceFile' => $filepath,
+            ]);
+
+            echo 'File uploaded successfully: ' . $result['ObjectURL'] . PHP_EOL;
+        } catch (\Aws\Exception\AwsException $e) {
+            echo 'Error uploading file to S3: ' . $e->getMessage() . PHP_EOL;
+        }
     }
 }

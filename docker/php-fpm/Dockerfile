@@ -43,6 +43,9 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
 
 RUN apt-get install nodejs -y
 
+# Used so the database backup script has acces to mysqldump
+RUN apt-get install default-mysql-client -y
+
 WORKDIR "/var/www/html/webroot"
 
 RUN usermod -u 1000 ${WEB_USER} \
