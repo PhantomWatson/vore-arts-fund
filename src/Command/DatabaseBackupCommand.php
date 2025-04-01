@@ -58,7 +58,7 @@ class DatabaseBackupCommand extends Command
         $databaseName = Configure::consume('Datasources.default.database');
 
         $filename = sprintf('db_backup_%s_%s.sql', $environment, date('Y-m-d_H-i-s'));
-        $filepath = ROOT . DS . 'database_backups' . DS . $filename;
+        $filepath = sys_get_temp_dir() . DS . $filename;
 
         $command = sprintf(
             '%s --user=%s --password=%s --host=%s --ignore-table=%s.email_queue --no-tablespaces %s > %s',
