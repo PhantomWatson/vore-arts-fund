@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Alert\Alert;
 use Aws\S3\S3Client;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
@@ -81,6 +82,7 @@ class EmailDatabaseBackupCommand extends Command
             };
             echo $msg . PHP_EOL;
             $this->emailError($msg);
+            $this->sendErrorAlert($msg);
         }
     }
 
@@ -132,9 +134,18 @@ class EmailDatabaseBackupCommand extends Command
                 'SourceFile' => $filepath,
             ]);
 
-            echo 'File uploaded successfully: ' . $result['ObjectURL'] . PHP_EOL;
+            echo 'Database backup uploaded to S3 successfully: ' . $result['ObjectURL'] . PHP_EOL;
         } catch (\Aws\Exception\AwsException $e) {
-            echo 'Error uploading file to S3: ' . $e->getMessage() . PHP_EOL;
+            $msg = 'Error uploading database backup to S3: ' . $e->getMessage() . PHP_EOL;
+            echo $msg;
+            $this->sendErrorAlert($msg);
         }
+    }
+
+    private function sendErrorAlert(string $msg): void
+    {
+        $alert = new Alert();
+        $alert->addLine($msg);
+        $alert->send(Alert::TYPE_ERRORS);
     }
 }
