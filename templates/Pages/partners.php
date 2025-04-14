@@ -40,7 +40,18 @@
     </tr>
     <tr>
         <td>
-            <a href="https://www.facebook.com/tribuneshowprint/">Tribune Showprint</a>
+            <a href="https://www.madjax.org">Madjax</a>
+        </td>
+        <td>
+            Free membership, with access to three maker spaces and a wide variety of equipment
+        </td>
+        <td>
+            Six months free
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="https://www.tribune-showprint.com">Tribune Showprint</a>
         </td>
         <td>
             Letterpress poster printing, digital printing, and graphic design for a variety of printing needs
