@@ -101,14 +101,14 @@ class VotesController extends AppController
         ));
         $this->viewBuilder()->setLayout('vote');
 
-        if (!$user) {
+        if (!$fundingCycleHasProjects) {
+            $template = 'no_projects';
+        } elseif (!$user) {
             $template = 'not_logged_in';
         } elseif (!$isVerified) {
             $template = 'not_verified';
         } elseif ($blockedFromRepeatVoting) {
             $template = 'already_voted';
-        } elseif (!$fundingCycleHasProjects) {
-            $template = 'no_projects';
         } else {
             $template = 'index';
             if ($hasVoted && $repeatVotesAllows) {
