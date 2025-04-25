@@ -12,6 +12,10 @@
  */
 ?>
 <p class="alert alert-warning">
-    Before you can vote, you must first
-    <?= $this->Html->link('verify your phone number', ['controller' => 'Users', 'action' => 'verify']) ?>.
+    Before you can vote, you must first verify your phone number.
+    <?= $this->Html->link(
+        'Verify',
+        ['controller' => 'Users', 'action' => 'verify'],
+        ['class' => 'btn btn-primary']
+    ) ?>
 </p>
