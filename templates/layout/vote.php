@@ -1,8 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var bool $showUpcoming
  * @var \App\Model\Entity\FundingCycle|null $nextCycle
+ * @var bool $showUpcoming
  */
 $this->extend('default');
 ?>
@@ -10,14 +10,3 @@ $this->extend('default');
 <?= $this->element('Votes/intro') ?>
 
 <?= $this->fetch('content') ?>
-
-<?php if ($showUpcoming): ?>
-    <p>
-        <?php if ($nextCycle): ?>
-            Voting for projects in the <?= $nextCycle->name ?> funding cycle begins on
-            <strong><?= $nextCycle->vote_begin_local->format('F j, Y') ?></strong>. See you then!
-        <?php else: ?>
-            Check back later for information about when voting will begin for the next funding cycle.
-        <?php endif; ?>
-    </p>
-<?php endif; ?>

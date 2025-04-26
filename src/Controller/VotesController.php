@@ -9,6 +9,7 @@ use App\Model\Table\FundingCyclesTable;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
+use Cake\ORM\TableRegistry;
 
 /**
  * @property \App\Model\Table\ProjectsTable $Projects
@@ -73,13 +74,13 @@ class VotesController extends AppController
         $user = $this->getAuthUser();
         $isVerified = $user ? $user->is_verified : false;
         $hasVoted = $user && $cycle && $this->Votes->hasVoted($user->id, $cycle->id);
-        $repeatVotesAllows = Configure::read('allowRepeatVoting');
-        $blockedFromRepeatVoting = $hasVoted && !$repeatVotesAllows;
-        $nextCycle = $fundingCyclesTable->find('nextVoting')->first();
-        $showUpcoming = $blockedFromRepeatVoting || !$cycle || !$fundingCycleHasProjects;
-        $canVote = $user && $user->is_verified && !$showUpcoming && $fundingCycleHasProjects;
+        $repeatVotesAllowed = Configure::read('allowRepeatVoting');
+        $hasVotedAndIsBlocked = $hasVoted && !$repeatVotesAllowed;
+        $showUpcoming = $hasVotedAndIsBlocked || !$cycle || !$fundingCycleHasProjects;
+        $canVote = $isVerified && $fundingCycleHasProjects && (!$hasVoted || $repeatVotesAllowed);
 
         $this->setCurrentBreadcrumb('Vote');
+        $nextCycle = $fundingCyclesTable->find('nextVoting')->first();
         $title = $fundingCycleHasProjects
             ? 'Vote on Funding Applications'
             : ($nextCycle
@@ -103,20 +104,25 @@ class VotesController extends AppController
 
         if (!$fundingCycleHasProjects) {
             $template = 'no_projects';
-        } elseif (!$user) {
-            $template = 'not_logged_in';
-        } elseif (!$isVerified) {
-            $template = 'not_verified';
-        } elseif ($blockedFromRepeatVoting) {
-            $template = 'already_voted';
-        } else {
+        } elseif ($canVote) {
             $template = 'index';
-            if ($hasVoted && $repeatVotesAllows) {
+            if ($hasVoted && $repeatVotesAllowed) {
                 $this->Flash->set(
                     'You\'ve already voted for this funding cycle, but the '
                     . getEnvironment() . ' environment allows repeat voting.'
                 );
             }
+        } else {
+            if (!$user) {
+                $template = 'not_logged_in';
+            } elseif (!$isVerified) {
+                $template = 'not_verified';
+            } elseif ($hasVotedAndIsBlocked) {
+                $template = 'already_voted';
+            }
+            $projectsTable = TableRegistry::getTableLocator()->get('Projects');
+            $projectsCount = $projectsTable->find('forVoting', ['funding_cycle_id' => $cycle->id])->count();
+            $this->set(compact('projectsCount'));
         }
         $this->viewBuilder()->setTemplate($template);
 

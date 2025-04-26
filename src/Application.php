@@ -52,6 +52,13 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         'action' => 'login',
     ];
 
+    const REGISTER_URL = [
+        'plugin' => null,
+        'prefix' => false,
+        'controller' => 'Users',
+        'action' => 'register',
+    ];
+
     /**
      * @inheritDoc
      */

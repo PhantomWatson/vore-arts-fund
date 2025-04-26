@@ -281,6 +281,7 @@ class ProjectsTable extends Table
                 'Projects.id',
                 'Projects.title',
                 'Projects.user_id',
+                'Projects.funding_cycle_id',
             ])
             ->where([
                 'Projects.funding_cycle_id' => $options['funding_cycle_id'],
@@ -323,6 +324,19 @@ class ProjectsTable extends Table
                     return $q->select([
                         'Users.id',
                         'Users.name',
+                    ]);
+                },
+                'FundingCycles' => function (Query $q) {
+                    // The intention here is "select all", but columns must be listed explicitly
+                    return $q->select([
+                        'FundingCycles.id',
+                        'FundingCycles.application_begin',
+                        'FundingCycles.application_end',
+                        'FundingCycles.resubmit_deadline',
+                        'FundingCycles.vote_begin',
+                        'FundingCycles.vote_end',
+                        'FundingCycles.funding_available',
+                        'FundingCycles.is_finalized'
                     ]);
                 },
             ])
