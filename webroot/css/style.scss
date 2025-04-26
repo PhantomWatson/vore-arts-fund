@@ -832,6 +832,11 @@ section.funding-cycles {
     }
 }
 
+.project-set-target {
+    margin-top: -$padding-top-to-avoid-navbar-overlapping;
+    padding-top: $padding-top-to-avoid-navbar-overlapping;
+}
+
 .report {
     .final {
         color: $danger;
