@@ -64,6 +64,9 @@ const Project = (props) => {
           </Modal.Header>
 
           <Modal.Body size="xl">
+            <p className="alert alert-info">
+              Please scroll down to review all project details, then click <strong>Approve</strong> or <strong>Reject</strong>.
+            </p>
             <p>
               <strong>Category:</strong> {props.project.category.name}
             </p>
