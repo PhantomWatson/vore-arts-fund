@@ -63,6 +63,7 @@ class ArticlesController extends AdminController
         $this->set(compact('article'));
         $this->viewBuilder()->setTemplate('form');
         $this->title('Add article');
+        $this->setRichTextEditorFilePaths();
     }
 
     /**
@@ -90,6 +91,7 @@ class ArticlesController extends AdminController
         $this->set(compact('article', 'users'));
         $this->viewBuilder()->setTemplate('form');
         $this->title('Edit article');
+        $this->setRichTextEditorFilePaths();
     }
 
     /**

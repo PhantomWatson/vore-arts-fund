@@ -264,4 +264,17 @@ class AppController extends Controller
             '?' => ['redirect' => $this->getRequest()->getPath()]
         ]);
     }
+
+    protected function setRichTextEditorFilePaths()
+    {
+        $dir = 'rich-text-editor' . DS . 'dist' . DS . 'assets';
+        $files = is_dir(WWW_ROOT . $dir) ? scandir(WWW_ROOT . $dir) : false;
+        if ($files) {
+            foreach ($files as $file) {
+                if (preg_match('/\.js$/', $file) === 1) {
+                    $this->set(['rteJsPath' => "/$dir/$file"]);
+                }
+            }
+        }
+    }
 }

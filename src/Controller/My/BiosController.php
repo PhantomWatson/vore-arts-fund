@@ -56,17 +56,4 @@ class BiosController extends AppController
         $this->setRichTextEditorFilePaths();
         $this->title('Update Bio');
     }
-
-    private function setRichTextEditorFilePaths()
-    {
-        $dir = 'rich-text-editor' . DS . 'dist' . DS . 'assets';
-        $files = is_dir(WWW_ROOT . $dir) ? scandir(WWW_ROOT . $dir) : false;
-        if ($files) {
-            foreach ($files as $file) {
-                if (preg_match('/\.js$/', $file) === 1) {
-                    $this->set(['rteJsPath' => "/$dir/$file"]);
-                }
-            }
-        }
-    }
 }
