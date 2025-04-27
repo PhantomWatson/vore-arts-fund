@@ -118,6 +118,15 @@ $adminLinks = [
             'action' => 'index',
         ],
         ['class' => 'dropdown-item']
+    ],
+    [
+        'Articles',
+        [
+            'prefix' => 'Admin',
+            'controller' => 'Articles',
+            'action' => 'index',
+        ],
+        ['class' => 'dropdown-item']
     ]
 ];
 

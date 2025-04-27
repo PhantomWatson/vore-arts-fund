@@ -34,6 +34,10 @@ function buildRoutes(RouteBuilder &$builder, array $controllers)
                 $builder->connect($path, ['controller' => $controller, 'action' => $action])
                     ->setPatterns(['id' => '\d+'])
                     ->setPass(['id']);
+            } elseif (str_contains($path, '{slug}')) {
+                $builder->connect($path, ['controller' => $controller, 'action' => $action])
+                    ->setPatterns(['slug' => '[a-z0-9-]+'])
+                    ->setPass(['slug']);
             } else {
                 $builder->connect($path, ['controller' => $controller, 'action' => $action]);
             }
@@ -84,6 +88,10 @@ $routes->scope('/', function (RouteBuilder $builder) {
             '/report/{id}' => 'view',
             '/reports/for-project/{id}' => 'project',
             '/reports/submit/{id}' => 'submit',
+        ],
+        'Articles' => [
+            '/news' => 'index',
+            '/news/{slug}' => 'view',
         ],
     ];
     buildRoutes($builder, $controllers);
