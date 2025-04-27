@@ -228,7 +228,7 @@ const Tiptap = () => {
                 </button>
             </div>
             <EditorContent editor={editor} className="form-control" />
-            {characterCount}
+            {limit > 0 && characterCount}
         </>
     )
 }
