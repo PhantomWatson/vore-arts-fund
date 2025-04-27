@@ -6,9 +6,9 @@
 ?>
 
 <article class="article">
-    <h1 <?= $this->getRequest()->getParam('action') == 'view' ? 'class="visually-hidden"' : '' ?>>
+    <h2 <?= $this->getRequest()->getParam('action') == 'view' ? 'class="visually-hidden"' : '' ?>>
         <?= $this->Html->link($article->title, ['action' => 'view', 'slug' => $article->slug]) ?>
-    </h1>
+    </h2>
     <p>
         <?= $article->dated->format('F j, Y') ?>
     </p>
