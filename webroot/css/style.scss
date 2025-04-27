@@ -1197,3 +1197,10 @@ button[type="submit"] {
         display: block;
     }
 }
+
+.article {
+    .date {
+        color: $text-muted;
+        font-size: 0.8em;
+    }
+}

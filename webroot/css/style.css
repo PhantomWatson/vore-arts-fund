@@ -13164,4 +13164,9 @@ button[type=submit].loading .loading-indicator {
   display: block;
 }
 
+.article .date {
+  color: var(--bs-secondary-color);
+  font-size: 0.8em;
+}
+
 /*# sourceMappingURL=style.css.map */

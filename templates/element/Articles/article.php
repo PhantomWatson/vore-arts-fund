@@ -9,7 +9,7 @@
     <h2 <?= $this->getRequest()->getParam('action') == 'view' ? 'class="visually-hidden"' : '' ?>>
         <?= $this->Html->link($article->title, ['action' => 'view', 'slug' => $article->slug]) ?>
     </h2>
-    <p>
+    <p class="date">
         <?= $article->dated->format('F j, Y') ?>
     </p>
     <div class="body">
