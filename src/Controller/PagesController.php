@@ -192,11 +192,19 @@ class PagesController extends AppController
     {
         $this->setupFundingCyclesOverview();
 
+        $articlesTable = $this->fetchTable('Articles');
+        $article = $articlesTable
+            ->find()
+            ->where(['Articles.is_published' => true])
+            ->orderDesc('Articles.dated')
+            ->first();
+
         $isStaging = str_contains($_SERVER['HTTP_HOST'], 'staging.');
 
         $this->set([
             'isStaging' => $isStaging,
             'title' => '',
+            'article' => $article,
         ]);
 
         // Display beta testing message

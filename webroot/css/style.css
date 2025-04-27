@@ -13166,7 +13166,12 @@ button[type=submit].loading .loading-indicator {
 
 .article .date {
   color: var(--bs-secondary-color);
+  display: inline;
   font-size: 0.8em;
+}
+
+.article__latest {
+  font-size: 1.2em;
 }
 
 /*# sourceMappingURL=style.css.map */

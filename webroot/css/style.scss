@@ -1201,6 +1201,11 @@ button[type="submit"] {
 .article {
     .date {
         color: $text-muted;
+        display: inline;
         font-size: 0.8em;
     }
+}
+
+.article__latest {
+    font-size: 1.2em;
 }

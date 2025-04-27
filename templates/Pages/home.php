@@ -5,6 +5,7 @@
  * @var bool $fundingCycleIsCurrent
  * @var bool $isStaging
  * @var string[] $cycleCategories
+ * @var \App\Model\Entity\Article|null $article
  */
 ?>
 <div id="home">
@@ -18,25 +19,16 @@
                     <p>
                         The Vore Arts Fund is a 501(c)(3) nonprofit dedicated to empowering Muncie's arts community by eliminating financial barriers to creating commercial art, music, theater, and art education. Through zero‐interest, unconditionally forgivable loans, we enable local artists, performers, producers, and educators to launch and sustain creative ventures that enrich Muncie's cultural landscape.
                     </p>
-                    <p>
-                        Please email <a href="mailto:info@voreartsfund.org">info@voreartsfund.org</a> if you have any
-                        questions.
-                    </p>
                 </div>
             </section>
-            <section>
-                <h1>
-                    Coverage on Newslink Indiana
-                </h1>
-                <p>
-                    We'd like to thank Jack Wolff and Newslink Indiana for
-                    <a href="https://www.youtube.com/live/5xXTsDKwtTg?si=tk8-PQvUPiWLdRM-&t=490">
-                        their recent coverage of the Vore Arts Fund
-                    </a>,
-                    including an interview with President Graham Watson, Vice-President Natalie Phillips, and artist
-                    Jennifer Amos.
-                </p>
-            </section>
+
+            <?php if ($article): ?>
+                <section class="latest-news card">
+                    <div class="card-body">
+                        <?= $this->element('Articles/article', ['article' => $article, 'isLatest' => true]) ?>
+                    </div>
+                </section>
+            <?php endif; ?>
         </div>
         <div class="col-sm-4">
             <section class="card">
