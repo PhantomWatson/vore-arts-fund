@@ -17,6 +17,11 @@ $links = [
         ['class' => 'nav-link']
     ],
     [
+        'News',
+        ['controller' => 'Articles', 'action' => 'index', 'prefix' => false],
+        ['class' => 'nav-link']
+    ],
+    [
         'Donate',
         ['controller' => 'Donate', 'action' => 'index', 'prefix' => false],
         ['class' => 'nav-link']
