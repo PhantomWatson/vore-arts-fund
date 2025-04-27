@@ -7,7 +7,7 @@
 ?>
 
 <article class="article">
-    <?php if ($isLatest): ?>
+    <?php if ($isLatest ?? false): ?>
         <p>
             <span class="badge text-bg-secondary article__latest">Latest news</span>
         </p>
