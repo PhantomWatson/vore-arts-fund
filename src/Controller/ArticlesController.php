@@ -40,7 +40,8 @@ class ArticlesController extends AppController
         $articles = $this->paginate($query);
 
         $this->set(compact('articles'));
-        $this->title('News');
+        $this->title('Vore Arts Fund News');
+        $this->setCurrentBreadcrumb('News');
     }
 
     /**
