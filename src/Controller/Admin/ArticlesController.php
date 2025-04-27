@@ -48,8 +48,9 @@ class ArticlesController extends AdminController
 
         if ($this->request->is('post')) {
             $article = $this->Articles->patchEntity($article, $this->request->getData());
+            $article->title = trim($article->title);
             $article->user_id = $this->getAuthUser()->id;
-            $article->slug = Text::slug(strtolower($article->title));
+            $article->slug = $article->generateUniqueSlug();
             if ($this->Articles->save($article)) {
                 $this->Flash->success(__('The article has been saved.'));
 

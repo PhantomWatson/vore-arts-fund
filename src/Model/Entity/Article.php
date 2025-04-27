@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Text;
 use Cake\View\Helper\TextHelper;
 use Cake\View\View;
 
@@ -25,6 +27,8 @@ use Cake\View\View;
  */
 class Article extends Entity
 {
+    const MAX_SLUG_LENGTH = 100;
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -45,6 +49,33 @@ class Article extends Entity
         'modified' => false,
         'user' => true,
     ];
+
+    public function generateUniqueSlug()
+    {
+        $articlesTable = TableRegistry::getTableLocator()->get('Articles');
+        $maxLength = self::MAX_SLUG_LENGTH;
+        $slug = substr(Text::slug(strtolower($this->title)), 0, $maxLength);
+        if (!$articlesTable->exists(['slug' => $slug])) {
+            return $slug;
+        }
+
+        // Add date to make unique
+        $date = $this->dated->format('Y-m-d');
+        $maxLength = self::MAX_SLUG_LENGTH - strlen($date) - 1;
+        $retval = substr($slug, 0, $maxLength) . '-' . $date;
+        if (!$articlesTable->exists(['slug' => $retval])) {
+            return $retval;
+        }
+
+        $i = 2;
+        do {
+            $maxLength = self::MAX_SLUG_LENGTH - strlen($date) - 2 - strlen("$i");
+            $retval = substr($slug, 0, $maxLength) . "-$date-$i";
+            $i++;
+        } while ($articlesTable->exists(['slug' => $retval]));
+
+        return $retval;
+    }
 
     /**
      * Returns the article body with added line/paragraph breaks + linked URLs and email addresses
