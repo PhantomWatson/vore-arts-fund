@@ -90,7 +90,7 @@ use Cake\Routing\Router;
                                             [
                                                 'prefix' => false,
                                                 'controller' => 'Reports',
-                                                'action' => 'projects',
+                                                'action' => 'project',
                                                 $project->id,
                                             ]
                                         ) ?>
@@ -129,7 +129,7 @@ use Cake\Routing\Router;
                                 [
                                     'prefix' => false,
                                     'controller' => 'Reports',
-                                    'action' => 'projects',
+                                    'action' => 'project',
                                     $project->id,
                                 ]
                             ) ?>
