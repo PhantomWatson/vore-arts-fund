@@ -4,6 +4,15 @@
  * @var \App\Model\Entity\Article[] $articles
  */
 ?>
+<p class="news-intro">
+    <?= $this->Html->link(
+        'Sign up to our mailing list',
+        ['controller' => 'MailingList', 'action' => 'signup'],
+    ) ?> to stay up-to-date on new developments from the Vore Arts Fund,
+    opportunities to support our mission, and announcements about applying for funding and voting on
+    applications.
+</p>
+
 <div class="articles">
     <?php if (count($articles) === 0): ?>
         <p class="alert alert-info">
