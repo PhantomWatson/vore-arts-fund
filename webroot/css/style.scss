@@ -1209,3 +1209,17 @@ button[type="submit"] {
 .article__latest {
     font-size: 1.2em;
 }
+
+.articles {
+    .article {
+        border-bottom: 1px solid var(--bs-border-color);
+        padding-bottom: $section-spacer;
+        margin-bottom: $section-spacer;
+
+        &:last-child {
+            border: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+    }
+}
