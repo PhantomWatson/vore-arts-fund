@@ -30,4 +30,14 @@ if ($rteJsPath) {
     </div>
 
     <?= $this->Form->end() ?>
+
+    <?php if (!$article->isNew()) : ?>
+        <div class="form-group">
+            <?= $this->Form->postLink(
+                'Delete',
+                ['action' => 'delete', $article->id],
+                ['confirm' => 'Are you sure you want to delete this article? No takesies backsies.', 'class' => 'btn btn-danger']
+            ) ?>
+        </div>
+    <?php endif; ?>
 </div>
