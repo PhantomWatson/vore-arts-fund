@@ -6,7 +6,7 @@ use Cake\Core\Configure;
 class Alert {
     const TYPE_APPLICATIONS = 'applications';
     const TYPE_TRANSACTIONS = 'transactions';
-    const TYPE_APPLICANT_COMMUNICATION = 'applicant_communication';
+    const TYPE_APPLICANT_COMMUNICATION = 'applicant-communication';
     const TYPE_ERRORS = 'errors';
     const TYPE_CRONS = 'crons';
 
