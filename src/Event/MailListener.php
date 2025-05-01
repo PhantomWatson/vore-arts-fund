@@ -194,9 +194,9 @@ class MailListener implements EventListenerInterface
         $subject = $emailOptions['subject'];
         $alertBody = $this->getRenderedView($viewVars, $emailOptions['template']);
         $alert = new Alert();
-        $alert->addLine("*$subject* Email sent to $email: ");
+        $alert->addLine("*$subject*");
         $alert->addLine("Sent to $email");
-        $alert->addLine("> $alertBody");
+        $alert->addLine('> ' . str_replace("\n", "\n> ", $alertBody));
         $alert->send(Alert::TYPE_APPLICANT_COMMUNICATION);
     }
 
