@@ -2,16 +2,17 @@
 
 namespace App\Event;
 
+use App\Alert\Alert;
 use App\Model\Entity\Project;
 use App\Model\Entity\User;
 use App\Model\Table\FundingCyclesTable;
 use App\Model\Table\UsersTable;
+use App\View\AppView;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Log\Log;
-use Cake\Mailer\Mailer;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use EmailQueue\EmailQueue;
@@ -160,7 +161,7 @@ class MailListener implements EventListenerInterface
     public function mailProjectFunded(Event $event, Project $project)
     {
         list($email, $name) = $this->getRecipientFromProject($project);
-        EmailQueue::enqueue(
+        $this->enqueueEmailAndSendAlert(
             $email,
             [
                 'project' => $project,
@@ -179,8 +180,33 @@ class MailListener implements EventListenerInterface
                 'template' => 'application_funded',
                 'from_name' => $this->fromName,
                 'from_email' => $this->fromEmail,
-            ],
+            ]
         );
+    }
+
+    private function enqueueEmailAndSendAlert($email, $viewVars, $emailOptions): void
+    {
+        EmailQueue::enqueue(
+            $email,
+            $viewVars,
+            $emailOptions
+        );
+        $subject = $emailOptions['subject'];
+        $alertBody = $this->getRenderedView($viewVars, $emailOptions['template']);
+        $alert = new Alert();
+        $alert->addLine("*$subject* Email sent to $email: ");
+        $alert->addLine("Sent to $email");
+        $alert->addLine("> $alertBody");
+        $alert->send(Alert::TYPE_APPLICANT_COMMUNICATION);
+    }
+
+    public static function getRenderedView($viewVars, $template)
+    {
+        $view = new AppView();
+        $view->disableAutoLayout();
+        $templatePath = 'email' . DS . 'text' . DS . $template;
+        $view->set($viewVars);
+        return $view->render($templatePath);
     }
 
     /**
