@@ -2,12 +2,10 @@
 
 namespace App\Event;
 
-use App\Alert\Alert;
 use App\Model\Entity\Project;
 use App\Model\Entity\User;
 use App\Model\Table\FundingCyclesTable;
 use App\Model\Table\UsersTable;
-use App\View\AppView;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
@@ -70,7 +68,7 @@ class MailListener implements EventListenerInterface
     public function mailProjectAccepted(Event $event, Project $project)
     {
         list($email, $name) = $this->getRecipientFromProject($project);
-        EmailQueue::enqueue(
+        $this->enqueueEmail(
             $email,
             [
                 'project' => $project,
@@ -96,33 +94,27 @@ class MailListener implements EventListenerInterface
     public function mailProjectRevisionRequested(Event $event, Project $project, string $note)
     {
         list($email, $name) = $this->getRecipientFromProject($project);
-        $foo = [
-            'project' => $project,
-            'fundingCycle' => $this->fundingCyclesTable->get($project->funding_cycle_id),
-            'note' => $note,
-            'url' => Router::url([
-                'prefix' => 'My',
-                'controller' => 'Projects',
-                'action' => 'edit',
-                'id' => $project->id,
-            ], true),
-            'userName' => $name,
-        ];
-        EmailQueue::enqueue(
+        $this->enqueueEmail(
             $email,
-            $foo,
             [
-                'subject' => self::getRevisionRequestedSubject(),
+                'project' => $project,
+                'fundingCycle' => $this->fundingCyclesTable->get($project->funding_cycle_id),
+                'note' => $note,
+                'url' => Router::url([
+                    'prefix' => 'My',
+                    'controller' => 'Projects',
+                    'action' => 'edit',
+                    'id' => $project->id,
+                ], true),
+                'userName' => $name,
+            ],
+            [
+                'subject' => self::$subjectPrefix . 'Revision Requested',
                 'template' => 'application_revision_requested',
                 'from_name' => $this->fromName,
                 'from_email' => $this->fromEmail,
             ],
         );
-    }
-
-    public static function getRevisionRequestedSubject()
-    {
-        return self::$subjectPrefix . 'Revision Requested';
     }
 
     /**
@@ -135,7 +127,7 @@ class MailListener implements EventListenerInterface
     public function mailProjectRejected(Event $event, Project $project, string $note)
     {
         list($email, $name) = $this->getRecipientFromProject($project);
-        EmailQueue::enqueue(
+        $this->enqueueEmail(
             $email,
             [
                 'project' => $project,
@@ -223,7 +215,7 @@ class MailListener implements EventListenerInterface
     public function mailProjectNotFunded(Event $event, Project $project)
     {
         list($email, $name) = $this->getRecipientFromProject($project);
-        EmailQueue::enqueue(
+        $this->enqueueEmail(
             $email,
             [
                 'project' => $project,
@@ -249,7 +241,7 @@ class MailListener implements EventListenerInterface
     public function mailMessage(Event $event, Project $project, string $message)
     {
         list($email, $name) = $this->getRecipientFromProject($project);
-        EmailQueue::enqueue(
+        $this->enqueueEmail(
             $email,
             [
                 'project' => $project,
@@ -282,7 +274,7 @@ class MailListener implements EventListenerInterface
     public function mailFundingDisbursed(Project $project)
     {
         list($email, $name) = $this->getRecipientFromProject($project);
-        EmailQueue::enqueue(
+        $this->enqueueEmail(
             $email,
             [
                 'project' => $project,
