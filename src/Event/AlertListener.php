@@ -140,7 +140,7 @@ class AlertListener implements EventListenerInterface
             $project->user->name,
             $project->title,
         ));
-        $this->alert->addLine(str_replace("\n", "\n> ", $note->body));
+        $this->alert->addLine('>' . str_replace("\n", "\n> ", $note->body));
         $this->alert->send(Alert::TYPE_APPLICANT_COMMUNICATION);
     }
 
@@ -153,7 +153,7 @@ class AlertListener implements EventListenerInterface
             $sender->name,
             $project->title,
         ));
-        $this->alert->addLine(str_replace("\n", "\n> ", $note->body));
+        $this->alert->addLine('>' . str_replace("\n", "\n> ", $note->body));
         $this->alert->send(Alert::TYPE_APPLICANT_COMMUNICATION);
     }
 }
