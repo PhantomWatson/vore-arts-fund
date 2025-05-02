@@ -188,6 +188,10 @@ class ProjectsController extends BaseProjectsController
     public function messages()
     {
         $projectId = $this->request->getParam('id');
+        if (!$projectId) {
+            $this->Flash->error('Invalid project selected');
+            return $this->redirectToIndex();
+        }
 
         /** @var Project $project */
         $project = $this->Projects->getNotDeleted($projectId);
