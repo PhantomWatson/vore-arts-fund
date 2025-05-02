@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Event\AlertListener;
 use App\Model\Entity\Note;
 use Cake\Database\Expression\QueryExpression;
+use Cake\Event\Event;
+use Cake\Event\EventManager;
 use Cake\ORM\Query;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
@@ -102,5 +105,18 @@ class NotesTable extends Table
         return $query->where(function (QueryExpression $exp) {
             return $exp->notIn('type', [Note::TYPE_NOTE]);
         });
+    }
+
+    public function afterSave(Event $event, Note $entity, $options): void
+    {
+        $eventName = match ($entity->type) {
+            Note::TYPE_MESSAGE_TO_APPLICANT => 'Note.sentToApplicant',
+            Note::TYPE_MESSAGE_FROM_APPLICANT => 'Note.sentByApplicant',
+            default => null,
+        };
+        if ($entity->isNew() && $eventName) {
+            EventManager::instance()->on(new AlertListener());
+            EventManager::instance()->dispatch(new Event($eventName, $this, ['note' => $entity]));
+        }
     }
 }

@@ -4,11 +4,13 @@ namespace App\Event;
 
 use App\Alert\Alert;
 use App\Alert\Slack;
+use App\Model\Entity\Note;
 use App\Model\Entity\Project;
 use App\Model\Entity\Transaction;
 use App\View\AppView;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
+use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
 class AlertListener implements EventListenerInterface
@@ -27,6 +29,8 @@ class AlertListener implements EventListenerInterface
             'Project.withdrawn' => 'alertProjectWithdrawn',
             'Stripe.chargeSucceeded' => 'alertStripeChargeSucceeded',
             'Mail.messageSentToApplicant' => 'alertMessageSentToApplicant',
+            'Note.sentToApplicant' => 'alertNoteSentToApplicant',
+            'Note.sentByApplicant' => 'alertNoteSentByApplicant',
         ];
     }
 
@@ -89,7 +93,7 @@ class AlertListener implements EventListenerInterface
             $this->alert->addList([
                 'Charge ID: ' . ($chargeId === false ? 'Unknown' : $chargeId),
                 'Amount: ' . (
-                    $cents === false
+                $cents === false
                     ? 'Unknown'
                     : ('$' . number_format(round($cents / 100, 2)))
                 ),
@@ -108,7 +112,6 @@ class AlertListener implements EventListenerInterface
     public function alertMessageSentToApplicant(Event $event, $email, $subject, $viewVars, $template)
     {
         $alertBody = $this->getRenderedView($viewVars, $template);
-        $this->alert = new Alert();
         $this->alert->addLine("*$subject*");
         $this->alert->addLine("Sent to $email");
         $this->alert->addLine('> ' . str_replace("\n", "\n> ", $alertBody));
@@ -123,5 +126,34 @@ class AlertListener implements EventListenerInterface
         $templatePath = 'email' . DS . 'text' . DS . $template;
         $view->set($viewVars);
         return $view->render($templatePath);
+    }
+
+    public function alertNoteSentToApplicant($event, Note $note)
+    {
+        $sender = TableRegistry::getTableLocator()->get('Users')->get($note->user_id);
+        $project = TableRegistry::getTableLocator()->get('Projects')->get($note->project_id, [
+            'contain' => ['Users']
+        ]);
+        $this->alert->addLine(sprintf(
+            'Message sent from %s to applicant %s regarding project "%s":',
+            $sender->name,
+            $project->user->name,
+            $project->title,
+        ));
+        $this->alert->addLine(str_replace("\n", "\n> ", $note->body));
+        $this->alert->send(Alert::TYPE_APPLICANT_COMMUNICATION);
+    }
+
+    public function alertNoteSentByApplicant($event, Note $note)
+    {
+        $sender = TableRegistry::getTableLocator()->get('Users')->get($note->user_id);
+        $project = TableRegistry::getTableLocator()->get('Projects')->get($note->project_id);
+        $this->alert->addLine(sprintf(
+            'Message received from applicant %s regarding project "%s":',
+            $sender->name,
+            $project->title,
+        ));
+        $this->alert->addLine(str_replace("\n", "\n> ", $note->body));
+        $this->alert->send(Alert::TYPE_APPLICANT_COMMUNICATION);
     }
 }
