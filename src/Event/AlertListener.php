@@ -6,6 +6,7 @@ use App\Alert\Alert;
 use App\Alert\Slack;
 use App\Model\Entity\Project;
 use App\Model\Entity\Transaction;
+use App\View\AppView;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Routing\Router;
@@ -25,6 +26,7 @@ class AlertListener implements EventListenerInterface
             'Project.submitted' => 'alertProjectSubmitted',
             'Project.withdrawn' => 'alertProjectWithdrawn',
             'Stripe.chargeSucceeded' => 'alertStripeChargeSucceeded',
+            'Mail.messageSentToApplicant' => 'alertMessageSentToApplicant',
         ];
     }
 
@@ -101,5 +103,25 @@ class AlertListener implements EventListenerInterface
         }
 
         $this->alert->send(Alert::TYPE_TRANSACTIONS);
+    }
+
+    public function alertMessageSentToApplicant(Event $event, $email, $subject, $viewVars, $template)
+    {
+        $alertBody = $this->getRenderedView($viewVars, $template);
+        $this->alert = new Alert();
+        $this->alert->addLine("*$subject*");
+        $this->alert->addLine("Sent to $email");
+        $this->alert->addLine('> ' . str_replace("\n", "\n> ", $alertBody));
+
+        $this->alert->send(Alert::TYPE_APPLICANT_COMMUNICATION);
+    }
+
+    private function getRenderedView($viewVars, $template)
+    {
+        $view = new AppView();
+        $view->disableAutoLayout();
+        $templatePath = 'email' . DS . 'text' . DS . $template;
+        $view->set($viewVars);
+        return $view->render($templatePath);
     }
 }

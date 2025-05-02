@@ -11,6 +11,7 @@ use App\View\AppView;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
+use Cake\Event\EventManager;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
@@ -161,7 +162,7 @@ class MailListener implements EventListenerInterface
     public function mailProjectFunded(Event $event, Project $project)
     {
         list($email, $name) = $this->getRecipientFromProject($project);
-        $this->enqueueEmailAndSendAlert(
+        $this->enqueueEmail(
             $email,
             [
                 'project' => $project,
@@ -184,29 +185,33 @@ class MailListener implements EventListenerInterface
         );
     }
 
-    private function enqueueEmailAndSendAlert($email, $viewVars, $emailOptions): void
+    /**
+     * Enqueues message and dispatches event
+     *
+     * @param string $email Recipient email address
+     * @param array $viewVars View vars to pass to email template
+     * @param array $emailOptions
+     * @param string $event Event name to dispatch
+     * @return void
+     */
+    private function enqueueEmail($email, $viewVars, $emailOptions, $event = 'Mail.messageSentToApplicant'): void
     {
         EmailQueue::enqueue(
             $email,
             $viewVars,
             $emailOptions
         );
-        $subject = $emailOptions['subject'];
-        $alertBody = $this->getRenderedView($viewVars, $emailOptions['template']);
-        $alert = new Alert();
-        $alert->addLine("*$subject*");
-        $alert->addLine("Sent to $email");
-        $alert->addLine('> ' . str_replace("\n", "\n> ", $alertBody));
-        $alert->send(Alert::TYPE_APPLICANT_COMMUNICATION);
-    }
-
-    public static function getRenderedView($viewVars, $template)
-    {
-        $view = new AppView();
-        $view->disableAutoLayout();
-        $templatePath = 'email' . DS . 'text' . DS . $template;
-        $view->set($viewVars);
-        return $view->render($templatePath);
+        EventManager::instance()->on(new AlertListener());
+        EventManager::instance()->dispatch(new Event(
+            $event,
+            $this,
+            [
+                'email' => $email,
+                'subject' => $emailOptions['subject'],
+                'viewVars' => $viewVars,
+                'template' => $emailOptions['template'],
+            ]
+        ));
     }
 
     /**
