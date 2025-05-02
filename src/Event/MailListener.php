@@ -35,7 +35,7 @@ class MailListener implements EventListenerInterface
      * @param Project $project
      * @return array|false
      */
-    private function getRecipientFromProject(Project $project)
+    private function getRecipientFromProject(Project $project): bool|array
     {
         try {
             /** @var User $user */
@@ -65,7 +65,7 @@ class MailListener implements EventListenerInterface
      * @return void
      * @throws InternalErrorException
      */
-    public function mailProjectAccepted(Event $event, Project $project)
+    public function mailProjectAccepted(Event $event, Project $project): void
     {
         list($email, $name) = $this->getRecipientFromProject($project);
         $this->enqueueEmail(
@@ -91,7 +91,7 @@ class MailListener implements EventListenerInterface
      * @return void
      * @throws InternalErrorException
      */
-    public function mailProjectRevisionRequested(Event $event, Project $project, string $note)
+    public function mailProjectRevisionRequested(Event $event, Project $project, string $note): void
     {
         list($email, $name) = $this->getRecipientFromProject($project);
         $this->enqueueEmail(
@@ -124,7 +124,7 @@ class MailListener implements EventListenerInterface
      * @return void
      * @throws InternalErrorException
      */
-    public function mailProjectRejected(Event $event, Project $project, string $note)
+    public function mailProjectRejected(Event $event, Project $project, string $note): void
     {
         list($email, $name) = $this->getRecipientFromProject($project);
         $this->enqueueEmail(
@@ -151,7 +151,7 @@ class MailListener implements EventListenerInterface
      * @return void
      * @throws InternalErrorException
      */
-    public function mailProjectFunded(Event $event, Project $project)
+    public function mailProjectFunded(Event $event, Project $project): void
     {
         list($email, $name) = $this->getRecipientFromProject($project);
         $this->enqueueEmail(
@@ -212,7 +212,7 @@ class MailListener implements EventListenerInterface
      * @return void
      * @throws InternalErrorException
      */
-    public function mailProjectNotFunded(Event $event, Project $project)
+    public function mailProjectNotFunded(Event $event, Project $project): void
     {
         list($email, $name) = $this->getRecipientFromProject($project);
         $this->enqueueEmail(
@@ -232,13 +232,17 @@ class MailListener implements EventListenerInterface
     }
 
     /**
+     * Mails a message composed by the review committee regarding a project
+     *
+     * I mean, everything that's mailed is "a message", but this method specifically correlates to the Message model.
+     *
      * @param Event $event
      * @param Project $project
      * @param string $message
      * @return void
      * @throws InternalErrorException
      */
-    public function mailMessage(Event $event, Project $project, string $message)
+    public function mailMessage(Event $event, Project $project, string $message): void
     {
         list($email, $name) = $this->getRecipientFromProject($project);
         $this->enqueueEmail(
@@ -271,7 +275,7 @@ class MailListener implements EventListenerInterface
         );
     }
 
-    public function mailFundingDisbursed(Project $project)
+    public function mailFundingDisbursed(Project $project): void
     {
         list($email, $name) = $this->getRecipientFromProject($project);
         $this->enqueueEmail(
