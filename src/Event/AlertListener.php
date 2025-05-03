@@ -141,6 +141,15 @@ class AlertListener implements EventListenerInterface
             $project->title,
         ));
         $this->alert->addLine('>' . str_replace("\n", "\n> ", $note->body));
+        $this->alert->addLine(sprintf(
+            '<%s|See all correspondence and reply>',
+            Router::url([
+                'prefix' => 'Admin',
+                'controller' => 'Projects',
+                'action' => 'review',
+                'id' => $note->project_id,
+            ], true),
+        ));
         $this->alert->send(Alert::TYPE_APPLICANT_COMMUNICATION);
     }
 
@@ -154,6 +163,15 @@ class AlertListener implements EventListenerInterface
             $project->title,
         ));
         $this->alert->addLine('>' . str_replace("\n", "\n> ", $note->body));
+        $this->alert->addLine(sprintf(
+            '<%s|See all correspondence and reply>',
+            Router::url([
+                'prefix' => 'Admin',
+                'controller' => 'Projects',
+                'action' => 'review',
+                'id' => $note->project_id,
+            ], true),
+        ));
         $this->alert->send(Alert::TYPE_APPLICANT_COMMUNICATION);
     }
 }
