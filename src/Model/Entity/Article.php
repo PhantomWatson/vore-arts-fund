@@ -78,15 +78,13 @@ class Article extends Entity
     }
 
     /**
-     * Returns the article body with added line/paragraph breaks + linked URLs and email addresses
+     * Returns the article body with automatic linking of any URLs or email addresses that aren't already linked
      *
      * @return string
      */
     protected function _getFormattedBody(): string
     {
         $textHelper = new TextHelper(new View());
-        $body = $this->body;
-        $body = $textHelper->autoParagraph($body);
-        return $textHelper->autoLink($body, ['escape' => false]);
+        return $textHelper->autoLink($this->body, ['escape' => false]);
     }
 }
