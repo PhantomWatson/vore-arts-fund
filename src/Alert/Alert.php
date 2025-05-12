@@ -9,6 +9,7 @@ class Alert {
     const TYPE_APPLICANT_COMMUNICATION = 'applicant-communication';
     const TYPE_ERRORS = 'errors';
     const TYPE_CRONS = 'crons';
+    const TYPE_ADMIN = 'admin';
 
     public string $content = '';
 
