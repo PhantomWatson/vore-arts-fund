@@ -23,6 +23,8 @@ use Stripe\StripeClient;
  */
 class TransactionsController extends ApiController
 {
+    const ACCESSIBLE_FIELDS = ['date', 'type', 'name', 'amount_net', 'amount_gross', 'meta', 'project_id'];
+
     /**
      * beforeFilter callback method
      *
@@ -157,7 +159,7 @@ class TransactionsController extends ApiController
 
         $transaction = $this->Transactions->newEntity(
             $data,
-            ['fields' => ['date', 'type', 'name', 'amount_net', 'amount_gross', 'meta']]
+            ['fields' => self::ACCESSIBLE_FIELDS]
         );
         $transaction->user_id = $this->getAuthUser()->id;
         if ($this->Transactions->save($transaction)) {
@@ -192,7 +194,7 @@ class TransactionsController extends ApiController
         $transaction = $this->Transactions->patchEntity(
             $transaction,
             $data,
-            ['fields' => ['date', 'type', 'name', 'amount_net', 'amount_gross', 'meta']]
+            ['fields' => self::ACCESSIBLE_FIELDS]
         );
         if ($this->Transactions->save($transaction)) {
             $this->set(['success' => true]);
