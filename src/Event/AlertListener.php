@@ -27,6 +27,7 @@ class AlertListener implements EventListenerInterface
         return [
             'Project.submitted' => 'alertProjectSubmitted',
             'Project.withdrawn' => 'alertProjectWithdrawn',
+            'Project.markedDeleted' => 'alertProjectMarkedDeleted',
             'Stripe.chargeSucceeded' => 'alertStripeChargeSucceeded',
             'Mail.messageSentToApplicant' => 'alertMessageSentToApplicant',
             'Note.sentToApplicant' => 'alertNoteSentToApplicant',
@@ -72,6 +73,13 @@ class AlertListener implements EventListenerInterface
                 Slack::encode($project->title),
             ),
         );
+
+        $this->alert->send(Alert::TYPE_APPLICATIONS);
+    }
+
+    public function alertProjectMarkedDeleted(Event $event, Project $project)
+    {
+        $this->alert->addLine('Application for project "' . Slack::encode($project->title) . '" marked deleted');
 
         $this->alert->send(Alert::TYPE_APPLICATIONS);
     }

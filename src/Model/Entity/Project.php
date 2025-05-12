@@ -466,6 +466,17 @@ class Project extends Entity
         ));
     }
 
+    public function dispatchMarkedDeletedEvent()
+    {
+        EventManager::instance()->on(new AlertListener());
+
+        EventManager::instance()->dispatch(new Event(
+            'Project.markedDeleted',
+            $this,
+            ['project' => $this]
+        ));
+    }
+
     public function statusWasJustChangedTo($status)
     {
         $wasnt = $this->getOriginal('status_id') != $status;

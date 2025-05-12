@@ -394,7 +394,12 @@ class ProjectsTable extends Table
     public function markDeleted(Project $project)
     {
         $project->status_id = Project::STATUS_DELETED;
-        return $this->save($project);
+        $result = $this->save($project);
+
+        if ($result) {
+            $project->dispatchMarkedDeletedEvent();
+        }
+        return $result;
     }
 
     /**
