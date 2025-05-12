@@ -138,8 +138,8 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
             '/funding-cycles/projects/{id}' => 'projects',
         ],
         'Projects' => [
-            '/projects' => 'index',
             '/projects/{id}' => 'index', // Funding cycle ID
+            '/projects' => 'index',
             '/projects/review/{id}' => 'review',
             '/projects/set-status/{id}' => 'setStatus',
             '/projects/new-note/{id}' => 'newNote',
