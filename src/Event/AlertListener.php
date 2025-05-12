@@ -8,6 +8,7 @@ use App\Model\Entity\Note;
 use App\Model\Entity\Project;
 use App\Model\Entity\Transaction;
 use App\View\AppView;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\ORM\TableRegistry;
@@ -28,6 +29,7 @@ class AlertListener implements EventListenerInterface
             'Project.submitted' => 'alertProjectSubmitted',
             'Project.withdrawn' => 'alertProjectWithdrawn',
             'Project.markedDeleted' => 'alertProjectMarkedDeleted',
+            'Project.funded' => 'alertProjectFunded',
             'Stripe.chargeSucceeded' => 'alertStripeChargeSucceeded',
             'Mail.messageSentToApplicant' => 'alertMessageSentToApplicant',
             'Note.sentToApplicant' => 'alertNoteSentToApplicant',
@@ -80,6 +82,33 @@ class AlertListener implements EventListenerInterface
     public function alertProjectMarkedDeleted(Event $event, Project $project)
     {
         $this->alert->addLine('Application for project "' . Slack::encode($project->title) . '" marked deleted');
+
+        $this->alert->send(Alert::TYPE_APPLICATIONS);
+    }
+
+    public function alertProjectFunded(Event $event, Project $project, $userId)
+    {
+        $this->alert->addLine('Application awarded a loan');
+
+        try {
+            $user = $userId ? TableRegistry::getTableLocator()->get('Users')->get($userId) : null;
+        } catch (RecordNotFoundException $e) {
+            $user = null;
+        }
+        $this->alert->addList([
+            sprintf(
+                'Project: <%s|%s>',
+                Router::url([
+                    'prefix' => 'Admin',
+                    'controller' => 'Projects',
+                    'action' => 'review',
+                    'id' => $project->id
+                ], true),
+                Slack::encode($project->title),
+            ),
+            'Amount: ' . $project->amount_awarded_formatted,
+            'Awarded by: ' . ($user ? Slack::encode($user->name) : 'Unknown'),
+        ]);
 
         $this->alert->send(Alert::TYPE_APPLICATIONS);
     }

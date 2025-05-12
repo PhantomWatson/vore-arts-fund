@@ -173,7 +173,7 @@ class ProjectsController extends AdminController
             ]);
             if ($this->Projects->save($project)) {
                 $this->Flash->success('Status updated');
-                $this->dispatchStatusChangeEvent($project);
+                $this->dispatchStatusChangeEvent($project, null, $this->getAuthUser()->id);
                 return $this->redirect(['action' => 'review', 'id' => $projectId]);
             }
             $this->Flash->error('Error updating status: ' . $this->getEntityErrorDetails($project));
@@ -199,9 +199,10 @@ class ProjectsController extends AdminController
     /**
      * @param Project $project
      * @param string|null $messageBody
+     * @param int|null $userId The user causing the status change
      * @return void
      */
-    private function dispatchStatusChangeEvent(Project $project, ?string $messageBody = null): void
+    private function dispatchStatusChangeEvent(Project $project, ?string $messageBody = null, ?int $userId = null): void
     {
         switch ($project->status_id) {
             case Project::STATUS_ACCEPTED:
@@ -217,7 +218,7 @@ class ProjectsController extends AdminController
                 $event = new Event('Project.notFunded', $this, compact('project'));
                 break;
             case Project::STATUS_AWARDED_NOT_YET_DISBURSED:
-                $event = new Event('Project.funded', $this, compact('project'));
+                $event = new Event('Project.funded', $this, compact('project', 'userId'));
                 break;
             default:
                 return;
