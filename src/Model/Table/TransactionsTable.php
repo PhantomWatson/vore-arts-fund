@@ -206,7 +206,7 @@ class TransactionsTable extends Table
         /** @var Transaction $entity */
         $alert = new Alert();
         $alert->addLine(sprintf(
-            '<%s|Transaction #%s> saved',
+            '<%s|Transaction #%s> %s',
             Router::url(
                 [
                     'prefix' => 'Admin',
@@ -217,6 +217,7 @@ class TransactionsTable extends Table
                 true
             ),
             $entity->id,
+            $entity->isNew() ? 'saved' : 'updated'
         ));
 
         $details = ['Transaction type: ' . $entity->type_name];
