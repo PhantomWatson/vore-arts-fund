@@ -118,7 +118,15 @@ function getToAward(Project $project, $budgetRemaining)
                         </span>
                     </td>
                     <td>
-                        <?= $project->title ?>
+                        <?= $this->Html->link(
+                            $project->title,
+                            [
+                                'prefix' => 'Admin',
+                                'controller' => 'Projects',
+                                'action' => 'review',
+                                'id' => $project->id,
+                            ]
+                        ) ?>
                     </td>
                     <td>
                         <?= getToAward($project, $budgetRemaining); ?>
