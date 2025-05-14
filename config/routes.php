@@ -135,7 +135,6 @@ $routes->prefix('admin', function (RouteBuilder $builder) {
             '/funding-cycles' => 'index',
             '/funding-cycles/add' => 'add',
             '/funding-cycles/edit/{id}' => 'edit',
-            '/funding-cycles/projects/{id}' => 'projects',
         ],
         'Projects' => [
             '/projects/{id}' => 'index', // Funding cycle ID

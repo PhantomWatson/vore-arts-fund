@@ -64,8 +64,8 @@ $dateFormat = 'MMM d, YYYY';
                                     . __n(' project', ' projects', $fundingCycle->projects[0]->count),
                                     [
                                         'prefix' => 'Admin',
-                                        'controller' => 'FundingCycles',
-                                        'action' => 'projects',
+                                        'controller' => 'Projects',
+                                        'action' => 'index',
                                         $fundingCycle['id'],
                                     ],
                                     ['class' => 'btn btn-secondary']

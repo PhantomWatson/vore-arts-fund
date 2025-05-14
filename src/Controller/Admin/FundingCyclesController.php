@@ -158,32 +158,4 @@ class FundingCyclesController extends AdminController
         $this->viewBuilder()->setTemplate('form');
         return null;
     }
-
-    public function projects()
-    {
-        $fundingCycleId = $this->request->getParam('id');
-        $fundingCycle = $this->FundingCycles->get($fundingCycleId);
-        $projectsTable = TableRegistry::getTableLocator()->get('Projects');
-        $projects = $projectsTable
-            ->find()
-            ->where(['Projects.funding_cycle_id' => $fundingCycleId])
-            ->orderDesc('Projects.created')
-            ->all();
-
-        $this->title('Projects');
-        $this->addBreadcrumb(
-            $fundingCycle->name,
-            [
-                'prefix' => 'Admin',
-                'controller' => 'FundingCycles',
-                'action' => 'edit',
-                'id' => $fundingCycleId,
-            ],
-        );
-        $this->addBreadcrumb('Projects', []);
-
-        $this->set([
-            'projects' => $projects
-        ]);
-    }
 }
