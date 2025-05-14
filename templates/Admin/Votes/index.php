@@ -38,12 +38,12 @@ function getToAward(Project $project, $budgetRemaining)
     if ($project->isDisbursed()) {
         return '<span class="voting-results__award voting-results__award--awarded">'
             . '<i class="fa-solid fa-circle-check"></i> '
-            . $amountDisplayed . ' awarded</span>';
+            . $amountDisplayed . ' awarded and disbursed</span>';
     // Mark this project as having been awarded, but funds have not been disbursed yet
     } elseif ($project->isAwarded()) {
         return '<span class="voting-results__award voting-results__award--awarded-pending">'
             . '<i class="fa-solid fa-triangle-exclamation"></i> '
-            . $amountDisplayed . ' awarded, pending loan agreement</span>';
+            . $amountDisplayed . ' awarded, not yet disbursed</span>';
     }
 
     // Mark this project as needing to be funded
