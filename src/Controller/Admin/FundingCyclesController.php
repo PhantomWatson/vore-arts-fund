@@ -51,9 +51,9 @@ class FundingCyclesController extends AdminController
         }
         $this->set([
             'fundingCycles' => [
-                'past' => getCycles($table->find('past')),
-                'current' => getCycles($table->find('current')),
-                'future' => getCycles($table->find('future')),
+                'past' => getCycles($table->find('past')->find('orderedDesc')),
+                'current' => getCycles($table->find('current')->find('orderedDesc')),
+                'future' => getCycles($table->find('future')->find('orderedDesc')),
             ],
         ]);
     }

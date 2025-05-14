@@ -398,4 +398,26 @@ class FundingCyclesTable extends Table
             self::GROUP_PAST => $groupedCycles[self::GROUP_PAST] ?? null,
         ];
     }
+
+    /**
+     * Modifies a query to sort funding cycles by application deadline, ascending
+     *
+     * @param \Cake\ORM\Query $query
+     * @return \Cake\ORM\Query
+     */
+    public function findOrderedAsc(Query $query)
+    {
+        return $query->orderAsc('FundingCycles.application_end');
+    }
+
+    /**
+     * Modifies a query to sort funding cycles by application deadline, descending
+     *
+     * @param \Cake\ORM\Query $query
+     * @return \Cake\ORM\Query
+     */
+    public function findOrderedDesc(Query $query)
+    {
+        return $query->orderDesc('FundingCycles.application_end');
+    }
 }
