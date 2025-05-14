@@ -119,8 +119,6 @@ function getToAward(Project $project, $budgetRemaining)
                     </td>
                     <td>
                         <?= $project->title ?>
-                        <br />
-                        <?= $project->amount_requested_formatted ?>
                     </td>
                     <td>
                         <?= getToAward($project, $budgetRemaining); ?>
