@@ -61,7 +61,7 @@ $dateFormat = 'MMM d, YYYY';
                             <?php if ($fundingCycle->projects[0]->count ?? false): ?>
                                 <?= $this->Html->link(
                                     $fundingCycle->projects[0]->count
-                                    . __n(' Project', ' Projects', $fundingCycle->projects[0]->count),
+                                    . __n(' project', ' projects', $fundingCycle->projects[0]->count),
                                     [
                                         'prefix' => 'Admin',
                                         'controller' => 'FundingCycles',
@@ -71,7 +71,9 @@ $dateFormat = 'MMM d, YYYY';
                                     ['class' => 'btn btn-secondary']
                                 ) ?>
                             <?php else: ?>
-
+                                <button class="btn btn-secondary" disabled="disabled">
+                                    No projects
+                                </button>
                             <?php endif; ?>
                             <?= $this->Html->link(
                                 'Edit',
