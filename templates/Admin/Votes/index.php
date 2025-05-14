@@ -8,9 +8,10 @@
 
 use App\Model\Entity\Project;
 
-$fundingAvailable = $fundingCycle->funding_available;
+$budgeted = $fundingCycle->funding_available;
+$budgetRemaining = $fundingCycle->funding_available;
 
-function getToAward(Project $project, $fundingAvailable)
+function getToAward(Project $project, $budgetRemaining)
 {
     // Nothing can be awarded to projects that receive no votes
     $receivedVotes = $project->voting_score != null;
@@ -19,15 +20,15 @@ function getToAward(Project $project, $fundingAvailable)
     }
 
     // Check if we're financially able to fund this project
-    $canFundFull = $fundingAvailable && $project->amount_requested <= $fundingAvailable;
-    $canFundPartial = $fundingAvailable && $project->accept_partial_payout;
+    $canFundFull = $budgetRemaining && $project->amount_requested <= $budgetRemaining;
+    $canFundPartial = $budgetRemaining && $project->accept_partial_payout;
     $fundable = $canFundFull || $canFundPartial;
     if (!$fundable) {
         return 'Unable to fund';
     }
 
     // Determine the fundable amount
-    $amountToAward = $canFundFull ? $project->amount_requested : $fundingAvailable;
+    $amountToAward = $canFundFull ? $project->amount_requested : $budgetRemaining;
     $amountDisplayed = '$' . number_format($amountToAward);
     if (!$canFundFull) {
         $amountDisplayed .= ' (partial payout)';
@@ -118,25 +119,34 @@ function getToAward(Project $project, $fundingAvailable)
                         <?= $project->amount_requested_formatted ?>
                     </td>
                     <td>
-                        <?= getToAward($project, $fundingAvailable); ?>
+                        <?= getToAward($project, $budgetRemaining); ?>
                     </td>
                 </tr>
                 <?php
                 // Adjust funding remaining after this project is funded
                 if ($project->voting_score != null) {
-                    if ($project->amount_requested <= $fundingAvailable) {
-                        $fundingAvailable -= $project->amount_requested;
-                    } elseif ($fundingAvailable && $project->accept_partial_payout) {
-                        $fundingAvailable = 0;
+                    if ($project->amount_requested <= $budgetRemaining) {
+                        $budgetRemaining -= $project->amount_requested;
+                    } elseif ($budgetRemaining && $project->accept_partial_payout) {
+                        $budgetRemaining = 0;
                     }
                 }
                 ?>
             <?php endforeach; ?>
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2">
+
+                </td>
+                <td>
+                    <strong>
+                        Total to award: $<?= number_format($budgeted - $budgetRemaining) ?>
+                    </strong>
+                </td>
+            </tr>
+        </tfoot>
     </table>
-    <p>
-        Total to award: $<?= number_format($fundingCycle->funding_available - $fundingAvailable) ?>
-    </p>
 <?php else: ?>
     <p>
         No projects found in this funding cycle
