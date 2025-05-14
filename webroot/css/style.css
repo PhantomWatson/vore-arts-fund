@@ -12216,6 +12216,10 @@ form .footnote {
   color: #09a600;
 }
 
+.voting-results__award--awarded-pending i {
+  color: #f8c300;
+}
+
 .voting-results__award--to-award i {
   color: #e30125;
 }

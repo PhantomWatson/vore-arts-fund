@@ -147,6 +147,12 @@
     }
 }
 
+.voting-results__award--awarded-pending {
+    i {
+        color: $warning;
+    }
+}
+
 .voting-results__award--to-award {
     i {
         color: $danger;

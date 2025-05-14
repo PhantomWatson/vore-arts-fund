@@ -39,6 +39,10 @@ function getToAward(Project $project, $budgetRemaining)
         return '<span class="voting-results__award voting-results__award--awarded">'
             . '<i class="fa-solid fa-circle-check"></i> '
             . $amountDisplayed . ' awarded</span>';
+    } elseif ($project->isAwarded()) {
+        return '<span class="voting-results__award voting-results__award--awarded-pending">'
+            . '<i class="fa-solid fa-triangle-exclamation"></i> '
+            . $amountDisplayed . ' awarded, pending loan agreement</span>';
     }
 
     // Mark this project as needing to be funded
