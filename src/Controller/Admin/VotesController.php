@@ -29,7 +29,15 @@ class VotesController extends AdminController
     public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
-        $this->addControllerBreadcrumb();
+
+        $this->addBreadcrumb(
+            'Awarding',
+            [
+                'prefix' => $this->request->getParam('prefix'),
+                'controller' => $this->name,
+                'action' => 'index'
+            ]
+        );
     }
 
     /**

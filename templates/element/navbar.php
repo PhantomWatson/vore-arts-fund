@@ -116,7 +116,7 @@ $adminLinks = [
         ['class' => 'dropdown-item']
     ],
     [
-        'Votes',
+        'Awarding',
         [
             'prefix' => 'Admin',
             'controller' => 'Votes',
