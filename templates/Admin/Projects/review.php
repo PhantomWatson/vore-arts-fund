@@ -42,8 +42,12 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 
 <div class="tab-content mt-3">
     <div class="tab-pane show active" id="overview-section" role="tabpanel" aria-labelledby="overview-tab">
-        <table class="table project-overview-table">
-            <tbody>
+        <section>
+            <h2>
+                Application
+            </h2>
+            <table class="table project-overview-table">
+                <tbody>
                 <tr>
                     <th>
                         Status
@@ -78,59 +82,140 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                         <?php endif; ?>
                     </td>
                 </tr>
-
-                <?= $this->element('Projects/overview_public') ?>
-
                 <tr>
                     <th>
-                        Tax ID number
+                        Applicant
                     </th>
                     <td>
-                        <?php if ($project->tin): ?>
-                            Collected
-                            <?= $this->Html->link(
-                                'Retrieve',
-                                [
-                                    'controller' => 'Projects',
-                                    'action' => 'getTin',
-                                    'id' => $project->id,
-                                ],
-                                [
-                                    'class' => 'btn btn-secondary btn-sm',
-                                ]
-                            ) ?>
-                        <?php else: ?>
-                            Not collected
-                            <?php if (!$project->requires_tin): ?>
-                                (not required)
+                        <?= $project->user->name ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Category
+                    </th>
+                    <td>
+                        <?= $project->category->name ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Funding cycle
+                    </th>
+                    <td>
+                        <?= $this->element('FundingCycles/link', [
+                            'fundingCycle' => $project->funding_cycle,
+                            'append' => '',
+                        ]) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Amount requested
+                    </th>
+                    <td>
+                        <?= $project->amount_requested_formatted ?>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <?php if ($project->isAwarded()): ?>
+            <section>
+                <h2>Check</h2>
+                <table class="table project-overview-table">
+                    <tbody>
+                    <tr>
+                        <th>
+                            Amount
+                        </th>
+                        <td>
+                            <?= $project->amount_awarded ? $project->amount_awarded_formatted : '<span class="no-answer">Amount awarded is zero? Something\'s wrong here.</span>' ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Payable to
+                        </th>
+                        <td>
+                            <?= $project->check_name ?: '<span class="no-answer">Check name not provided, but applicant\'s name is ' . $project->user->name . '</span>' ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Mail to
+                        </th>
+                        <td>
+                            <?php if ($project->address): ?>
+                                <?= $project->address ?>
+                                <br />
+                                Muncie, IN <?= $project->zip ?>
+                            <?php else: ?>
+                                (not provided)
                             <?php endif; ?>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Make check out to
-                    </th>
-                    <td>
-                        <?= $project->check_name ?: '<span class="no-answer">No answer</span>' ?>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Address
-                    </th>
-                    <td>
-                        <?php if ($project->address): ?>
-                            <?= $project->address ?>
-                        <br />
-                            Muncie, IN <?= $project->zip ?>
-                        <?php else: ?>
-                            (not provided)
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>
+                    Post-award stuff
+                </h2>
+                <table class="table project-overview-table">
+                    <tbody>
+                    <tr>
+                        <th>
+                            Tax ID number
+                        </th>
+                        <td>
+                            <?php if ($project->tin): ?>
+                                Collected
+                                <?= $this->Html->link(
+                                    'Retrieve',
+                                    [
+                                        'controller' => 'Projects',
+                                        'action' => 'getTin',
+                                        'id' => $project->id,
+                                    ],
+                                    [
+                                        'class' => 'btn btn-secondary btn-sm',
+                                    ]
+                                ) ?>
+                            <?php else: ?>
+                                Not collected
+                                <?php if (!$project->requires_tin): ?>
+                                    (not required)
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Reports
+                        </th>
+                        <td>
+                            <?php if (count($project->reports)): ?>
+                                <?= $this->Html->link(
+                                    count($project->reports) . ' (view)',
+                                    [
+                                        'prefix' => false,
+                                        'controller' => 'Reports',
+                                        'action' => 'project',
+                                        $project->id,
+                                    ]
+                                ) ?>
+                            <?php else: ?>
+                                None
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        <?php endif; ?>
     </div>
     <div class="tab-pane" id="description-section" role="tabpanel" aria-labelledby="description-tab">
         <?= $this->element('Projects/description') ?>
@@ -155,23 +240,23 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($transactions as $transaction): ?>
-                            <tr>
-                                <td>
-                                    <?= $transaction->date?->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('M j, Y g:ia') ?>
-                                </td>
-                                <td>
-                                    <?= $transaction->type_name ?>
-                                </td>
-                                <td>
-                                    <?= $transaction->name ?>
-                                </td>
-                                <td>
-                                    <?= $transaction->dollar_amount_gross_formatted ?>
-                                    (<?= $transaction->dollar_amount_net_formatted ?>)
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
+                    <?php foreach ($transactions as $transaction): ?>
+                        <tr>
+                            <td>
+                                <?= $transaction->date?->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('M j, Y g:ia') ?>
+                            </td>
+                            <td>
+                                <?= $transaction->type_name ?>
+                            </td>
+                            <td>
+                                <?= $transaction->name ?>
+                            </td>
+                            <td>
+                                <?= $transaction->dollar_amount_gross_formatted ?>
+                                (<?= $transaction->dollar_amount_net_formatted ?>)
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             <?php endif; ?>

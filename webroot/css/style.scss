@@ -648,6 +648,12 @@ div.message {
     }
 }
 
+#overview-section {
+    section {
+        margin-bottom: $section-spacer;
+    }
+}
+
 #review-notes {
     margin-top: 1em;
 }

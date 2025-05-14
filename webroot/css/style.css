@@ -12739,6 +12739,10 @@ div.message.hidden {
   vertical-align: middle;
 }
 
+#overview-section section {
+  margin-bottom: 2rem;
+}
+
 #review-notes {
   margin-top: 1em;
 }
