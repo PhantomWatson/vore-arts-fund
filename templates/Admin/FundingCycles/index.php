@@ -18,7 +18,7 @@ $dateFormat = 'MMM d, YYYY';
     ) ?>
 </p>
 
-<?php foreach (['current', 'future', 'past'] as $group): ?>
+<?php foreach (['future', 'current', 'past'] as $group): ?>
     <?php if (!count($fundingCycles[$group])) continue; ?>
     <section class="funding-cycles">
         <h2>
