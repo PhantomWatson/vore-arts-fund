@@ -83,14 +83,6 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 
                 <tr>
                     <th>
-                        Make check out to
-                    </th>
-                    <td>
-                        <?= $project->check_name ?: '<span class="no-answer">No answer</span>' ?>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
                         Tax ID number
                     </th>
                     <td>
@@ -112,6 +104,28 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                             <?php if (!$project->requires_tin): ?>
                                 (not required)
                             <?php endif; ?>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Make check out to
+                    </th>
+                    <td>
+                        <?= $project->check_name ?: '<span class="no-answer">No answer</span>' ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Address
+                    </th>
+                    <td>
+                        <?php if ($project->address): ?>
+                            <?= $project->address ?>
+                        <br />
+                            Muncie, IN <?= $project->zip ?>
+                        <?php else: ?>
+                            (not provided)
                         <?php endif; ?>
                     </td>
                 </tr>
