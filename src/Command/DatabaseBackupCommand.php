@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Alert\Alert;
+use App\Alert\ErrorAlert;
 use Aws\S3\S3Client;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
@@ -49,7 +50,7 @@ class DatabaseBackupCommand extends Command
                 Configure::load('app_local_' . $environment);
             }
         } else {
-            $this->sendErrorAlert('Cannot back up database: environment.php not found.');
+            ErrorAlert::send('Cannot back up database: environment.php not found.');
             return;
         }
         $host = Configure::consume('Datasources.default.host');
@@ -84,7 +85,7 @@ class DatabaseBackupCommand extends Command
             };
             echo $msg . PHP_EOL;
             $this->emailError($msg);
-            $this->sendErrorAlert($msg);
+            ErrorAlert::send($msg);
         }
     }
 
@@ -141,15 +142,8 @@ class DatabaseBackupCommand extends Command
         } catch (\Aws\Exception\AwsException $e) {
             $msg = 'Error uploading database backup to S3: ' . $e->getMessage() . PHP_EOL;
             echo $msg;
-            $this->sendErrorAlert($msg);
+            ErrorAlert::send($msg);
         }
-    }
-
-    private function sendErrorAlert(string $msg): void
-    {
-        $alert = new Alert();
-        $alert->addLine($msg);
-        $alert->send(Alert::TYPE_ERRORS);
     }
 
     private function sendSuccessAlert($url): void

@@ -3,6 +3,7 @@
 namespace App\Error;
 
 use App\Alert\Alert;
+use App\Alert\ErrorAlert;
 use Cake\Error\ErrorLoggerInterface;
 use Cake\Error\PhpError;
 use Psr\Http\Message\ServerRequestInterface;
@@ -13,13 +14,6 @@ use Throwable;
  */
 class AppErrorLogger extends \Cake\Error\ErrorLogger implements ErrorLoggerInterface
 {
-    public function sendAlert(string $message): void
-    {
-        $alert = new Alert();
-        $alert->addLine($message);
-        $alert->send(Alert::TYPE_ERRORS);
-    }
-
     /**
      * Log an error to Cake's Log subsystem and our custom Alert system
      *
@@ -39,7 +33,7 @@ class AppErrorLogger extends \Cake\Error\ErrorLogger implements ErrorLoggerInter
             if ($includeTrace) {
                 $message .= "\nTrace:\n" . $error->getTraceAsString() . "\n";
             }
-            $this->sendAlert($message);
+            ErrorAlert::send($message);
         }
 
         parent::logError($error, $request, $includeTrace);
@@ -70,7 +64,7 @@ class AppErrorLogger extends \Cake\Error\ErrorLogger implements ErrorLoggerInter
             if ($request !== null) {
                 $message .= $this->getRequestContext($request);
             }
-            $this->sendAlert($message);
+            ErrorAlert::send($message);
         }
         parent::logException($exception, $request, $includeTrace);
     }
