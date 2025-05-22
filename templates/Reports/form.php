@@ -3,25 +3,8 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Report $report
  * @var \App\Model\Entity\Project $project
- * @var string|null $back
  */
-
-use Cake\Routing\Router;
-
-$back = $back ?? Router::url([
-    'controller' => 'Projects',
-    'action' => 'index'
-]);
 ?>
-
-<p>
-    <?= $this->Html->link(
-        'Back',
-        $back,
-        ['class' => 'btn btn-secondary']
-    ) ?>
-</p>
-
 <div class="alert alert-info">
     <p>
         We (and the IRS) require reports for every project that receives funding. We'd love to get an update whenever you have incremental victories to celebrate or challenges to share, but at a minimum, we need a report to be submitted at the conclusion of your project and at least one report per year if you have a multi-year project.
