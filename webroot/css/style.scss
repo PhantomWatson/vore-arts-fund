@@ -1233,3 +1233,13 @@ button[type="submit"] {
 .news-intro {
     margin-bottom: $section-spacer;
 }
+
+.block-radio-buttons {
+    label {
+        display: block;
+
+        &:not(:first-child) {
+            font-weight: normal;
+        }
+    }
+}
