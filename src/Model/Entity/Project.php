@@ -8,6 +8,7 @@ use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
@@ -40,6 +41,8 @@ use Cake\ORM\TableRegistry;
  * @property string $zipcode
  * @property bool $requires_tin
  * @property string $loan_agreement_signature
+ * @property bool $is_finalized
+ * @property \Cake\I18n\FrozenDate $loan_awarded_date
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *

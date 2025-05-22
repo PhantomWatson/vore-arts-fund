@@ -172,6 +172,13 @@ class ProjectsTable extends Table
             ->requirePresence('loan_agreement_signature', false)
             ->notEmptyString('loan_agreement_signature');
 
+        $validator
+            ->boolean('is_finalized');
+
+        $validator
+            ->date('loan_agreement_date')
+            ->requirePresence('loan_agreement_date', false);
+
         return $validator;
     }
 
