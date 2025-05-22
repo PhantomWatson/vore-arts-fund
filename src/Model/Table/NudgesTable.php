@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
+use App\Alert\ErrorAlert;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -95,5 +95,21 @@ class NudgesTable extends Table
         $rules->add($rules->existsIn('project_id', 'Projects'), ['errorField' => 'project_id']);
 
         return $rules;
+    }
+
+    public function addNudge(int $userId, int $projectId, int $type): void
+    {
+        $nudge = $this->newEntity([
+            'user_id' => $userId,
+            'project_id' => $projectId,
+            'type' => $type,
+        ]);
+
+        if ($this->save($nudge)) {
+            return;
+        }
+
+        $alert = new ErrorAlert();
+        $alert->send('Unable to save nudge: ' . print_r(compact($userId, $projectId, $type), true));
     }
 }
