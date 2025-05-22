@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Alert\ErrorAlert;
 use App\Model\Entity\Project;
 use ArrayObject;
 use Cake\Database\Expression\QueryExpression;
@@ -10,9 +11,11 @@ use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Event\Event;
+use Cake\I18n\FrozenDate;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -433,5 +436,29 @@ class ProjectsTable extends Table
     public function findNotDeleted(Query $query, array $options)
     {
         return $query->where(['Projects.status_id !=' => Project::STATUS_DELETED]);
+    }
+
+    public function setProjectAwardedDate($projectId, $date)
+    {
+        $project = $this->get($projectId);
+        if ($project->loan_awarded_date) {
+            $alert = new ErrorAlert();
+            $alert->send(sprintf(
+                'Update to loan awarded date for project %s blocked because it\'s already been set. Details: %s',
+                $projectId,
+                print_r($project->getErrors(), true)
+            ));
+            return;
+        }
+
+        $project->loan_awarded_date = new FrozenDate($date);
+        if (!$this->save($project)) {
+            $alert = new ErrorAlert();
+            $alert->send(sprintf(
+                'Failed to set loan awarded date for project %s. Details: %s',
+                $projectId,
+                print_r($project->getErrors(), true)
+            ));
+        }
     }
 }

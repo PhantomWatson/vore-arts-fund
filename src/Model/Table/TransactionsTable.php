@@ -10,6 +10,7 @@ use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
+use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
 use Cake\Log\Log;
 use Cake\ORM\RulesChecker;
@@ -198,9 +199,8 @@ class TransactionsTable extends Table
             ->orderAsc('created');
     }
 
-    public function afterSave(Event $event, EntityInterface $entity, $options): void
+    private function sendNewTransactionAlert(Transaction $transaction): void
     {
-        /** @var Transaction $entity */
         $alert = new Alert();
         $alert->addLine(sprintf(
             '<%s|Transaction #%s> %s',
@@ -209,25 +209,25 @@ class TransactionsTable extends Table
                     'prefix' => 'Admin',
                     'controller' => 'Transactions',
                     'action' => 'view',
-                    'id' => $entity->id
+                    'id' => $transaction->id
                 ],
                 true
             ),
-            $entity->id,
-            $entity->isNew() ? 'saved' : 'updated'
+            $transaction->id,
+            $transaction->isNew() ? 'saved' : 'updated'
         ));
 
-        $details = ['Transaction type: ' . $entity->type_name];
-        if ($entity->amount_net == $entity->amount_gross) {
-            $details[] = 'Amount: ' . $entity->dollar_amount_gross_formatted;
+        $details = ['Transaction type: ' . $transaction->type_name];
+        if ($transaction->amount_net == $transaction->amount_gross) {
+            $details[] = 'Amount: ' . $transaction->dollar_amount_gross_formatted;
         } else {
-            $details[] = 'Amount (gross): ' . $entity->dollar_amount_gross_formatted;
-            $details[] = 'Amount (net): ' . $entity->dollar_amount_net_formatted;
+            $details[] = 'Amount (gross): ' . $transaction->dollar_amount_gross_formatted;
+            $details[] = 'Amount (net): ' . $transaction->dollar_amount_net_formatted;
         }
-        if ($entity->project_id) {
+        if ($transaction->project_id) {
             $projectsTable = TableRegistry::getTableLocator()->get('Projects');
             try {
-                $project = $projectsTable->get($entity->project_id);
+                $project = $projectsTable->get($transaction->project_id);
                 $projectDetail = sprintf(
                     'Project: <%s|%s>',
                     Router::url(
@@ -235,18 +235,33 @@ class TransactionsTable extends Table
                             'prefix' => 'Admin',
                             'controller' => 'Projects',
                             'action' => 'review',
-                            'id' => $entity->project_id,
+                            'id' => $transaction->project_id,
                         ],
                         true
                     ),
                     $project->title,
                 );
             } catch (RecordNotFoundException $e) {
-                $projectDetail = "Project: (invalid project #{$entity->project_id}) selected)";
+                $projectDetail = "Project: (invalid project #{$transaction->project_id}) selected)";
             }
             $details[] = $projectDetail;
         }
         $alert->addList($details);
         $alert->send(Alert::TYPE_TRANSACTIONS);
+    }
+
+    /**
+     * @param Event $event
+     * @param EntityInterface|Transaction $entity
+     * @param $options
+     * @return void
+     */
+    public function afterSave(Event $event, EntityInterface $entity, $options): void
+    {
+        $this->sendNewTransactionAlert($entity);
+        if ($entity->type == Transaction::TYPE_LOAN) {
+            $projectsTable = TableRegistry::getTableLocator()->get('Projects');
+            $projectsTable->setProjectAwardedDate($entity->project_id, $entity->date);
+        }
     }
 }
