@@ -519,4 +519,22 @@ class Project extends Entity
     {
         return $this->amount_awarded >= 600;
     }
+
+    public function readyForReportReminder()
+    {
+        if ($this->isDisbursed()) {
+            $reportDueDate = $this->loan_agreement_date->addMonths(6);
+            return $reportDueDate->isToday();
+        }
+        return false;
+    }
+
+    public function hasReportDue()
+    {
+        if ($this->isDisbursed()) {
+            $reportDueDate = $this->loan_agreement_date->addMonths(6);
+            return $reportDueDate->isPast();
+        }
+        return false;
+    }
 }
