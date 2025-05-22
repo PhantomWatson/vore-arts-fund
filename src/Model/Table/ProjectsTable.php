@@ -461,4 +461,18 @@ class ProjectsTable extends Table
             ));
         }
     }
+
+    public function setProjectAsFinalized($projectId): void
+    {
+        $project = $this->get($projectId);
+        $project->is_finalized = true;
+        if (!$this->save($project)) {
+            $alert = new ErrorAlert();
+            $alert->send(sprintf(
+                'Failed to set project %s as finalized. Details: %s',
+                $projectId,
+                print_r($project->getErrors(), true)
+            ));
+        }
+    }
 }

@@ -3,9 +3,14 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Report;
+use App\Model\Entity\Transaction;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -101,5 +106,19 @@ class ReportsTable extends Table
         $rules->add($rules->existsIn('project_id', 'Projects'), ['errorField' => 'project_id']);
 
         return $rules;
+    }
+
+    /**
+     * @param Event $event
+     * @param EntityInterface|Report $entity
+     * @param $options
+     * @return void
+     */
+    public function afterSave(Event $event, EntityInterface $entity, $options): void
+    {
+        if ($entity->is_final) {
+            $projectsTable = TableRegistry::getTableLocator()->get('Projects');
+            $projectsTable->setProjectAsFinalized($entity->project_id);
+        }
     }
 }
