@@ -74,13 +74,15 @@ class ReportsController extends AppController
 
     /**
      * @param Project $project
+     * @param string|null $prefix Set to 'My' if in the 'my projects' context
      * @return void
      */
-    private function addBreadcrumbForProject(Project $project): void
+    private function addBreadcrumbForProject(Project $project, $prefix = null): void
     {
         $this->addBreadcrumb(
-            'Projects',
+            $prefix . ' Projects',
             [
+                'prefix' => $prefix,
                 'controller' => 'Projects',
                 'action' => 'index',
             ]
@@ -88,6 +90,7 @@ class ReportsController extends AppController
         $this->addBreadcrumb(
             $project->title,
             [
+                'prefix' => $prefix,
                 'controller' => 'Projects',
                 'action' => 'view',
                 'id' => $project->id,
@@ -139,11 +142,16 @@ class ReportsController extends AppController
             );
         }
 
-        $this->set(compact('report', 'project'));
+        $back = Router::url([
+            'prefix' => 'My',
+            'controller' => 'Projects',
+            'action' => 'index',
+        ]);
+        $this->set(compact('report', 'project', 'back'));
         $this->viewBuilder()->setTemplate('form');
         $this->title('Submit report for ' . $project->title);
 
-        $this->addBreadcrumbForProject($project);
+        $this->addBreadcrumbForProject($project, 'My');
         $this->setCurrentBreadcrumb('Submit');
     }
 
@@ -189,7 +197,7 @@ class ReportsController extends AppController
         $this->set(compact('report', 'users', 'projects'));
         $this->viewBuilder()->setTemplate('form');
 
-        $this->addBreadcrumbForProject($report->project);
+        $this->addBreadcrumbForProject($report->project, 'My');
         $this->addBreadcrumb(
             $report->created->format('F j, Y'),
             [
@@ -236,6 +244,7 @@ class ReportsController extends AppController
     public function project(): void
     {
         $projectId = $this->request->getParam('id');
+        $referredFromMyProjects = (bool)$this->getRequest()->getQuery('myProjects');
         $reports = $this->Reports
             ->find()
             ->where(['Reports.project_id' => $projectId])
@@ -247,7 +256,7 @@ class ReportsController extends AppController
         $project = $projectsTable->getNotDeleted($projectId);
         $this->title($project->title);
 
-        $this->addBreadcrumbForProject($project);
+        $this->addBreadcrumbForProject($project, $referredFromMyProjects ? 'My' : null);
         $this->setCurrentBreadcrumb('Reports');
     }
 }

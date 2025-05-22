@@ -127,6 +127,9 @@ use App\View\AppView;
                     'controller' => 'Reports',
                     'action' => 'project',
                     $project->id,
+                    '?' => [
+                        'myProjects' => 1,
+                    ],
                 ],
                 [
                     'class' => 'dropdown-item',
