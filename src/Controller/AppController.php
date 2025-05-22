@@ -84,12 +84,14 @@ class AppController extends Controller
         $isAdmin = $authUser->is_admin ?? false;
         $projectsTable = $this->getTableLocator()->get('Projects');
         $hasProjects = $authUser && $projectsTable->exists(['user_id' => $authUser->id]);
+        $hasReportableProjects = $hasProjects && $projectsTable->userHasReportableProjects($authUser->id);
 
         $this->set(compact(
             'authUser',
             'hasProjects',
             'isAdmin',
             'isLoggedIn',
+            'hasReportableProjects',
         ));
 }
 

@@ -4,6 +4,7 @@
  * @var bool $hasProjects
  * @var bool $isAdmin
  * @var bool $isLoggedIn
+ * @var bool $hasReportableProjects
  */
 $links = [
     [
@@ -71,6 +72,14 @@ if ($hasProjects) {
         ['prefix' => 'My', 'controller' => 'Projects', 'action' => 'index'],
         ['class' => 'dropdown-item']
     ];
+
+    if ($hasReportableProjects) {
+        $loggedInLinks[] = [
+            'Submit report',
+            ['controller' => 'Reports', 'action' => 'submit'],
+            ['class' => 'dropdown-item']
+        ];
+    }
 }
 $loggedInLinks[] = [
     'Log out',

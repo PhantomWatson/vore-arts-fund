@@ -475,4 +475,23 @@ class ProjectsTable extends Table
             ));
         }
     }
+
+    public function userHasReportableProjects(int $userId): bool
+    {
+        $count = $this
+            ->find('reportableForUser', ['userId' => $userId])
+            ->count();
+        return $count > 0;
+    }
+
+    public function findReportableForUser(Query $query, array $options)
+    {
+        return $query
+            ->find('notDeleted')
+            ->where([
+                'user_id' => $options['userId'],
+                'status_id' => Project::STATUS_AWARDED_AND_DISBURSED,
+                'is_finalized' => false,
+            ]);
+    }
 }
