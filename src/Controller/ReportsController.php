@@ -105,10 +105,36 @@ class ReportsController extends AppController
      */
     public function submit()
     {
-        $projectId = $this->request->getParam('id');
+        $projectId = $this->request->getParam('id') ?? $this->request->getData('project_id');
+        $user = $this->getAuthUser();
+
+        // If a project needs to be selected
+        if (!$projectId) {
+            $projects = $this
+                ->Reports
+                ->Projects
+                ->find('reportableForUser', ['userId' => $user->id])
+                ->select(['id', 'title'])
+                ->orderAsc('title')
+                ->all();
+            if (count($projects) == 1) {
+                $projectId = $projects->first()->id;
+                return $this->redirect(['action' => 'submit', 'id' => $projectId]);
+            }
+            if (count($projects) == 0) {
+                $this->Flash->error('You do not currently have any projects that are eligible for submitting a report.');
+                return $this->redirect($this->getRequest()->referer() ?? '/');;
+            }
+            $this->title('Submit report');
+            $this->set(compact('projects'));
+            $this->viewBuilder()->setTemplate('select_project');
+            $this->setCurrentBreadcrumb('Select a project');
+            return;
+        }
+
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
         $project = $projectsTable->getNotDeleted($projectId);
-        if (!$projectId || !$this->isOwnProject($projectId)) {
+        if (!$this->isOwnProject($projectId)) {
             $this->Flash->error('Project not found');
             $this->setResponse($this->getResponse()->withStatus(404));
             return $this->redirect($this->getRequest()->referer() ?? '/');
@@ -120,10 +146,10 @@ class ReportsController extends AppController
         }
 
         $report = $this->Reports->newEmptyEntity();
-        $user = $this->getAuthUser();
         $report->user_id = $user->id;
         $report->project_id = $projectId;
-        if ($this->request->is('post')) {
+        $submittingReport = $this->request->is('post') && !$this->request->getQuery('selectingProject');
+        if ($submittingReport) {
             $report = $this->Reports->patchEntity($report, $this->request->getData());
             if ($this->Reports->save($report)) {
                 $this->Flash->success(__('Report submitted. Thanks for keeping us updated!'));
@@ -142,17 +168,9 @@ class ReportsController extends AppController
             );
         }
 
-        $back = Router::url([
-            'prefix' => 'My',
-            'controller' => 'Projects',
-            'action' => 'index',
-        ]);
-        $this->set(compact('report', 'project', 'back'));
         $this->viewBuilder()->setTemplate('form');
-        $this->title('Submit report for ' . $project->title);
-
+        $this->set(compact('report', 'project'));
         $this->addBreadcrumbForProject($project, 'My');
-        $this->setCurrentBreadcrumb('Submit');
     }
 
     /**
