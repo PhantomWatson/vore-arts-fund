@@ -42,7 +42,7 @@ use Cake\ORM\TableRegistry;
  * @property bool $requires_tin
  * @property string $loan_agreement_signature
  * @property bool $is_finalized
- * @property \Cake\I18n\FrozenDate $loan_awarded_date
+ * @property \Cake\I18n\FrozenDate $loan_awarded_date The date that disbursement was recorded
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
