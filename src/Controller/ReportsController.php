@@ -103,10 +103,17 @@ class ReportsController extends AppController
     public function submit()
     {
         $projectId = $this->request->getParam('id');
-        if ($projectId && !$this->isOwnProject($projectId)) {
-            $this->Flash->error('Sorry, but you are not authorized to access that project.');
-            $this->setResponse($this->getResponse()->withStatus(403));
-            return $this->redirect('/');
+        $projectsTable = TableRegistry::getTableLocator()->get('Projects');
+        $project = $projectsTable->getNotDeleted($projectId);
+        if (!$projectId || !$this->isOwnProject($projectId)) {
+            $this->Flash->error('Project not found');
+            $this->setResponse($this->getResponse()->withStatus(404));
+            return $this->redirect($this->getRequest()->referer() ?? '/');
+        }
+        if ($project->is_finalized) {
+            $this->Flash->error('New reports cannot be submitted for finalized projects.');
+            $this->setResponse($this->getResponse()->withStatus(400));
+            return $this->redirect($this->getRequest()->referer() ?? '/');
         }
 
         $report = $this->Reports->newEmptyEntity();
@@ -131,8 +138,7 @@ class ReportsController extends AppController
                 ['escape' => false]
             );
         }
-        $projectsTable = TableRegistry::getTableLocator()->get('Projects');
-        $project = $projectsTable->getNotDeleted($projectId);
+
         $this->set(compact('report', 'project'));
         $this->viewBuilder()->setTemplate('form');
         $this->title('Submit report for ' . $project->title);

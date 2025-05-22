@@ -130,7 +130,7 @@ class Project extends Entity
      */
     public function isReportable(): bool
     {
-        return $this->status_id == self::STATUS_AWARDED_AND_DISBURSED;
+        return $this->status_id == self::STATUS_AWARDED_AND_DISBURSED && !$this->is_finalized;
     }
 
     /**
