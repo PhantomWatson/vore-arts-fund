@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use App\Alert\Alert;
 use App\Alert\ErrorAlert;
+use App\Model\Entity\Project;
 use App\Model\Entity\Transaction;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
@@ -262,6 +263,7 @@ class TransactionsTable extends Table
         if ($entity->type == Transaction::TYPE_LOAN) {
             $projectsTable = TableRegistry::getTableLocator()->get('Projects');
             $projectsTable->setProjectAwardedDate($entity->project_id, $entity->date);
+            $projectsTable->updateStatus($entity->project_id, Project::STATUS_AWARDED_AND_DISBURSED);
         }
     }
 }
