@@ -399,17 +399,17 @@ class ProjectsTable extends Table
      * "Soft-deletes" a project, saving it with the "deleted" status
      *
      * @param Project $project
-     * @return Project|false
+     * @return boolean
      */
     public function markDeleted(Project $project)
     {
-        $project->status_id = Project::STATUS_DELETED;
-        $result = $this->save($project);
-
-        if ($result) {
+        if ($this->updateStatus($project->id, Project::STATUS_DELETED)) {
             $project->dispatchMarkedDeletedEvent();
+
+            return true;
         }
-        return $result;
+
+        return false;
     }
 
     /**
@@ -493,5 +493,32 @@ class ProjectsTable extends Table
                 'status_id' => Project::STATUS_AWARDED_AND_DISBURSED,
                 'is_finalized' => false,
             ]);
+    }
+
+    /**
+     * Updates the status of a project and validates that the new status is one that is allowed to follow the current status
+     *
+     * @param int $projectId
+     * @param int $statusId
+     * @return bool
+     */
+    public function updateStatus(int $projectId, int $statusId): bool
+    {
+        $project = $this->getNotDeleted($projectId);
+        if ($project->status_id == $statusId) {
+            return true;
+        }
+
+        $validStatuses = Project::getValidStatusOptions($project->status_id);
+        if (!in_array($statusId, $validStatuses)) {
+            (new ErrorAlert())
+                ->send('Cannot update project ' . $projectId . ' from ' . $project->status_id . ' to ' . $statusId);
+            return false;
+        }
+        $project->status_id = $statusId;
+        if ($this->save($project)) {
+            return true;
+        }
+        return false;
     }
 }
