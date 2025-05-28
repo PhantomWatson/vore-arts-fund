@@ -19,8 +19,8 @@ use Cake\ORM\Entity;
  */
 class Nudge extends Entity
 {
-    const TYPE_REPORT_REMINDER = 1;
-    const TYPE_REPORT_DUE = 2;
+    const TYPE_REPORT_REMINDER = 1; // Monthly report reminder
+    const TYPE_REPORT_DUE = 2;      // Warning that a report is about to pass a deadline
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
