@@ -40,8 +40,8 @@ class ProjectsController extends BaseProjectsController
 
         $projectId = $this->request->getParam('id');
         if ($projectId && !$this->isOwnProject($projectId)) {
-            $this->Flash->error('Sorry, but you are not authorized to access that project.');
-            $this->setResponse($this->getResponse()->withStatus(403));
+            $this->Flash->error('Project not found');
+            $this->setResponse($this->getResponse()->withStatus(404));
             return $this->redirect('/');
         }
 
