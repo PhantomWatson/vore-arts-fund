@@ -36,7 +36,12 @@
                         $transaction->has('project')
                             ? $this->Html->link(
                                 $transaction->project->title,
-                                ['controller' => 'Projects', 'action' => 'view', 'id' => $transaction->project->id]
+                                [
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Projects',
+                                    'action' => 'review',
+                                    'id' => $transaction->project->id
+                                ]
                             )
                             : ''
                     ?>
