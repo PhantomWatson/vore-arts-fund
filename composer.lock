@@ -1916,12 +1916,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhantomWatson/cakephp-email-queue.git",
-                "reference": "3695196f6b2851d3924507ab1c893dff194a5a74"
+                "reference": "3d7eccf92711b98fb49dfdd53e0b9319b7c9340f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhantomWatson/cakephp-email-queue/zipball/3695196f6b2851d3924507ab1c893dff194a5a74",
-                "reference": "3695196f6b2851d3924507ab1c893dff194a5a74",
+                "url": "https://api.github.com/repos/PhantomWatson/cakephp-email-queue/zipball/3d7eccf92711b98fb49dfdd53e0b9319b7c9340f",
+                "reference": "3d7eccf92711b98fb49dfdd53e0b9319b7c9340f",
                 "shasum": ""
             },
             "require": {
@@ -1968,7 +1968,7 @@
             "support": {
                 "source": "https://github.com/PhantomWatson/cakephp-email-queue/tree/master"
             },
-            "time": "2022-11-25T05:47:50+00:00"
+            "time": "2025-05-28T03:38:45+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
