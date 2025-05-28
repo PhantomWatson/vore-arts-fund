@@ -94,6 +94,9 @@ class ProjectsTable extends Table
         $this->hasMany('Transactions', [
             'foreignKey' => 'project_id',
         ]);
+        $this->hasMany('Nudges', [
+            'foreignKey' => 'project_id',
+        ]);
     }
 
     /**
@@ -520,5 +523,39 @@ class ProjectsTable extends Table
             return true;
         }
         return false;
+    }
+
+    public function findLoadRecipients(Query $query)
+    {
+        return $query
+            ->where(['Projects.status_id' => Project::STATUS_AWARDED_AND_DISBURSED]);
+    }
+
+    /**
+     * Finds projects that aren't associated with any of a specific type of nudge within a certain time frame
+     *
+     * @param Query $query
+     * @param array $options nudgeType and threshold (string referencing a past time, e.g. '-1 month')
+     * @return Query
+     */
+    public function findWithoutRecentNudge(Query $query, array $options): Query
+    {
+        $nudgeType = $options['nudgeType'] ?? null;
+        $threshold = $options['threshold'] ?? null;
+
+        if (!$nudgeType) {
+            throw new \InvalidArgumentException('nudgeType not provided');
+        }
+        if (!$threshold) {
+            throw new \InvalidArgumentException('Nudge threshold not provided');
+        }
+
+        return $query
+            ->notMatching('Nudges', function (Query $q) use ($nudgeType, $threshold) {
+                return $q->where([
+                    'Nudges.type' => $nudgeType,
+                    'Nudges.created >' => new FrozenDate($threshold),
+                ]);
+            });
     }
 }
