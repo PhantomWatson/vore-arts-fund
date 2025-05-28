@@ -2,11 +2,11 @@
 
 namespace App\Event;
 
+use App\Email\MailConfig;
 use App\Model\Entity\Project;
 use App\Model\Entity\User;
 use App\Model\Table\FundingCyclesTable;
 use App\Model\Table\UsersTable;
-use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
@@ -20,13 +20,11 @@ class MailListener implements EventListenerInterface
 {
     private FundingCyclesTable $fundingCyclesTable;
     private UsersTable $usersTable;
-    private string $fromEmail;
-    private string $fromName = 'Vore Arts Fund';
-    public static string $subjectPrefix = 'Vore Arts Fund - ';
+    public MailConfig $mailConfig;
 
     public function __construct()
     {
-        $this->fromEmail = Configure::read('noReplyEmail');
+        $this->mailConfig = new MailConfig();
         $this->usersTable = TableRegistry::getTableLocator()->get('Users');
         $this->fundingCyclesTable = TableRegistry::getTableLocator()->get('FundingCycles');
     }
@@ -76,10 +74,10 @@ class MailListener implements EventListenerInterface
                 'userName' => $name,
             ],
             [
-                'subject' => self::$subjectPrefix . 'Application Accepted',
+                'subject' => $this->mailConfig->subjectPrefix . 'Application Accepted',
                 'template' => 'application_accepted',
-                'from_name' => $this->fromName,
-                'from_email' => $this->fromEmail,
+                'from_name' => $this->mailConfig->fromName,
+                'from_email' => $this->mailConfig->fromEmail,
             ]
         );
     }
@@ -109,10 +107,10 @@ class MailListener implements EventListenerInterface
                 'userName' => $name,
             ],
             [
-                'subject' => self::$subjectPrefix . 'Revision Requested',
+                'subject' => $this->mailConfig->subjectPrefix . 'Revision Requested',
                 'template' => 'application_revision_requested',
-                'from_name' => $this->fromName,
-                'from_email' => $this->fromEmail,
+                'from_name' => $this->mailConfig->fromName,
+                'from_email' => $this->mailConfig->fromEmail,
             ],
         );
     }
@@ -136,10 +134,10 @@ class MailListener implements EventListenerInterface
                 'userName' => $name,
             ],
             [
-                'subject' => self::$subjectPrefix . 'Application Not Accepted',
+                'subject' => $this->mailConfig->subjectPrefix . 'Application Not Accepted',
                 'template' => 'application_rejected',
-                'from_name' => $this->fromName,
-                'from_email' => $this->fromEmail,
+                'from_name' => $this->mailConfig->fromName,
+                'from_email' => $this->mailConfig->fromEmail,
             ],
         );
     }
@@ -169,10 +167,10 @@ class MailListener implements EventListenerInterface
                 'replyUrl' => $this->getReplyUrl($project),
             ],
             [
-                'subject' => self::$subjectPrefix . 'Application Funded',
+                'subject' => $this->mailConfig->subjectPrefix . 'Application Funded',
                 'template' => 'application_funded',
-                'from_name' => $this->fromName,
-                'from_email' => $this->fromEmail,
+                'from_name' => $this->mailConfig->fromName,
+                'from_email' => $this->mailConfig->fromEmail,
             ]
         );
     }
@@ -223,10 +221,10 @@ class MailListener implements EventListenerInterface
                 'userName' => $name,
             ],
             [
-                'subject' => self::$subjectPrefix . 'Application Not Funded',
+                'subject' => $this->mailConfig->subjectPrefix . 'Application Not Funded',
                 'template' => 'application_not_funded',
-                'from_name' => $this->fromName,
-                'from_email' => $this->fromEmail,
+                'from_name' => $this->mailConfig->fromName,
+                'from_email' => $this->mailConfig->fromEmail,
             ],
         );
     }
@@ -254,10 +252,10 @@ class MailListener implements EventListenerInterface
                 'replyUrl' => $this->getReplyUrl($project),
             ],
             [
-                'subject' => self::$subjectPrefix . 'Message from review committee',
+                'subject' => $this->mailConfig->subjectPrefix . 'Message from review committee',
                 'template' => 'message',
-                'from_name' => $this->fromName,
-                'from_email' => $this->fromEmail,
+                'from_name' => $this->mailConfig->fromName,
+                'from_email' => $this->mailConfig->fromEmail,
             ],
         );
     }
@@ -291,10 +289,10 @@ class MailListener implements EventListenerInterface
                 'replyUrl' => $this->getReplyUrl($project),
             ],
             [
-                'subject' => self::$subjectPrefix . 'Your check is on its way',
+                'subject' => $this->mailConfig->subjectPrefix . 'Your check is on its way',
                 'template' => 'funding_disbursed',
-                'from_name' => $this->fromName,
-                'from_email' => $this->fromEmail,
+                'from_name' => $this->mailConfig->fromName,
+                'from_email' => $this->mailConfig->fromEmail,
             ],
         );
     }

@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Application;
-use App\Event\MailListener;
+use App\Email\MailConfig;
 use App\Model\Entity\User;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Cake\Core\Configure;
@@ -409,9 +408,10 @@ class UsersController extends AppController
                 'action' => 'resetPasswordToken',
                 $user->reset_password_token,
             ], true);
+            $mailConfig = new MailConfig();
             $email
                 ->setTo($user->email)
-                ->setSubject(MailListener::$subjectPrefix . 'Password Reset Request')
+                ->setSubject($mailConfig->subjectPrefix . 'Password Reset Request')
                 ->setReplyTo(Configure::read('noReplyEmail'))
                 ->setFrom(Configure::read('noReplyEmail'), 'Vore Arts Fund')
                 ->setEmailFormat('both')
@@ -438,9 +438,10 @@ class UsersController extends AppController
             $user = $this->Users->get($id);
             $email = new Mailer();
             $supportEmail = Configure::read('supportEmail');
+            $mailConfig = new MailConfig();
             $email
                 ->setTo($user->email)
-                ->setSubject(MailListener::$subjectPrefix . 'Password Changed')
+                ->setSubject($mailConfig->subjectPrefix . 'Password Changed')
                 ->setReplyTo(Configure::read('noReplyEmail'))
                 ->setFrom(Configure::read('noReplyEmail'), 'Vore Arts Fund')
                 ->setEmailFormat('both')
