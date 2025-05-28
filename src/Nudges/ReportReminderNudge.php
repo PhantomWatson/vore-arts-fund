@@ -35,7 +35,7 @@ class ReportReminderNudge implements NudgeInterface
                 'nudgeType' => Nudge::TYPE_REPORT_REMINDER,
                 'threshold' => $threshold,
             ])
-            ->where(['Project.loan_awarded_date <' => new FrozenDate($threshold)])
+            ->where(['Projects.loan_awarded_date <' => new FrozenDate($threshold)])
             ->all();
     }
 
