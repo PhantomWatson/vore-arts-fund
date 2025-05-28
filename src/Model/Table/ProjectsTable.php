@@ -535,25 +535,28 @@ class ProjectsTable extends Table
      * Finds projects that aren't associated with any of a specific type of nudge within a certain time frame
      *
      * @param Query $query
-     * @param array $options nudgeType and threshold (string referencing a past time, e.g. '-1 month')
+     * @param array $options nudgeType int or int[] and threshold (string referencing a past time, e.g. '-1 month')
      * @return Query
      */
     public function findWithoutRecentNudge(Query $query, array $options): Query
     {
-        $nudgeType = $options['nudgeType'] ?? null;
+        $nudgeTypes = $options['nudgeType'] ?? null;
         $threshold = $options['threshold'] ?? null;
 
-        if (!$nudgeType) {
+        if (!$nudgeTypes) {
             throw new \InvalidArgumentException('nudgeType not provided');
         }
         if (!$threshold) {
             throw new \InvalidArgumentException('Nudge threshold not provided');
         }
+        if (!is_array($nudgeTypes)) {
+            $nudgeTypes = [$nudgeTypes];
+        }
 
         return $query
-            ->notMatching('Nudges', function (Query $q) use ($nudgeType, $threshold) {
+            ->notMatching('Nudges', function (Query $q) use ($nudgeTypes, $threshold) {
                 return $q->where([
-                    'Nudges.type' => $nudgeType,
+                    'Nudges.type IN' => $nudgeTypes,
                     'Nudges.created >' => new FrozenDate($threshold),
                 ]);
             });

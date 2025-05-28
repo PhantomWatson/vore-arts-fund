@@ -32,7 +32,7 @@ class ReportReminderNudge implements NudgeInterface
             ->find('loadRecipients')
             ->find('notFinalized')
             ->find('withoutRecentNudge', [
-                'nudgeType' => Nudge::TYPE_REPORT_REMINDER,
+                'nudgeType' => [Nudge::TYPE_REPORT_REMINDER, Nudge::TYPE_REPORT_DUE],
                 'threshold' => $threshold,
             ])
             ->where(['Projects.loan_awarded_date <' => new FrozenDate($threshold)])
