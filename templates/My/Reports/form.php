@@ -5,15 +5,6 @@
  * @var \App\Model\Entity\Project $project
  */
 ?>
-<div class="alert alert-info">
-    <p>
-        We (and the IRS) require reports for every project that receives funding. We'd love to get an update whenever you have incremental victories to celebrate or challenges to share, but at a minimum, we need a report to be submitted at the conclusion of your project and at least one report per year if you have a multi-year project.
-    </p>
-
-    <p>
-        These reports don't need to be long or formal, but should address the current state of the project and how you've used your funding. These will be shared with the public, so don't include any private or irrelevant information.
-    </p>
-</div>
 
 <?= $this->Form->create($report, ['id' => 'report-form']) ?>
 

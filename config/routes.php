@@ -87,7 +87,6 @@ $routes->scope('/', function (RouteBuilder $builder) {
         'Reports' => [
             '/report/{id}' => 'view',
             '/reports/for-project/{id}' => 'project',
-            '/reports/submit/{id}' => 'submit',
         ],
         'Articles' => [
             '/news' => 'index',

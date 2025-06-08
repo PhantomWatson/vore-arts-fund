@@ -75,8 +75,8 @@ if ($hasProjects) {
 
     if ($hasReportableProjects) {
         $loggedInLinks[] = [
-            'Submit report',
-            ['prefix' => 'My', 'controller' => 'Reports', 'action' => 'submit'],
+            'My Reports',
+            ['prefix' => 'My', 'controller' => 'Reports', 'action' => 'index'],
             ['class' => 'dropdown-item']
         ];
     }

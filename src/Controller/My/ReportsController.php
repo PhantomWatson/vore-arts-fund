@@ -44,6 +44,26 @@ class ReportsController extends AppController
     }
 
     /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function index()
+    {
+        $projectsTable = TableRegistry::getTableLocator()->get('Projects');
+        $hasReportableProjects = $projectsTable->userHasReportableProjects($this->getAuthUser()->id);
+        $reports = $this->Reports
+            ->find()
+            ->contain(['Projects'])
+            ->where(['Reports.user_id' => $this->getAuthUser()->id])
+            ->orderDesc('Reports.created')
+            ->all();
+        $this->set(compact('reports', 'hasReportableProjects'));
+        $this->setCurrentBreadcrumb('My Reports');
+        $this->title('My Reports');
+    }
+
+    /**
      * Submit method
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
