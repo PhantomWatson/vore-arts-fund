@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\Project;
 use App\Model\Entity\User;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
@@ -278,5 +279,31 @@ class AppController extends Controller
                 }
             }
         }
+    }
+
+    /**
+     * @param Project $project
+     * @param string|null $prefix Set to 'My' if in the 'my projects' context
+     * @return void
+     */
+    protected function addBreadcrumbForProject(Project $project, $prefix = null): void
+    {
+        $this->addBreadcrumb(
+            $prefix . ' Projects',
+            [
+                'prefix' => $prefix,
+                'controller' => 'Projects',
+                'action' => 'index',
+            ]
+        );
+        $this->addBreadcrumb(
+            $project->title,
+            [
+                'prefix' => $prefix,
+                'controller' => 'Projects',
+                'action' => 'view',
+                'id' => $project->id,
+            ]
+        );
     }
 }

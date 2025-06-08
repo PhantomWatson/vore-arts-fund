@@ -51,7 +51,7 @@ class ReportReminderNudge implements NudgeInterface
                 'userName' => $user->name,
                 'reportUrl' => Router::url(
                     [
-                        'prefix' => false,
+                        'prefix' => 'My',
                         'plugin' => false,
                         'controller' => 'Reports',
                         'action' => 'submit',

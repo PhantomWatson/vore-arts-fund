@@ -93,7 +93,7 @@ use App\View\AppView;
             <?= $this->Html->link(
                 Project::ICON_REPORT . ' Submit report',
                 [
-                    'prefix' => false,
+                    'prefix' => 'My',
                     'controller' => 'Reports',
                     'action' => 'submit',
                     $project->id,

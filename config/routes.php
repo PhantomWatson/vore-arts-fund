@@ -120,6 +120,15 @@ $routes->prefix('my', function (RouteBuilder $builder) {
         'Bios' => [
             '/bio' => 'edit',
         ],
+        'Loans' => [
+            '/loans/payment/{id}' => 'payment',
+        ],
+        'Reports' => [
+            '/reports/submit/{id}' => 'submit',
+            '/reports/submit' => 'submit',
+            '/reports/edit/{id}' => 'edit',
+            '/reports/delete/{id}' => 'delete',
+        ],
     ];
     buildRoutes($builder, $controllers);
     $builder->fallbacks(DashedRoute::class);
