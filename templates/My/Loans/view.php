@@ -55,14 +55,31 @@ $balance = $project->amount_awarded - $totalRepaid;
     </tr>
 </table>
 
-<p>
-    <strong>Congratulations!</strong> You've fully repaid the loan for this project.
-</p>
+<?php if ($balance <= 0): ?>
+    <p>
+        <strong>Congratulations!</strong> You've fully repaid the loan for this project.
+    </p>
 
-<p>
-    <?php if ($overpayment): ?>
-        Furthermore, by overpaying, you've made an additional tax-deductible donation of <?= $overpayment ?> to the Vore Arts Fund, which helps us maintain and expand the support that we provide to the community. Thank you for your generosity!
-    <?php else: ?>
-        If you would like to support the Vore Arts Fund further, please consider making a donation. Your tax-deductible contributions help us maintain and expand the support that we provide to the community.
-    <?php endif; ?>
-</p>
+    <p>
+        <?php if ($balance < 0): ?>
+            Furthermore, by overpaying, you've made an additional tax-deductible donation of <?= '$' . number_format(-$balance, 2) ?> to the Vore Arts Fund, which helps us maintain and expand the support that we provide to the community. Thank you for your generosity!
+        <?php else: ?>
+            If you would like to support the Vore Arts Fund further, please consider
+            <?= $this->Html->link('making a donation', [
+                'prefix' => false,
+                'controller' => 'Donations',
+                'action' => 'index',
+            ]) ?>.
+            Your tax-deductible contributions help us maintain and expand the support that we provide to the community.
+        <?php endif; ?>
+    </p>
+<?php else: ?>
+    <p>
+        For information about making a loan repayment electronically or by check, please visit the
+        <?= $this->Html->link('donation page', [
+            'prefix' => false,
+            'controller' => 'Donations',
+            'action' => 'index',
+        ]) ?>.
+    </p>
+<?php endif; ?>
