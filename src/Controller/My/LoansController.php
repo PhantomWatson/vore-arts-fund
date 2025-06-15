@@ -61,4 +61,20 @@ class LoansController extends \App\Controller\AppController
         $this->title('Loan for ' . $project->title);
         $this->set(compact('project', 'repayments'));
     }
+
+    public function index()
+    {
+        $userId = $this->getAuthUser()->id;
+        $projects = $this->Projects
+            ->find('notDeleted')
+            ->where([
+                'Projects.user_id' => $userId,
+                'Projects.status_id' => Project::STATUS_AWARDED_AND_DISBURSED,
+            ])
+            ->order(['Projects.created' => 'DESC'])
+            ->all();
+
+        $this->title('My Loans');
+        $this->set(compact('projects'));
+    }
 }

@@ -73,6 +73,15 @@ if ($hasProjects) {
         ['class' => 'dropdown-item']
     ];
 
+    // TODO: Add a real condition
+    if (true) {
+        $loggedInLinks[] = [
+            'My Loans',
+            ['prefix' => 'My', 'controller' => 'Loans', 'action' => 'index'],
+            ['class' => 'dropdown-item']
+        ];
+    }
+
     if ($hasReportableProjects) {
         $loggedInLinks[] = [
             'My Reports',
