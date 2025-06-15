@@ -13204,4 +13204,18 @@ button[type=submit].loading .loading-indicator {
   font-weight: normal;
 }
 
+.repayments-table {
+  margin-bottom: 0;
+  width: auto;
+}
+.repayments-table tr:first-child td {
+  padding-top: 0;
+}
+.repayments-table tr:last-child td {
+  border-bottom: 0;
+}
+.repayments-table td:first-child {
+  padding-left: 0;
+}
+
 /*# sourceMappingURL=style.css.map */

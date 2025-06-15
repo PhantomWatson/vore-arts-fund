@@ -7,7 +7,7 @@ $totalRepaid = $project->getTotalRepaid() / 100; // In dollars
 $balance = $project->amount_awarded - $totalRepaid;
 ?>
 
-<table class="table table-striped">
+<table class="table">
     <tr>
         <th>Project</th>
         <td><?= h($project->title) ?></td>
@@ -20,7 +20,7 @@ $balance = $project->amount_awarded - $totalRepaid;
         <tr>
             <th>Repayments</th>
             <td>
-                <table class="table" style="width: auto;">
+                <table class="table repayments-table">
                     <?php foreach ($repayments as $repayment): ?>
                         <tr>
                             <td>

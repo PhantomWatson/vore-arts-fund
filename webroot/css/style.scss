@@ -1243,3 +1243,24 @@ button[type="submit"] {
         }
     }
 }
+
+.repayments-table {
+    margin-bottom: 0;
+    width: auto;
+
+    tr:first-child {
+        td {
+            padding-top: 0;
+        }
+    }
+
+    tr:last-child {
+        td {
+            border-bottom: 0;
+        }
+    }
+
+    td:first-child {
+        padding-left: 0;
+    }
+}
