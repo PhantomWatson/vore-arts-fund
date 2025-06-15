@@ -22,6 +22,7 @@ use Cake\ORM\Entity;
  * @property string $dollar_amount_net_formatted
  * @property float $dollar_amount_gross
  * @property string $dollar_amount_gross_formatted
+ * @property string $processing_fee_formatted In dollars
  * @property \Cake\I18n\FrozenDate $date
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
@@ -124,5 +125,14 @@ class Transaction extends Entity
     protected function _getTypeName(): string
     {
         return Transaction::getTypeName($this->type);
+    }
+
+    protected function _getProcessingFeeFormatted(): string
+    {
+        if ($this->amount_gross && $this->amount_net) {
+            $fee = $this->amount_gross - $this->amount_net;
+            return '$' . number_format($fee / 100, 2);
+        }
+        return '';
     }
 }

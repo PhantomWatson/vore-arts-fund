@@ -120,7 +120,7 @@ $routes->prefix('my', function (RouteBuilder $builder) {
             '/bio' => 'edit',
         ],
         'Loans' => [
-            '/loans/payment/{id}' => 'payment',
+            '/loans/{id}' => 'view', // project ID
         ],
         'Reports' => [
             '/reports/submit/{id}' => 'submit',

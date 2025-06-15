@@ -30,7 +30,8 @@ use Cake\ORM\TableRegistry;
  * @property string $status_name
  * @property float $voting_score
  * @property int $amount_awarded In dollars
- * @property int $amount_awarded_formatted e.g. $1,234
+ * @property string $amount_awarded_formatted e.g. $1,234
+ * @property string $amount_awarded_formatted_cents e.g. $1,234.56
  * @property string $status_summary
  * @property \Cake\I18n\FrozenTime $loan_agreement_date
  * @property \Cake\I18n\FrozenTime $loan_agreement_date_local
@@ -398,6 +399,11 @@ class Project extends Entity
         return '$' . number_format($this->amount_awarded);
     }
 
+    protected function _getAmountAwardedFormattedCents(): string
+    {
+        return '$' . number_format($this->amount_awarded, 2);
+    }
+
     /**
      * Returns the latest loan terms version number
      *
@@ -539,5 +545,59 @@ class Project extends Entity
             return $reportDueDate->isPast();
         }
         return false;
+    }
+
+    /**
+     * Returns the current balance of the project in cents, i.e. the amount that has not yet been repaid
+     *
+     * @return float
+     */
+    public function getBalance(): float
+    {
+        if (!$this->amount_awarded) {
+            return 0;
+        }
+
+        if (!isset($this->transactions)) {
+            $this->transactions = TableRegistry::getTableLocator()
+                ->get('Transactions')
+                ->find()
+                ->where([
+                    'project_id' => $this->id,
+                    'type' => Transaction::TYPE_LOAN_REPAYMENT,
+                ])
+                ->all();
+        }
+
+        $repaymentTotal = array_sum(array_map(function (Transaction $transaction) {
+            return $transaction->amount_net;
+        }, $this->transactions));
+
+        return $this->amount_awarded - $repaymentTotal;
+    }
+
+    /**
+     * Returns the total amount repaid for this project in cents
+     *
+     * @return int
+     */
+    public function getTotalRepaid(): int
+    {
+        if (!$this->amount_awarded) {
+            return 0;
+        }
+
+        $transactions = TableRegistry::getTableLocator()
+            ->get('Transactions')
+            ->find()
+            ->where([
+                'project_id' => $this->id,
+                'type' => Transaction::TYPE_LOAN_REPAYMENT,
+            ])
+            ->toArray();
+
+        return array_sum(array_map(function (Transaction $transaction) {
+            return $transaction->amount_net;
+        }, $transactions));
     }
 }
