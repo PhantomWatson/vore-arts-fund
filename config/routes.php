@@ -67,7 +67,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
         ],
         'Votes' => [
             '/vote' => 'index',
-            '/vote/{id}' => 'index',
+            '/vote/{id}' => 'index', // funding cycle ID
         ],
         'Users' => [
             '/register' => 'register',
@@ -120,13 +120,13 @@ $routes->prefix('my', function (RouteBuilder $builder) {
             '/bio' => 'edit',
         ],
         'Loans' => [
-            '/loans/{id}' => 'view', // project ID
+            '/loans/{id}' => 'view',            // project ID
         ],
         'Reports' => [
-            '/reports/submit/{id}' => 'submit',
+            '/reports/submit/{id}' => 'submit', // project ID
             '/reports/submit' => 'submit',
-            '/reports/edit/{id}' => 'edit',
-            '/reports/delete/{id}' => 'delete',
+            '/reports/edit/{id}' => 'edit',     // report ID
+            '/reports/delete/{id}' => 'delete', // report ID
         ],
     ];
     buildRoutes($builder, $controllers);
