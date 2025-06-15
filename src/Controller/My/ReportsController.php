@@ -54,7 +54,7 @@ class ReportsController extends AppController
         $hasReportableProjects = $projectsTable->userHasReportableProjects($this->getAuthUser()->id);
         $reports = $this->Reports
             ->find()
-            ->contain(['Projects'])
+            ->contain(['Projects.FundingCycles'])
             ->where(['Reports.user_id' => $this->getAuthUser()->id])
             ->orderDesc('Reports.created')
             ->all();

@@ -39,6 +39,7 @@
 
                 <th>Date<br />(click to view report)</th>
                 <th>Project</th>
+                <th>Funding Cycle</th>
             </tr>
             </thead>
             <tbody>
@@ -62,6 +63,9 @@
                             'action' => 'view',
                             'id' => $report->project_id
                         ]) ?>
+                    </td>
+                    <td>
+                        <?= $report->project->funding_cycle->name ?? 'Unknown' ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
