@@ -53,8 +53,7 @@ class LoansController extends \App\Controller\AppController
             ->order(['date' => 'DESC'])
             ->toArray();
 
-        $this->title('Loan repayment');
-        $this->addBreadcrumb($project->title);
+        $this->title('Loan for ' . $project->title);
         $this->set(compact('project', 'repayments'));
     }
 }
