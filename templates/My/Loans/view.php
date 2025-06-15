@@ -20,16 +20,21 @@ $balance = $project->amount_awarded - $totalRepaid;
         <tr>
             <th>Repayments</th>
             <td>
-                <ul class="list-unstyled">
-                <?php foreach ($repayments as $repayment): ?>
-                    <li>
-                        <?= $repayment->date?->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') ?>:
-                        <?= $repayment->dollar_amount_net_formatted ?>
-                        <?php if ($repayment->processing_fee_formatted): ?>
-                            (+ <?= $repayment->processing_fee_formatted ?> processing fee)
-                        <?php endif; ?>
-                    </li>
-                <?php endforeach; ?>
+                <table class="table" style="width: auto;">
+                    <?php foreach ($repayments as $repayment): ?>
+                        <tr>
+                            <td>
+                                <?= $repayment->date?->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') ?>
+                            </td>
+                            <td>
+                                <?= $repayment->dollar_amount_net_formatted ?>
+                                <?php if ($repayment->processing_fee_formatted): ?>
+                                    (+ <?= $repayment->processing_fee_formatted ?> processing fee)
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
             </td>
         </tr>
     <?php endif; ?>
