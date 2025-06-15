@@ -2,6 +2,7 @@
 
 namespace App\Controller\My;
 
+use App\Model\Entity\Project;
 use App\Model\Entity\Transaction;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
@@ -44,7 +45,7 @@ class LoansController extends \App\Controller\AppController
     {
         $projectId = $this->getRequest()->getParam('id');
         $project = $this->Projects->getNotDeleted($projectId);
-        if (!$project) {
+        if (!$project || $project->status_id !== Project::STATUS_AWARDED_AND_DISBURSED) {
             $this->Flash->error('Loan not found');
             return $this->redirect(['action' => 'index']);
         }
