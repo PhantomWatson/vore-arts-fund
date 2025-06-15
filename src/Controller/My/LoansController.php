@@ -44,6 +44,10 @@ class LoansController extends \App\Controller\AppController
     {
         $projectId = $this->getRequest()->getParam('id');
         $project = $this->Projects->getNotDeleted($projectId);
+        if (!$project) {
+            $this->Flash->error('Loan not found');
+            return $this->redirect(['action' => 'index']);
+        }
         $repayments = TableRegistry::getTableLocator()->get('Transactions')
             ->find()
             ->where([
