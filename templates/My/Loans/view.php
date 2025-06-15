@@ -4,9 +4,6 @@
  * @var \App\Model\Entity\Transaction[] $repayments
  */
 $totalRepaid = $project->getTotalRepaid() / 100; // In dollars
-$overpayment = $totalRepaid > $project->amount_awarded
-    ? ('$' . number_format($totalRepaid - $project->amount_awarded, 2))
-    : null;
 $balance = $project->amount_awarded - $totalRepaid;
 ?>
 
@@ -43,8 +40,12 @@ $balance = $project->amount_awarded - $totalRepaid;
     <tr>
         <th>Balance</th>
         <td>
-            <?php if ($overpayment): ?>
-                $0 <span class="text-success">(fully paid + extra <?= $overpayment ?> donation)</span>
+            <?php if ($balance < 0): ?>
+                $0 <span class="text-success">
+                    (fully paid + extra
+                    <?= '$' . number_format(-$balance, 2) ?>
+                    donation)
+                </span>
             <?php elseif ($balance == 0): ?>
                 $0 <span class="text-success">(fully paid)</span>
             <?php else: ?>
