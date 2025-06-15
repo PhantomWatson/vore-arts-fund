@@ -24,13 +24,10 @@ $balance = $project->amount_awarded - $totalRepaid;
                     <?php foreach ($repayments as $repayment): ?>
                         <tr>
                             <td>
-                                <?= $repayment->date?->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') ?>
+                                <?= $repayment->date_formatted ?>
                             </td>
                             <td>
-                                <?= $repayment->dollar_amount_net_formatted ?>
-                                <?php if ($repayment->processing_fee_formatted): ?>
-                                    (+ <?= $repayment->processing_fee_formatted ?> processing fee)
-                                <?php endif; ?>
+                                <?= $repayment->dollar_amount_net_formatted_with_fee ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

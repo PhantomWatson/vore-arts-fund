@@ -1264,3 +1264,8 @@ button[type="submit"] {
         padding-left: 0;
     }
 }
+
+.transaction-fee {
+    @extend .text-muted;
+    font-size: 0.8em;
+}

@@ -20,10 +20,12 @@ use Cake\ORM\Entity;
  * @property string $meta Check number, donor name, Stripe meta dump
  * @property float $dollar_amount_net
  * @property string $dollar_amount_net_formatted
+ * @property string $dollar_amount_net_formatted_with_fee
  * @property float $dollar_amount_gross
  * @property string $dollar_amount_gross_formatted
  * @property string $processing_fee_formatted In dollars
  * @property \Cake\I18n\FrozenDate $date
+ * @property string $date_formatted
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -134,5 +136,20 @@ class Transaction extends Entity
             return '$' . number_format($fee / 100, 2);
         }
         return '';
+    }
+
+    protected function _getDollarAmountNetFormattedWithFee(): string
+    {
+        $retval = $this->dollar_amount_net_formatted;
+        $processingFee = $this->processing_fee_formatted;
+        if ($processingFee) {
+            $retval .= " <span class=\"transaction-fee\">(+ {$this->processing_fee_formatted} processing fee)</span>";
+        }
+        return $retval;
+    }
+
+    protected function _getDateFormatted(): string
+    {
+        return $this->date ? $this->date->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') : '';
     }
 }

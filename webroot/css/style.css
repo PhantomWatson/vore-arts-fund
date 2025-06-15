@@ -8541,7 +8541,7 @@ fieldset:disabled .vote-rank button,
   color: rgba(var(--bs-body-color-rgb), var(--bs-text-opacity)) !important;
 }
 
-.text-muted, #meet-the-board .title, .footnote,
+.text-muted, .transaction-fee, #meet-the-board .title, .footnote,
 .pronoun {
   --bs-text-opacity: 1;
   color: var(--bs-secondary-color) !important;
@@ -13216,6 +13216,10 @@ button[type=submit].loading .loading-indicator {
 }
 .repayments-table td:first-child {
   padding-left: 0;
+}
+
+.transaction-fee {
+  font-size: 0.8em;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -44,6 +44,7 @@ use Cake\ORM\TableRegistry;
  * @property string $loan_agreement_signature
  * @property bool $is_finalized
  * @property \Cake\I18n\FrozenDate $loan_awarded_date The date that disbursement was recorded
+ * @property string $loan_awarded_date_formatted
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -599,5 +600,10 @@ class Project extends Entity
         return array_sum(array_map(function (Transaction $transaction) {
             return $transaction->amount_net;
         }, $transactions));
+    }
+
+    protected function _getLoanAwardedDateFormatted(): string
+    {
+        return $this->loan_awarded_date ? $this->loan_awarded_date->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') : '';
     }
 }

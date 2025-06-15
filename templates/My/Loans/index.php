@@ -30,7 +30,7 @@
                         ]) ?>
                     </td>
                     <td>
-                        <?= $project->loan_awarded_date?->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') ?>
+                        <?= $project->loan_awarded_date_formatted ?>
                     </td>
                     <td>
                         <?= $project->amount_awarded_formatted_cents ?>
