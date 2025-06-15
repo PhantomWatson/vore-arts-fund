@@ -50,6 +50,7 @@ class LoansController extends \App\Controller\AppController
                 'project_id' => $projectId,
                 'type' => Transaction::TYPE_LOAN_REPAYMENT,
             ])
+            ->order(['date' => 'DESC'])
             ->toArray();
 
         $this->title('Loan repayment');
