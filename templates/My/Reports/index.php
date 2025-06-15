@@ -37,7 +37,7 @@
             <thead>
             <tr>
 
-                <th>Date<br />(click to view report)</th>
+                <th>Report</th>
                 <th>Project</th>
                 <th>Funding Cycle</th>
             </tr>
