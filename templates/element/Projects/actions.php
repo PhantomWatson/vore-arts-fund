@@ -15,127 +15,143 @@ use App\View\AppView;
 
     <ul class="dropdown-menu">
         <?php if ($project->isAgreeable() || $project->loan_agreement_date): ?>
-            <?= $this->Html->link(
-                $project->isAgreeable()
-                    ? '<i class="fa-solid fa-pencil"></i> Submit loan agreement'
-                    : '<i class="fa-solid fa-file-contract"></i> View loan agreement',
-                [
-                    'controller' => 'Projects',
-                    'action' => 'loanAgreement',
-                    'id' => $project->id,
-                ],
-                [
-                    'class' => 'dropdown-item',
-                    'escape' => false
-                ]
-            ) ?>
+            <li>
+                <?= $this->Html->link(
+                    $project->isAgreeable()
+                        ? '<i class="fa-solid fa-pencil"></i> Submit loan agreement'
+                        : '<i class="fa-solid fa-file-contract"></i> View loan agreement',
+                    [
+                        'controller' => 'Projects',
+                        'action' => 'loanAgreement',
+                        'id' => $project->id,
+                    ],
+                    [
+                        'class' => 'dropdown-item',
+                        'escape' => false
+                    ]
+                ) ?>
+            </li>
         <?php endif; ?>
         <?php if ($this->getRequest()->getParam('action') != 'view'): ?>
-            <?= $this->Html->link(
-                '<i class="fa-solid fa-eye"></i> View project',
-                [
-                    'controller' => 'Projects',
-                    'action' => 'view',
-                    'id' => $project->id,
-                ],
-                [
-                    'class' => 'dropdown-item',
-                    'escape' => false
-                ]
-            ) ?>
+            <li>
+                <?= $this->Html->link(
+                    '<i class="fa-solid fa-eye"></i> View project',
+                    [
+                        'controller' => 'Projects',
+                        'action' => 'view',
+                        'id' => $project->id,
+                    ],
+                    [
+                        'class' => 'dropdown-item',
+                        'escape' => false
+                    ]
+                ) ?>
+            </li>
         <?php endif; ?>
         <?php if ($project->isUpdatable()): ?>
-            <?= $this->Html->link(
-                '<i class="fa-solid fa-pencil"></i> Update / Submit',
-                [
-                    'controller' => 'Projects',
-                    'action' => 'edit',
-                    'id' => $project->id,
-                ],
-                [
-                    'class' => 'dropdown-item',
-                    'escape' => false
-                ]
-            ) ?>
+            <li>
+                <?= $this->Html->link(
+                    '<i class="fa-solid fa-pencil"></i> Update / Submit',
+                    [
+                        'controller' => 'Projects',
+                        'action' => 'edit',
+                        'id' => $project->id,
+                    ],
+                    [
+                        'class' => 'dropdown-item',
+                        'escape' => false
+                    ]
+                ) ?>
+            </li>
         <?php endif; ?>
         <?php if ($project->canTransitionTo(Project::STATUS_DELETED)): ?>
-            <?= $this->Form->postLink(
-                '<i class="fa-solid fa-trash"></i> Delete',
-                [
-                    'prefix' => 'My',
-                    'controller' => 'Projects',
-                    'action' => 'delete',
-                    'id' => $project->id,
-                ],
-                [
-                    'class' => 'dropdown-item',
-                    'confirm' => 'Are you sure you want to delete this application?',
-                    'escape' => false
-                ]
-            ) ?>
+            <li>
+                <?= $this->Form->postLink(
+                    '<i class="fa-solid fa-trash"></i> Delete',
+                    [
+                        'prefix' => 'My',
+                        'controller' => 'Projects',
+                        'action' => 'delete',
+                        'id' => $project->id,
+                    ],
+                    [
+                        'class' => 'dropdown-item',
+                        'confirm' => 'Are you sure you want to delete this application?',
+                        'escape' => false
+                    ]
+                ) ?>
+            </li>
         <?php endif; ?>
         <?php if ($project->canTransitionTo(Project::STATUS_WITHDRAWN)): ?>
-            <?= $this->Form->postLink(
-                Project::ICON_WITHDRAW . ' Withdraw',
-                [
-                    'controller' => 'Projects',
-                    'action' => 'withdraw',
-                    'id' => $project->id,
-                ],
-                [
-                    'class' => 'dropdown-item',
-                    'escape' => false,
-                    'confirm' => 'Are you sure you want to withdraw this application?',
-                ]
-            ) ?>
+            <li>
+                <?= $this->Form->postLink(
+                    Project::ICON_WITHDRAW . ' Withdraw',
+                    [
+                        'controller' => 'Projects',
+                        'action' => 'withdraw',
+                        'id' => $project->id,
+                    ],
+                    [
+                        'class' => 'dropdown-item',
+                        'escape' => false,
+                        'confirm' => 'Are you sure you want to withdraw this application?',
+                    ]
+                ) ?>
+            </li>
         <?php endif; ?>
         <?php if ($project->isReportable()): ?>
-            <?= $this->Html->link(
-                Project::ICON_REPORT . ' Submit report',
-                [
-                    'prefix' => 'My',
-                    'controller' => 'Reports',
-                    'action' => 'submit',
-                    $project->id,
-                ],
-                [
-                    'class' => 'dropdown-item',
-                    'escape' => false
-                ]
-            ) ?>
+            <li>
+                <?= $this->Html->link(
+                    Project::ICON_REPORT . ' Submit report',
+                    [
+                        'prefix' => 'My',
+                        'controller' => 'Reports',
+                        'action' => 'submit',
+                        $project->id,
+                    ],
+                    [
+                        'class' => 'dropdown-item',
+                        'escape' => false
+                    ]
+                ) ?>
+            </li>
         <?php endif; ?>
         <?php if (count($project->notes)): ?>
-            <?= $this->Html->link(
-                Project::ICON_MESSAGE . ' View messages',
-                [
-                    'prefix' => 'My',
-                    'controller' => 'Projects',
-                    'action' => 'messages',
-                    $project->id,
-                ],
-                [
-                    'class' => 'dropdown-item',
-                    'escape' => false
-                ]
-            ) ?>
+            <li>
+                <?= $this->Html->link(
+                    Project::ICON_MESSAGE . ' View messages',
+                    [
+                        'prefix' => 'My',
+                        'controller' => 'Projects',
+                        'action' => 'messages',
+                        $project->id,
+                    ],
+                    [
+                        'class' => 'dropdown-item',
+                        'escape' => false
+                    ]
+                ) ?>
+            </li>
         <?php endif; ?>
         <?php if (count($project->reports)): ?>
-            <?= $this->Html->link(
-                Project::ICON_REPORT . ' View reports',
-                [
-                    'prefix' => false,
-                    'controller' => 'Reports',
-                    'action' => 'project',
-                    $project->id,
-                    '?' => [
-                        'myProjects' => 1,
+            <li>
+                <?= $this->Html->link(
+                    Project::ICON_REPORT . ' View reports',
+                    [
+                        'prefix' => false,
+                        'controller' => 'Reports',
+                        'action' => 'project',
+                        $project->id,
+                        '?' => [
+                            'myProjects' => 1,
+                        ],
                     ],
-                ],
-                [
-                    'class' => 'dropdown-item',
-                    'escape' => false
-                ]
-            ) ?>
+                    [
+                        'class' => 'dropdown-item',
+                        'escape' => false
+                    ]
+                ) ?>
+            </li>
         <?php endif; ?>
     </ul>
 </div>
