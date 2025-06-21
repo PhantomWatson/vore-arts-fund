@@ -38,6 +38,10 @@ class Transaction extends Entity
     public const TYPE_LOAN = 3;
     public const TYPE_CANCELED_CHECK = 4;
 
+    public const STRIPE_FEE_DISPLAYED = '2.9% + 30¢';
+    public const STRIPE_FEE_PERCENTAGE = 0.029;
+    public const STRIPE_FEE_FIXED = 30; // In cents
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

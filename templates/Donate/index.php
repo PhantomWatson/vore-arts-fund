@@ -4,7 +4,10 @@
  * @var \App\Model\Entity\User|null $user
  */
 
-$formAction = \Cake\Routing\Router::url([
+use App\Model\Entity\Transaction;
+use Cake\Routing\Router;
+
+$formAction = Router::url([
     'controller' => 'Donate',
     'action' => 'payment',
 ]);
@@ -38,7 +41,7 @@ $formAction = \Cake\Routing\Router::url([
                         <input type="hidden" name="coverProcessingFee" value="0" />
                         <label>
                             <input type="checkbox" name="coverProcessingFee" id="coverProcessingFee" value="1" />
-                            Also cover 2.9% + 30¢ payment processing fee
+                            Also cover <?= Transaction::STRIPE_FEE_DISPLAYED ?> payment processing fee
                             <button id="coverProcessingFeePopover"
                                     type="button"
                                     class="btn btn-lg btn-link"

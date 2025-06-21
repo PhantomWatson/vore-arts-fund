@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\Transaction;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\BadRequestException;
 
@@ -46,10 +47,10 @@ class DonateController extends AppController
             throw new BadRequestException('No amount provided');
         }
 
-        // Cover Stripe's 2.9% + $0.30 processing feee
+        // Cover Stripe's processing fee
         $coverProcessingFee = (bool)$request->getData('coverProcessingFee');
         $totalAmount = $coverProcessingFee
-            ? ceil(($donationAmount + 30)/(1 - 0.029))
+            ? ceil(($donationAmount + Transaction::STRIPE_FEE_FIXED)/(1 - Transaction::STRIPE_FEE_PERCENTAGE))
             : $donationAmount;
 
         $name = trim($request->getData('name'));
