@@ -11,7 +11,7 @@ use App\Model\Entity\Project;
 $budgeted = $fundingCycle->funding_available;
 $budgetRemaining = $fundingCycle->funding_available;
 
-function getToAward(Project $project, $budgetRemaining)
+function getToAward(Project $project, $budgetRemaining, $votingHasPassed)
 {
     // Nothing can be awarded to projects that receive no votes
     $receivedVotes = $project->voting_score != null;
@@ -47,18 +47,22 @@ function getToAward(Project $project, $budgetRemaining)
     }
 
     // Mark this project as needing to be funded
-    $url = \Cake\Routing\Router::url([
-        'prefix' => 'Admin',
-        'controller' => 'Projects',
-        'action' => 'review',
-        'id' => $project->id,
-        '?' => [
-            'amountAwarded' => $amountToAward
-        ],
-    ]);
-    return '<a href="' . $url . '"><span class="voting-results__award voting-results__award--to-award">'
-        . '<i class="fa-solid fa-circle-exclamation"></i> '
-        . $amountDisplayed . ' to award</span></a>';
+    if ($votingHasPassed) {
+        $url = \Cake\Routing\Router::url([
+            'prefix' => 'Admin',
+            'controller' => 'Projects',
+            'action' => 'review',
+            'id' => $project->id,
+            '?' => [
+                'amountAwarded' => $amountToAward
+            ],
+        ]);
+        return '<a href="' . $url . '"><span class="voting-results__award voting-results__award--to-award">'
+            . '<i class="fa-solid fa-circle-exclamation"></i> '
+            . $amountDisplayed . ' to award</span></a>';
+    }
+
+    return $amountDisplayed;
 }
 
 ?>
@@ -102,7 +106,7 @@ function getToAward(Project $project, $budgetRemaining)
                     Project
                 </th>
                 <th>
-                    Award
+                    <?= $fundingCycle->votingHasPassed() ? 'To Award' : 'Anticipated award amount' ?>
                 </th>
             </tr>
         </thead>
@@ -130,7 +134,7 @@ function getToAward(Project $project, $budgetRemaining)
                         ) ?>
                     </td>
                     <td>
-                        <?= getToAward($project, $budgetRemaining); ?>
+                        <?= getToAward($project, $budgetRemaining, $fundingCycle->votingHasPassed()); ?>
                     </td>
                 </tr>
                 <?php
