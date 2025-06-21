@@ -20,8 +20,10 @@ $formAction = Router::url([
 </p>
 
 <p>
-    If you wish to donate by check, please make payment out to Vore Arts Fund, Inc. and mail it to PO Box 1604, Muncie,
-    Indiana, 47308.
+    If you wish to donate by check, please read <?= $this->Html->link(
+        'our instructions for mailing checks',
+        ['prefix' => false, 'controller' => 'Pages', 'action' => 'checks'],
+    ) ?>.
 </p>
 
 <div class="row row--donate">

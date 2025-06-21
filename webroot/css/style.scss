@@ -535,6 +535,10 @@ div.message {
     }
 }
 
+.section__with-spacer {
+    margin: $section-spacer 0;
+}
+
 #register-form {
     div.tel {
         input {

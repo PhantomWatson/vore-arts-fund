@@ -12658,6 +12658,10 @@ div.message.hidden {
   margin: 2rem 0;
 }
 
+.section__with-spacer {
+  margin: 2rem 0;
+}
+
 #register-form div.tel input {
   margin-bottom: 0;
 }

@@ -60,6 +60,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
             '/art-mart' => 'artMart',
             '/partners' => 'partners',
             '/discount-eligibility' => 'discountEligibility',
+            '/checks' => 'checks',
         ],
         'Projects' => [
             '/project/{id}' => 'view',
@@ -121,6 +122,7 @@ $routes->prefix('my', function (RouteBuilder $builder) {
         ],
         'Loans' => [
             '/loans/{id}' => 'view',            // project ID
+            '/loans/{id}/payment' => 'payment',            // project ID
         ],
         'Reports' => [
             '/reports/submit/{id}' => 'submit', // project ID
