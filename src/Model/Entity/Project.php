@@ -387,7 +387,6 @@ class Project extends Entity
             default:
                 $retval .= ($startsWithVowel ? 'An ' : 'A ') . lcfirst($this->category->name);
         }
-        //$isPast = ($this->funding_cycle ?? false) ? $this->funding_cycle->votingHasPassed() : true;
         $isPast = $this->funding_cycle->votingHasPassed();
         $retval .= " project by {$this->user->name}, who ";
         $retval .= $isPast ? 'requested ' : 'is requesting ';
