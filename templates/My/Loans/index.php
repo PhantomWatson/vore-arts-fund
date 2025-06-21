@@ -17,17 +17,14 @@
                 <th>Awarded Date</th>
                 <th>Loan Amount</th>
                 <th>Balance</th>
+                <th>View Details</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($projects as $project): ?>
                 <tr>
                     <td>
-                        <?= $this->Html->link(h($project->title), [
-                            'controller' => 'Loans',
-                            'action' => 'view',
-                            'id' => $project->id,
-                        ]) ?>
+                        <?= h($project->title) ?>
                     </td>
                     <td>
                         <?= $project->loan_awarded_date_formatted ?>
@@ -51,6 +48,17 @@
                         <?php else: ?>
                             $<?= number_format($balance, 2) ?>
                         <?php endif; ?>
+                    </td>
+                    <td>
+                        <?= $this->Html->link(
+                            'View',
+                            [
+                                'controller' => 'Loans',
+                                'action' => 'view',
+                                'id' => $project->id,
+                            ],
+                            ['class' => 'btn btn-primary']
+                        ) ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
