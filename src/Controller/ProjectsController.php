@@ -363,7 +363,7 @@ class ProjectsController extends AppController
     {
         $fundingCycles = $this->FundingCycles
             ->find()
-            ->orderAsc('FundingCycles.application_end')
+            ->orderDesc('FundingCycles.application_end')
             ->contain([
                 'Projects' => [
                     'queryBuilder' => function (Query $q) {
