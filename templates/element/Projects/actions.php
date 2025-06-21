@@ -26,7 +26,7 @@ use App\View\AppView;
                         'id' => $project->id,
                     ],
                     [
-                        'class' => 'dropdown-item',
+                        'class' => 'dropdown-item dropdown-item__with-icon',
                         'escape' => false
                     ]
                 ) ?>
@@ -42,7 +42,7 @@ use App\View\AppView;
                         'id' => $project->id,
                     ],
                     [
-                        'class' => 'dropdown-item',
+                        'class' => 'dropdown-item dropdown-item__with-icon',
                         'escape' => false
                     ]
                 ) ?>
@@ -58,7 +58,7 @@ use App\View\AppView;
                         'id' => $project->id,
                     ],
                     [
-                        'class' => 'dropdown-item',
+                        'class' => 'dropdown-item dropdown-item__with-icon',
                         'escape' => false
                     ]
                 ) ?>
@@ -75,7 +75,7 @@ use App\View\AppView;
                         'id' => $project->id,
                     ],
                     [
-                        'class' => 'dropdown-item',
+                        'class' => 'dropdown-item dropdown-item__with-icon',
                         'confirm' => 'Are you sure you want to delete this application?',
                         'escape' => false
                     ]
@@ -92,7 +92,7 @@ use App\View\AppView;
                         'id' => $project->id,
                     ],
                     [
-                        'class' => 'dropdown-item',
+                        'class' => 'dropdown-item dropdown-item__with-icon',
                         'escape' => false,
                         'confirm' => 'Are you sure you want to withdraw this application?',
                     ]
@@ -110,7 +110,7 @@ use App\View\AppView;
                         $project->id,
                     ],
                     [
-                        'class' => 'dropdown-item',
+                        'class' => 'dropdown-item dropdown-item__with-icon',
                         'escape' => false
                     ]
                 ) ?>
@@ -127,7 +127,7 @@ use App\View\AppView;
                         $project->id,
                     ],
                     [
-                        'class' => 'dropdown-item',
+                        'class' => 'dropdown-item dropdown-item__with-icon',
                         'escape' => false
                     ]
                 ) ?>
@@ -147,7 +147,7 @@ use App\View\AppView;
                         ],
                     ],
                     [
-                        'class' => 'dropdown-item',
+                        'class' => 'dropdown-item dropdown-item__with-icon',
                         'escape' => false
                     ]
                 ) ?>

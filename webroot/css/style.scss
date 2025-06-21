@@ -857,13 +857,14 @@ section.funding-cycles {
     margin: 2em 0;
 }
 
-#my-projects {
-    .dropdown-item {
-        i {
-            margin-right: 0.25em;
-            width: 1.5em;
-        }
+.dropdown-item__with-icon {
+    i {
+        margin-right: 0.25em;
+        width: 1.5em;
     }
+}
+
+#my-projects {
     th,
     td {
         &.cell--status,
