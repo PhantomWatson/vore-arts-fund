@@ -246,4 +246,9 @@ class PagesController extends AppController
     {
         $this->title('Community Partners');
     }
+
+    public function checks()
+    {
+        $this->title('Paying by check');
+    }
 }
