@@ -81,11 +81,15 @@ $balance = $project->amount_awarded - $totalRepaid;
     </p>
 <?php else: ?>
     <p>
-        For information about making a loan repayment electronically or by check, please visit the
-        <?= $this->Html->link('donation page', [
-            'prefix' => false,
-            'controller' => 'Donations',
-            'action' => 'index',
-        ]) ?>.
+        <?= $this->Html->link(
+            'Make a payment',
+            [
+                'prefix' => 'My',
+                'controller' => 'Loans',
+                'action' => 'payment',
+                'id' => $project->id,
+            ],
+            ['class' => 'btn btn-primary']
+        ) ?>
     </p>
 <?php endif; ?>

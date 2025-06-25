@@ -72,4 +72,24 @@ class LoansController extends \App\Controller\AppController
         $this->title('My Loans');
         $this->set(compact('projects'));
     }
+
+    public function payment()
+    {
+        $projectId = $this->getRequest()->getParam('id');
+        $project = $this->Projects->getNotDeleted($projectId);
+        if (!$project || $project->status_id !== Project::STATUS_AWARDED_AND_DISBURSED) {
+            $this->Flash->error('Loan not found');
+            return $this->redirect(['action' => 'index']);
+        }
+
+        /** @var TransactionsTable $transactionsTable */
+        $transactionsTable = TableRegistry::getTableLocator()->get('Transactions');
+        $repayments = $transactionsTable->getRepaymentsForProject($projectId);
+
+        $this->title('Repaying the loan for ' . $project->title);
+        $this->set(compact('project', 'repayments'));
+        $this->set([
+            'toLoad' => $this->getAppFiles('repayment-form/dist/assets'),
+        ]);
+    }
 }
