@@ -1,8 +1,11 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Project[] $projects
+ * @var Project[] $projects
  */
+
+use App\Model\Entity\Project;
+
 ?>
 
 <?php if (empty($projects)): ?>
@@ -18,6 +21,7 @@
                 <th>Loan Amount</th>
                 <th>Balance</th>
                 <th>View Details</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -50,15 +54,42 @@
                         <?php endif; ?>
                     </td>
                     <td>
-                        <?= $this->Html->link(
-                            'View',
-                            [
-                                'controller' => 'Loans',
-                                'action' => 'view',
-                                'id' => $project->id,
-                            ],
-                            ['class' => 'btn btn-primary']
-                        ) ?>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Actions
+                            </button>
+
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <?= $this->Html->link(
+                                        Project::ICON_NOTE . ' View details',
+                                        [
+                                            'controller' => 'Loans',
+                                            'action' => 'view',
+                                            'id' => $project->id,
+                                        ],
+                                        [
+                                            'class' => 'dropdown-item dropdown-item__with-icon',
+                                            'escape' => false
+                                        ]
+                                    ) ?>
+                                </li>
+                                <li>
+                                    <?= $this->Html->link(
+                                        Project::ICON_FUND . ' Make payment',
+                                        [
+                                            'controller' => 'Loans',
+                                            'action' => 'payment',
+                                            'id' => $project->id,
+                                        ],
+                                        [
+                                            'class' => 'dropdown-item dropdown-item__with-icon',
+                                            'escape' => false
+                                        ]
+                                    ) ?>
+                                </li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
             <?php endforeach; ?>
