@@ -11,7 +11,6 @@ use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
-use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
 use Cake\Log\Log;
 use Cake\ORM\RulesChecker;
@@ -265,5 +264,20 @@ class TransactionsTable extends Table
             $projectsTable->setProjectAwardedDate($entity->project_id, $entity->date);
             $projectsTable->updateStatus($entity->project_id, Project::STATUS_AWARDED_AND_DISBURSED);
         }
+    }
+
+    /**
+     * @param int $projectId
+     * @return \Cake\Datasource\ResultSetInterface|Transaction[]
+     */
+    public function getRepaymentsForProject(int $projectId)
+    {
+        return $this->find()
+            ->where([
+                'project_id' => $projectId,
+                'type' => Transaction::TYPE_LOAN_REPAYMENT,
+            ])
+            ->order(['date' => 'DESC'])
+            ->all();
     }
 }

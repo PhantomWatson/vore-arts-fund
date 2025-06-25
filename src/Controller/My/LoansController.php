@@ -3,7 +3,7 @@
 namespace App\Controller\My;
 
 use App\Model\Entity\Project;
-use App\Model\Entity\Transaction;
+use App\Model\Table\TransactionsTable;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
@@ -41,6 +41,7 @@ class LoansController extends \App\Controller\AppController
 
         return null;
     }
+
     public function view()
     {
         $projectId = $this->getRequest()->getParam('id');
@@ -49,15 +50,9 @@ class LoansController extends \App\Controller\AppController
             $this->Flash->error('Loan not found');
             return $this->redirect(['action' => 'index']);
         }
-        $repayments = TableRegistry::getTableLocator()->get('Transactions')
-            ->find()
-            ->where([
-                'project_id' => $projectId,
-                'type' => Transaction::TYPE_LOAN_REPAYMENT,
-            ])
-            ->order(['date' => 'DESC'])
-            ->toArray();
-
+        /** @var TransactionsTable $transactionsTable */
+        $transactionsTable = TableRegistry::getTableLocator()->get('Transactions');
+        $repayments = $transactionsTable->getRepaymentsForProject($projectId);
         $this->title('Loan for ' . $project->title);
         $this->set(compact('project', 'repayments'));
     }
