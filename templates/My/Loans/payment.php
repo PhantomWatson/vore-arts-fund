@@ -24,15 +24,23 @@ $isPaidOff = $balance <= 0;
         <p>
             This loan still has an outstanding balance of <strong>$<?= number_format($balance, 2) ?></strong>.
         </p>
-        <p>
-            Payments made electronically will incur a <strong>processing fee of <?= Transaction::STRIPE_FEE_DISPLAYED ?></strong>, which will not be applied to your loan balance.
-        </p>
-        <p>
-            If you wish to instead make a payment by check, please read <?= $this->Html->link(
-                'our instructions for mailing checks',
-                ['prefix' => false, 'controller' => 'Pages', 'action' => 'checks'],
-            ) ?> and note that this payment is for <strong>Loan #<?= $project->id ?></strong>.
-        </p>
+        <div class="row" style="margin-bottom: 1em;">
+            <section class="col">
+                <h3>Electronic payments</h3>
+                <p>
+                    Payments made electronically will incur a <strong>processing fee of <?= Transaction::STRIPE_FEE_DISPLAYED ?></strong>, which will not be applied to your loan balance.
+                </p>
+            </section>
+            <section class="col">
+                <h3>Checks</h3>
+                <p>
+                    If you wish to instead make a payment by check, please read <?= $this->Html->link(
+                        'our instructions for mailing checks',
+                        ['prefix' => false, 'controller' => 'Pages', 'action' => 'checks'],
+                    ) ?> and note that this payment is for <strong>Loan #<?= $project->id ?></strong>.
+                </p>
+            </section>
+        </div>
         <p>
             Note that loan repayments are not considered tax-deductible donations, but showing your support for the Vore Arts Fund by <strong>overpaying</strong> is deeply appreciated, and any overpayment <em>can</em> be claimed as a tax-deductible donation to the Vore Arts Fund.
         </p>
