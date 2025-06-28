@@ -3,8 +3,9 @@ import {useEffect, useState} from 'react';
 
 function App() {
   const [paymentOption, setPaymentOption] = useState<string|null>(null);
-  const [amount, setAmount] = useState<string>('0.00');
+  const [amountTowardBalance, setAmountTowardBalance] = useState<string>('0.00');
   const [fee, setFee] = useState<number>(0);
+  const [total, setTotal] = useState<number>(0);
 
   interface FormSetupData {
     projectId: number,
@@ -23,14 +24,15 @@ function App() {
 
   useEffect(() => {
     if (paymentOption === 'full') {
-      setAmount((balance || 0).toFixed(2));
+      setAmountTowardBalance((balance || 0).toFixed(2));
     }
   }, [paymentOption]);
 
   useEffect(() => {
-    const fee = (parseInt(amount) * (processingFeePercentage || 0)) + (processingFeeFlat || 0) / 100;
+    const fee = (parseInt(amountTowardBalance) * (processingFeePercentage || 0)) + (processingFeeFlat || 0) / 100;
     setFee(fee);
-  }, [amount]);
+    setTotal(parseFloat(amountTowardBalance) + fee);
+  }, [amountTowardBalance]);
 
   if (
     balance === undefined
@@ -38,7 +40,10 @@ function App() {
     || processingFeeFlat === undefined
     || processingFeePercentage === undefined
   ) {
-    console.error('Cannot load repayment-form; not all setup data is available.', setupData);
+    console.error(
+      'Cannot load repayment-form; not all setup data is available.',
+      {balance, projectId, processingFeeFlat, processingFeePercentage}
+    );
     return (
       <div className="alert alert-danger" role="alert">
         Error: Cannot load repayment form.
@@ -53,22 +58,10 @@ function App() {
   }
 
   return (
-    <form method="post">
+    <form method="post" action="/my/loans/payment-process">
+      <input type="hidden" name="paymentOption" value={paymentOption || ""} />
+      <input type="hidden" name="total" value={total} />
       <div className="form-group">
-        <div className="form-check">
-          <label htmlFor="payment-option-partial" className="form-check-label">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="paymentOption"
-              value="partial"
-              id="payment-option-partial"
-              checked={paymentOption === 'partial'}
-              onChange={(e) => setPaymentOption(e.target.value)}
-            />
-            Partial payment
-          </label>
-        </div>
         <div className="form-check">
           <label htmlFor="payment-option-full" className="form-check-label">
             <input
@@ -80,43 +73,67 @@ function App() {
               checked={paymentOption === 'full'}
               onChange={(e) => setPaymentOption(e.target.value)}
             />
-            Full payment
+            Pay off remaining balance
           </label>
         </div>
-      </div>
-
-      {paymentOption !== null &&
-        <>
+        {paymentOption === 'full' &&
+          <input type="hidden" name="amountTowardBalance" value={balance} />
+        }
+        <div className="form-check">
+          <label htmlFor="payment-option-custom" className="form-check-label">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="paymentOption"
+              value="custom"
+              id="payment-option-custom"
+              checked={paymentOption === 'custom'}
+              onChange={(e) => setPaymentOption(e.target.value)}
+            />
+            Pay custom amount{paymentOption === 'custom' ? ':' : ''}
+          </label>
+        </div>
+        {paymentOption === 'custom' &&
           <div className="form-group">
-            <label htmlFor="repayment-amount">Payment amount</label>
+            <label htmlFor="repayment-amount" className="visually-hidden">Payment amount</label>
             <div className="input-group">
               <div className="input-group-text">$</div>
               <input
                 type="number"
                 className="form-control"
                 id="repayment-amount"
+                name="amountTowardBalance"
                 min={0}
                 max={balance}
                 step={0.01}
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                onBlur={(e) => setAmount(parseFloat(e.target.value).toFixed(2))}
-                disabled={paymentOption === 'full'}
+                value={amountTowardBalance}
+                onChange={(e) => setAmountTowardBalance(e.target.value)}
+                onBlur={(e) => setAmountTowardBalance(parseFloat(e.target.value).toFixed(2))}
               />
             </div>
           </div>
-          <table>
+        }
+      </div>
+
+      {paymentOption !== null &&
+        <>
+          <table className="table repayment-breakdown-table">
             <tbody>
               <tr>
-                <th>Processing fee:</th>
-                <td>${fee.toFixed(2)}</td>
+                <th>Payment to Vore Arts Fund</th>
+                <td>${parseFloat(amountTowardBalance).toFixed(2)}</td>
               </tr>
               <tr>
-                <th>Total:</th>
-                <td>${(parseFloat(amount) + fee).toFixed(2)}</td>
+                <th>Processing fee</th>
+                <td>${parseFloat(amountTowardBalance) > 0 ? fee.toFixed(2) : '0.00'}</td>
+              </tr>
+              <tr>
+                <th>Total</th>
+                <td>${parseFloat(amountTowardBalance) > 0 ? total.toFixed(2) : '0.00'}</td>
               </tr>
             </tbody>
           </table>
+          <input type="hidden" name="total" value={total} />
         </>
       }
 

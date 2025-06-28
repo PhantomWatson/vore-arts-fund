@@ -28,7 +28,7 @@ $isPaidOff = $balance <= 0;
             Payments made electronically will incur a <strong>processing fee of <?= Transaction::STRIPE_FEE_DISPLAYED ?></strong>, which will not be applied to your loan balance.
         </p>
         <p>
-            If you wish to donate by check, please read <?= $this->Html->link(
+            If you wish to instead make a payment by check, please read <?= $this->Html->link(
                 'our instructions for mailing checks',
                 ['prefix' => false, 'controller' => 'Pages', 'action' => 'checks'],
             ) ?> and note that this payment is for <strong>Loan #<?= $project->id ?></strong>.

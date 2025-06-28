@@ -1274,3 +1274,11 @@ button[type="submit"] {
     @extend .text-muted;
     font-size: 0.8em;
 }
+
+.repayment-breakdown-table {
+    width: auto;
+
+    td {
+        text-align: right;
+    }
+}

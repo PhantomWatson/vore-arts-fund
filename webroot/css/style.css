@@ -13227,4 +13227,11 @@ button[type=submit].loading .loading-indicator {
   font-size: 0.8em;
 }
 
+.repayment-breakdown-table {
+  width: auto;
+}
+.repayment-breakdown-table td {
+  text-align: right;
+}
+
 /*# sourceMappingURL=style.css.map */
