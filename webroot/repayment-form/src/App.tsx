@@ -40,10 +40,7 @@ function App() {
     || processingFeeFlat === undefined
     || processingFeePercentage === undefined
   ) {
-    console.error(
-      'Cannot load repayment-form; not all setup data is available.',
-      {balance, projectId, processingFeeFlat, processingFeePercentage}
-    );
+    console.error('Cannot load repayment-form; not all setup data is available.', setupData);
     return (
       <div className="alert alert-danger" role="alert">
         Error: Cannot load repayment form.
@@ -58,7 +55,7 @@ function App() {
   }
 
   return (
-    <form method="post" action="/my/loans/payment-process">
+    <form method="post" action={`/my/loans/${projectId}/payment-process`}>
       <input type="hidden" name="paymentOption" value={paymentOption || ""} />
       <input type="hidden" name="total" value={total} />
       <div className="form-group">
