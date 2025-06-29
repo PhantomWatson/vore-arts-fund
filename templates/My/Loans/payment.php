@@ -23,6 +23,7 @@ $isPaidOff = $balance <= 0;
     <div class="alert alert-info">
         <p>
             This loan still has an outstanding balance of <strong>$<?= number_format($balance, 2) ?></strong>.
+            Note that loan repayments are not considered tax-deductible donations, but showing your support for the Vore Arts Fund by <strong>overpaying</strong> is deeply appreciated, and any overpayment <em>can</em> be claimed as a tax-deductible donation to the Vore Arts Fund.
         </p>
         <div class="row" style="margin-bottom: 1em;">
             <section class="col">
@@ -41,9 +42,6 @@ $isPaidOff = $balance <= 0;
                 </p>
             </section>
         </div>
-        <p>
-            Note that loan repayments are not considered tax-deductible donations, but showing your support for the Vore Arts Fund by <strong>overpaying</strong> is deeply appreciated, and any overpayment <em>can</em> be claimed as a tax-deductible donation to the Vore Arts Fund.
-        </p>
     </div>
 
     <div id="root"></div>
