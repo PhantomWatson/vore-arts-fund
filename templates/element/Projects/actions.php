@@ -17,13 +17,11 @@ use App\View\AppView;
         <?php if ($project->isAgreeable() || $project->loan_agreement_date): ?>
             <li>
                 <?= $this->Html->link(
-                    $project->isAgreeable()
-                        ? '<i class="fa-solid fa-pencil"></i> Submit loan agreement'
-                        : '<i class="fa-solid fa-file-contract"></i> View loan agreement',
+                    '<i class="fa-solid fa-file-contract"></i> Go to My Loans',
                     [
-                        'controller' => 'Projects',
-                        'action' => 'loanAgreement',
-                        'id' => $project->id,
+                        'prefix' => 'My',
+                        'controller' => 'Loans',
+                        'action' => 'index'
                     ],
                     [
                         'class' => 'dropdown-item dropdown-item__with-icon',
