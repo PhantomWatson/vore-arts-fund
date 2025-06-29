@@ -61,7 +61,8 @@ use App\Model\Entity\Project;
                             <?= $this->Html->link(
                                 'Submit loan agreement',
                                 [
-                                    'controller' => 'Projects',
+                                    'prefix' => 'My',
+                                    'controller' => 'Loans',
                                     'action' => 'loanAgreement',
                                     'id' => $project->id,
                                 ],
@@ -81,7 +82,8 @@ use App\Model\Entity\Project;
                                         <?= $this->Html->link(
                                             '<i class="fa-solid fa-file-contract"></i> View loan agreement',
                                             [
-                                                'controller' => 'Projects',
+                                                'prefix' => 'My',
+                                                'controller' => 'Loans',
                                                 'action' => 'loanAgreement',
                                                 'id' => $project->id,
                                             ],

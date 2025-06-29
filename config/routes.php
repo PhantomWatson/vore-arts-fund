@@ -111,19 +111,19 @@ $routes->prefix('my', function (RouteBuilder $builder) {
             '/projects/edit/{id}' => 'edit',
             '/projects/delete/{id}' => 'delete',
             '/projects/withdraw/{id}' => 'withdraw',
-            '/projects/loan-agreement/{id}' => 'loanAgreement',
-            '/projects/verify-check-details/{id}' => 'verifyCheckDetails',
-            '/projects/sign-loan-agreement/{id}' => 'signLoanAgreement',
-            '/projects/view-loan-agreement/{id}' => 'viewLoanAgreement',
             '/projects/send-message/{id}' => 'sendMessage',
         ],
         'Bios' => [
             '/bio' => 'edit',
         ],
-        'Loans' => [
-            '/loans/{id}' => 'view',                           // project ID
-            '/loans/{id}/payment' => 'payment',                // project ID
-            '/loans/{id}/payment-process' => 'paymentProcess', // project ID
+        'Loans' => [    // All {id}s are project IDs
+            '/loans/{id}' => 'view',
+            '/loans/{id}/payment' => 'payment',
+            '/loans/{id}/payment-process' => 'paymentProcess',
+            '/loans/loan-agreement/{id}' => 'loanAgreement',
+            '/loans/sign-loan-agreement/{id}' => 'signLoanAgreement',
+            '/loans/view-loan-agreement/{id}' => 'viewLoanAgreement',
+            '/projects/verify-check-details/{id}' => 'verifyCheckDetails',
         ],
         'Reports' => [
             '/reports/submit/{id}' => 'submit', // project ID

@@ -40,7 +40,8 @@ use Cake\Routing\Router;
                         $link = $this->Html->link(
                             'Submit loan agreement',
                             [
-                                'controller' => 'Projects',
+                                'prefix' => 'My',
+                                'controller' => 'Loans',
                                 'action' => 'loanAgreement',
                                 'id' => $project->id,
                             ]
