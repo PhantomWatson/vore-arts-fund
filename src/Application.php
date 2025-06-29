@@ -133,6 +133,8 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 case 'Images/upload':
                 case 'Projects/review':
                 case 'Projects/newNote':
+                case 'Loans/paymentProcess':
+                case 'Loans/payment':
                     return true;
             }
             return false;
