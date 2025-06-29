@@ -52,10 +52,10 @@ class TransactionsController extends ApiController
     public function chargeSucceeded(): void
     {
         if (!$this->request->is(['post', 'options'])) {
-            throw new MethodNotAllowedException('Only POST is supported at this endpoint. Method ' . $this->request->getMethod() . ' is not allowed.');
+            throw new MethodNotAllowedException(
+                'Only POST is supported at this endpoint. Method ' . $this->request->getMethod() . ' is not allowed.'
+            );
         }
-
-        $stripe = new StripeClient(Configure::read('Stripe.secret_key'));
 
         // This is your Stripe CLI webhook secret for testing your endpoint locally.
         $endpointSecret = Configure::read('Stripe.webhook_signing_secret');
@@ -65,15 +65,13 @@ class TransactionsController extends ApiController
         $sigHeader = $_SERVER['HTTP_STRIPE_SIGNATURE'];
 
         try {
-            $event = \Stripe\Webhook::constructEvent(
-                $payload, $sigHeader, $endpointSecret
-            );
-        } catch(\UnexpectedValueException $e) {
+            $event = \Stripe\Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
+        } catch (\UnexpectedValueException $e) {
             // Invalid payload
             http_response_code(400);
             $this->writeToStripeLog('Invalid payload');
             exit();
-        } catch(\Stripe\Exception\SignatureVerificationException $e) {
+        } catch (\Stripe\Exception\SignatureVerificationException $e) {
             // Invalid signature
             http_response_code(400);
             $this->writeToStripeLog('Invalid signature');
