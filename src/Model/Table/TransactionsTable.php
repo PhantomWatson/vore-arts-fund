@@ -195,7 +195,7 @@ class TransactionsTable extends Table
     public static function logStripeError($msg): void
     {
         Log::write(
-            'Error',
+            LOG_ERR,
             $msg,
             ['scope' => 'stripe']
         );
