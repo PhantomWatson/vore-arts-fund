@@ -29,7 +29,7 @@ use App\Model\Entity\Project;
             <?php foreach ($projects as $project): ?>
                 <tr>
                     <td>
-                        <?= h($project->id) ?>
+                        #<?= h($project->id) ?>
                     </td>
                     <td>
                         <?= h($project->title) ?>
@@ -64,6 +64,25 @@ use App\Model\Entity\Project;
                             </button>
 
                             <ul class="dropdown-menu">
+                                <?php if ($project->isAgreeable() || $project->loan_agreement_date): ?>
+                                    <li>
+                                        <?= $this->Html->link(
+                                            $project->isAgreeable()
+                                                ? '<i class="fa-solid fa-pencil"></i> Submit loan agreement'
+                                                : '<i class="fa-solid fa-file-contract"></i> View loan agreement',
+                                            [
+                                                'controller' => 'Projects',
+                                                'action' => 'loanAgreement',
+                                                'id' => $project->id,
+                                            ],
+                                            [
+                                                'class' => 'dropdown-item dropdown-item__with-icon',
+                                                'escape' => false
+                                            ]
+                                        ) ?>
+                                    </li>
+                                <?php endif; ?>
+
                                 <li>
                                     <?= $this->Html->link(
                                         Project::ICON_NOTE . ' Payment history',
