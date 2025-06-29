@@ -154,7 +154,7 @@ class LoansController extends \App\Controller\AppController
 
     public function paymentComplete()
     {
-        $this->Flash->success('Thank you for your repayment! A receipt will be emailed to you shortly.');
+        $this->Flash->success('Thank you for your repayment! A receipt will be emailed to you shortly. It may take a few minutes for this payment to be reflected in your balance below.');
         return $this->redirect(['action' => 'index']);
     }
 }
