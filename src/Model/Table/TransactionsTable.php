@@ -141,8 +141,8 @@ class TransactionsTable extends Table
         $transactionType = isset($charge->metadata['transactionType'])
             ? (int)$charge->metadata['transactionType']
             : null;
-        $isValidType = !$transactionType
-            || !in_array($transactionType, [Transaction::TYPE_DONATION, Transaction::TYPE_LOAN_REPAYMENT]);
+        $isValidType = $transactionType
+            && in_array($transactionType, [Transaction::TYPE_DONATION, Transaction::TYPE_LOAN_REPAYMENT]);
         if (!$isValidType) {
             self::logStripeError(sprintf(
                 'Invalid transaction type for charge %s. Metadata: %s. Type will be recorded as a donation.',
