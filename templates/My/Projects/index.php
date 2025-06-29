@@ -25,7 +25,7 @@ use Cake\Routing\Router;
         <thead>
             <tr>
                 <th>Project</th>
-                <th class="cell--created">Created</th>
+                <th class="cell--created">Application date</th>
                 <th class="cell--status">Status</th>
                 <th class="cell--messages">Messages</th>
                 <th>Actions</th>
