@@ -84,7 +84,7 @@ class AppController extends Controller
         $isLoggedIn = (bool)$authUser;
         $isAdmin = $authUser->is_admin ?? false;
         $projectsTable = $this->getTableLocator()->get('Projects');
-        $hasProjects = $authUser && $projectsTable->exists(['user_id' => $authUser->id]);
+        $hasProjects = $authUser && $projectsTable->userHasProjects($authUser->id);
         $hasLoans = $hasProjects && $projectsTable->userHasPendingOrAwardedLoans($authUser->id);
         $hasReportableProjects = $hasLoans && $projectsTable->userHasReportableProjects($authUser->id);
 

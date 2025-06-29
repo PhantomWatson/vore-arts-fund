@@ -577,4 +577,13 @@ class ProjectsTable extends Table
                 ]);
             });
     }
+
+    public function userHasProjects(int $id)
+    {
+        return $this
+            ->find('notDeleted')
+            ->where(['user_id' => $id])
+            ->all()
+            ->count() > 0;
+    }
 }
