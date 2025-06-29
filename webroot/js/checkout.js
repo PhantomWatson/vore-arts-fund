@@ -1,6 +1,10 @@
 const stripe = window?.stripe;
 const amount = window?.stripeAmount;
 const payerName = window?.stripeDonorName;
+const projectId = window?.projectId;
+const transactionType = window?.transactionType;
+const TRANSACTION_TYPE_DONATION = 1;
+const TRANSACTION_TYPE_LOAN_REPAYMENT = 2;
 
 let elements;
 
@@ -23,13 +27,37 @@ async function initialize(amount, payerName) {
     return;
   }
 
+  // Validate arguments
+  if (amount === undefined || amount <= 0) {
+    showMessage(
+      'The amount for this transaction is missing or zero.',
+      'alert alert-danger'
+    );
+    console.error('Invalid amount:', amount);
+    setPageLoading(false);
+    return;
+  }
+  if (
+    transactionType === undefined
+    || ![TRANSACTION_TYPE_DONATION, TRANSACTION_TYPE_LOAN_REPAYMENT].includes(transactionType)
+  ) {
+    showMessage(
+      'The transaction type for this transaction is invalid.',
+      'alert alert-danger'
+    );
+    console.error('Invalid transaction type:', transactionType);
+    setPageLoading(false);
+    return;
+  }
+
   const { result } = await fetch('/api/stripe/create-payment-intent', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      amount: amount,
-      payerName: payerName,
-      transactionType: transactionType || TRANSACTION_TYPE_DONATION,
+      amount,
+      payerName,
+      transactionType,
+      projectId,
     }),
   }).then((r) => r.json());
 

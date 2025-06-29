@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Model\Entity\Transaction;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\BadRequestException;
@@ -45,15 +46,34 @@ class StripeController extends ApiController
     public function createPaymentIntent()
     {
         if (!$this->getRequest()->is(['post', 'options'])) {
-            throw new MethodNotAllowedException('Only POST is supported at this endpoint. Method ' . $this->request->getMethod() . ' is not allowed.');
+            throw new MethodNotAllowedException(
+                'Only POST is supported at this endpoint. Method ' . $this->request->getMethod() . ' is not allowed.'
+            );
         }
+
         $amount = $this->getRequest()->getData('amount');
         if (!$amount) {
             throw new BadRequestException('No amount provided');
         }
 
+        $transactionType = $this->getRequest()->getData('transactionType');
+        if (!$transactionType || !in_array($transactionType, [
+            Transaction::TYPE_DONATION,
+            Transaction::TYPE_LOAN_REPAYMENT,
+        ])) {
+            throw new BadRequestException('Invalid transaction type');
+        }
+
         $payerName = $this->getRequest()->getData('payerName');
-        $description = 'Donation ' . ($payerName ? "from $payerName" : '(anonymous)');
+        $description = ($transactionType == Transaction::TYPE_DONATION ? 'Donation' : 'Loan repayment')
+            . ($payerName ? " from $payerName" : ' (anonymous)');
+
+
+        $metadata = ['name' => $payerName];
+        if ($this->getRequest()->getData('projectId')) {
+            $metadata['projectId'] = $this->getRequest()->getData('projectId');
+        }
+
         $stripeSecretKey = Configure::read('Stripe.secret_key');
         Stripe::setApiKey($stripeSecretKey);
         try {
@@ -62,11 +82,8 @@ class StripeController extends ApiController
                 'currency' => 'usd',
                 'automatic_payment_methods' => ['enabled' => true],
                 'description' => $description,
-                'metadata' => [
-                    'name' => $payerName,
-                ]
+                'metadata' => $metadata
             ]);
-
             $result = ['clientSecret' => $paymentIntent->client_secret];
         } catch (ApiErrorException $e) {
             http_response_code(500);

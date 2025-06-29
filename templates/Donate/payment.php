@@ -46,6 +46,7 @@ $this->Html->script('checkout.js', ['block' => true, 'defer' => true]);
 <div id="payment-message" class="visually-hidden"></div>
 
 <script>
+    window.transactionType = <?= json_encode(\App\Model\Entity\Transaction::TYPE_DONATION) ?>;
     window.stripeAmount = <?= json_encode($totalAmount) ?>;
     window.stripeDonorName = <?= json_encode($name ?: null) ?>;
     window.stripeReturnUrl = <?= json_encode(Router::url([
