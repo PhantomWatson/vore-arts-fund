@@ -4,8 +4,8 @@ import {useEffect, useState} from 'react';
 function App() {
   const [paymentOption, setPaymentOption] = useState<string|null>(null);
   const [amountTowardBalance, setAmountTowardBalance] = useState<string>('0.00');
-  const [fee, setFee] = useState<number>(0);
-  const [total, setTotal] = useState<number>(0);
+  const [fee, setFee] = useState<string>('0.00');
+  const [total, setTotal] = useState<string>('0.00');
 
   interface FormSetupData {
     projectId: number,
@@ -29,9 +29,15 @@ function App() {
   }, [paymentOption]);
 
   useEffect(() => {
-    const fee = (parseInt(amountTowardBalance) * (processingFeePercentage || 0)) + (processingFeeFlat || 0) / 100;
-    setFee(fee);
-    setTotal(parseFloat(amountTowardBalance) + fee);
+    if (processingFeeFlat === undefined || processingFeePercentage === undefined) {
+      return;
+    }
+
+    const amountTowardBalanceCents = parseFloat(amountTowardBalance) * 100;
+    const totalCents = Math.ceil((amountTowardBalanceCents + processingFeeFlat)/(1 - processingFeePercentage));
+    const feeCents = totalCents - amountTowardBalanceCents;
+    setFee((feeCents / 100).toFixed(2));
+    setTotal((totalCents / 100).toFixed(2));
   }, [amountTowardBalance]);
 
   if (
@@ -122,11 +128,11 @@ function App() {
               </tr>
               <tr>
                 <th>Processing fee</th>
-                <td>${parseFloat(amountTowardBalance) > 0 ? fee.toFixed(2) : '0.00'}</td>
+                <td>${parseFloat(amountTowardBalance) > 0 ? fee : '0.00'}</td>
               </tr>
               <tr>
                 <th>Total</th>
-                <td>${parseFloat(amountTowardBalance) > 0 ? total.toFixed(2) : '0.00'}</td>
+                <td>${parseFloat(amountTowardBalance) > 0 ? total : '0.00'}</td>
               </tr>
             </tbody>
           </table>
