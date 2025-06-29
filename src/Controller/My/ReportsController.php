@@ -132,7 +132,7 @@ class ReportsController extends AppController
                 $this->Flash->success(__('Report submitted. Thanks for keeping us updated!'));
 
                 $back = $this->request->getQuery('back') ?? Router::url([
-                    'controller' => 'Projects',
+                    'controller' => 'Reports',
                     'action' => 'index',
                 ]);
 
