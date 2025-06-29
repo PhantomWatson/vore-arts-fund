@@ -122,11 +122,12 @@ class ReportsController extends AppController
         }
 
         $report = $this->Reports->newEmptyEntity();
-        $report->user_id = $user->id;
-        $report->project_id = $projectId;
         $submittingReport = $this->request->is('post') && !$this->request->getQuery('selectingProject');
         if ($submittingReport) {
-            $report = $this->Reports->patchEntity($report, $this->request->getData());
+            $report->user_id = $user->id;
+            $report->project_id = $projectId;
+            $report->body = $this->getRequest()->getData('body');
+            $report->is_final = (bool)$this->getRequest()->getData('is_final');
             if ($this->Reports->save($report)) {
                 $this->Flash->success(__('Report submitted. Thanks for keeping us updated!'));
 
