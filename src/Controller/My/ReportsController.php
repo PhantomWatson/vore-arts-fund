@@ -139,7 +139,7 @@ class ReportsController extends AppController
             }
             $this->Flash->error(
                 'The report could not be submitted. Please check for errors and try again, and '
-                . '<a href="/contact">contact us</a> if you need assistance.',
+                . '<a href="/contact">contact us</a> if you need assistance. Details: ' . $this->getEntityErrorDetails($report),
                 ['escape' => false]
             );
         }
