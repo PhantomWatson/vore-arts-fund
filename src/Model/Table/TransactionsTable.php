@@ -138,12 +138,24 @@ class TransactionsTable extends Table
      */
     public function addPayment(\Stripe\Charge $charge): Transaction|false
     {
+        $transactionType = $charge->metadata['transactionType'] ?? null;
+        $isValidType = !$transactionType
+            || !in_array($transactionType, [Transaction::TYPE_DONATION, Transaction::TYPE_LOAN_REPAYMENT]);
+        if (!$isValidType) {
+            self::logStripeError(sprintf(
+                'Invalid transaction type for charge %s. Metadata: %s. Type will be recorded as a donation.',
+                $charge->id,
+                json_encode($charge->metadata)
+            ));
+            $transactionType = Transaction::TYPE_DONATION;
+        }
+
         $data = [
             'amount_gross' => $charge->amount_captured,
             'amount_net' => self::getNetAmount($charge->balance_transaction),
             'date' => new FrozenTime(),
-            'type' => Transaction::TYPE_DONATION,
-            'project_id' => null,
+            'type' => $transactionType,
+            'project_id' => $charge->metadata['projectId'] ?? '',
             'meta' => json_encode($charge),
             'name' => $charge->metadata['name'] ?? '',
         ];

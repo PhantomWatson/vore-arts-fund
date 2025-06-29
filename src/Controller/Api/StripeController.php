@@ -68,7 +68,10 @@ class StripeController extends ApiController
         $description = ($transactionType == Transaction::TYPE_DONATION ? 'Donation' : 'Loan repayment')
             . ($payerName ? " from $payerName" : ' (anonymous)');
 
-        $metadata = ['name' => $payerName];
+        $metadata = [
+            'name' => $payerName,
+            'transactionType' => $transactionType,
+        ];
         if ($this->getRequest()->getData('projectId')) {
             $metadata['projectId'] = $this->getRequest()->getData('projectId');
         }
