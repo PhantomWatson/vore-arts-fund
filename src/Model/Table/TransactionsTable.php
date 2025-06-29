@@ -138,7 +138,9 @@ class TransactionsTable extends Table
      */
     public function addPayment(\Stripe\Charge $charge): Transaction|false
     {
-        $transactionType = $charge->metadata['transactionType'] ?? null;
+        $transactionType = isset($charge->metadata['transactionType'])
+            ? (int)$charge->metadata['transactionType']
+            : null;
         $isValidType = !$transactionType
             || !in_array($transactionType, [Transaction::TYPE_DONATION, Transaction::TYPE_LOAN_REPAYMENT]);
         if (!$isValidType) {
@@ -155,10 +157,10 @@ class TransactionsTable extends Table
             'amount_net' => self::getNetAmount($charge->balance_transaction),
             'date' => new FrozenTime(),
             'type' => $transactionType,
-            'project_id' => $charge->metadata['projectId'] ?? '',
+            'project_id' => isset($charge->metadata['projectId']) ? (int)$charge->metadata['projectId'] : null,
             'meta' => json_encode($charge),
-            'name' => $charge->metadata['name'] ?? '',
-            'user_id' => $charge->metadata['userId'] ?? null,
+            'name' => $charge->metadata['name'] ?? null,
+            'user_id' => isset($charge->metadata['userId']) ? (int)$charge->metadata['userId'] : null,
         ];
         $transaction = $this->newEntity($data);
         if ($this->save($transaction)) {
