@@ -525,7 +525,7 @@ class ProjectsTable extends Table
         return false;
     }
 
-    public function findLoadRecipients(Query $query)
+    public function findLoanRecipients(Query $query)
     {
         return $query
             ->where(['Projects.status_id' => Project::STATUS_AWARDED_AND_DISBURSED]);

@@ -29,7 +29,7 @@ class ReportReminderNudge implements NudgeInterface
         $threshold = '-1 month'; // Will wait this long after loan awarded date and between nudges
         return $projectsTable
             ->find('notDeleted')
-            ->find('loadRecipients')
+            ->find('loanRecipients')
             ->find('notFinalized')
             ->find('withoutRecentNudge', [
                 'nudgeType' => [Nudge::TYPE_REPORT_REMINDER, Nudge::TYPE_REPORT_DUE],
