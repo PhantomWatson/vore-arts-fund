@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\Report>|\Cake\ORM\ResultSet $reports
+ * @var iterable<\App\Model\Entity\Project>|\Cake\ORM\ResultSet $projects
  */
 ?>
 
@@ -15,57 +15,68 @@
     </p>
 </div>
 
-<p>
-    <?= $this->Html->link(
-        'Submit report',
-        [
-            'prefix' => 'My',
-            'controller' => 'Reports',
-            'action' => 'submit'
-        ],
-        ['class' => 'btn btn-primary']
-    ) ?>
-</p>
-
 <div class="reports">
-    <?php if (count($reports) === 0): ?>
+    <?php if (count($projects) === 0): ?>
         <p class="alert alert-info">
-            You have not submitted any reports yet.
+            You do not need to submit any reports at this time.
         </p>
     <?php else: ?>
         <table class="table">
             <thead>
             <tr>
-
-                <th>Report</th>
                 <th>Project</th>
-                <th>Funding Cycle</th>
+                <th>Reports</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($reports as $report): ?>
+            <?php foreach ($projects as $project): ?>
                 <tr>
                     <td>
-                        <?= $this->Html->link(
-                            $report->created->format('F j, Y') . ($report->is_final ? ' (final)' : ''),
-                            [
-                                'prefix' => false,
-                                'controller' => 'Reports',
-                                'action' => 'view',
-                                'id' => $report->id,
-                            ]
-                        ) ?>
-                    </td>
-                    <td>
-                        <?= $this->Html->link($report->project->title, [
+                        <?= $this->Html->link($project->title, [
                             'prefix' => 'My',
                             'controller' => 'Projects',
                             'action' => 'view',
-                            'id' => $report->project_id
+                            'id' => $project->id
                         ]) ?>
+                        <br />
+                        <span style="font-size: 0.8em">
+                            <?= $project->funding_cycle->name ?? 'Unknown' ?> funding cycle
+                        </span>
                     </td>
                     <td>
-                        <?= $report->project->funding_cycle->name ?? 'Unknown' ?>
+                        <?php if (count($project->reports) === 0): ?>
+                            No reports submitted yet
+                        <?php else: ?>
+                            <?php foreach ($project->reports as $report): ?>
+                                <?= $this->Html->link(
+                                    $report->created->format('F j, Y') . ($report->is_final ? ' (final)' : ''),
+                                    [
+                                        'prefix' => false,
+                                        'controller' => 'Reports',
+                                        'action' => 'view',
+                                        'id' => $report->id,
+                                    ]
+                                ) ?>
+                                <br />
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </td>
+                    <td>
+                        <?php if ($project->is_finalized): ?>
+                            Final report submitted
+                        <?php else: ?>
+                            <?= $this->Html->link(
+                                'Submit report',
+                                [
+                                    'prefix' => 'My',
+                                    'controller' => 'Reports',
+                                    'action' => 'submit',
+                                    'id' => $project->id
+                                ],
+                                ['class' => 'btn btn-primary']
+                            ) ?>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

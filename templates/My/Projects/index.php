@@ -28,7 +28,6 @@ use Cake\Routing\Router;
                 <th class="cell--created">Created</th>
                 <th class="cell--status">Status</th>
                 <th class="cell--messages">Messages</th>
-                <th class="cell--reports">Reports</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -121,21 +120,6 @@ use Cake\Routing\Router;
                             ) ?>
                         <?php else: ?>
                             <?= count($project->notes) ?>
-                        <?php endif; ?>
-                    </td>
-                    <td class="cell--reports">
-                        <?php if (count($project->reports)): ?>
-                            <?= $this->Html->link(
-                                count($project->reports) . ' (view)',
-                                [
-                                    'prefix' => false,
-                                    'controller' => 'Reports',
-                                    'action' => 'project',
-                                    $project->id,
-                                ]
-                            ) ?>
-                        <?php else: ?>
-                            <?= count($project->reports) ?>
                         <?php endif; ?>
                     </td>
                     <td>

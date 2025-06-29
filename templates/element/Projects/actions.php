@@ -30,6 +30,23 @@ use App\View\AppView;
                 ) ?>
             </li>
         <?php endif; ?>
+        <?php if ($project->isReportable()): ?>
+            <li>
+                <?= $this->Html->link(
+                    Project::ICON_REPORT . ' Go to My Reports',
+                    [
+                        'prefix' => 'My',
+                        'controller' => 'Reports',
+                        'action' => 'submit',
+                        $project->id,
+                    ],
+                    [
+                        'class' => 'dropdown-item dropdown-item__with-icon',
+                        'escape' => false
+                    ]
+                ) ?>
+            </li>
+        <?php endif; ?>
         <?php if ($this->getRequest()->getParam('action') != 'view'): ?>
             <li>
                 <?= $this->Html->link(
@@ -93,23 +110,6 @@ use App\View\AppView;
                         'class' => 'dropdown-item dropdown-item__with-icon',
                         'escape' => false,
                         'confirm' => 'Are you sure you want to withdraw this application?',
-                    ]
-                ) ?>
-            </li>
-        <?php endif; ?>
-        <?php if ($project->isReportable()): ?>
-            <li>
-                <?= $this->Html->link(
-                    Project::ICON_REPORT . ' Submit report',
-                    [
-                        'prefix' => 'My',
-                        'controller' => 'Reports',
-                        'action' => 'submit',
-                        $project->id,
-                    ],
-                    [
-                        'class' => 'dropdown-item dropdown-item__with-icon',
-                        'escape' => false
                     ]
                 ) ?>
             </li>

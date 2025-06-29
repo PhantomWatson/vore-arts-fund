@@ -8,6 +8,7 @@ use App\Model\Entity\Project;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
+use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
@@ -51,14 +52,24 @@ class ReportsController extends AppController
     public function index()
     {
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
-        $hasReportableProjects = $projectsTable->userHasReportableProjects($this->getAuthUser()->id);
-        $reports = $this->Reports
-            ->find()
-            ->contain(['Projects.FundingCycles'])
-            ->where(['Reports.user_id' => $this->getAuthUser()->id])
-            ->orderDesc('Reports.created')
+        $projects = $projectsTable
+            ->find('notDeleted')
+            ->where([
+                'Projects.user_id' => $this->getAuthUser()->id,
+                'Projects.status_id IN' => [
+                    Project::STATUS_AWARDED_NOT_YET_DISBURSED,
+                    Project::STATUS_AWARDED_AND_DISBURSED
+                ],
+            ])
+            ->contain([
+                'FundingCycles',
+                'Reports' => function (Query $q) {
+                    return $q->orderDesc('Reports.created');
+                }
+            ])
+            ->order(['Projects.created' => 'DESC'])
             ->all();
-        $this->set(compact('reports', 'hasReportableProjects'));
+        $this->set(compact('projects'));
         $this->setCurrentBreadcrumb('My Reports');
         $this->title('My Reports');
     }
