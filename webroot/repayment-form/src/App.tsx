@@ -143,7 +143,7 @@ function App() {
       <button
         type="submit"
         className="btn btn-primary"
-        disabled={paymentOption === null}
+        disabled={paymentOption === null || parseFloat(amountTowardBalance) === 0}
       >
         Proceed to payment
       </button>
