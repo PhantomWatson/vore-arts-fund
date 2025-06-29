@@ -57,18 +57,29 @@ use App\Model\Entity\Project;
                         <?php endif; ?>
                     </td>
                     <td>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Actions
-                            </button>
+                        <?php if ($project->isAgreeable()): ?>
+                            <?= $this->Html->link(
+                                'Submit loan agreement',
+                                [
+                                    'controller' => 'Projects',
+                                    'action' => 'loanAgreement',
+                                    'id' => $project->id,
+                                ],
+                                [
+                                    'class' => 'btn btn-primary',
+                                    'escape' => false
+                                ]
+                            ) ?>
+                        <?php else: ?>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Actions
+                                </button>
 
-                            <ul class="dropdown-menu">
-                                <?php if ($project->isAgreeable() || $project->loan_agreement_date): ?>
+                                <ul class="dropdown-menu">
                                     <li>
                                         <?= $this->Html->link(
-                                            $project->isAgreeable()
-                                                ? '<i class="fa-solid fa-pencil"></i> Submit loan agreement'
-                                                : '<i class="fa-solid fa-file-contract"></i> View loan agreement',
+                                            '<i class="fa-solid fa-file-contract"></i> View loan agreement',
                                             [
                                                 'controller' => 'Projects',
                                                 'action' => 'loanAgreement',
@@ -80,38 +91,37 @@ use App\Model\Entity\Project;
                                             ]
                                         ) ?>
                                     </li>
-                                <?php endif; ?>
-
-                                <li>
-                                    <?= $this->Html->link(
-                                        Project::ICON_NOTE . ' Payment history',
-                                        [
-                                            'controller' => 'Loans',
-                                            'action' => 'view',
-                                            'id' => $project->id,
-                                        ],
-                                        [
-                                            'class' => 'dropdown-item dropdown-item__with-icon',
-                                            'escape' => false
-                                        ]
-                                    ) ?>
-                                </li>
-                                <li>
-                                    <?= $this->Html->link(
-                                        Project::ICON_FUND . ' Make payment',
-                                        [
-                                            'controller' => 'Loans',
-                                            'action' => 'payment',
-                                            'id' => $project->id,
-                                        ],
-                                        [
-                                            'class' => 'dropdown-item dropdown-item__with-icon',
-                                            'escape' => false
-                                        ]
-                                    ) ?>
-                                </li>
-                            </ul>
-                        </div>
+                                    <li>
+                                        <?= $this->Html->link(
+                                            Project::ICON_NOTE . ' Payment history',
+                                            [
+                                                'controller' => 'Loans',
+                                                'action' => 'view',
+                                                'id' => $project->id,
+                                            ],
+                                            [
+                                                'class' => 'dropdown-item dropdown-item__with-icon',
+                                                'escape' => false
+                                            ]
+                                        ) ?>
+                                    </li>
+                                    <li>
+                                        <?= $this->Html->link(
+                                            Project::ICON_FUND . ' Make payment',
+                                            [
+                                                'controller' => 'Loans',
+                                                'action' => 'payment',
+                                                'id' => $project->id,
+                                            ],
+                                            [
+                                                'class' => 'dropdown-item dropdown-item__with-icon',
+                                                'escape' => false
+                                            ]
+                                        ) ?>
+                                    </li>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
