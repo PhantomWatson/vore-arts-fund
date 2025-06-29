@@ -37,8 +37,7 @@ use App\View\AppView;
                     [
                         'prefix' => 'My',
                         'controller' => 'Reports',
-                        'action' => 'submit',
-                        $project->id,
+                        'action' => 'index',
                     ],
                     [
                         'class' => 'dropdown-item dropdown-item__with-icon',
