@@ -85,7 +85,8 @@ class AppController extends Controller
         $isAdmin = $authUser->is_admin ?? false;
         $projectsTable = $this->getTableLocator()->get('Projects');
         $hasProjects = $authUser && $projectsTable->exists(['user_id' => $authUser->id]);
-        $hasReportableProjects = $hasProjects && $projectsTable->userHasReportableProjects($authUser->id);
+        $hasLoans = $hasProjects && $projectsTable->userHasPendingOrAwardedLoans($authUser->id);
+        $hasReportableProjects = $hasLoans && $projectsTable->userHasReportableProjects($authUser->id);
 
         $this->set(compact(
             'authUser',
@@ -93,6 +94,7 @@ class AppController extends Controller
             'isAdmin',
             'isLoggedIn',
             'hasReportableProjects',
+            'hasLoans',
         ));
 }
 

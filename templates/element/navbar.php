@@ -5,6 +5,7 @@
  * @var bool $isAdmin
  * @var bool $isLoggedIn
  * @var bool $hasReportableProjects
+ * @var bool $hasLoans
  */
 $links = [
     [
@@ -72,16 +73,13 @@ if ($hasProjects) {
         ['prefix' => 'My', 'controller' => 'Projects', 'action' => 'index'],
         ['class' => 'dropdown-item']
     ];
-
-    // TODO: Add a real condition
-    if (true) {
+    if ($hasLoans) {
         $loggedInLinks[] = [
             'My Loans',
             ['prefix' => 'My', 'controller' => 'Loans', 'action' => 'index'],
             ['class' => 'dropdown-item']
         ];
     }
-
     if ($hasReportableProjects) {
         $loggedInLinks[] = [
             'My Reports',

@@ -479,9 +479,25 @@ class ProjectsTable extends Table
         }
     }
 
+    public function userHasPendingOrAwardedLoans(int $userId): bool
+    {
+        return $this
+            ->find('notDeleted')
+            ->where([
+                'user_id' => $userId,
+                'status_id IN' => [
+                    Project::STATUS_AWARDED_NOT_YET_DISBURSED,
+                    Project::STATUS_AWARDED_AND_DISBURSED,
+                ],
+            ])
+            ->all()
+            ->count() > 0;
+    }
+
     public function userHasReportableProjects(int $userId): bool
     {
         $count = $this
+            ->find('notDeleted')
             ->find('reportableForUser', ['userId' => $userId])
             ->count();
         return $count > 0;
