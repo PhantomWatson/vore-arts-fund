@@ -16,7 +16,6 @@ use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Http\Exception\UnauthorizedException;
 use Cake\Log\Log;
-use Stripe\StripeClient;
 
 /**
  * @property \App\Model\Table\TransactionsTable $Transactions
