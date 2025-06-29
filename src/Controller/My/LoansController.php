@@ -126,7 +126,6 @@ class LoansController extends \App\Controller\AppController
             ($amountTowardLoan + Transaction::STRIPE_FEE_FIXED)
             / (1 - Transaction::STRIPE_FEE_PERCENTAGE)
         );
-
         if (abs($expectedTotal - $totalAmount) > 1) {
             Log::write(
                 LOG_ERR,

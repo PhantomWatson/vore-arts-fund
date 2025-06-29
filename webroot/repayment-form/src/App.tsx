@@ -3,7 +3,13 @@ import {useEffect, useState} from 'react';
 
 function App() {
   const [paymentOption, setPaymentOption] = useState<string|null>(null);
+
+  // donation + amountTowardBalance = amountToVaf
+  const [donation, setDonation] = useState<string>('0.00');
   const [amountTowardBalance, setAmountTowardBalance] = useState<string>('0.00');
+  const [amountToVaf, setAmountToVaf] = useState<string>('0.00');
+
+  // amountToVaf + fee = total
   const [fee, setFee] = useState<string>('0.00');
   const [total, setTotal] = useState<string>('0.00');
 
@@ -25,6 +31,8 @@ function App() {
   useEffect(() => {
     if (paymentOption === 'full') {
       setAmountTowardBalance((balance || 0).toFixed(2));
+    } else {
+      setDonation('0.00');
     }
   }, [paymentOption]);
 
@@ -33,12 +41,13 @@ function App() {
       return;
     }
 
-    const amountTowardBalanceCents = parseFloat(amountTowardBalance) * 100;
-    const totalCents = Math.ceil((amountTowardBalanceCents + processingFeeFlat)/(1 - processingFeePercentage));
-    const feeCents = totalCents - amountTowardBalanceCents;
+    const subtotalCents = (parseFloat(amountTowardBalance) * 100) + (parseFloat(donation) * 100);
+    const totalCents = Math.ceil((subtotalCents + processingFeeFlat)/(1 - processingFeePercentage));
+    const feeCents = totalCents - subtotalCents;
+    setAmountToVaf((subtotalCents / 100).toFixed(2));
     setFee((feeCents / 100).toFixed(2));
     setTotal((totalCents / 100).toFixed(2));
-  }, [amountTowardBalance]);
+  }, [amountTowardBalance, donation]);
 
   if (
     balance === undefined
@@ -78,6 +87,25 @@ function App() {
             />
             Pay off remaining balance
           </label>
+          {paymentOption === 'full' &&
+            <div className="form-group">
+              <label htmlFor="donation">+ Optional extra donation</label>
+              <div className="input-group">
+                <div className="input-group-text">$</div>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="donation"
+                  name="donation"
+                  min={0}
+                  step={0.01}
+                  value={donation}
+                  onChange={(e) => setDonation(e.target.value)}
+                  onBlur={(e) => setDonation(parseFloat(e.target.value).toFixed(2))}
+                />
+              </div>
+            </div>
+          }
         </div>
         {paymentOption === 'full' &&
           <input type="hidden" name="amountTowardBalance" value={balance} />
@@ -124,15 +152,15 @@ function App() {
             <tbody>
               <tr>
                 <th>Payment to Vore Arts Fund</th>
-                <td>${parseFloat(amountTowardBalance).toFixed(2)}</td>
+                <td>${amountToVaf}</td>
               </tr>
               <tr>
                 <th>Processing fee</th>
-                <td>${parseFloat(amountTowardBalance) > 0 ? fee : '0.00'}</td>
+                <td>${parseFloat(amountToVaf) > 0 ? fee : '0.00'}</td>
               </tr>
               <tr>
                 <th>Total</th>
-                <td>${parseFloat(amountTowardBalance) > 0 ? total : '0.00'}</td>
+                <td>${parseFloat(amountToVaf) > 0 ? total : '0.00'}</td>
               </tr>
             </tbody>
           </table>
@@ -143,7 +171,7 @@ function App() {
       <button
         type="submit"
         className="btn btn-primary"
-        disabled={paymentOption === null || parseFloat(amountTowardBalance) === 0}
+        disabled={paymentOption === null || parseFloat(amountToVaf) === 0}
       >
         Proceed to payment
       </button>
