@@ -16,6 +16,7 @@ use App\Model\Entity\Project;
     <table class="table">
         <thead>
             <tr>
+                <th>Loan ID</th>
                 <th>Project</th>
                 <th>Awarded Date</th>
                 <th>Loan Amount</th>
@@ -27,6 +28,9 @@ use App\Model\Entity\Project;
         <tbody>
             <?php foreach ($projects as $project): ?>
                 <tr>
+                    <td>
+                        <?= h($project->id) ?>
+                    </td>
                     <td>
                         <?= h($project->title) ?>
                     </td>
@@ -62,7 +66,7 @@ use App\Model\Entity\Project;
                             <ul class="dropdown-menu">
                                 <li>
                                     <?= $this->Html->link(
-                                        Project::ICON_NOTE . ' View details',
+                                        Project::ICON_NOTE . ' Payment history',
                                         [
                                             'controller' => 'Loans',
                                             'action' => 'view',

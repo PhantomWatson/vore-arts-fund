@@ -9,14 +9,6 @@ $balance = $project->amount_awarded - $totalRepaid;
 
 <table class="table">
     <tr>
-        <th>Project</th>
-        <td><?= h($project->title) ?></td>
-    </tr>
-    <tr>
-        <th>Loan number</th>
-        <td>#<?= $project->id ?></td>
-    </tr>
-    <tr>
         <th>Loan amount</th>
         <td><?= $project->amount_awarded_formatted_cents ?></td>
     </tr>

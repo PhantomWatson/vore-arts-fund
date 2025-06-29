@@ -56,7 +56,7 @@ class LoansController extends \App\Controller\AppController
         /** @var TransactionsTable $transactionsTable */
         $transactionsTable = TableRegistry::getTableLocator()->get('Transactions');
         $repayments = $transactionsTable->getRepaymentsForProject($projectId);
-        $this->title('Loan for ' . $project->title);
+        $this->title(sprintf('Loan #%s (%s)', $project->id, $project->title));
         $this->set(compact('project', 'repayments'));
     }
 
