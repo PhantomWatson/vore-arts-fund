@@ -1,23 +1,24 @@
-const stripe = window.stripe;
-const amount = window.stripeAmount;
-const donorName = window.stripeDonorName;
+const stripe = window?.stripe;
+const amount = window?.stripeAmount;
+const payerName = window?.stripeDonorName;
 
 let elements;
 
-initialize(amount, donorName);
+initialize(amount, payerName);
 checkStatus();
 
 const paymentForm = document.getElementById('payment-form');
 paymentForm.addEventListener('submit', handleSubmit);
 
 // Fetches a payment intent and captures the client secret
-async function initialize(amount, donorName) {
+async function initialize(amount, payerName) {
   // Check to make sure that Stripe has loaded
   if (stripe === undefined) {
     showMessage(
-      'There was an error loading the payment information form. Please go back to the donation form and try again.',
+      'There was an error loading the payment information form. Please go back and try again.',
       'alert alert-danger'
     );
+    console.error('stripe is undefined');
     setPageLoading(false);
     return;
   }
@@ -27,7 +28,8 @@ async function initialize(amount, donorName) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       amount: amount,
-      donorName: donorName,
+      payerName: payerName,
+      transactionType: transactionType || TRANSACTION_TYPE_DONATION,
     }),
   }).then((r) => r.json());
 
