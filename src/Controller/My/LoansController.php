@@ -150,7 +150,7 @@ class LoansController extends \App\Controller\AppController
         $usersTable = TableRegistry::getTableLocator()->get('Users');
         $user = $usersTable->get($this->getAuthUser()->id);
         $name = $user->name;
-        $this->set(compact('amountTowardLoan', 'totalAmount', 'projectId', 'name'));
+        $this->set(compact('totalAmount', 'projectId', 'name'));
     }
 
     public function paymentComplete()

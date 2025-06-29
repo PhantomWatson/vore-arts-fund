@@ -2,8 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var int $projectId
- * @var int $amountTowardLoan // in cents
- * @var int $totalAmount      // in cents
+ * @var int $totalAmount // in cents
  * @var string $name
  */
 
