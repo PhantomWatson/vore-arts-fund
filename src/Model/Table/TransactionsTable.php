@@ -160,9 +160,9 @@ class TransactionsTable extends Table
             'project_id' => isset($charge->metadata['projectId']) ? (int)$charge->metadata['projectId'] : null,
             'meta' => json_encode($charge),
             'name' => $charge->metadata['name'] ?? null,
-            'user_id' => isset($charge->metadata['userId']) ? (int)$charge->metadata['userId'] : null,
         ];
         $transaction = $this->newEntity($data);
+        $transaction->user_id = isset($charge->metadata['userId']) ? (int)$charge->metadata['userId'] : null;
         if ($this->save($transaction)) {
             return $transaction;
         }
