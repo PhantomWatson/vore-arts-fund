@@ -32,8 +32,8 @@ class Report extends Entity
      */
     protected $_accessible = [
         'body' => true,
-        'user_id' => true,
-        'project_id' => true,
+        'user_id' => false,
+        'project_id' => false,
         'is_final' => true,
         'created' => true,
         'modified' => true,
