@@ -561,22 +561,7 @@ class Project extends Entity
             return 0;
         }
 
-        if (!isset($this->transactions)) {
-            $this->transactions = TableRegistry::getTableLocator()
-                ->get('Transactions')
-                ->find()
-                ->where([
-                    'project_id' => $this->id,
-                    'type' => Transaction::TYPE_LOAN_REPAYMENT,
-                ])
-                ->all();
-        }
-
-        $repaymentTotal = array_sum(array_map(function (Transaction $transaction) {
-            return $transaction->amount_net;
-        }, $this->transactions));
-
-        return $this->amount_awarded - $repaymentTotal;
+        return $this->amount_awarded - ($this->getTotalRepaid() / 100);
     }
 
     /**
@@ -593,6 +578,7 @@ class Project extends Entity
         $transactions = TableRegistry::getTableLocator()
             ->get('Transactions')
             ->find()
+            ->select(['amount_net'])
             ->where([
                 'project_id' => $this->id,
                 'type' => Transaction::TYPE_LOAN_REPAYMENT,
