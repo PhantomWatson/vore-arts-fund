@@ -1,6 +1,6 @@
 const stripe = window?.stripe;
 const amount = window?.stripeAmount;
-const payerName = window?.stripeDonorName;
+const payerName = window?.payerName;
 const projectId = window?.projectId;
 const transactionType = window?.transactionType;
 const TRANSACTION_TYPE_DONATION = 1;

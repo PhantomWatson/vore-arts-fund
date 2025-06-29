@@ -48,7 +48,7 @@ $this->Html->script('checkout.js', ['block' => true, 'defer' => true]);
 <script>
     window.transactionType = <?= json_encode(\App\Model\Entity\Transaction::TYPE_DONATION) ?>;
     window.stripeAmount = <?= json_encode($totalAmount) ?>;
-    window.stripeDonorName = <?= json_encode($name ?: null) ?>;
+    window.payerName = <?= json_encode($name ?: null) ?>;
     window.stripeReturnUrl = <?= json_encode(Router::url([
         'prefix' => false,
         'controller' => 'Donate',
