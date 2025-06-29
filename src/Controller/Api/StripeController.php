@@ -71,6 +71,7 @@ class StripeController extends ApiController
         $metadata = [
             'name' => $payerName,
             'transactionType' => $transactionType,
+            'userId' => $this->getAuthUser() ? $this->getAuthUser()->id : null,
         ];
         if ($this->getRequest()->getData('projectId')) {
             $metadata['projectId'] = $this->getRequest()->getData('projectId');
