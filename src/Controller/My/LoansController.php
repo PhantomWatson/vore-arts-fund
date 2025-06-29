@@ -122,9 +122,11 @@ class LoansController extends \App\Controller\AppController
         }
 
         // If expected and actual total are off by more than one cent, log error and send alert
-        $expectedTotal = $amountTowardLoan
-            + ($amountTowardLoan * Transaction::STRIPE_FEE_PERCENTAGE)
-            + Transaction::STRIPE_FEE_FIXED;
+        $expectedTotal = ceil(
+            ($amountTowardLoan + Transaction::STRIPE_FEE_FIXED)
+            / (1 - Transaction::STRIPE_FEE_PERCENTAGE)
+        );
+
         if (abs($expectedTotal - $totalAmount) > 1) {
             Log::write(
                 LOG_ERR,
