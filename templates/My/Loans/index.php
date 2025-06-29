@@ -21,8 +21,7 @@ use App\Model\Entity\Project;
                 <th>Awarded Date</th>
                 <th>Loan Amount</th>
                 <th>Balance</th>
-                <th>View Details</th>
-                <th></th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
