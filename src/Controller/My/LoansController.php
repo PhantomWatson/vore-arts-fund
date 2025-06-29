@@ -274,7 +274,7 @@ class LoansController extends \App\Controller\AppController
 
         if ($loanAgreementSaveSuccess) {
             $this->Flash->success(
-                'Loan agreement signed. The Vore Arts Fund staff has been notified, and you should expect an email confirmation that your check is in the mail in the next few days. You are encouraged to save this agreement in your records (we suggest printing to a PDF file), but this agreement will remain available for you to access through this website.'
+                'Loan agreement signed. The Vore Arts Fund staff has been notified, and you should expect an email confirmation that your check is in the mail in the next few days. You are encouraged to save this agreement in your records (we suggest printing to a PDF file), but this agreement will remain available for you to access through the My Loans page on this website.'
             );
             $this->redirect(['action' => 'viewLoanAgreement', 'id' => $projectId]);
         } else {
