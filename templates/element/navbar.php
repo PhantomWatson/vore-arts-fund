@@ -47,6 +47,11 @@ $aboutLinks = [
         ['class' => 'dropdown-item']
     ],
     [
+        'Meetings',
+        ['controller' => 'Pages', 'action' => 'virtualMeetings', 'prefix' => false],
+        ['class' => 'dropdown-item']
+    ],
+    [
         'Contact',
         ['controller' => 'Pages', 'action' => 'contact', 'prefix' => false],
         ['class' => 'dropdown-item']

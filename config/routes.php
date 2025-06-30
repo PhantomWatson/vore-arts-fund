@@ -61,6 +61,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
             '/partners' => 'partners',
             '/discount-eligibility' => 'discountEligibility',
             '/checks' => 'checks',
+            '/virtual-meetings' => 'virtualMeetings',
         ],
         'Projects' => [
             '/project/{id}' => 'view',

@@ -251,4 +251,12 @@ class PagesController extends AppController
     {
         $this->title('Paying by check');
     }
+
+    public function virtualMeetings()
+    {
+        $this->title('Virtual meetings');
+        $this->set([
+            'showLink' => $this->getRequest()->is('post')
+        ]);
+    }
 }
