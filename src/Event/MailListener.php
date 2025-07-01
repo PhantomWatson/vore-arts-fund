@@ -280,9 +280,9 @@ class MailListener implements EventListenerInterface
             $email,
             [
                 'project' => $project,
-                'myProjectsUrl' => Router::url([
+                'myReportsUrl' => Router::url([
                     'prefix' => 'My',
-                    'controller' => 'Projects',
+                    'controller' => 'Reports',
                     'action' => 'index'
                 ], true),
                 'userName' => $name,

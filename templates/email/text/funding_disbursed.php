@@ -2,7 +2,7 @@
 /**
  * @var \App\Model\Entity\Project $project
  * @var \App\View\AppView $this
- * @var string $myProjectsUrl
+ * @var string $myReportsUrl
  * @var string $supportEmail
  * @var string $userName
  * @var string $replyUrl
@@ -17,7 +17,7 @@ SO WHAT COMES NEXT? We'd like for you to submit check-in reports to let us know 
 
 While these reports can be weekly, monthly, or just once you've finished your project, it's MANDATORY that we hear from you at least once per year and that you let us know when your project is complete. Otherwise, our 501(c)(3) rules handed down by the government say we have to disqualify you from any future funding. :(
 
-When you're ready, visit <?= $myProjectsUrl ?> to submit a report to let us know how things are going. And don't worry; we'll send you a reminder email about this if we haven't heard from you in a while.
+When you're ready, visit <?= $myReportsUrl ?> to submit a report to let us know how things are going. And don't worry; we'll send you a reminder email about this if we haven't heard from you in a while.
 
 If you have any questions, please visit the Messages page for this project to send us a message: <?= $replyUrl ?>
 

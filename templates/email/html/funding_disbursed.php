@@ -2,7 +2,7 @@
 /**
  * @var \App\Model\Entity\Project $project
  * @var \App\View\AppView $this
- * @var string $myProjectsUrl
+ * @var string $myReportsUrl
  * @var string $supportEmail
  * @var string $userName
  * @var string $replyUrl
@@ -26,7 +26,7 @@
 </p>
 
 <p>
-    When you're ready, visit <a href="<?= $myProjectsUrl ?>"><?= $myProjectsUrl ?></a> to submit a report to let us know how things are going. And don't worry; we'll send you a reminder email about this if we haven't heard from you in a while.
+    When you're ready, visit <a href="<?= $myReportsUrl ?>"><?= $myReportsUrl ?></a> to submit a report to let us know how things are going. And don't worry; we'll send you a reminder email about this if we haven't heard from you in a while.
 </p>
 
 <p>
