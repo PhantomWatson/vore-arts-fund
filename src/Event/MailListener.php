@@ -159,7 +159,7 @@ class MailListener implements EventListenerInterface
                 'fundingCycle' => $this->fundingCyclesTable->get($project->funding_cycle_id),
                 'loanAgreementUrl' => Router::url([
                     'prefix' => 'My',
-                    'controller' => 'Projects',
+                    'controller' => 'Loans',
                     'action' => 'loanAgreement',
                     'id' => $project->id,
                 ], true),
