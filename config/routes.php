@@ -124,7 +124,7 @@ $routes->prefix('my', function (RouteBuilder $builder) {
             '/loans/loan-agreement/{id}' => 'loanAgreement',
             '/loans/sign-loan-agreement/{id}' => 'signLoanAgreement',
             '/loans/view-loan-agreement/{id}' => 'viewLoanAgreement',
-            '/projects/verify-check-details/{id}' => 'verifyCheckDetails',
+            '/loans/verify-check-details/{id}' => 'verifyCheckDetails',
         ],
         'Reports' => [
             '/reports/submit/{id}' => 'submit', // project ID
