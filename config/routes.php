@@ -134,6 +134,18 @@ $routes->prefix('my', function (RouteBuilder $builder) {
         ],
     ];
     buildRoutes($builder, $controllers);
+
+    // Redirect old loan agreement URL
+    $builder->redirect(
+        '/projects/loan-agreement/{id}',
+        ['controller' => 'Loans', 'action' => 'loanAgreement'],
+        [
+            'id' => '\d+',
+            'pass' => ['id'],
+            'persist' => ['id'],
+        ]
+    );
+
     $builder->fallbacks(DashedRoute::class);
 });
 
