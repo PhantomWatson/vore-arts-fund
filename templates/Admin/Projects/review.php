@@ -132,7 +132,9 @@ $alertIcon = '<i class="fa-solid fa-circle-exclamation" style="color: red;"></i>
                             Date awarded
                         </th>
                         <td>
-                            <?= $project->loan_agreement_date_local->format('F j, Y') ?>
+                            <?= $project->loan_awarded_date
+                                ? $project->loan_awarded_date_formatted
+                                : ($alertIcon . ' Project has awarded status, but no awarded date') ?>
                         </td>
                     </tr>
                     <tr>
@@ -169,10 +171,17 @@ $alertIcon = '<i class="fa-solid fa-circle-exclamation" style="color: red;"></i>
                         </th>
                         <td>
                             <?php
-                                $disbursementDates = $project->disbursement_dates;
-                                echo $disbursementDates
-                                    ? implode('<br />', $disbursementDates)
-                                    : ($alertIcon . ' Not mailed yet');
+                                $disbursementDates = $project->disbursement_dates_local;
+                                if ($disbursementDates) {
+                                    foreach ($disbursementDates as $i => $date) {
+                                        if ($i > 0) {
+                                            echo '<br />';
+                                        }
+                                        echo $date->format('F j, Y');
+                                    }
+                                } else {
+                                    echo $alertIcon . ' Not mailed yet';
+                                }
                             ?>
                         </td>
                     </tr>
@@ -181,7 +190,9 @@ $alertIcon = '<i class="fa-solid fa-circle-exclamation" style="color: red;"></i>
                             Amount
                         </th>
                         <td>
-                            <?= $project->amount_awarded ? $project->amount_awarded_formatted : '<span class="no-answer">Amount awarded is zero? Something\'s wrong here.</span>' ?>
+                            <?= $project->amount_awarded
+                                ? $project->amount_awarded_formatted
+                                : ($alertIcon . ' Amount awarded is zero? Something\'s wrong here.') ?>
                         </td>
                     </tr>
                     <tr>
@@ -189,7 +200,7 @@ $alertIcon = '<i class="fa-solid fa-circle-exclamation" style="color: red;"></i>
                             Payable to
                         </th>
                         <td>
-                            <?= $project->check_name ?: ($alertIcon . ' <span class="no-answer">Check name not provided, but applicant\'s name is ' . $project->user->name . '</span>') ?>
+                            <?= $project->check_name ?: ($alertIcon . ' Check name not provided, but applicant\'s name is ' . $project->user->name) ?>
                         </td>
                     </tr>
                     <tr>

@@ -400,12 +400,12 @@ class Project extends Entity
 
     protected function _getAmountAwardedFormatted(): string
     {
-        return '$' . number_format($this->amount_awarded);
+        return '$' . number_format($this->amount_awarded ?: 0);
     }
 
     protected function _getAmountAwardedFormattedCents(): string
     {
-        return '$' . number_format($this->amount_awarded, 2);
+        return '$' . number_format($this->amount_awarded ?: 0, 2);
     }
 
     /**
@@ -520,7 +520,9 @@ class Project extends Entity
      */
     protected function _getLoanAgreementDateLocal()
     {
-        return $this->loan_agreement_date->setTimezone(\App\Application::LOCAL_TIMEZONE);
+        return $this->loan_agreement_date
+            ? $this->loan_agreement_date->setTimezone(\App\Application::LOCAL_TIMEZONE)
+            : null;
     }
 
     /**
