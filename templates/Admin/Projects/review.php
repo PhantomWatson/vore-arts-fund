@@ -172,7 +172,7 @@ $alertIcon = '<i class="fa-solid fa-circle-exclamation" style="color: red;"></i>
                                 $disbursementDates = $project->disbursement_dates;
                                 echo $disbursementDates
                                     ? implode('<br />', $disbursementDates)
-                                    : ($alertIcon . 'Not mailed yet');
+                                    : ($alertIcon . ' Not mailed yet');
                             ?>
                         </td>
                     </tr>
