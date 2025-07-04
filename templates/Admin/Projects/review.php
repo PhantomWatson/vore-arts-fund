@@ -123,6 +123,42 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 
         <?php if ($project->isAwarded()): ?>
             <section>
+                <h2>Loan</h2>
+                <table class="table project-overview-table">
+                    <tbody>
+                    <tr>
+                        <th>
+                            Date awarded
+                        </th>
+                        <td>
+                            <?= $project->loan_agreement_date_local->format('F j, Y') ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Amount awarded
+                        </th>
+                        <td>
+                            <?= $project->amount_awarded_formatted ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Loan agreement
+                        </th>
+                        <td>
+                            <?php if ($project->loan_agreement_date): ?>
+                                Signed on <?= $project->loan_agreement_date_local->format('F j, Y') ?>
+                            <?php else: ?>
+                                Not signed
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
                 <h2>Check</h2>
                 <table class="table project-overview-table">
                     <tbody>
