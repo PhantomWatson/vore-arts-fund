@@ -129,16 +129,6 @@ $alertIcon = '<i class="fa-solid fa-circle-exclamation" style="color: red;"></i>
                     <tbody>
                     <tr>
                         <th>
-                            Date awarded
-                        </th>
-                        <td>
-                            <?= $project->loan_awarded_date
-                                ? $project->loan_awarded_date_formatted
-                                : ($alertIcon . ' Project has awarded status, but no awarded date') ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
                             Amount awarded
                         </th>
                         <td>
