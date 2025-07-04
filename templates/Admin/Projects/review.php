@@ -23,6 +23,7 @@ $tabs = [
 ];
 
 $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
+$alertIcon = '<i class="fa-solid fa-circle-exclamation" style="color: red;"></i>';
 ?>
 
 <ul class="nav nav-tabs" id="review-tabs" role="tablist">
@@ -150,7 +151,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                             <?php if ($project->loan_agreement_date): ?>
                                 Signed on <?= $project->loan_agreement_date_local->format('F j, Y') ?>
                             <?php else: ?>
-                                Not signed
+                                <?= $alertIcon ?> Not signed
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -171,7 +172,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                                 $disbursementDates = $project->disbursement_dates;
                                 echo $disbursementDates
                                     ? implode('<br />', $disbursementDates)
-                                    : 'Not mailed yet';
+                                    : ($alertIcon . 'Not mailed yet');
                             ?>
                         </td>
                     </tr>
@@ -188,7 +189,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                             Payable to
                         </th>
                         <td>
-                            <?= $project->check_name ?: '<span class="no-answer">Check name not provided, but applicant\'s name is ' . $project->user->name . '</span>' ?>
+                            <?= $project->check_name ?: ($alertIcon . ' <span class="no-answer">Check name not provided, but applicant\'s name is ' . $project->user->name . '</span>') ?>
                         </td>
                     </tr>
                     <tr>
@@ -201,7 +202,7 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                                 <br />
                                 Muncie, IN <?= $project->zip ?>
                             <?php else: ?>
-                                (not provided)
+                                <?= $alertIcon ?> Not provided
                             <?php endif; ?>
                         </td>
                     </tr>
