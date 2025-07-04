@@ -45,6 +45,7 @@ use Cake\ORM\TableRegistry;
  * @property bool $is_finalized
  * @property \Cake\I18n\FrozenDate $loan_awarded_date The date that disbursement was recorded
  * @property string $loan_awarded_date_formatted
+ * @property FrozenTime[] $disbursement_dates_local
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
@@ -593,5 +594,28 @@ class Project extends Entity
     protected function _getLoanAwardedDateFormatted(): string
     {
         return $this->loan_awarded_date ? $this->loan_awarded_date->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') : '';
+    }
+
+    /**
+     * Returns an array of disbursement dates for this project, in local time
+     *
+     * Only one date is expected, but it's possible that multiple disbursements have been made
+     *
+     * @return FrozenTime[]
+     */
+    protected function _getDisbursementDatesLocal(): array
+    {
+        $transactionsTable = TableRegistry::getTableLocator()->get('Transactions');
+        $transactions = $transactionsTable->find()
+            ->select(['date'])
+            ->where([
+                'project_id' => $this->id,
+                'type' => Transaction::TYPE_LOAN,
+            ])
+            ->order(['created' => 'DESC'])
+            ->toArray();
+        return array_map(function (Transaction $transaction) {
+            return $transaction->date->setTimezone(\App\Application::LOCAL_TIMEZONE);
+        }, $transactions);
     }
 }

@@ -128,6 +128,19 @@ $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
                     <tbody>
                     <tr>
                         <th>
+                            Date mailed
+                        </th>
+                        <td>
+                            <?php
+                                $disbursementDates = $project->disbursement_dates;
+                                echo $disbursementDates
+                                    ? implode('<br />', $disbursementDates)
+                                    : 'Not mailed yet';
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             Amount
                         </th>
                         <td>
