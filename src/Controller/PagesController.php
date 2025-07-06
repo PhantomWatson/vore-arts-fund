@@ -48,6 +48,7 @@ class PagesController extends AppController
             'terms',
             'discountEligibility',
             'partners',
+            'virtualMeetings',
         ]);
     }
 
