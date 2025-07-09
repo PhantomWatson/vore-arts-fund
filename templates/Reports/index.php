@@ -7,7 +7,7 @@
 <div class="reports">
     <?php if (count($reports) === 0): ?>
         <p class="alert alert-info">
-            No reports have been submitted for any projects yet.
+            No reports have been submitted for any funded projects yet. Please check back later for updates.
         </p>
     <?php else: ?>
         <?= $this->element('pagination') ?>
