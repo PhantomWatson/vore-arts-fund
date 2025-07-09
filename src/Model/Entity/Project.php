@@ -390,7 +390,9 @@ class Project extends Entity
         }
         $retval .= " project by {$this->user->name}, who ";
         if ($this->isAwarded()) {
-            $retval .= 'was awarded ' . $this->amount_awarded_formatted;
+            $retval .= 'was awarded ' . (
+                $this->amount_awarded ? $this->amount_awarded_formatted : ' funding (amount pending)'
+            );
         } else {
             $retval .= $this->funding_cycle->votingHasPassed() ? 'requested ' : 'is requesting ';
             $retval .= strtolower($this->amount_requested_formatted);
