@@ -72,14 +72,6 @@ $projectsWereDisplayed = false;
                         </h2>
                         <p class="projects-index__project-details">
                             <?= $project->status_summary ?>
-                            <?php if ($project->isAwarded()): ?>
-                                <br />
-                                Awarded
-                                <?= $project->amount_awarded
-                                    ? ('$' . number_format($project->amount_awarded))
-                                    : '(amount pending)'
-                                ?>
-                            <?php endif; ?>
                         </p>
                         <div class="row">
                             <div class="col-12 <?php if ($project->images): ?>col-sm-8<?php endif; ?>">
