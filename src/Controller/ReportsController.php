@@ -41,8 +41,8 @@ class ReportsController extends AppController
     {
         $reports = $this->paginate($this->Reports);
 
+        $this->title('Project Reports');
         $this->set(compact('reports'));
-        $this->addControllerBreadcrumb();
     }
 
     /**
