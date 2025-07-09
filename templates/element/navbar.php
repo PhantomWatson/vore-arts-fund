@@ -19,15 +19,23 @@ $links = [
         ['class' => 'nav-link']
     ],
     [
-        'News',
-        ['controller' => 'Articles', 'action' => 'index', 'prefix' => false],
-        ['class' => 'nav-link']
-    ],
-    [
         'Donate',
         ['controller' => 'Donate', 'action' => 'index', 'prefix' => false],
         ['class' => 'nav-link']
     ]
+];
+
+$newsLinks = [
+    [
+        'VAF News',
+        ['controller' => 'Articles', 'action' => 'index', 'prefix' => false],
+        ['class' => 'dropdown-item']
+    ],
+    [
+        'Project Reports',
+        ['controller' => 'Reports', 'action' => 'index', 'prefix' => false],
+        ['class' => 'dropdown-item']
+    ],
 ];
 
 $aboutLinks = [
@@ -179,6 +187,13 @@ function echoLinks(\App\View\AppView $appView, $links, $navbarItemClass = 'nav-i
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <?php echoLinks($this, $links); ?>
+
+                    <li class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown">News</button>
+                        <ul class="dropdown-menu">
+                            <?php echoLinks($this, $newsLinks, ''); ?>
+                        </ul>
+                    </li>
 
                     <li class="nav-item dropdown">
                         <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown">About</button>
