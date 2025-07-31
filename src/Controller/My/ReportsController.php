@@ -64,7 +64,7 @@ class ReportsController extends AppController
             ->contain([
                 'FundingCycles',
                 'Reports' => function (Query $q) {
-                    return $q->orderDesc('Reports.created');
+                    return $q->orderAsc('Reports.created');
                 }
             ])
             ->order(['Projects.created' => 'DESC'])
