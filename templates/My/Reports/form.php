@@ -12,7 +12,7 @@ if ($rteJsPath) {
 
 <?= $this->Form->create($report, ['id' => 'report-form']) ?>
 
-<fieldset>
+<fieldset class="report-form">
     <div class="block-radio-buttons">
         <?= $this->Form->control(
             'is_final',
@@ -27,6 +27,9 @@ if ($rteJsPath) {
             ]
         ) ?>
     </div>
+    <p class="alert alert-warning" id="final-report-warning" style="display: none;">
+        Once you submit a <strong>final report</strong>, the project will be considered concluded, and you will not be able to submit further updates for it.
+    </p>
     <?= $this->Form->textarea('body', ['label' => 'Report', 'data-rte-target' => 1]) ?>
     <div id="rte-root"></div>
 </fieldset>
@@ -42,4 +45,18 @@ if ($rteJsPath) {
 
 <script>
     preventMultipleSubmit('#report-form');
+    const finalOption = document.querySelector('input[name="is_final"][value="1"]');
+    const options = document.querySelectorAll('input[name="is_final"]');
+    const warning = document.getElementById('final-report-warning');
+    const toggleWarning = () => {
+        if (finalOption.checked) {
+            warning.style.display = 'block';
+        } else {
+            warning.style.display = 'none';
+        }
+    };
+    options.forEach(option => option.addEventListener('change', e => {
+        toggleWarning();
+    }));
+    toggleWarning();
 </script>
