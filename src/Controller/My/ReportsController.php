@@ -168,6 +168,9 @@ class ReportsController extends AppController
      */
     public function edit()
     {
+        $this->Flash->error('Editing reports is not supported at this time.');
+        return $this->redirect('/');
+        /*
         $reportId = $this->request->getParam('id');
         $report = $this->Reports->get($reportId, [
             'contain' => ['Projects'],
@@ -221,6 +224,7 @@ class ReportsController extends AppController
         );
         $this->setCurrentBreadcrumb('Edit');
         $this->setRichTextEditorFilePaths();
+        */
     }
 
     /**
