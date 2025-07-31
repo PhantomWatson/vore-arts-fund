@@ -50,7 +50,8 @@
                         <?php else: ?>
                             <?php foreach ($project->reports as $report): ?>
                                 <?= $this->Html->link(
-                                    $report->created->format('F j, Y') . ($report->is_final ? ' (final)' : ''),
+                                    $report->created->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y')
+                                      . ($report->is_final ? ' (final)' : ''),
                                     [
                                         'prefix' => false,
                                         'controller' => 'Reports',
