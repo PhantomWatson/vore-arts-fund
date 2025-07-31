@@ -157,6 +157,7 @@ class ReportsController extends AppController
             ]
         );
         $this->title('New report');
+        $this->setRichTextEditorFilePaths();
     }
 
     /**
@@ -219,6 +220,7 @@ class ReportsController extends AppController
             ]
         );
         $this->setCurrentBreadcrumb('Edit');
+        $this->setRichTextEditorFilePaths();
     }
 
     /**

@@ -3,7 +3,11 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Report $report
  * @var \App\Model\Entity\Project $project
+ * @var string $rteJsPath
  */
+if ($rteJsPath) {
+    $this->Html->script($rteJsPath, ['block' => true, 'type' => 'module']);
+}
 ?>
 
 <?= $this->Form->create($report, ['id' => 'report-form']) ?>
@@ -23,7 +27,8 @@
             ]
         ) ?>
     </div>
-    <?= $this->Form->control('body', ['label' => 'Report']) ?>
+    <?= $this->Form->textarea('body', ['label' => 'Report', 'data-rte-target' => 1]) ?>
+    <div id="rte-root"></div>
 </fieldset>
 
 <?= $this->Form->button(
