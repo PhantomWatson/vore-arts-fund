@@ -14,15 +14,14 @@ if ($rteJsPath) {
 
 <fieldset class="report-form">
     <div class="block-radio-buttons">
-        <?= $this->Form->control(
+        <strong>What kind of a report is this?</strong>
+        <?= $this->Form->radio(
             'is_final',
             [
-                'type' => 'radio',
-                'options' => [
-                    0 => 'This project is ongoing, and this is an <strong>update</strong> about it.',
-                    1 => 'This project has concluded, and this is the <strong>final report</strong> for it.'
-                ],
-                'label' => 'What kind of a report is this?',
+                0 => 'This project is ongoing, and this is an <strong>update</strong> about it.',
+                1 => 'This project has concluded, and this is the <strong>final report</strong> for it.'
+            ],
+            [
                 'escape' => false,
             ]
         ) ?>

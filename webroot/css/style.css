@@ -13234,7 +13234,7 @@ button[type=submit].loading .loading-indicator {
   text-align: right;
 }
 
-.report-form .form-group {
+.report-form .block-radio-buttons {
   margin-bottom: 1em;
 }
 
