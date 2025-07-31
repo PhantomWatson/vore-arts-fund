@@ -19,8 +19,8 @@ if ($rteJsPath) {
             [
                 'type' => 'radio',
                 'options' => [
-                    0 => 'This is an <strong>update</strong> about an unfinished project.',
-                    1 => 'This is the <strong>final report</strong> for a finished project.'
+                    0 => 'This project is ongoing, and this is an <strong>update</strong> about it.',
+                    1 => 'This project has concluded, and this is the <strong>final report</strong> for it.'
                 ],
                 'label' => 'What kind of a report is this?',
                 'escape' => false,
