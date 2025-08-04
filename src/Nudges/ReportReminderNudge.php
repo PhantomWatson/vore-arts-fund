@@ -55,7 +55,7 @@ class ReportReminderNudge implements NudgeInterface
                         'plugin' => false,
                         'controller' => 'Reports',
                         'action' => 'submit',
-                        $project->id,
+                        'id' => $project->id,
                     ],
                     true
                 ),
