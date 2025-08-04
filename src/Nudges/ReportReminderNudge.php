@@ -60,6 +60,16 @@ class ReportReminderNudge implements NudgeInterface
                     true
                 ),
                 'supportEmail' => Configure::read('supportEmail'),
+                'repaymentUrl' => Router::url(
+                    [
+                        'prefix' => 'My',
+                        'plugin' => false,
+                        'controller' => 'Loans',
+                        'action' => 'payment',
+                        'id' => $project->id,
+                    ],
+                    true
+                ),
             ];
             $mailOptions = [
                 'subject' => $mailConfig->subjectPrefix . 'Report Reminder',
