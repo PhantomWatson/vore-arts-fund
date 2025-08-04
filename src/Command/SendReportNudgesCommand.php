@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Nudges\ReportReminderNudge;
+use App\Nudges\ReportNudge;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -37,7 +37,7 @@ class SendReportNudgesCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $projects = ReportReminderNudge::getProjects();
+        $projects = ReportNudge::getProjects();
 
         $io->out(sprintf(
             'Found %s %s that need report nudges',
@@ -51,7 +51,7 @@ class SendReportNudgesCommand extends Command
         }
 
         foreach ($projects as $project) {
-            $result = ReportReminderNudge::send($project);
+            $result = ReportNudge::send($project);
             if ($result !== true) {
                 $io->error("- $result");
                 continue;
