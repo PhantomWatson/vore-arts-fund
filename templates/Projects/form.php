@@ -126,7 +126,14 @@ function getAgreementCheckedValue($key, $data, $project) {
 </div>
 
 <div class="apply">
-    <?= $this->Form->create($project, ['enctype' => 'multipart/form-data', 'id' => $formId]) ?>
+    <?= $this->Form->create(
+        $project,
+        [
+            'enctype' => 'multipart/form-data',
+            'id' => $formId,
+            'url' => $this->getRequest()->getPath() // strips the query string
+        ]
+    ) ?>
     <fieldset>
         <legend>
             Applicant Eligibility
