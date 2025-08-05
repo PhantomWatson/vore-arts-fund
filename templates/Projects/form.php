@@ -8,6 +8,7 @@
  * @var string $deadline
  * @var string $fromNow
  * @var string[] $categories
+ * @var Project[] $hasPastProjects
  */
 
 use App\Model\Entity\Image;
@@ -36,51 +37,92 @@ function getAgreementCheckedValue($key, $data, $project) {
 }
 ?>
 
-<div class="apply">
-    <fieldset>
-        <?php if ($project->status_id == Project::STATUS_REVISION_REQUESTED): ?>
-            <legend>
-                Revision Requested
-            </legend>
-            <p>
-                <i class="fa-solid fa-circle-exclamation"></i>
-                <strong>We'll need this project to be revised before we can accept it.</strong>
-                For details,
-                <?= $this->Html->link(
-                    'check this project\'s messages',
-                    [
-                        'prefix' => 'My',
-                        'controller' => 'Projects',
-                        'action' => 'messages',
-                        'id' => $project->id,
-                    ]
-                ) ?>
-            </p>
-            <p>
-                The deadline for finalizing your application is
-                <?= $fundingCycle->resubmit_deadline_local->format('F j, Y') ?>, after which you won't be able to
-                update it. If it hasn't been revised and accepted by that date, then it won't be eligible for funding in
-                this funding cycle.
-            </p>
-        <?php else: ?>
+<div class="apply row">
+    <?php if ($project->isNew() && $hasPastProjects && $this->getRequest()->is('get')): ?>
+        <div class="col">
+            <fieldset>
+                <?php if ($this->getRequest()->getQuery('reapply')): ?>
+                    <legend>
+                        Resubmitting
+                    </legend>
+                    <p>
+                        You are resubmitting a past application. Please review the information below and make any
+                        changes to ensure that it is up to date before submitting.
+                    </p>
+                    <p>
+                        If you'd like to change which application you're resubmitting, you can
+                        <?= $this->Html->link(
+                            'select a different project',
+                            [
+                                'prefix' => false,
+                                'controller' => 'Projects',
+                                'action' => 'reapply',
+                            ]
+                        ) ?>.
+                    </p>
+                <?php else: ?>
+                    <legend>
+                        Resubmit a past application?
+                    </legend>
+                    <p>
+                        If you've previously applied for funding for this project, you can save time and
+                        <?= $this->Html->link(
+                            'resubmit a past application',
+                            [
+                                'prefix' => false,
+                                'controller' => 'Projects',
+                                'action' => 'reapply',
+                            ]
+                        ) ?>.
+                    </p>
+                <?php endif; ?>
+            </fieldset>
+        </div>
+    <?php endif; ?>
+
+    <div class="col">
+        <fieldset>
             <legend>
                 Deadline
             </legend>
-            <p>
-                The deadline to submit an application in the current funding cycle is
-                <strong><?= $deadline ?></strong> (<?= $fromNow ?>).
-                For more information about future opportunities for funding, refer to the
-                <?= $this->Html->link(
-                    'Funding Cycles',
-                    [
-                        'prefix' => false,
-                        'controller' => 'FundingCycles',
-                        'action' => 'index',
-                    ]
-                ) ?> page.
-            </p>
-        <?php endif; ?>
-    </fieldset>
+            <?php if ($project->status_id == Project::STATUS_REVISION_REQUESTED): ?>
+                <p>
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <strong>We'll need this project to be revised before we can accept it.</strong>
+                    For details,
+                    <?= $this->Html->link(
+                        'check this project\'s messages',
+                        [
+                            'prefix' => 'My',
+                            'controller' => 'Projects',
+                            'action' => 'messages',
+                            'id' => $project->id,
+                        ]
+                    ) ?>
+                </p>
+                <p>
+                    The deadline for finalizing your application is
+                    <?= $fundingCycle->resubmit_deadline_local->format('F j, Y') ?>, after which you won't be able to
+                    update it. If it hasn't been revised and accepted by that date, then it won't be eligible for funding in
+                    this funding cycle.
+                </p>
+            <?php else: ?>
+                <p>
+                    The deadline to submit an application in the current funding cycle is
+                    <strong><?= $deadline ?></strong> (<?= $fromNow ?>).
+                    For more information about future opportunities for funding, refer to the
+                    <?= $this->Html->link(
+                        'Funding Cycles',
+                        [
+                            'prefix' => false,
+                            'controller' => 'FundingCycles',
+                            'action' => 'index',
+                        ]
+                    ) ?> page.
+                </p>
+            <?php endif; ?>
+        </fieldset>
+    </div>
 </div>
 
 <div class="apply">

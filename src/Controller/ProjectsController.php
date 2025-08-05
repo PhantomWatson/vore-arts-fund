@@ -100,8 +100,15 @@ class ProjectsController extends AppController
         $this->setProjectVars();
         $this->setFromNow($fundingCycle->application_end_local);
         $this->set('toLoad', $this->getAppFiles('image-uploader/dist', 'image-uploader/dist/styles'));
-
         $user = $this->getAuthUser();
+        $hasPastProjects = $this->Projects
+            ->find('notDeleted')
+            ->select(['id'])
+            ->where(['user_id' => $user->id])
+            ->orderDesc('created')
+            ->all()
+            ->count() > 1;
+        $this->set(compact('hasPastProjects'));
 
         // Process form
         if ($this->request->is('post')) {
@@ -119,9 +126,23 @@ class ProjectsController extends AppController
         } else {
             /** @var Project $project */
             $project = $this->Projects->newEmptyEntity();
-            $project->address = $user->address;
-            $project->zipcode = $user->zipcode;
-            $project->check_name = $user->name;
+
+            // Start with previous project as a template
+            $reapplyProjectId = $this->getRequest()->getQuery('reapply');
+            if ($reapplyProjectId) {
+                $pastProject = $this->Projects->get($reapplyProjectId, ['contain' => ['Answers']]);
+                if ($pastProject->user_id != $user->id) {
+                    $this->Flash->error('Project not found.');
+                    return $this->redirect(['action' => 'reapply']);
+                }
+                $project = $this->Projects->patchEntity($project, $pastProject->toArray(), ['associated' => ['Answers']]);
+
+            // Blank project
+            } else {
+                $project->address = $user->address;
+                $project->zipcode = $user->zipcode;
+                $project->check_name = $user->name;
+            }
         }
 
         $this->set(compact('project'));
@@ -428,5 +449,28 @@ class ProjectsController extends AppController
         }
 
         return true;
+    }
+
+    public function reapply()
+    {
+        $id = $this->request->getParam('id');
+        if ($id) {
+            return $this->redirect([
+                'controller' => 'Projects',
+                'action' => 'apply',
+                '?' => ['reapply' => $id]
+            ]);
+        }
+
+        $user = $this->getAuthUser();
+        $pastProjects = $this->Projects
+            ->find('notDeleted')
+            ->select(['id', 'title', 'created'])
+            ->where(['user_id' => $user->id])
+            ->orderDesc('created')
+            ->toArray();
+
+        $this->title('Resubmit a Past Application');
+        $this->set(compact('pastProjects'));
     }
 }
