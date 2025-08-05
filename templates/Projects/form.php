@@ -37,7 +37,6 @@ function getAgreementCheckedValue($key, $data, $project) {
 ?>
 
 <div class="apply">
-    <?= $this->Form->create($project, ['enctype' => 'multipart/form-data', 'id' => $formId]) ?>
     <fieldset>
         <?php if ($project->status_id == Project::STATUS_REVISION_REQUESTED): ?>
             <legend>
