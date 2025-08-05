@@ -25,6 +25,15 @@
 <?php endif; ?>
 
 <?php foreach ($fundingCycles as $cycleCategory => $fundingCycle): ?>
+    <?php
+        // Avoid showing upcoming/current voting period if there are no projects to vote on
+        if ($cycleCategory === 'nextVoting' || $cycleCategory === 'currentVoting') {
+            $projectSummary = $fundingCycle->getProjectsSummary();
+            if (!$projectSummary || $projectSummary['accepted'] === 0) {
+                continue;
+            }
+        }
+    ?>
     <div class="row">
         <div class="col">
             <section class="card">
