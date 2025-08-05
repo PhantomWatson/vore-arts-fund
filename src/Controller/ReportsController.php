@@ -67,7 +67,7 @@ class ReportsController extends AppController
                 'id' => $report->project->id,
             ]
         );
-        $this->setCurrentBreadcrumb($report->created->format('F j, Y'));
+        $this->setCurrentBreadcrumb($report->created->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y'));
 
         $this->set(compact('report'));
     }
