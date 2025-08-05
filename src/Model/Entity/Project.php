@@ -318,6 +318,8 @@ class Project extends Entity
         'answers' => true,
         'images' => true,
         'check_name' => true,
+        'address' => true,
+        'zipcode' => true,
         '*' => false,
     ];
 
