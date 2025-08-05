@@ -3,19 +3,15 @@ declare(strict_types=1);
 
 namespace App\Controller\My;
 
-use App\Alert\Alert;
 use App\Controller\ProjectsController as BaseProjectsController;
 use App\Model\Entity\Note;
 use App\Model\Entity\Project;
 use App\Model\Table\NotesTable;
-use App\SecretHandler\SecretHandler;
 use Cake\Event\EventInterface;
-use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 
 /**
  * ProjectsController
