@@ -61,7 +61,7 @@ class ProjectsController extends AppController
                 $fromNow = 'tomorrow';
                 break;
             default:
-                $fromNow = "$days days from now";
+                $fromNow = number_format($days) . ' days from now';
                 break;
         }
 
