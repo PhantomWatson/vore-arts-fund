@@ -41,7 +41,7 @@ class ImageProcessor
 
         $this->sourceFilePath = $sourceFile['tmp_name'];
         $this->setExtension($sourceFile['name']);
-        $this->filename = Security::randomString(10) . '.' . $this->extension;
+        $this->filename = $this->generateRandomFilename($this->extension);
 
         // Resize and save thumbnail
         $destination = Image::PROJECT_IMAGES_DIR . DS . Image::THUMB_PREFIX . $this->filename;
@@ -50,6 +50,11 @@ class ImageProcessor
         // Resize and save fullsize image
         $destination = Image::PROJECT_IMAGES_DIR . DS . $this->filename;
         $this->resizeOriginal($destination);
+    }
+
+    public function generateRandomFilename(string $extension): string
+    {
+        return Security::randomString(10) . '.' . $extension;
     }
 
     /**
@@ -363,11 +368,46 @@ class ImageProcessor
      */
     public function setExtension($sourceFileName): void
     {
-        $filenameParts = explode('.', $sourceFileName);
-        $this->extension = mb_strtolower(end($filenameParts));
+        $this->extension = $this->extractExtension($sourceFileName);
 
         if (!in_array($this->extension, $this->fileTypes)) {
             throw new BadRequestException('Invalid file type (only JPG, GIF, PNG, and WEBP are allowed)');
         }
+    }
+
+    public function extractExtension(string $filename): string
+    {
+        $filenameParts = explode('.', $filename);
+        return mb_strtolower(end($filenameParts));
+    }
+
+    /**
+     * Makes a copy of an image file, including its thumbnail, and returns the new filename
+     *
+     * @param string $oldFilename
+     * @return string
+     */
+    public function makeCopy(string $oldFilename): string
+    {
+        $extension = $this->extractExtension($oldFilename);
+        $newFilename = $this->generateRandomFilename($extension);
+
+        // Copy thumbnail
+        $sourceFile = Image::PROJECT_IMAGES_DIR . DS . Image::THUMB_PREFIX . $oldFilename;
+        $destinationFile = Image::PROJECT_IMAGES_DIR . DS . Image::THUMB_PREFIX . $newFilename;
+        if (!copy($sourceFile, $destinationFile)) {
+            Log::error('Failed to copy file from ' . $sourceFile . ' to ' . $destinationFile);
+            throw new InternalErrorException('Failed to copy file');
+        }
+
+        // Copy fullsize image
+        $sourceFile = Image::PROJECT_IMAGES_DIR . DS . $oldFilename;
+        $destinationFile = Image::PROJECT_IMAGES_DIR . DS . $newFilename;
+        if (!copy($sourceFile, $destinationFile)) {
+            Log::error('Failed to copy file from ' . $sourceFile . ' to ' . $destinationFile);
+            throw new InternalErrorException('Failed to copy file');
+        }
+
+        return $newFilename;
     }
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\ImageProcessor;
 use App\Model\Entity\Project;
 use App\Model\Entity\FundingCycle;
 use App\Model\Entity\Image;
@@ -130,12 +131,27 @@ class ProjectsController extends AppController
             // Start with previous project as a template
             $reapplyProjectId = $this->getRequest()->getQuery('reapply');
             if ($reapplyProjectId) {
-                $pastProject = $this->Projects->get($reapplyProjectId, ['contain' => ['Answers']]);
+                $pastProject = $this->Projects->get($reapplyProjectId, ['contain' => ['Answers', 'Images']]);
                 if ($pastProject->user_id != $user->id) {
                     $this->Flash->error('Project not found.');
                     return $this->redirect(['action' => 'reapply']);
                 }
                 $project = $this->Projects->patchEntity($project, $pastProject->toArray(), ['associated' => ['Answers']]);
+
+                $project->images = [];
+                try {
+                    $imageProcessor = new ImageProcessor();
+                    $imagesTable = TableRegistry::getTableLocator()->get('Images');
+                    foreach ($pastProject->images as $k => $image) {
+                        $project->images[] = $imagesTable->newEntity([
+                            'filename' => $imageProcessor->makeCopy($image->filename),
+                            'weight' => $k,
+                            'caption' => '',
+                        ]);
+                    }
+                } catch (Exception $e) {
+                    $this->Flash->error('There was an error copying over images from your past project, but you can upload new images for this application.');
+                }
 
             // Blank project
             } else {
