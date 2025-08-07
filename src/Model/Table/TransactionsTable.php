@@ -274,11 +274,32 @@ class TransactionsTable extends Table
     public function afterSave(Event $event, EntityInterface $entity, $options): void
     {
         $this->sendNewTransactionAlert($entity);
+
+        // If this is a loan disbursement, update the project's awarded date and status
         if ($entity->type == Transaction::TYPE_LOAN) {
             $projectsTable = TableRegistry::getTableLocator()->get('Projects');
             $projectsTable->setProjectAwardedDate($entity->project_id, $entity->date);
             $projectsTable->updateStatus($entity->project_id, Project::STATUS_AWARDED_AND_DISBURSED);
         }
+
+        // If the loan is now fully repaid, mark it as such
+        if ($entity->type == Transaction::TYPE_LOAN_REPAYMENT) {
+            $projectsTable = TableRegistry::getTableLocator()->get('Projects');
+            try {
+                $project = $projectsTable->get($entity->project_id);
+                if ($project->is_repaid) {
+                    return;
+                }
+                $balance = $project->getLoanBalance();
+                if ($balance <= 0) {
+                    $project->is_repaid = true;
+                    $projectsTable->save($project);
+                }
+            } catch (RecordNotFoundException $e) {
+                Log::error("Project with ID {$entity->project_id} not found for repayment transaction.");
+            }
+        }
+
     }
 
     /**
