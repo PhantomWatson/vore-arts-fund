@@ -42,7 +42,8 @@ use Cake\ORM\TableRegistry;
  * @property string $zipcode
  * @property bool $requires_tin
  * @property string $loan_agreement_signature
- * @property bool $is_finalized Should be TRUE if a final report has been submitted
+ * @property bool $is_finalized TRUE if a final report has been submitted
+ * @property bool $is_repaid TRUE if the loan has been fully repaid
  * @property \Cake\I18n\FrozenDate $loan_awarded_date The date that disbursement was recorded
  * @property string $loan_awarded_date_formatted
  * @property FrozenTime[] $disbursement_dates_local
