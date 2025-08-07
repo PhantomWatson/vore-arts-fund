@@ -50,49 +50,70 @@ async function initialize(amount, payerName) {
     return;
   }
 
-  const { result } = await fetch('/api/stripe/create-payment-intent', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      amount,
-      payerName,
-      transactionType,
-      projectId,
-    }),
-  }).then((r) => r.json());
+  try {
+    const response = await fetch('/api/stripe/create-payment-intent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        amount,
+        payerName,
+        transactionType,
+        projectId,
+      }),
+    });
 
-  // https://stripe.com/docs/elements/appearance-api
-  const appearance = {
-    theme: 'stripe',
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-    variables: {
-      colorPrimary: '#0570de',
-      colorBackground: '#ffffff',
-      colorText: '#30313d',
-      //colorSuccess: '',
-      //colorWarning: '',
-      colorDanger: '#df1b41',
-      fontFamily: 'Ideal Sans, system-ui, sans-serif',
-      spacingUnit: '2px',
-      borderRadius: '4px',
-    },
-  };
+    const { result } = await response.json();
 
-  elements = stripe.elements({ clientSecret: result.clientSecret }); // TODO: appearance
+    // Check if the API returned an error
+    if (!result || !result.clientSecret) {
+      throw new Error('Invalid response from payment service');
+    }
 
-  const linkAuthenticationElement = elements.create('linkAuthentication');
-  linkAuthenticationElement.mount('#link-authentication-element');
+    // https://stripe.com/docs/elements/appearance-api
+    const appearance = {
+      theme: 'stripe',
 
-  const paymentElementOptions = {
-    layout: 'tabs',
-  };
+      variables: {
+        colorPrimary: '#0570de',
+        colorBackground: '#ffffff',
+        colorText: '#30313d',
+        //colorSuccess: '',
+        //colorWarning: '',
+        colorDanger: '#df1b41',
+        fontFamily: 'Ideal Sans, system-ui, sans-serif',
+        spacingUnit: '2px',
+        borderRadius: '4px',
+      },
+    };
 
-  const paymentElement = elements.create('payment', paymentElementOptions);
-  paymentElement.mount('#payment-element');
-  paymentElement.on('ready', () => {
+    elements = stripe.elements({ clientSecret: result.clientSecret }); // TODO: appearance
+
+    const linkAuthenticationElement = elements.create('linkAuthentication');
+    linkAuthenticationElement.mount('#link-authentication-element');
+
+    const paymentElementOptions = {
+      layout: 'tabs',
+    };
+
+    const paymentElement = elements.create('payment', paymentElementOptions);
+    paymentElement.mount('#payment-element');
+    paymentElement.on('ready', () => {
+      setPageLoading(false);
+      showForm();
+    });
+  } catch (error) {
+    console.error('Error creating payment intent:', error);
+    showMessage(
+      'There was an error loading the payment form. Please try again.',
+      'alert alert-danger'
+    );
     setPageLoading(false);
-    showForm();
-  });
+    return;
+  }
 }
 
 async function handleSubmit(e) {
