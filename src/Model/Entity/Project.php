@@ -625,4 +625,19 @@ class Project extends Entity
             return $transaction->date->setTimezone(\App\Application::LOCAL_TIMEZONE);
         }, $transactions);
     }
+
+    /**
+     * Returns the current loan balance in dollars
+     *
+     * @return float|int
+     */
+    public function getLoanBalance()
+    {
+        if (!$this->amount_awarded) {
+            return 0;
+        }
+
+        $totalRepaid = $this->getTotalRepaid() / 100; // In dollars
+        return $this->amount_awarded - $totalRepaid;
+    }
 }

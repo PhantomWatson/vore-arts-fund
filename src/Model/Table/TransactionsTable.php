@@ -292,6 +292,7 @@ class TransactionsTable extends Table
                 }
                 $balance = $project->getLoanBalance();
                 if ($balance <= 0) {
+                    $this->sendLoanRepaidAlert($project);
                     $project->is_repaid = true;
                     $projectsTable->save($project);
                 }
@@ -299,7 +300,13 @@ class TransactionsTable extends Table
                 Log::error("Project with ID {$entity->project_id} not found for repayment transaction.");
             }
         }
+    }
 
+    private function sendLoanRepaidAlert(Project $project): void
+    {
+        $alert = new Alert();
+        $alert->addLine('The loan for ' . $project->title . ' has been fully repaid 🎉');
+        $alert->send(Alert::TYPE_TRANSACTIONS);
     }
 
     /**
