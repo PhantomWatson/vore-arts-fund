@@ -9,9 +9,6 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 
-/**
- * DatabaseBackup command.
- */
 class SendReportNudgesCommand extends Command
 {
     /**
