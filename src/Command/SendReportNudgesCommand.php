@@ -39,7 +39,7 @@ class SendReportNudgesCommand extends Command
         $io->out(sprintf(
             'Found %s %s that need report nudges',
             $projects->count(),
-            __n('report', 'reports', $projects->count())
+            __n('project', 'projects', $projects->count())
         ));
 
         if ($projects->isEmpty()) {
