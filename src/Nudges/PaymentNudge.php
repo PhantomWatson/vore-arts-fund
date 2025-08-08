@@ -4,6 +4,7 @@ namespace App\Nudges;
 
 use App\Alert\ErrorAlert;
 use App\Email\MailConfig;
+use App\Event\AlertEmitter;
 use App\Event\AlertListener;
 use App\Model\Entity\Nudge;
 use App\Model\Entity\Project;
@@ -85,27 +86,14 @@ class PaymentNudge implements NudgeInterface
                 'supportEmail' => Configure::read('supportEmail'),
                 'balance' => '$' . number_format($balance / 100, 2),
             ];
-            $subject = $mailConfig->subjectPrefix . 'Payment Reminder';
             $mailOptions = [
-                'subject' => $subject,
+                'subject' => $mailConfig->subjectPrefix . 'Payment Reminder',
                 'template' => 'nudges/payment_reminder',
                 'from_name' => $mailConfig->fromName,
                 'from_email' => $mailConfig->fromEmail,
             ];
             EmailQueue::enqueue($user->email, $viewVars, $mailOptions);
-
-            // Emit event for creating an alert in Slack
-            EventManager::instance()->on(new AlertListener());
-            EventManager::instance()->dispatch(new Event(
-                'Mail.messageSentToApplicant',
-                null,
-                [
-                    'email' => $user->email,
-                    'subject' => $subject,
-                    'viewVars' => $viewVars,
-                    'template' => $mailOptions['template'],
-                ]
-            ));
+            AlertEmitter::emitMessageSentEvent($user->email, $mailOptions['subject'], $viewVars, $mailOptions['template']);
         } catch (\Exception $e) {
             $msg = "Error processing payment nudge for project #{$project->id}: " . $e->getMessage();
             (new ErrorAlert())->send($msg);
