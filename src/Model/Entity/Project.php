@@ -561,15 +561,17 @@ class Project extends Entity
     /**
      * Returns the current balance of the project in cents, i.e. the amount that has not yet been repaid
      *
-     * @return float
+     * @return int
      */
-    public function getBalance(): float
+    public function getBalance(): int
     {
         if (!$this->amount_awarded) {
             return 0;
         }
 
-        return $this->amount_awarded - ($this->getTotalRepaid() / 100);
+        $amountAwardedCents = $this->amount_awarded * 100;
+
+        return $amountAwardedCents - $this->getTotalRepaid();
     }
 
     /**
