@@ -376,6 +376,19 @@ class ProjectsTable extends Table
     }
 
     /**
+     * Returns projects with awarded and unpaid loans (trusting is_repaid to be accurate)
+     *
+     * @param Query $query
+     * @return Query
+     */
+    public function findWithOutstandingLoan(Query $query)
+    {
+        return $query
+            ->find('loanRecipients')
+            ->where(['Projects.is_repaid' => false]);
+    }
+
+    /**
      * Modifies a query to only return projects that can be displayed to the public
      *
      * @param \Cake\ORM\Query $query
