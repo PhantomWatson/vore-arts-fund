@@ -4,12 +4,15 @@ namespace App\Nudges;
 
 use App\Alert\ErrorAlert;
 use App\Email\MailConfig;
+use App\Event\AlertListener;
 use App\Model\Entity\Nudge;
 use App\Model\Entity\Project;
 use App\Model\Entity\Transaction;
 use App\Model\Table\NudgesTable;
 use Cake\Core\Configure;
 use Cake\Datasource\ResultSetInterface;
+use Cake\Event\Event;
+use Cake\Event\EventManager;
 use Cake\I18n\FrozenDate;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
@@ -82,13 +85,27 @@ class PaymentNudge implements NudgeInterface
                 'supportEmail' => Configure::read('supportEmail'),
                 'balance' => '$' . number_format($balance / 100, 2),
             ];
+            $subject = $mailConfig->subjectPrefix . 'Payment Reminder';
             $mailOptions = [
-                'subject' => $mailConfig->subjectPrefix . 'Payment Reminder',
+                'subject' => $subject,
                 'template' => 'nudges/payment_reminder',
                 'from_name' => $mailConfig->fromName,
                 'from_email' => $mailConfig->fromEmail,
             ];
             EmailQueue::enqueue($user->email, $viewVars, $mailOptions);
+
+            // Emit event for creating an alert in Slack
+            EventManager::instance()->on(new AlertListener());
+            EventManager::instance()->dispatch(new Event(
+                'Mail.messageSentToApplicant',
+                null,
+                [
+                    'email' => $user->email,
+                    'subject' => $subject,
+                    'viewVars' => $viewVars,
+                    'template' => $mailOptions['template'],
+                ]
+            ));
         } catch (\Exception $e) {
             $msg = "Error processing payment nudge for project #{$project->id}: " . $e->getMessage();
             (new ErrorAlert())->send($msg);
