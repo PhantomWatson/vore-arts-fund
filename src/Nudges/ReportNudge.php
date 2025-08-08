@@ -4,6 +4,7 @@ namespace App\Nudges;
 
 use App\Alert\ErrorAlert;
 use App\Email\MailConfig;
+use App\Event\AlertEmitter;
 use App\Model\Entity\Nudge;
 use App\Model\Entity\Project;
 use App\Model\Table\NudgesTable;
@@ -78,6 +79,7 @@ class ReportNudge implements NudgeInterface
                 'from_email' => $mailConfig->fromEmail,
             ];
             EmailQueue::enqueue($user->email, $viewVars, $mailOptions);
+            AlertEmitter::emitMessageSentEvent($user->email, $mailOptions['subject'], $viewVars, $mailOptions['template']);
         } catch (\Exception $e) {
             $msg = "Error processing report nudge for project #{$project->id}: " . $e->getMessage();
             (new ErrorAlert())->send($msg);
