@@ -80,7 +80,7 @@ class PaymentNudge implements NudgeInterface
                     true
                 ),
                 'supportEmail' => Configure::read('supportEmail'),
-                'balance' => '$' . number_format($balance, 2),
+                'balance' => '$' . number_format($balance / 100, 2),
             ];
             $mailOptions = [
                 'subject' => $mailConfig->subjectPrefix . 'Payment Reminder',
