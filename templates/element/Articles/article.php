@@ -13,7 +13,7 @@
         </p>
     <?php endif; ?>
     <h2 <?= $this->getRequest()->getParam('action') == 'view' ? 'class="visually-hidden"' : '' ?>>
-        <?= $this->Html->link($article->title, ['action' => 'view', 'slug' => $article->slug]) ?>
+        <?= $this->Html->link($article->title, ['controller' => 'Articles', 'action' => 'view', 'slug' => $article->slug]) ?>
     </h2>
     <p class="date">
         <?= $article->dated->format('F j, Y') ?>
