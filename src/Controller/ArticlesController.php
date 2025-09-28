@@ -17,6 +17,11 @@ class ArticlesController extends AppController
     {
         parent::beforeFilter($event);
 
+        $this->Authentication->allowUnauthenticated([
+            'index',
+            'view',
+        ]);
+
         $this->addBreadcrumb(
             'News',
             [
