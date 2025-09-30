@@ -31,7 +31,7 @@ class ReportsController extends AppController
     {
         parent::beforeFilter($event);
 
-        $this->Auth->allow([
+        $this->Authentication->allowUnauthenticated([
             'index',
             'project',
             'view',
