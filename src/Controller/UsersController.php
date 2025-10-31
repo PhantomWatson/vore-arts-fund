@@ -294,7 +294,7 @@ class UsersController extends AppController
             $data = $this->request->getData();
             $email = strtolower(trim($data['User']['email'] ?? ''));
             if (!$email) {
-                $this->Flash->error('Please enter an email addres to continue.');
+                $this->Flash->error('Please enter an email address to continue.');
                 return $this->redirect(['action' => 'forgotPassword']);
             }
 
