@@ -605,6 +605,33 @@ class ProjectsTable extends Table
             });
     }
 
+    /**
+     * Finds projects that aren't associated with any of a specific type of nudge
+     *
+     * Intended to be used for one-time nudges
+     *
+     * @param Query $query
+     * @param array $options nudgeType int or int[]
+     * @return Query
+     */
+    public function findWithoutNudge(Query $query, array $options): Query
+    {
+        $nudgeTypes = $options['nudgeType'] ?? null;
+        if (!$nudgeTypes) {
+            throw new \InvalidArgumentException('nudgeType not provided');
+        }
+        if (!is_array($nudgeTypes)) {
+            $nudgeTypes = [$nudgeTypes];
+        }
+
+        return $query
+            ->notMatching('Nudges', function (Query $q) use ($nudgeTypes) {
+                return $q->where([
+                    'Nudges.type IN' => $nudgeTypes,
+                ]);
+            });
+    }
+
     public function userHasProjects(int $id)
     {
         return $this

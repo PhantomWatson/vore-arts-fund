@@ -22,6 +22,7 @@ class Nudge extends Entity
     const TYPE_REPORT_REMINDER = 1;  // Monthly report reminder
     const TYPE_REPORT_DUE = 2;       // Warning that a report is about to pass a deadline
     const TYPE_PAYMENT_REMINDER = 3; // Reminder about an outstanding balance
+    const TYPE_VOTE_START = 4;       // Notification that voting has started
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
