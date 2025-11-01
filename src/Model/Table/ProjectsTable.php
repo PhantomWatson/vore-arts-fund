@@ -15,7 +15,6 @@ use Cake\I18n\FrozenDate;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -277,17 +276,34 @@ class ProjectsTable extends Table
     }
 
     /**
+     * Modifies a query to return the votable projects for the specified funding cycle
+     *
+     * @param \Cake\ORM\Query $query
+     * @param array $options Including 'funding_cycle_id'
+     * @return \Cake\ORM\Query
+     */
+    public function findEligibleForVoting(Query $query, array $options): Query
+    {
+        return $query
+            ->find('notDeleted')
+            ->where([
+                'Projects.funding_cycle_id' => $options['funding_cycle_id'],
+                'Projects.status_id' => Project::STATUS_ACCEPTED,
+            ]);
+    }
+
+    /**
      * Modifies a query to return the votable projects for the specified funding cycle, including only the
      * necessary fields
      *
      * @param \Cake\ORM\Query $query
-     * @param array $options
+     * @param array $options Including 'funding_cycle_id'
      * @return \Cake\ORM\Query
      */
     public function findForVoting(Query $query, array $options)
     {
         return $query
-            ->find('notDeleted')
+            ->find('eligibleForVoting', ['funding_cycle_id' => $options['funding_cycle_id']])
             ->select([
                 'Projects.accept_partial_payout',
                 'Projects.amount_requested',
@@ -297,10 +313,6 @@ class ProjectsTable extends Table
                 'Projects.title',
                 'Projects.user_id',
                 'Projects.funding_cycle_id',
-            ])
-            ->where([
-                'Projects.funding_cycle_id' => $options['funding_cycle_id'],
-                'Projects.status_id' => Project::STATUS_ACCEPTED,
             ])
             ->contain([
                 'Answers' => function (Query $q) {
