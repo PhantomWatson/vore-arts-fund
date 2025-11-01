@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use App\Model\Entity\FundingCycle;
 use Cake\Core\Configure;
+use Cake\Database\Expression\QueryExpression;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
@@ -419,5 +420,25 @@ class FundingCyclesTable extends Table
     public function findOrderedDesc(Query $query)
     {
         return $query->orderDesc('FundingCycles.application_end');
+    }
+
+    /**
+     * Returns cycles whose voting period began sometime in the last 24 hours
+     *
+     * Due to timezones, this may have unexpected results if used in scripts that run at around midnight, but it should
+     * accurately reflect "today" if run during business hours.
+     *
+     * @param \Cake\ORM\Query $query
+     * @param array $options Including 'funding_cycle_id'
+     * @return \Cake\ORM\Query
+     */
+    public function findVotingBeganToday(Query $query, array $options)
+    {
+        return $query
+            ->where(function (QueryExpression $exp) {
+                return $exp
+                    ->lt('vote_begin', date('Y-m-d H:i:s'))
+                    ->gt('vote_begin', date('Y-m-d H:i:s', strtotime('-1 day')));
+            });
     }
 }

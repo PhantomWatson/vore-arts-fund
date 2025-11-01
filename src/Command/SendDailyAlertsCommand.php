@@ -4,18 +4,14 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Alert\Alert;
-use App\Model\Entity\Transaction;
-use App\Model\Table\TransactionsTable;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
-use Cake\Core\Configure;
 use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Stripe\Exception\ApiErrorException;
-use Stripe\StripeClient;
 
 /**
  * SendDailyAlerts command
@@ -99,12 +95,7 @@ class SendDailyAlertsCommand extends Command
 
         // Look for a funding cycle whose vote_begin was in the last 24 hours
         $cycle = $this->fundingCyclesTable
-            ->find()
-            ->where(function (QueryExpression $exp) {
-                return $exp
-                    ->lt('vote_begin', date('Y-m-d H:i:s'))
-                    ->gt('vote_begin', date('Y-m-d H:i:s', strtotime('-1 day')));
-            })
+            ->find('votingBeganToday')
             ->first();
 
         if ($cycle) {
