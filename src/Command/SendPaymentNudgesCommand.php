@@ -22,6 +22,12 @@ class SendPaymentNudgesCommand extends Command
     {
         $parser = parent::buildOptionParser($parser);
 
+        $parser
+            ->addOption('dry-run', [
+                'help' => 'Collect the nudges that would be sent, but don\'t actually send them.',
+                'boolean' => true
+            ]);
+
         return $parser;
     }
 
@@ -43,6 +49,14 @@ class SendPaymentNudgesCommand extends Command
         ));
 
         if ($projects->isEmpty()) {
+            $io->out('Done');
+            return;
+        }
+
+        if ($args->getOption('dry-run')) {
+            foreach ($projects as $project) {
+                $io->out("- Would send nudge for project #{$project->id}");
+            }
             $io->out('Done');
             return;
         }
