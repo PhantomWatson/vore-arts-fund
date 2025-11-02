@@ -58,4 +58,11 @@ if ($rteJsPath) {
         toggleWarning();
     }));
     toggleWarning();
+
+    // Handle back/forward cache restoration
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            toggleWarning();
+        }
+    });
 </script>
