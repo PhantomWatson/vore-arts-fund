@@ -3,9 +3,14 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Nudges\ReportNudge;
+use App\Nudges\ReportDueNudge;
 
-class SendReportNudgesCommand extends SendNudgesAbstractCommand
+/**
+ * Command to send report-due nudges
+ *
+ * This should be scheduled earlier in the day than SendReportReminderNudgesCommand
+ */
+class SendReportDueNudgesCommand extends SendNudgesAbstractCommand
 {
     /**
      * Returns the fully qualified class name of the Nudge class to use
@@ -14,6 +19,6 @@ class SendReportNudgesCommand extends SendNudgesAbstractCommand
      */
     protected function getNudgeClass(): string
     {
-        return ReportNudge::class;
+        return ReportDueNudge::class;
     }
 }

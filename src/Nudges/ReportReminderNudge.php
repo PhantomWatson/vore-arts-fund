@@ -15,10 +15,11 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use EmailQueue\EmailQueue;
 
-class ReportNudge implements NudgeInterface
+class ReportReminderNudge implements NudgeInterface
 {
     /**
-     * Projects that have received a loan and have not submitted a finalized report
+     * Non-finalized projects that have received a loan more than two months ago and haven't received a nudge in the
+     * last month or submitted a report in the last six months
      *
      * @return ResultSetInterface|Project[]
      */
@@ -26,17 +27,24 @@ class ReportNudge implements NudgeInterface
     {
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
 
+        $nudgeThreshold = '-1 month';
+        $sinceLoanAwardedThreshold = '-2 months';
+        $sinceLastReportThreshold = '-6 months';
+
         /** @var Project[] $projects */
-        $threshold = '-1 month'; // Will wait this long after loan awarded date and between nudges
         return $projectsTable
-            ->find('notDeleted')
             ->find('loanRecipients')
+            ->find('notDeleted')
             ->find('notFinalized')
             ->find('withoutRecentNudge', [
                 'nudgeType' => [Nudge::TYPE_REPORT_REMINDER, Nudge::TYPE_REPORT_DUE],
-                'threshold' => $threshold,
+                'threshold' => $nudgeThreshold,
             ])
-            ->where(['Projects.loan_awarded_date <' => new FrozenDate($threshold)])
+            ->find('withoutRecentReports', ['threshold' => $sinceLastReportThreshold])
+            ->where([
+                'Projects.loan_awarded_date IS NOT' => null,
+                'Projects.loan_awarded_date <' => new FrozenDate($sinceLoanAwardedThreshold)
+            ])
             ->all();
     }
 
@@ -81,7 +89,7 @@ class ReportNudge implements NudgeInterface
             EmailQueue::enqueue($user->email, $viewVars, $mailOptions);
             AlertEmitter::emitMessageSentEvent($user->email, $mailOptions['subject'], $viewVars, $mailOptions['template']);
         } catch (\Exception $e) {
-            $msg = "Error processing report nudge for project #{$project->id}: " . $e->getMessage();
+            $msg = "Error processing report reminder nudge for project #{$project->id}: " . $e->getMessage();
             (new ErrorAlert())->send($msg);
             return $msg;
         }

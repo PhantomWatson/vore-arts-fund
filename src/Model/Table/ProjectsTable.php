@@ -590,7 +590,7 @@ class ProjectsTable extends Table
             throw new \InvalidArgumentException('nudgeType not provided');
         }
         if (!$threshold) {
-            throw new \InvalidArgumentException('Nudge threshold not provided');
+            throw new \InvalidArgumentException('findWithoutRecentNudge threshold not provided');
         }
         if (!is_array($nudgeTypes)) {
             $nudgeTypes = [$nudgeTypes];
@@ -639,5 +639,27 @@ class ProjectsTable extends Table
             ->where(['user_id' => $id])
             ->all()
             ->count() > 0;
+    }
+
+    /**
+     * Finds projects that haven't had any new reports submitted within a certain time frame
+     *
+     * @param Query $query
+     * @param array $options Includes `threshold` (string referencing a past time, e.g. '-1 month')
+     * @return Query
+     */
+    public function findWithoutRecentReports(Query $query, array $options): Query
+    {
+        $threshold = $options['threshold'] ?? null;
+        if (!$threshold) {
+            throw new \InvalidArgumentException('findWithoutRecentReports threshold not provided');
+        }
+
+        return $query
+            ->notMatching('Reports', function (Query $q) use ($threshold) {
+                return $q->where([
+                    'Reports.created >' => new FrozenDate($threshold),
+                ]);
+            });
     }
 }
