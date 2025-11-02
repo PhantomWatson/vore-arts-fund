@@ -81,7 +81,7 @@ class ReportDueNudge implements NudgeInterface
                         ],
                         true
                     ),
-                'deadline' => $project->loan_awarded_date->addMonths(12)->format('F j, Y'),
+                'deadline' => $project->loan_awarded_date->addYear(1)->format('F j, Y'),
             ];
             $mailOptions = [
                 'subject' => $mailConfig->subjectPrefix . 'Report Due',
