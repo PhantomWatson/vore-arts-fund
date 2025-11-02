@@ -24,9 +24,11 @@
     To submit a report for this project, visit <a href="<?= $reportUrl ?>"><?= $reportUrl ?></a>. While regular updates about your project are great, your only requirement is to submit one final report upon the completion of your project and at least one report per year. We'll send you reminders if you're approaching a deadline.
 </p>
 
-<p>
-    And remember, once you're able to make a payment on your loan, head over to <a href="<?= $repaymentUrl ?>"><?= $repaymentUrl ?></a>.
-</p>
+<?php if ($repaymentUrl): ?>
+    <p>
+        And remember, once you're able to make a payment on your loan, head over to <a href="<?= $repaymentUrl ?>"><?= $repaymentUrl ?></a>.
+    </p>
+<?php endif; ?>
 
 <p>
     If you have any questions or need assistance, please don't hesitate to reach out to us at <a href="mailto:<?= $supportEmail ?>"><?= $supportEmail ?></a>.
