@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Nudges\PaymentNudge;
+use App\Nudges\PaymentReminderNudge;
 
-class SendPaymentNudgesCommand extends SendNudgesAbstractCommand
+class SendPaymentReminderNudgesCommand extends SendNudgesAbstractCommand
 {
     /**
      * Returns the fully qualified class name of the Nudge class to use
@@ -14,6 +14,6 @@ class SendPaymentNudgesCommand extends SendNudgesAbstractCommand
      */
     protected function getNudgeClass(): string
     {
-        return PaymentNudge::class;
+        return PaymentReminderNudge::class;
     }
 }

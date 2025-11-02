@@ -19,7 +19,7 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use EmailQueue\EmailQueue;
 
-class PaymentNudge implements NudgeInterface
+class PaymentReminderNudge implements NudgeInterface
 {
     /**
      * Projects with loans with positive balances
