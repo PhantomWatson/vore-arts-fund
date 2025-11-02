@@ -8,7 +8,9 @@ use App\Event\AlertEmitter;
 use App\Model\Entity\Nudge;
 use App\Model\Entity\Project;
 use App\Model\Table\NudgesTable;
+use Cake\Collection\Collection;
 use Cake\Datasource\ResultSetInterface;
+use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
 use EmailQueue\EmailQueue;
 
@@ -23,17 +25,21 @@ class VoteNudge implements NudgeInterface
     /**
      * Projects that are approved and in the funding cycle whose voting period begins today
      *
-     * @return ResultSetInterface|Project[]
+     * @return ResultSet<Project>|null
      */
-    public static function getProjects(): ResultSetInterface
+    public static function getProjects(): ?ResultSetInterface
     {
         $fundingCyclesTable = TableRegistry::getTableLocator()->get('FundingCycles');
         $fundingCycle = $fundingCyclesTable
             ->find('votingBeganToday')
             ->select(['id'])
             ->first();
-        $fundingCycleId = $fundingCycle?->id;
 
+        if (!$fundingCycle) {
+            return null;
+        }
+
+        $fundingCycleId = $fundingCycle?->id;
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
         return $projectsTable
             ->find('eligibleForVoting', ['funding_cycle_id' => $fundingCycleId ?: 0])

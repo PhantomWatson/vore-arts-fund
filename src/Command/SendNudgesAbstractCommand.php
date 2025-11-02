@@ -53,17 +53,21 @@ abstract class SendNudgesAbstractCommand extends Command
         // Extract the simple class name from the full class name (e.g., "VoteNudge" from "App\Nudges\VoteNudge")
         $nudgeType = substr($nudgeFullClassName, strrpos($nudgeFullClassName, '\\') + 1);
 
+        if (!$projects || $projects->isEmpty()) {
+            $io->out(sprintf(
+                'No %s found that need %s',
+                __n('project', 'projects', $projects->count()),
+                $nudgeType
+            ));
+            return;
+        }
+
         $io->out(sprintf(
             'Found %s %s that need %s',
             $projects->count(),
             __n('project', 'projects', $projects->count()),
             $nudgeType
         ));
-
-        if ($projects->isEmpty()) {
-            $io->out('Done');
-            return;
-        }
 
         if ($args->getOption('dry-run')) {
             foreach ($projects as $project) {

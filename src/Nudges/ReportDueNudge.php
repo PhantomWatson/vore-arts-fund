@@ -11,6 +11,7 @@ use App\Model\Table\NudgesTable;
 use Cake\Core\Configure;
 use Cake\Datasource\ResultSetInterface;
 use Cake\I18n\FrozenDate;
+use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use EmailQueue\EmailQueue;
@@ -21,9 +22,9 @@ class ReportDueNudge implements NudgeInterface
      * Non-finalized projects that have received a loan more than 11 months ago and haven't received a nudge in the
      * last week or submitted a report in the last 11 months
      *
-     * @return ResultSetInterface|Project[]
+     * @return ResultSet<Project>|null
      */
-    public static function getProjects(): ResultSetInterface
+    public static function getProjects(): ?ResultSetInterface
     {
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
 

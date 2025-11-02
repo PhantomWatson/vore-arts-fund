@@ -15,6 +15,7 @@ use Cake\Datasource\ResultSetInterface;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\I18n\FrozenDate;
+use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use EmailQueue\EmailQueue;
@@ -24,9 +25,9 @@ class PaymentReminderNudge implements NudgeInterface
     /**
      * Projects with loans with positive balances
      *
-     * @return ResultSetInterface|Project[]
+     * @return ResultSet<Project>|null
      */
-    public static function getProjects(): ResultSetInterface
+    public static function getProjects(): ?ResultSetInterface
     {
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
 
