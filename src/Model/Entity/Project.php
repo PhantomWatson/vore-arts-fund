@@ -459,15 +459,21 @@ class Project extends Entity
 
     public function dispatchSubmittedEvent()
     {
-        EventManager::instance()->on(new AlertListener());
+        $eventManager = EventManager::instance();
+        $eventName = 'Project.submitted';
+
+        // Only register the listener if it hasn't been registered yet
+        if (!AlertListener::hasAlertListener($eventManager, $eventName)) {
+            $eventManager->on(new AlertListener());
+        }
 
         // Add required related resources
         if (!$this->user) {
             $this->user = TableRegistry::getTableLocator()->get('Users')->get($this->user_id);
         }
 
-        EventManager::instance()->dispatch(new Event(
-            'Project.submitted',
+        $eventManager->dispatch(new Event(
+            $eventName,
             $this,
             ['project' => $this]
         ));
@@ -475,10 +481,16 @@ class Project extends Entity
 
     public function dispatchWithdrawnEvent()
     {
-        EventManager::instance()->on(new AlertListener());
+        $eventManager = EventManager::instance();
+        $eventName = 'Project.withdrawn';
 
-        EventManager::instance()->dispatch(new Event(
-            'Project.withdrawn',
+        // Only register the listener if it hasn't been registered yet
+        if (!AlertListener::hasAlertListener($eventManager, $eventName)) {
+            $eventManager->on(new AlertListener());
+        }
+
+        $eventManager->dispatch(new Event(
+            $eventName,
             $this,
             ['project' => $this]
         ));
@@ -486,10 +498,16 @@ class Project extends Entity
 
     public function dispatchMarkedDeletedEvent()
     {
-        EventManager::instance()->on(new AlertListener());
+        $eventManager = EventManager::instance();
+        $eventName = 'Project.markedDeleted';
 
-        EventManager::instance()->dispatch(new Event(
-            'Project.markedDeleted',
+        // Only register the listener if it hasn't been registered yet
+        if (!AlertListener::hasAlertListener($eventManager, $eventName)) {
+            $eventManager->on(new AlertListener());
+        }
+
+        $eventManager->dispatch(new Event(
+            $eventName,
             $this,
             ['project' => $this]
         ));

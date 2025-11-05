@@ -115,8 +115,14 @@ class NotesTable extends Table
             default => null,
         };
         if ($entity->isNew() && $eventName) {
-            EventManager::instance()->on(new AlertListener());
-            EventManager::instance()->dispatch(new Event($eventName, $this, ['note' => $entity]));
+            $eventManager = EventManager::instance();
+
+            // Only register the listener if it hasn't been registered yet
+            if (!AlertListener::hasAlertListener($eventManager, $eventName)) {
+                $eventManager->on(new AlertListener());
+            }
+
+            $eventManager->dispatch(new Event($eventName, $this, ['note' => $entity]));
         }
     }
 }

@@ -11,6 +11,7 @@ use App\View\AppView;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
+use Cake\Event\EventManager;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
@@ -210,5 +211,23 @@ class AlertListener implements EventListenerInterface
             ], true),
         ));
         $this->alert->send(Alert::TYPE_APPLICANT_COMMUNICATION);
+    }
+
+    /**
+     * Check if an AlertListener is already registered with the EventManager
+     *
+     * @param \Cake\Event\EventManager $eventManager
+     * @param string $eventName
+     * @return bool
+     */
+    public static function hasAlertListener(EventManager $eventManager, string $eventName): bool
+    {
+        $listeners = $eventManager->listeners($eventName);
+        foreach ($listeners as $listener) {
+            if ($listener['callable'][0] instanceof AlertListener) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -108,10 +108,16 @@ class TransactionsController extends ApiController
 
     private function dispatchChargeSucceededEvent(string $payload, ?Transaction $transaction)
     {
-        EventManager::instance()->on(new AlertListener());
+        $eventManager = EventManager::instance();
+        $eventName = 'Stripe.chargeSucceeded';
 
-        EventManager::instance()->dispatch(new Event(
-            'Stripe.chargeSucceeded',
+        // Only register the listener if it hasn't been registered yet
+        if (!AlertListener::hasAlertListener($eventManager, $eventName)) {
+            $eventManager->on(new AlertListener());
+        }
+
+        $eventManager->dispatch(new Event(
+            $eventName,
             $this,
             compact('payload', 'transaction')
         ));

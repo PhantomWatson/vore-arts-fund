@@ -191,8 +191,14 @@ class MailListener implements EventListenerInterface
             $viewVars,
             $emailOptions
         );
-        EventManager::instance()->on(new AlertListener());
-        EventManager::instance()->dispatch(new Event(
+        $eventManager = EventManager::instance();
+
+        // Only register the listener if it hasn't been registered yet
+        if (!AlertListener::hasAlertListener($eventManager, $event)) {
+            $eventManager->on(new AlertListener());
+        }
+
+        $eventManager->dispatch(new Event(
             $event,
             $this,
             [
