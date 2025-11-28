@@ -2,6 +2,7 @@
 namespace App\Alert;
 
 use Cake\Core\Configure;
+use Cake\Log\Log;
 
 class Slack
 {
@@ -15,9 +16,12 @@ class Slack
     public function __construct($channel)
     {
         $urls = Configure::read('slackWebhookUrls');
-        $this->url = $urls[$channel] ?? $urls['default'];
         if (!isset($urls[$channel])) {
-            $this->addLine('Unknown alert channel: ' . $channel);
+            $this->addLine("Unknown alert channel '$channel'. Using default channel.");
+        }
+        $this->url = $urls[$channel] ?? $urls['default'] ?? null;
+        if (!$this->url) {
+            Log::error("Slack alert channel '$channel' is not configured.");
         }
     }
 
@@ -77,9 +81,14 @@ class Slack
      *
      * @return bool
      */
-    public function send()
+    public function send(): bool
     {
         $this->beforeSend();
+
+        if (!$this->url) {
+            Log::error("Cannot send Slack message: no webhook URL configured.");
+            return false;
+        }
 
         $data = 'payload=' . json_encode(['text' => $this->content]);
         $ch = curl_init($this->url);
