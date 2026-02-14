@@ -469,6 +469,17 @@ class ProjectsController extends AppController
 
     public function reapply()
     {
+        // Check if applications can be accepted
+        /** @var FundingCycle $fundingCycle */
+        $fundingCycle = $this->FundingCycles->find('current')->first();
+        if (is_null($fundingCycle)) {
+            $nextFundingCycle = $this->FundingCycles->find('nextApplying')->first();
+            $this->set(compact('nextFundingCycle'));
+            $this->viewBuilder()->setTemplate('applications_not_being_accepted');
+
+            return null;
+        }
+
         $id = $this->request->getParam('id');
         if ($id) {
             return $this->redirect([
