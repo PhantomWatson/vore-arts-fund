@@ -65,7 +65,7 @@ class MailListener implements EventListenerInterface
      */
     public function mailProjectAccepted(Event $event, Project $project): void
     {
-        list($email, $name) = $this->getRecipientFromProject($project);
+        [$email, $name] = $this->getRecipientFromProject($project);
         $this->enqueueEmailAndDispatchEvent(
             $email,
             [
@@ -91,7 +91,7 @@ class MailListener implements EventListenerInterface
      */
     public function mailProjectRevisionRequested(Event $event, Project $project, string $note): void
     {
-        list($email, $name) = $this->getRecipientFromProject($project);
+        [$email, $name] = $this->getRecipientFromProject($project);
         $this->enqueueEmailAndDispatchEvent(
             $email,
             [
@@ -124,7 +124,7 @@ class MailListener implements EventListenerInterface
      */
     public function mailProjectRejected(Event $event, Project $project, string $note): void
     {
-        list($email, $name) = $this->getRecipientFromProject($project);
+        [$email, $name] = $this->getRecipientFromProject($project);
         $this->enqueueEmailAndDispatchEvent(
             $email,
             [
@@ -151,7 +151,7 @@ class MailListener implements EventListenerInterface
      */
     public function mailProjectFunded(Event $event, Project $project): void
     {
-        list($email, $name) = $this->getRecipientFromProject($project);
+        [$email, $name] = $this->getRecipientFromProject($project);
         $this->enqueueEmailAndDispatchEvent(
             $email,
             [
@@ -218,7 +218,8 @@ class MailListener implements EventListenerInterface
      */
     public function mailProjectNotFunded(Event $event, Project $project): void
     {
-        list($email, $name) = $this->getRecipientFromProject($project);
+        [$email, $name] = $this->getRecipientFromProject($project);
+
         $this->enqueueEmailAndDispatchEvent(
             $email,
             [
@@ -253,7 +254,7 @@ class MailListener implements EventListenerInterface
      */
     public function mailMessage(Event $event, Project $project, string $message): void
     {
-        list($email, $name) = $this->getRecipientFromProject($project);
+        [$email, $name] = $this->getRecipientFromProject($project);
         EmailQueue::enqueue(
             $email,
             [
@@ -286,7 +287,7 @@ class MailListener implements EventListenerInterface
 
     public function mailFundingDisbursed(Project $project): void
     {
-        list($email, $name) = $this->getRecipientFromProject($project);
+        [$email, $name] = $this->getRecipientFromProject($project);
         $this->enqueueEmailAndDispatchEvent(
             $email,
             [
