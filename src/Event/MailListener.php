@@ -223,8 +223,13 @@ class MailListener implements EventListenerInterface
             $email,
             [
                 'project' => $project,
-                'fundingCycle' => $this->fundingCyclesTable->find('nextApplying')->first(),
+                'currentApplyingFundingCycle' => $this->fundingCyclesTable->find('currentApplying')->first(),
                 'userName' => $name,
+                'reapplyUrl' => Router::url([
+                    'controller' => 'Projects',
+                    'action' => 'apply',
+                    '?' => ['reapply' => $project->id]
+                ], true),
             ],
             [
                 'subject' => $this->mailConfig->subjectPrefix . 'Application Not Funded',
