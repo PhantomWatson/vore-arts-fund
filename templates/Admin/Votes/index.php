@@ -8,8 +8,8 @@
 
 use App\Model\Entity\Project;
 
-$budgeted = $fundingCycle->funding_available;
-$budgetRemaining = $fundingCycle->funding_available;
+$budgeted = $fundingCycle?->funding_available ?? 0;
+$budgetRemaining = $budgeted;
 
 function getToAward(Project $project, $budgetRemaining, $votingHasPassed)
 {
@@ -156,7 +156,8 @@ function getToAward(Project $project, $budgetRemaining, $votingHasPassed)
                 </td>
                 <td>
                     <strong>
-                        Total to award: $<?= number_format($budgeted - $budgetRemaining) ?>
+                        Total to award:
+                        <?= ($budgeted - $budgetRemaining) < 0 ? '-' : '' ?>$<?= number_format($budgeted - $budgetRemaining) ?>
                     </strong>
                 </td>
             </tr>
