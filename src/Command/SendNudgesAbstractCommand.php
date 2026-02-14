@@ -55,8 +55,7 @@ abstract class SendNudgesAbstractCommand extends Command
 
         if (!$projects || $projects->isEmpty()) {
             $io->out(sprintf(
-                'No %s found that need %s',
-                __n('project', 'projects', $projects->count()),
+                'No projects found that need %s',
                 $nudgeType
             ));
             return;
