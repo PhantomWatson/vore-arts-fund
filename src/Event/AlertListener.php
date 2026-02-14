@@ -18,6 +18,7 @@ use Cake\Routing\Router;
 class AlertListener implements EventListenerInterface
 {
     private Slack $slack;
+    public Alert $alert;
 
     public function __construct()
     {
