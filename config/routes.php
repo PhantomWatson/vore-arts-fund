@@ -94,6 +94,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
             '/news' => 'index',
             '/news/{slug}' => 'view',
         ],
+        'Transactions' => [
+            '/loan-history' => 'loanHistory',
+        ],
     ];
     buildRoutes($builder, $controllers);
 
