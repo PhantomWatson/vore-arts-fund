@@ -57,7 +57,7 @@ class TransactionsController extends AppController
 
             foreach ($fundingCycle->projects as $project) {
                 foreach ($project->transactions as $transaction) {
-                    $amount = $transaction->amount_net;
+                    $amount = $transaction->amount_net / 100; // Convert from cents to dollars
                     if ($transaction->type === Transaction::TYPE_LOAN) {
                         $loanTotal += $amount;
                     } elseif ($transaction->type === Transaction::TYPE_LOAN_REPAYMENT) {
