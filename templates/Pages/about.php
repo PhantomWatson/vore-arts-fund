@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User[] $boardMembers
  * @var array<int, array{date: \Cake\I18n\FrozenTime, loansOutstanding: float, loansRepaid: float}> $loanHistory
+ * @var float $totalLoanedOut
  */
 ?>
 
@@ -273,13 +274,22 @@
         </ul>
     </article>
 
-    <?php if ($loanHistory): ?>
+    <?php if ($loanHistory || $totalLoanedOut): ?>
         <div class="about">
             <article>
                 <h2>
                     Loan History
                 </h2>
-                <?= $this->element('loan_history') ?>
+                <?php if ($totalLoanedOut): ?>
+                    <p>
+                        Since it began in January of 2025, the Vore Arts Fund has distributed a
+                        total of <?= $this->Number->currency($totalLoanedOut, 'USD', ['places' => 0]) ?>
+                        in loans to support the arts.
+                    </p>
+                <?php endif; ?>
+                <?php if ($loanHistory): ?>
+                    <?= $this->element('loan_history') ?>
+                <?php endif; ?>
             </article>
         </div>
     <?php endif; ?>

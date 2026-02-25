@@ -393,4 +393,32 @@ class TransactionsTable extends Table
 
         return $bars;
     }
+
+    /**
+     * Returns the total amount that has been loaned out across all projects, minus any canceled checks
+     *
+     * @return float
+     */
+    public function getTotalLoanedOut(): float
+    {
+        $result = $this->find()
+            ->where(['type' => Transaction::TYPE_LOAN])
+            ->select(['total' => $this->find()->func()->sum('amount_net')])
+            ->first();
+
+        $totalLoanedOut = $result
+            ? $result->total / 100 // Convert from cents to dollars
+            : 0;
+
+        $result = $this->find()
+            ->where(['type' => Transaction::TYPE_CANCELED_CHECK])
+            ->select(['total' => $this->find()->func()->sum('amount_net')])
+            ->first();
+
+        $totalCanceled = $result
+            ? $result->total / 100 // Convert from cents to dollars
+            : 0;
+
+        return $totalLoanedOut - $totalCanceled;
+    }
 }

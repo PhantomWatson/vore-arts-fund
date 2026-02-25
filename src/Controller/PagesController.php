@@ -109,7 +109,9 @@ class PagesController extends AppController
         $transactionsTable = TableRegistry::getTableLocator()->get('Transactions');
         $loanHistory = $transactionsTable->getLoanHistory();
 
-        $this->set(compact('boardMembers', 'loanHistory'));
+        $totalLoanedOut = $transactionsTable->getTotalLoanedOut();
+
+        $this->set(compact('boardMembers', 'loanHistory', 'totalLoanedOut'));
     }
 
     /**
