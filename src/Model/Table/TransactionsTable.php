@@ -336,7 +336,7 @@ class TransactionsTable extends Table
         $fundingCyclesTable = $this->Projects->FundingCycles;
         $fundingCycles = $fundingCyclesTable
             ->find()
-            ->select(['id', 'application_begin'])
+            ->select(['id', 'vote_end'])
             ->where(['FundingCycles.is_finalized' => true])
             ->contain([
                 'Projects' => function (SelectQuery $q) {
@@ -356,7 +356,7 @@ class TransactionsTable extends Table
                         ->where(['Projects.status_id' => Project::STATUS_AWARDED_AND_DISBURSED]);
                 },
             ])
-            ->orderAsc('FundingCycles.application_begin')
+            ->orderAsc('FundingCycles.vote_end')
             ->all();
 
         $bars = [];
@@ -385,7 +385,7 @@ class TransactionsTable extends Table
             }
 
             $bars[] = [
-                'date' => $fundingCycle->application_begin,
+                'date' => $fundingCycle->vote_end->addWeek(), // Since the distribution is shortly after the vote ends
                 'loansOutstanding' => $loanTotal - $repaymentTotal,
                 'loansRepaid' => $repaymentTotal,
             ];
