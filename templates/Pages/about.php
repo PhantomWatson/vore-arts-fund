@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User[] $boardMembers
+ * @var array<int, array{date: \Cake\I18n\FrozenTime, loansOutstanding: float, loansRepaid: float}> $loanHistory
  */
 ?>
 
@@ -271,4 +272,15 @@
             </li>
         </ul>
     </article>
+
+    <?php if ($loanHistory): ?>
+        <div class="about">
+            <article>
+                <h2>
+                    Loan History
+                </h2>
+                <?= $this->element('loan_history') ?>
+            </article>
+        </div>
+    <?php endif; ?>
 </div>

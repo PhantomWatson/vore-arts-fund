@@ -106,7 +106,10 @@ class PagesController extends AppController
         $usersTable = TableRegistry::getTableLocator()->get('Users');
         $boardMembers = $usersTable->getBoardMembers();
 
-        $this->set(compact('boardMembers'));
+        $transactionsTable = TableRegistry::getTableLocator()->get('Transactions');
+        $loanHistory = $transactionsTable->getLoanHistory();
+
+        $this->set(compact('boardMembers', 'loanHistory'));
     }
 
     /**

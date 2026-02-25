@@ -1,10 +1,11 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var array<int, array{date: \Cake\I18n\FrozenTime, loansOutstanding: float, loansRepaid: float}> $bars
+ * @var array<int, array{date: \Cake\I18n\FrozenTime, loansOutstanding: float, loansRepaid: float}> $loanHistory
  */
 $this->Html->script('https://www.gstatic.com/charts/loader.js', ['block' => true]);
 ?>
+
 <script>
     google.charts.load('current', {packages: ['corechart']});
     google.charts.setOnLoadCallback(drawChart);
@@ -13,12 +14,12 @@ $this->Html->script('https://www.gstatic.com/charts/loader.js', ['block' => true
         var data = google.visualization.arrayToDataTable([
             //['Genre', 'Fantasy & Sci Fi', 'Romance', 'Mystery/Crime', 'General', 'Western', 'Literature', { role: 'annotation' } ],
             ['Date', 'Repaid loans', 'Outstanding loans'],
-            <?php foreach ($bars as $bar): ?>
-                [
-                    new Date(<?= json_encode($bar['date']->format('Y-m-d')) ?>),
-                    <?= json_encode($bar['loansRepaid']) ?>,
-                    <?= json_encode($bar['loansOutstanding']) ?>,
-                ],
+            <?php foreach ($loanHistory as $bar): ?>
+            [
+                new Date(<?= json_encode($bar['date']->format('Y-m-d')) ?>),
+                <?= json_encode($bar['loansRepaid']) ?>,
+                <?= json_encode($bar['loansOutstanding']) ?>,
+            ],
             <?php endforeach; ?>
         ]);
 
@@ -54,11 +55,4 @@ $this->Html->script('https://www.gstatic.com/charts/loader.js', ['block' => true
         chart.draw(data, options);
     }
 </script>
-
-<?php if ($bars): ?>
-    <div id="loans-chart" style="width: 100%; height: 300px;"></div>
-<?php else: ?>
-    <p>
-        Sorry, but this information can't be displayed at the moment. Check back later!
-    </p>
-<?php endif; ?>
+<div id="loans-chart" style="width: 100%; height: 300px;"></div>
