@@ -98,19 +98,31 @@ class SendDailyAlertsCommand extends Command
             ->find('votingBeganToday')
             ->first();
 
-        if ($cycle) {
-            echo '- Found cycle, sending alert' . PHP_EOL;
-            $alert = new Alert();
-            $alert->addLine(
-                sprintf(
-                    'Voting period started for the %s funding cycle. Time to promote!',
-                    $cycle->name,
-                ),
-            );
-            $alert->send(Alert::TYPE_ADMIN);
-        } else {
+        if (!$cycle) {
             echo '- No cycles found' . PHP_EOL;
+            return;
         }
+
+        $projectsTable = TableRegistry::getTableLocator()->get('Projects');
+        $eligibleCount = $projectsTable
+            ->find('eligibleForVoting', ['funding_cycle_id' => $cycle->id])
+            ->all()
+            ->count();
+
+        if ($eligibleCount === 0) {
+            echo '- Found cycle, but no projects eligible for voting; skipping alert' . PHP_EOL;
+            return;
+        }
+
+        echo '- Found cycle, sending alert' . PHP_EOL;
+        $alert = new Alert();
+        $alert->addLine(
+            sprintf(
+                'Voting period started for the %s funding cycle. Time to promote!',
+                $cycle->name,
+            ),
+        );
+        $alert->send(Alert::TYPE_ADMIN);
     }
 
     private function alertVotingPeriodEnded()
@@ -127,24 +139,37 @@ class SendDailyAlertsCommand extends Command
             })
             ->first();
 
-        if ($cycle) {
-            echo '- Found cycle, sending alert' . PHP_EOL;
-            $alert = new Alert();
-            $alert->addLine(
-                sprintf(
-                    'Voting period ended for the %s funding cycle. <%s|Time to review votes and award loans!>',
-                    $cycle->name,
-                    Router::url([
-                        'prefix' => 'Admin',
-                        'controller' => 'Votes',
-                        'action' => 'index',
-                        'id' => $cycle->id
-                    ], true),
-                ),
-            );
-            $alert->send(Alert::TYPE_ADMIN);
-        } else {
+        if (!$cycle) {
             echo '- No cycles found' . PHP_EOL;
+            return;
         }
+
+        $projectsTable = TableRegistry::getTableLocator()->get('Projects');
+        $eligibleCount = $projectsTable
+            ->find('eligibleForVoting', ['funding_cycle_id' => $cycle->id])
+            ->all()
+            ->count();
+
+        if ($eligibleCount === 0) {
+            echo '- Found cycle, but no projects eligible for voting; skipping alert' . PHP_EOL;
+
+            return;
+        }
+
+        echo '- Found cycle, sending alert' . PHP_EOL;
+        $alert = new Alert();
+        $alert->addLine(
+            sprintf(
+                'Voting period ended for the %s funding cycle. <%s|Time to review votes and award loans!>',
+                $cycle->name,
+                Router::url([
+                    'prefix' => 'Admin',
+                    'controller' => 'Votes',
+                    'action' => 'index',
+                    'id' => $cycle->id
+                ], true),
+            ),
+        );
+        $alert->send(Alert::TYPE_ADMIN);
     }
 }
