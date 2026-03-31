@@ -54,7 +54,9 @@ class ImageCleanupCommand extends Command
 
         $files = scandir(Image::PROJECT_IMAGES_DIR);
         if ($files === false) {
-            $io->err("Failed to read directory: " . Image::PROJECT_IMAGES_DIR);
+            $msg = "Failed to read directory: " . Image::PROJECT_IMAGES_DIR;
+            $io->err($msg);
+            ErrorAlert::send($msg);
             return;
         }
 
@@ -84,7 +86,9 @@ class ImageCleanupCommand extends Command
             if (unlink($filepath)) {
                 $io->success("[+] $filename deleted");
             } else {
-                $io->err("[-] Failed to delete $filename");
+                $msg = "Failed to delete $filename";
+                $io->err("[-] {$msg}");
+                ErrorAlert::send("ImageCleanupCommand: $msg");
             }
         }
     }
