@@ -468,9 +468,16 @@ class ProjectsTable extends Table
         return $query->where(['Projects.status_id !=' => Project::STATUS_DELETED]);
     }
 
-    public function setProjectAwardedDate($projectId, $date)
+    public function setProjectAwardedDate(int $projectId, FrozenDate $date): void
     {
         $project = $this->get($projectId);
+
+        // Return early if there's no change
+        if ($project->loan_awarded_date && $project->loan_awarded_date->equals($date)) {
+            return;
+        }
+
+        // Throw an error if an already-set date is being updated
         if ($project->loan_awarded_date) {
             $alert = new ErrorAlert();
             $alert->send(sprintf(
@@ -481,6 +488,7 @@ class ProjectsTable extends Table
             return;
         }
 
+        // Otherwise, set the date
         $project->loan_awarded_date = new FrozenDate($date);
         if (!$this->save($project)) {
             $alert = new ErrorAlert();
