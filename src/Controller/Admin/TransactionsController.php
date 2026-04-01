@@ -99,11 +99,17 @@ class TransactionsController extends AdminController
             $cyclesRetval[$cycle['id']] = ['name' => $cycle->name];
         }
 
+        // Grab projects that qualify for transaction information
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
         $projects = $projectsTable
             ->find('notDeleted')
-            ->find('notFinalized')
             ->select(['Projects.id', 'Projects.title', 'Projects.funding_cycle_id'])
+            ->where([
+                'Projects.status_id IN' => [
+                    Project::STATUS_AWARDED_NOT_YET_DISBURSED,
+                    Project::STATUS_AWARDED_AND_DISBURSED,
+                ],
+            ])
             ->contain([
                 'Users' => function (Query $query) {
                     return $query->select(['Users.id', 'Users.name']);
