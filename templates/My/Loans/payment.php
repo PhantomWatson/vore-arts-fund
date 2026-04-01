@@ -6,8 +6,7 @@
 
 use App\Model\Entity\Transaction;
 
-$totalRepaid = $project->getTotalRepaid() / 100; // In dollars
-$balance = $project->amount_awarded - $totalRepaid;
+$balance = ($project->amount_awarded - $project->getTotalRepaid()) / 100;
 $isPaidOff = $balance <= 0;
 ?>
 

@@ -29,7 +29,7 @@ use Cake\ORM\TableRegistry;
  * @property int $status_id
  * @property string $status_name
  * @property float $voting_score
- * @property int $amount_awarded In dollars
+ * @property int $amount_awarded In cents
  * @property string $amount_awarded_formatted e.g. $1,234
  * @property string $amount_awarded_formatted_cents e.g. $1,234.56
  * @property string $status_summary
@@ -405,12 +405,12 @@ class Project extends Entity
 
     protected function _getAmountAwardedFormatted(): string
     {
-        return '$' . number_format($this->amount_awarded ?: 0);
+        return '$' . number_format(($this->amount_awarded ?: 0) / 100);
     }
 
     protected function _getAmountAwardedFormattedCents(): string
     {
-        return '$' . number_format($this->amount_awarded ?: 0, 2);
+        return '$' . number_format(($this->amount_awarded ?: 0) / 100, 2);
     }
 
     /**
@@ -555,7 +555,7 @@ class Project extends Entity
      */
     protected function _getRequiresTin()
     {
-        return $this->amount_awarded >= 600;
+        return $this->amount_awarded >= 60000; // $600
     }
 
     public function readyForReportReminder()
@@ -587,9 +587,7 @@ class Project extends Entity
             return 0;
         }
 
-        $amountAwardedCents = $this->amount_awarded * 100;
-
-        return $amountAwardedCents - $this->getTotalRepaid();
+        return $this->amount_awarded - $this->getTotalRepaid();
     }
 
     /**
@@ -657,7 +655,6 @@ class Project extends Entity
             return 0;
         }
 
-        $totalRepaid = $this->getTotalRepaid() / 100; // In dollars
-        return $this->amount_awarded - $totalRepaid;
+        return ($this->amount_awarded - $this->getTotalRepaid()) / 100;
     }
 }

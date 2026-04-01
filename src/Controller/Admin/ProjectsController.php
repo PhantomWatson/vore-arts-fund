@@ -169,7 +169,7 @@ class ProjectsController extends AdminController
 
             $project = $this->Projects->patchEntity($project, [
                 'status_id' => Project::STATUS_AWARDED_NOT_YET_DISBURSED,
-                'amount_awarded' => $data['amount_awarded'],
+                'amount_awarded' => (int)($data['amount_awarded'] * 100), // Convert dollars to cents
             ]);
             if ($this->Projects->save($project)) {
                 $this->Flash->success('Status updated');
@@ -259,7 +259,7 @@ class ProjectsController extends AdminController
         // Update status
         $project->status_id = $statusId;
         if ($statusId == Project::STATUS_AWARDED_NOT_YET_DISBURSED) {
-            $project->amount_awarded = (int)$this->getRequest()->getData('amount_awarded');
+            $project->amount_awarded = (int)($this->getRequest()->getData('amount_awarded') * 100); // Convert dollars to cents
         }
 
         if ($this->Projects->save($project)) {

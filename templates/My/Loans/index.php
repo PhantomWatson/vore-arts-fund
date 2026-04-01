@@ -41,8 +41,7 @@ use App\Model\Entity\Project;
                     </td>
                     <td>
                         <?php
-                            // Convert repaid amount to dollars
-                            $balance = $project->amount_awarded - ($project->getTotalRepaid() / 100);
+                            $balance = ($project->amount_awarded - $project->getTotalRepaid()) / 100;
                         ?>
                         <?php if ($balance < 0): ?>
                             $0 <span class="text-success">

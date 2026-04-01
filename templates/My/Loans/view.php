@@ -3,8 +3,7 @@
  * @var \App\Model\Entity\Project $project
  * @var \App\Model\Entity\Transaction[] $repayments
  */
-$totalRepaid = $project->getTotalRepaid() / 100; // In dollars
-$balance = $project->amount_awarded - $totalRepaid;
+$balance = ($project->amount_awarded - $project->getTotalRepaid()) / 100;
 ?>
 
 <table class="table">

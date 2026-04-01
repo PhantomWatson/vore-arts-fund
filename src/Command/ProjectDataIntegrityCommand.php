@@ -56,7 +56,7 @@ class ProjectDataIntegrityCommand extends Command
             ->all();
         foreach ($projects as $project) {
             $statusName = Project::getStatus($project->status_id);
-            $awarded = number_format($project->amount_awarded);
+            $awarded = number_format($project->amount_awarded / 100);
             $msg = "Project #$project->id has an awarded amount of $$awarded but a status of $statusName (not awarded)";
             $io->error("- $msg");
             ErrorAlert::send($msg);
@@ -98,11 +98,11 @@ class ProjectDataIntegrityCommand extends Command
             $transactionTotal = array_reduce($project->transactions, function ($sum, $transaction) {
                 return $sum + $transaction->amount_net;
             }, 0);
-            if ($transactionTotal == $project->amount_awarded * 100) { // Convert from dollars to cents
+            if ($transactionTotal == $project->amount_awarded) {
                 continue;
             }
 
-            $awarded = number_format($project->amount_awarded);
+            $awarded = number_format($project->amount_awarded / 100);
             $transactionTotal = number_format($transactionTotal / 100); // Convert from cents to dollars
             $msg = "Project #$project->id has an awarded amount of $$awarded but loan disbursement transaction records totalling $$transactionTotal";
             $io->error("- $msg");
