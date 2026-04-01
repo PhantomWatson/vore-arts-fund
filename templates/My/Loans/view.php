@@ -32,7 +32,7 @@ $balance = ($project->amount_awarded - $project->getTotalRepaid()) / 100;
     <?php endif; ?>
     <tr>
         <th>Total repaid</th>
-        <td>$<?= number_format($totalRepaid, 2) ?></td>
+        <td>$<?= number_format($project->getTotalRepaid() / 100, 2) ?></td>
     </tr>
     <tr>
         <th>Balance</th>
