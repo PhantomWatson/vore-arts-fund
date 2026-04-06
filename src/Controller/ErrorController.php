@@ -44,6 +44,12 @@ class ErrorController extends AppController
     {
         parent::beforeRender($event);
 
+        try {
+            $this->setGlobalViewVars();
+        } catch (\Exception $e) {
+            // Silently catch exceptions to avoid a possible error infinite loop
+        }
+
         $this->viewBuilder()->setTemplatePath('Error');
     }
 
