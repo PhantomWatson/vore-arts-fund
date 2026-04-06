@@ -5,7 +5,10 @@
  * @var string $currentBreadcrumb
  */
 
-$title = $title ?? $this->fetch('title');
+$title ??= $this->fetch('title');
+$breadcrumbs ??= [];
+$currentBreadcrumb ??= '';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
