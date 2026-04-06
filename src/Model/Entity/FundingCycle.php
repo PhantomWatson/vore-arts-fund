@@ -32,11 +32,11 @@ use Cake\Routing\Router;
  */
 class FundingCycle extends Entity
 {
-    const TIME_START_FIELDS = [
+    const array TIME_START_FIELDS = [
         'application_begin',
         'vote_begin',
     ];
-    const TIME_END_FIELDS = [
+    const array TIME_END_FIELDS = [
         'application_end',
         'resubmit_deadline',
         'vote_end'
@@ -79,7 +79,7 @@ class FundingCycle extends Entity
     /**
      * @return \Cake\I18n\DateTime|null
      */
-    protected function _getApplicationBeginLocal()
+    protected function _getApplicationBeginLocal(): ?\Cake\I18n\DateTime
     {
         return $this->application_begin?->setTimezone(\App\Application::LOCAL_TIMEZONE);
     }
@@ -87,7 +87,7 @@ class FundingCycle extends Entity
     /**
      * @return \Cake\I18n\DateTime|null
      */
-    protected function _getApplicationEndLocal()
+    protected function _getApplicationEndLocal(): ?\Cake\I18n\DateTime
     {
         return $this->application_end?->setTimezone(\App\Application::LOCAL_TIMEZONE);
     }
@@ -95,7 +95,7 @@ class FundingCycle extends Entity
     /**
      * @return \Cake\I18n\DateTime|null
      */
-    protected function _getResubmitDeadlineLocal()
+    protected function _getResubmitDeadlineLocal(): ?\Cake\I18n\DateTime
     {
         return $this->resubmit_deadline?->setTimezone(\App\Application::LOCAL_TIMEZONE);
     }
@@ -103,7 +103,7 @@ class FundingCycle extends Entity
     /**
      * @return \Cake\I18n\DateTime|null
      */
-    protected function _getVoteBeginLocal()
+    protected function _getVoteBeginLocal(): ?\Cake\I18n\DateTime
     {
         return $this->vote_begin?->setTimezone(\App\Application::LOCAL_TIMEZONE);
     }
@@ -111,7 +111,7 @@ class FundingCycle extends Entity
     /**
      * @return \Cake\I18n\DateTime|null
      */
-    protected function _getVoteEndLocal()
+    protected function _getVoteEndLocal(): ?\Cake\I18n\DateTime
     {
         return $this->vote_end?->setTimezone(\App\Application::LOCAL_TIMEZONE);
     }
@@ -122,7 +122,7 @@ class FundingCycle extends Entity
      *
      * @return int[]|null
      */
-    public function getProjectsSummary()
+    public function getProjectsSummary(): ?array
     {
         if (!$this->projects ?? false) {
             return null;
