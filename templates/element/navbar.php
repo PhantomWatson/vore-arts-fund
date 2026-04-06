@@ -164,7 +164,7 @@ $adminLinks = [
     ]
 ];
 
-function echoLinks(\App\View\AppView $appView, $links, $navbarItemClass = 'nav-item') {
+function echoLinks(\Cake\View\View $appView, $links, $navbarItemClass = 'nav-item') {
     foreach ($links as $link) {
         echo '<li class="' . $navbarItemClass . '">' . $appView->Html->link(...$link) . '</li>';
     }
