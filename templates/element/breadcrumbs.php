@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var array $breadcrumbs
+ * @var array|null $breadcrumbs
  * @var string $currentBreadcrumb
  * @var string $title
  */
@@ -20,7 +20,7 @@ if ($breadcrumbs && end($breadcrumbs)[0] == $currentBreadcrumb) {
 }
 ?>
 
-<?php if (count($breadcrumbs) > 1): ?>
+<?php if (count($breadcrumbs ?? []) > 1): ?>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <?php foreach ($breadcrumbs as $breadcrumb): ?>
