@@ -74,11 +74,11 @@ class FundingCycle extends Entity
      */
     public function _getName(): string
     {
-        return $this->vote_end->addWeek()->format('F Y');
+        return $this->vote_end->addWeeks(1)->format('F Y');
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime|null
+     * @return \Cake\I18n\DateTime|null
      */
     protected function _getApplicationBeginLocal()
     {
@@ -86,7 +86,7 @@ class FundingCycle extends Entity
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime|null
+     * @return \Cake\I18n\DateTime|null
      */
     protected function _getApplicationEndLocal()
     {
@@ -94,7 +94,7 @@ class FundingCycle extends Entity
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime|null
+     * @return \Cake\I18n\DateTime|null
      */
     protected function _getResubmitDeadlineLocal()
     {
@@ -102,7 +102,7 @@ class FundingCycle extends Entity
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime|null
+     * @return \Cake\I18n\DateTime|null
      */
     protected function _getVoteBeginLocal()
     {
@@ -110,7 +110,7 @@ class FundingCycle extends Entity
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime|null
+     * @return \Cake\I18n\DateTime|null
      */
     protected function _getVoteEndLocal()
     {

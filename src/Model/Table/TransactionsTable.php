@@ -385,7 +385,7 @@ class TransactionsTable extends Table
             }
 
             $bars[] = [
-                'date' => $fundingCycle->vote_end->addWeek(), // Since the distribution is shortly after the vote ends
+                'date' => $fundingCycle->vote_end->addWeeks(1), // Since the distribution is shortly after the vote ends
                 'loansOutstanding' => $loanTotal - $repaymentTotal,
                 'loansRepaid' => $repaymentTotal,
             ];
