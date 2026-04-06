@@ -50,7 +50,6 @@ class Piiano implements SecretServiceInterface
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($this->getPostPayload($projectId, $tin)));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $curlResult = curl_exec($ch);
-        curl_close($ch);
 
         $success = $curlResult && (json_decode($curlResult)->id ?? null);
 
