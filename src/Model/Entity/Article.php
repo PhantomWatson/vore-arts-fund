@@ -18,9 +18,9 @@ use Cake\View\View;
  * @property string $slug
  * @property int $user_id
  * @property bool $is_published
- * @property \Cake\I18n\FrozenDate|null $dated
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property \Cake\I18n\Date|null $dated
+ * @property \Cake\I18n\DateTime $created
+ * @property \Cake\I18n\DateTime $modified
  * @property string $formatted_body
  *
  * @property \App\Model\Entity\User $user
@@ -38,7 +38,7 @@ class Article extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'title' => true,
         'body' => true,
         'slug' => false,

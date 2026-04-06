@@ -35,7 +35,7 @@ class VoteDataIntegrityCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $since = FrozenTime::now()->subHours(24);
+        $since = \Cake\I18n\DateTime::now()->subHours(24);
         $votesTable = TableRegistry::getTableLocator()->get('Votes');
         $votes = $votesTable
             ->find()

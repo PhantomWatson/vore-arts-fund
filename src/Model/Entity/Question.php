@@ -10,8 +10,8 @@ use Cake\ORM\TableRegistry;
  * Question Entity
  *
  * @property int $id
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property \Cake\I18n\DateTime $created
+ * @property \Cake\I18n\DateTime $modified
  * @property bool $enabled
  * @property bool $hasAnswers
  * @property int $weight
@@ -30,7 +30,7 @@ class Question extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'question' => true,
         'enabled' => true,
         'weight' => true,

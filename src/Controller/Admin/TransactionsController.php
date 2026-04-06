@@ -53,9 +53,7 @@ class TransactionsController extends AdminController
     public function view()
     {
         $id = $this->request->getParam('id');
-        $transaction = $this->Transactions->get($id, [
-            'contain' => ['Projects'],
-        ]);
+        $transaction = $this->Transactions->get($id, contain: ['Projects']);
 
         $title = 'Transaction ' . $transaction->id;
         $this->title($title);
@@ -74,7 +72,7 @@ class TransactionsController extends AdminController
     {
         $transaction = $this->Transactions->newEmptyEntity();
         if (!$transaction->date) {
-            $transaction->date = new FrozenTime('now', Application::LOCAL_TIMEZONE);
+            $transaction->date = new \Cake\I18n\DateTime('now', Application::LOCAL_TIMEZONE);
         }
 
         $this->title('Add Transaction');
@@ -92,7 +90,7 @@ class TransactionsController extends AdminController
         $cycles = $cyclesTable
             ->find()
             ->select(['id', 'vote_end']) // vote_end needed to determine the cycle's name
-            ->orderDesc('application_begin')
+            ->orderByDesc('application_begin')
             ->toArray();
         $cyclesRetval = [];
         foreach ($cycles as $cycle) {
@@ -115,7 +113,7 @@ class TransactionsController extends AdminController
                     return $query->select(['Users.id', 'Users.name']);
                 }
             ])
-            ->orderAsc('Projects.title');
+            ->orderByAsc('Projects.title');
         foreach ($projects as $project) {
             $cyclesRetval[$project->funding_cycle_id]['projects'][] = [
                 'id' => $project->id,

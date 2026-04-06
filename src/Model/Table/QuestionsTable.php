@@ -87,7 +87,7 @@ class QuestionsTable extends Table
     {
         return $query
             ->where(['enabled' => true])
-            ->orderAsc('weight');
+            ->orderByAsc('weight');
     }
 
     /**
@@ -116,7 +116,7 @@ class QuestionsTable extends Table
             ->find()
             ->select(['weight'])
             ->where(['enabled' => true])
-            ->orderDesc('weight')
+            ->orderByDesc('weight')
             ->first();
         return $result ? $result->weight : 0;
     }

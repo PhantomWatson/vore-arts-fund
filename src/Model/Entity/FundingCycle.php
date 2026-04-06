@@ -11,20 +11,20 @@ use Cake\Routing\Router;
  * FundingCycle Entity
  *
  * @property int $id
- * @property \Cake\I18n\FrozenTime|null $application_begin
- * @property \Cake\I18n\FrozenTime|null $application_end
- * @property \Cake\I18n\FrozenTime|null $resubmit_deadline
- * @property \Cake\I18n\FrozenTime|null $vote_begin
- * @property \Cake\I18n\FrozenTime|null $vote_end
- * @property \Cake\I18n\FrozenTime|null $application_begin_local
- * @property \Cake\I18n\FrozenTime|null $application_end_local
- * @property \Cake\I18n\FrozenTime|null $resubmit_deadline_local
- * @property \Cake\I18n\FrozenTime|null $vote_begin_local
- * @property \Cake\I18n\FrozenTime|null $vote_end_local
+ * @property \Cake\I18n\DateTime|null $application_begin
+ * @property \Cake\I18n\DateTime|null $application_end
+ * @property \Cake\I18n\DateTime|null $resubmit_deadline
+ * @property \Cake\I18n\DateTime|null $vote_begin
+ * @property \Cake\I18n\DateTime|null $vote_end
+ * @property \Cake\I18n\DateTime|null $application_begin_local
+ * @property \Cake\I18n\DateTime|null $application_end_local
+ * @property \Cake\I18n\DateTime|null $resubmit_deadline_local
+ * @property \Cake\I18n\DateTime|null $vote_begin_local
+ * @property \Cake\I18n\DateTime|null $vote_end_local
  * @property int $funding_available
  * @property string $funding_available_formatted
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property \Cake\I18n\DateTime $created
+ * @property \Cake\I18n\DateTime $modified
  * @property string $name
  * @property bool $is_finalized
  *
@@ -52,7 +52,7 @@ class FundingCycle extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'application_begin' => true,
         'application_end' => true,
         'resubmit_deadline' => true,
@@ -78,7 +78,7 @@ class FundingCycle extends Entity
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|FrozenTime|null
+     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime|null
      */
     protected function _getApplicationBeginLocal()
     {
@@ -86,7 +86,7 @@ class FundingCycle extends Entity
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|FrozenTime|null
+     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime|null
      */
     protected function _getApplicationEndLocal()
     {
@@ -94,7 +94,7 @@ class FundingCycle extends Entity
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|FrozenTime|null
+     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime|null
      */
     protected function _getResubmitDeadlineLocal()
     {
@@ -102,7 +102,7 @@ class FundingCycle extends Entity
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|FrozenTime|null
+     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime|null
      */
     protected function _getVoteBeginLocal()
     {
@@ -110,7 +110,7 @@ class FundingCycle extends Entity
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|FrozenTime|null
+     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime|null
      */
     protected function _getVoteEndLocal()
     {

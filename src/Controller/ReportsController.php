@@ -17,7 +17,7 @@ use Cake\Routing\Router;
  */
 class ReportsController extends AppController
 {
-    public $paginate = [
+    public array $paginate = [
         'contain' => ['Users', 'Projects'],
         'limit' => 10,
         'order' => ['Reports.created' => 'desc'],
@@ -60,9 +60,7 @@ class ReportsController extends AppController
     public function view()
     {
         $id = $this->request->getParam('id');
-        $report = $this->Reports->get($id, [
-            'contain' => ['Users', 'Projects'],
-        ]);
+        $report = $this->Reports->get($id, contain: ['Users', 'Projects']);
         $this->addBreadcrumbForProject($report->project);
         $this->addBreadcrumb(
             'Reports',
@@ -88,7 +86,7 @@ class ReportsController extends AppController
         $reports = $this->Reports
             ->find()
             ->where(['Reports.project_id' => $projectId])
-            ->orderDesc('Reports.created')
+            ->orderByDesc('Reports.created')
             ->contain(['Projects'])
             ->all();
         $this->set(compact('reports'));

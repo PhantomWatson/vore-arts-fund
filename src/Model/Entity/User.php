@@ -20,8 +20,8 @@ use Cake\ORM\Entity;
  * @property string $password
  * @property string $zipcode
  * @property string|null $reset_password_token
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property \Cake\I18n\DateTime $created
+ * @property \Cake\I18n\DateTime $modified
  * @property bool $is_super_admin
  *
  * @property \App\Model\Entity\Project[] $projects
@@ -41,7 +41,7 @@ class User extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'name' => true,
         'email' => true,
         'password' => true,
@@ -65,7 +65,7 @@ class User extends Entity
      *
      * @var array
      */
-    protected $_hidden = [
+    protected array $_hidden = [
         'password',
     ];
 

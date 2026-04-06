@@ -15,8 +15,8 @@ use Cake\View\View;
  * @property int $question_id
  * @property string $answer
  * @property string $formatted_answer
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property \Cake\I18n\DateTime $created
+ * @property \Cake\I18n\DateTime $modified
  *
  * @property \App\Model\Entity\Project $project
  * @property \App\Model\Entity\Question $question
@@ -32,7 +32,7 @@ class Answer extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'project_id' => true,
         'question_id' => true,
         'answer' => true,

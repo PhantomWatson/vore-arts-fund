@@ -215,35 +215,35 @@ class FundingCyclesTable extends Table
     }
 
     /**
-     * @param FrozenTime $data
+     * @param \Cake\I18n\DateTime $data
      * @param array $context
      * @return bool
      */
     public function applicationBeginEnd($data, $context)
     {
-        return new FrozenTime($context['data']['application_begin']) < new FrozenTime($context['data']['application_end']);
+        return new \Cake\I18n\DateTime($context['data']['application_begin']) < new \Cake\I18n\DateTime($context['data']['application_end']);
     }
 
     /**
-     * @param FrozenTime $data
+     * @param \Cake\I18n\DateTime $data
      * @param array $context
      * @return bool
      */
     public function voteBeginEnd($data, $context)
     {
-        return new FrozenTime($context['data']['vote_begin']) < new FrozenTime($context['data']['vote_end']);
+        return new \Cake\I18n\DateTime($context['data']['vote_begin']) < new \Cake\I18n\DateTime($context['data']['vote_end']);
     }
 
     /**
-     * @param FrozenTime $data
+     * @param \Cake\I18n\DateTime $data
      * @param array $context
      * @return bool
      */
     public function resubmitDeadline($data, $context)
     {
-        $resubmit = new FrozenTime($context['data']['resubmit_deadline']);
-        return $resubmit > new FrozenTime($context['data']['application_end'])
-            && $resubmit < new FrozenTime($context['data']['vote_begin']);
+        $resubmit = new \Cake\I18n\DateTime($context['data']['resubmit_deadline']);
+        return $resubmit > new \Cake\I18n\DateTime($context['data']['application_end'])
+            && $resubmit < new \Cake\I18n\DateTime($context['data']['vote_begin']);
     }
 
     /**
@@ -335,7 +335,7 @@ class FundingCyclesTable extends Table
 
         return $query
             ->where(['FundingCycles.vote_begin >' => $now])
-            ->orderAsc('FundingCycles.vote_begin');
+            ->orderByAsc('FundingCycles.vote_begin');
     }
 
     /**
@@ -350,7 +350,7 @@ class FundingCyclesTable extends Table
 
         return $query
             ->where(['FundingCycles.application_end >' => $now])
-            ->orderAsc('FundingCycles.application_end');
+            ->orderByAsc('FundingCycles.application_end');
     }
 
     public function getCurrentVotingInfo()
@@ -408,7 +408,7 @@ class FundingCyclesTable extends Table
      */
     public function findOrderedAsc(Query $query)
     {
-        return $query->orderAsc('FundingCycles.application_end');
+        return $query->orderByAsc('FundingCycles.application_end');
     }
 
     /**
@@ -419,7 +419,7 @@ class FundingCyclesTable extends Table
      */
     public function findOrderedDesc(Query $query)
     {
-        return $query->orderDesc('FundingCycles.application_end');
+        return $query->orderByDesc('FundingCycles.application_end');
     }
 
     /**

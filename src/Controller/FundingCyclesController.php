@@ -42,7 +42,7 @@ class FundingCyclesController extends AppController
                     ]);
                 }
             ])
-            ->orderAsc('application_end')
+            ->orderByAsc('application_end')
             ->all();
 
         $this->set([

@@ -378,17 +378,17 @@ class UsersController extends AppController
 
         return $this->Users->patchEntity($user, [
             'reset_password_token' => rand(1000000, 9999999),
-            'token_created_date' => new FrozenTime(),
+            'token_created_date' => new \Cake\I18n\DateTime(),
         ]);
     }
 
     /**
      * Returns TRUE if the time passed to it was within the last day
      *
-     * @param \Cake\I18n\FrozenTime $tokenCreatedDate The time that a token was generated
+     * @param \Cake\I18n\DateTime $tokenCreatedDate The time that a token was generated
      * @return bool
      */
-    private function __validToken(FrozenTime $tokenCreatedDate): bool
+    private function __validToken(\Cake\I18n\DateTime $tokenCreatedDate): bool
     {
         return $tokenCreatedDate->wasWithinLast('24 hours');
     }

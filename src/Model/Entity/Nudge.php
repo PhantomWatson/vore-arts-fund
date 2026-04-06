@@ -12,7 +12,7 @@ use Cake\ORM\Entity;
  * @property int $user_id
  * @property int $project_id
  * @property int $type
- * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\DateTime $created
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Project $project
@@ -33,7 +33,7 @@ class Nudge extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'user_id' => true,
         'project_id' => true,
         'type' => true,

@@ -33,9 +33,9 @@ use Cake\ORM\TableRegistry;
  * @property string $amount_awarded_formatted e.g. $1,234
  * @property string $amount_awarded_formatted_cents e.g. $1,234.56
  * @property string $status_summary
- * @property \Cake\I18n\FrozenTime $loan_agreement_date
- * @property \Cake\I18n\FrozenTime $loan_agreement_date_local
- * @property \Cake\I18n\FrozenTime $loan_due_date
+ * @property \Cake\I18n\DateTime $loan_agreement_date
+ * @property \Cake\I18n\DateTime $loan_agreement_date_local
+ * @property \Cake\I18n\DateTime $loan_due_date
  * @property int $loan_agreement_version
  * @property string $tin
  * @property string $address
@@ -44,11 +44,11 @@ use Cake\ORM\TableRegistry;
  * @property string $loan_agreement_signature
  * @property bool $is_finalized TRUE if a final report has been submitted
  * @property bool $is_repaid TRUE if the loan has been fully repaid
- * @property \Cake\I18n\FrozenDate $loan_awarded_date The date that disbursement was recorded
+ * @property \Cake\I18n\Date $loan_awarded_date The date that disbursement was recorded
  * @property string $loan_awarded_date_formatted
- * @property FrozenTime[] $disbursement_dates_local
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property \Cake\I18n\DateTime[] $disbursement_dates_local
+ * @property \Cake\I18n\DateTime $created
+ * @property \Cake\I18n\DateTime $modified
  *
  * @property \App\Model\Entity\Answer[] $answers
  * @property \App\Model\Entity\Category $category
@@ -309,7 +309,7 @@ class Project extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'title' => true,
         'category_id' => true,
         'description' => true,
@@ -339,10 +339,10 @@ class Project extends Entity
      * If application is draft, deadline is application_end
      * If application is revision-requested, deadline is resubmit_deadline
      *
-     * @return \Cake\I18n\FrozenTime
+     * @return \Cake\I18n\DateTime
      * @throws \Cake\Http\Exception\BadRequestException
      */
-    public function getSubmitDeadline(): FrozenTime
+    public function getSubmitDeadline(): \Cake\I18n\DateTime
     {
         switch ($this->status_id) {
             case Project::STATUS_DRAFT:
@@ -539,7 +539,7 @@ class Project extends Entity
     }
 
     /**
-     * @return \Cake\Chronos\ChronosInterface|FrozenTime|null
+     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime|null
      */
     protected function _getLoanAgreementDateLocal()
     {
@@ -626,7 +626,7 @@ class Project extends Entity
      *
      * Only one date is expected, but it's possible that multiple disbursements have been made
      *
-     * @return FrozenTime[]
+     * @return \Cake\I18n\DateTime[]
      */
     protected function _getDisbursementDatesLocal(): array
     {
@@ -637,7 +637,7 @@ class Project extends Entity
                 'project_id' => $this->id,
                 'type' => Transaction::TYPE_LOAN,
             ])
-            ->order(['created' => 'DESC'])
+            ->orderBy(['created' => 'DESC'])
             ->toArray();
         return array_map(function (Transaction $transaction) {
             return $transaction->date->setTimezone(\App\Application::LOCAL_TIMEZONE);

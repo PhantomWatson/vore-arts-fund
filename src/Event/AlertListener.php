@@ -169,9 +169,7 @@ class AlertListener implements EventListenerInterface
     public function alertNoteSentToApplicant($event, Note $note)
     {
         $sender = TableRegistry::getTableLocator()->get('Users')->get($note->user_id);
-        $project = TableRegistry::getTableLocator()->get('Projects')->get($note->project_id, [
-            'contain' => ['Users']
-        ]);
+        $project = TableRegistry::getTableLocator()->get('Projects')->get($note->project_id, contain: ['Users']);
         $this->alert->addLine(sprintf(
             'Message sent from %s to applicant %s regarding project "%s":',
             $sender->name,

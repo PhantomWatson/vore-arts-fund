@@ -39,18 +39,19 @@ class PaymentReminderNudge implements NudgeInterface
             ->find('withOutstandingLoan')
 
             // Not recently-awarded loans
-            ->where(['Projects.loan_awarded_date <' => new FrozenDate($delayBeforeNudges)])
+            ->where(['Projects.loan_awarded_date <' => new \Cake\I18n\Date($delayBeforeNudges)])
 
             // Not recently-nudged
-            ->find('withoutRecentNudge', [
-                'nudgeType' => [Nudge::TYPE_PAYMENT_REMINDER],
-                'threshold' => $delayBetweenNudges,
-            ])
+            ->find(
+                'withoutRecentNudge',
+                nudgeType: [Nudge::TYPE_PAYMENT_REMINDER],
+                threshold: $delayBetweenNudges,
+            )
 
             // No recent repayments
             ->notMatching('Transactions', function ($q) use ($delayAfterRepayment) {
                 return $q->where([
-                    'Transactions.created >' => new FrozenDate($delayAfterRepayment),
+                    'Transactions.created >' => new \Cake\I18n\Date($delayAfterRepayment),
                     'Transactions.type' => Transaction::TYPE_LOAN_REPAYMENT,
                 ]);
             })

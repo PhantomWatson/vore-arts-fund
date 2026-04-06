@@ -41,7 +41,7 @@ class ArticlesController extends AppController
         $query = $this->Articles
             ->find()
             ->where(['is_published' => true])
-            ->order(['Articles.dated' => 'DESC']);
+            ->orderBy(['Articles.dated' => 'DESC']);
         $articles = $this->paginate($query);
 
         $this->set(compact('articles'));

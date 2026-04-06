@@ -33,13 +33,13 @@ class QuestionsController extends AdminController
                 ->Questions
                 ->find()
                 ->where(['enabled' => true])
-                ->orderAsc('weight')
+                ->orderByAsc('weight')
                 ->toArray(),
             'disabled' => $this
                 ->Questions
                 ->find()
                 ->where(['enabled' => false])
-                ->orderAsc('question')
+                ->orderByAsc('question')
                 ->toArray()
         ];
 
@@ -86,9 +86,7 @@ class QuestionsController extends AdminController
     public function edit()
     {
         $id = $this->request->getParam('id');
-        $question = $this->Questions->get($id, [
-            'contain' => [],
-        ]);
+        $question = $this->Questions->get($id, contain: []);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $question = $this->Questions->patchEntity($question, $this->request->getData());

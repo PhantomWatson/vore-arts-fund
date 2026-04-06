@@ -37,14 +37,15 @@ class ReportReminderNudge implements NudgeInterface
             ->find('loanRecipients')
             ->find('notDeleted')
             ->find('notFinalized')
-            ->find('withoutRecentNudge', [
-                'nudgeType' => [Nudge::TYPE_REPORT_REMINDER, Nudge::TYPE_REPORT_DUE],
-                'threshold' => $nudgeThreshold,
-            ])
-            ->find('withoutRecentReports', ['threshold' => $sinceLastReportThreshold])
+            ->find(
+                'withoutRecentNudge',
+                nudgeType: [Nudge::TYPE_REPORT_REMINDER, Nudge::TYPE_REPORT_DUE],
+                threshold: $nudgeThreshold,
+            )
+            ->find('withoutRecentReports', threshold: $sinceLastReportThreshold)
             ->where([
                 'Projects.loan_awarded_date IS NOT' => null,
-                'Projects.loan_awarded_date <' => new FrozenDate($sinceLoanAwardedThreshold)
+                'Projects.loan_awarded_date <' => new \Cake\I18n\Date($sinceLoanAwardedThreshold)
             ])
             ->all();
     }

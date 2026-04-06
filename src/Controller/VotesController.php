@@ -65,7 +65,7 @@ class VotesController extends AppController
 
         $fundingCycleHasProjects = $cycle
             ? (bool)$this->fetchTable('Projects')
-                ->find('forVoting', ['funding_cycle_id' => $cycle->id])
+                ->find('forVoting', funding_cycle_id: $cycle->id)
                 ->select(['existing' => 1])
                 ->limit(1)
                 ->disableHydration()
@@ -121,7 +121,10 @@ class VotesController extends AppController
                 $template = 'already_voted';
             }
             $projectsTable = TableRegistry::getTableLocator()->get('Projects');
-            $projectsCount = $projectsTable->find('forVoting', ['funding_cycle_id' => $cycle->id])->count();
+            $projectsCount = $projectsTable
+                ->find('forVoting', funding_cycle_id: $cycle->id)
+                ->all()
+                ->count();
             $this->set(compact('projectsCount'));
         }
         $this->viewBuilder()->setTemplate($template);

@@ -16,7 +16,7 @@ class ImageHelper extends Helper
      *
      * @var array<string, mixed>
      */
-    protected $_defaultConfig = [];
+    protected array $_defaultConfig = [];
 
     /**
      * Shows a thumbnail that opens a full-sized image

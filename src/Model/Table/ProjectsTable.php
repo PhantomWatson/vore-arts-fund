@@ -241,7 +241,7 @@ class ProjectsTable extends Table
                 'Answers',
                 'FundingCycles',
                 'Images' => function (Query $q) {
-                    return $q->orderAsc('weight');
+                    return $q->orderByAsc('weight');
                 },
             ])
             ->first();
@@ -261,7 +261,7 @@ class ProjectsTable extends Table
                     'Categories',
                     'FundingCycles',
                     'Images' => function (\Cake\Database\Query $q) {
-                        return $q->orderAsc('weight');
+                        return $q->orderByAsc('weight');
                     },
                     'Users',
                     'Reports' => function (Query $query) {
@@ -303,7 +303,7 @@ class ProjectsTable extends Table
     public function findForVoting(Query $query, array $options)
     {
         return $query
-            ->find('eligibleForVoting', ['funding_cycle_id' => $options['funding_cycle_id']])
+            ->find('eligibleForVoting', funding_cycle_id: $options['funding_cycle_id'])
             ->select([
                 'Projects.accept_partial_payout',
                 'Projects.amount_requested',
@@ -367,7 +367,7 @@ class ProjectsTable extends Table
                     ]);
                 },
             ])
-            ->orderAsc('Projects.title');
+            ->orderByAsc('Projects.title');
     }
 
     /**
@@ -468,7 +468,7 @@ class ProjectsTable extends Table
         return $query->where(['Projects.status_id !=' => Project::STATUS_DELETED]);
     }
 
-    public function setProjectAwardedDate(int $projectId, FrozenDate $date): void
+    public function setProjectAwardedDate(int $projectId, \Cake\I18n\Date $date): void
     {
         $project = $this->get($projectId);
 
@@ -489,7 +489,7 @@ class ProjectsTable extends Table
         }
 
         // Otherwise, set the date
-        $project->loan_awarded_date = new FrozenDate($date);
+        $project->loan_awarded_date = new \Cake\I18n\Date($date);
         if (!$this->save($project)) {
             $alert = new ErrorAlert();
             $alert->send(sprintf(
@@ -533,7 +533,8 @@ class ProjectsTable extends Table
     {
         $count = $this
             ->find('notDeleted')
-            ->find('reportableForUser', ['userId' => $userId])
+            ->find('reportableForUser', userId: $userId)
+            ->all()
             ->count();
         return $count > 0;
     }
@@ -608,7 +609,7 @@ class ProjectsTable extends Table
             ->notMatching('Nudges', function (Query $q) use ($nudgeTypes, $threshold) {
                 return $q->where([
                     'Nudges.type IN' => $nudgeTypes,
-                    'Nudges.created >' => new FrozenDate($threshold),
+                    'Nudges.created >' => new \Cake\I18n\Date($threshold),
                 ]);
             });
     }
@@ -666,7 +667,7 @@ class ProjectsTable extends Table
         return $query
             ->notMatching('Reports', function (Query $q) use ($threshold) {
                 return $q->where([
-                    'Reports.created >' => new FrozenDate($threshold),
+                    'Reports.created >' => new \Cake\I18n\Date($threshold),
                 ]);
             });
     }

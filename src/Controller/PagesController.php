@@ -160,7 +160,7 @@ class PagesController extends AppController
         foreach (array_keys($cycleCategories) as $finder) {
             $cycle = $fundingCyclesTable
                 ->find($finder)
-                ->orderAsc('application_end')
+                ->orderByAsc('application_end')
                 ->contain(['Projects'])
                 ->first();
 
@@ -202,7 +202,7 @@ class PagesController extends AppController
         $article = $articlesTable
             ->find()
             ->where(['Articles.is_published' => true])
-            ->orderDesc('Articles.dated')
+            ->orderByDesc('Articles.dated')
             ->first();
 
         $isStaging = str_contains($_SERVER['HTTP_HOST'], 'staging.');

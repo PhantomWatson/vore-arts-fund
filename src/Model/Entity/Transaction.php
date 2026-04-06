@@ -24,10 +24,10 @@ use Cake\ORM\Entity;
  * @property float $dollar_amount_gross
  * @property string $dollar_amount_gross_formatted
  * @property string $processing_fee_formatted In dollars
- * @property \Cake\I18n\FrozenDate $date
+ * @property \Cake\I18n\Date $date
  * @property string $date_formatted
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property \Cake\I18n\DateTime $created
+ * @property \Cake\I18n\DateTime $modified
  *
  * @property \App\Model\Entity\Project $project
  */
@@ -51,7 +51,7 @@ class Transaction extends Entity
      *
      * @var array<string, bool>
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'type' => true,
         'amount_net' => true,
         'amount_gross' => true,

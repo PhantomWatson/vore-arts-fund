@@ -64,10 +64,10 @@ class ReportsController extends AppController
             ->contain([
                 'FundingCycles',
                 'Reports' => function (Query $q) {
-                    return $q->orderAsc('Reports.created');
+                    return $q->orderByAsc('Reports.created');
                 }
             ])
-            ->order(['Projects.created' => 'DESC'])
+            ->orderBy(['Projects.created' => 'DESC'])
             ->all();
         $this->set(compact('projects'));
         $this->setCurrentBreadcrumb('My Reports');

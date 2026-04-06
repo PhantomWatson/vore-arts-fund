@@ -13,7 +13,7 @@ use Cake\ORM\Entity;
  * @property string $filename
  * @property int $weight
  * @property string $caption
- * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\DateTime $created
  *
  * @property \App\Model\Entity\Project $project
  */
@@ -33,7 +33,7 @@ class Image extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'project_id' => true,
         'filename' => true,
         'weight' => true,

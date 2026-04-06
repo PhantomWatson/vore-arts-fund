@@ -152,7 +152,7 @@ class ProjectsController extends BaseProjectsController
         $projects = $this->Projects
             ->find('notDeleted')
             ->where(['user_id' => $user->id])
-            ->orderDesc('Projects.created')
+            ->orderByDesc('Projects.created')
             ->contain([
                 'FundingCycles',
                 'Reports' => function (Query $q) {
@@ -195,7 +195,7 @@ class ProjectsController extends BaseProjectsController
         $notes = $notesTable
             ->find('notInternal')
             ->where(['Notes.project_id' => $projectId])
-            ->orderDesc('Notes.created')
+            ->orderByDesc('Notes.created')
             ->all();
 
         $this->set(compact('project', 'notes'));

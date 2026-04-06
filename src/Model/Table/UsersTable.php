@@ -176,10 +176,10 @@ class UsersTable extends Table
                     return $query
                         ->select(['id', 'title', 'amount_awarded', 'loan_agreement_date', 'user_id'])
                         ->where(['status_id' => Project::STATUS_AWARDED_AND_DISBURSED])
-                        ->orderDesc('loan_agreement_date');
+                        ->orderByDesc('loan_agreement_date');
                 }
             ])
-            ->orderAsc('name');
+            ->orderByAsc('name');
     }
 
     public function getBoardMembers()

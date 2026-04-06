@@ -35,7 +35,7 @@ class FundingCyclesController extends AdminController
         $this->title('Funding Cycles');
         $table = $this->FundingCycles;
         function getCycles(Query $query) {
-            return $query->orderAsc('application_begin')
+            return $query->orderByAsc('application_begin')
                 ->contain([
                     'Projects' => function (Query $q)
                     {
@@ -44,7 +44,7 @@ class FundingCyclesController extends AdminController
                                 'Projects.funding_cycle_id',
                                 'count' => $q->func()->count('Projects.id')
                             ])
-                            ->group('Projects.funding_cycle_id');
+                            ->groupBy('Projects.funding_cycle_id');
                     }
                 ])
                 ->all();
@@ -61,12 +61,12 @@ class FundingCyclesController extends AdminController
     private function convertFormDataToUtc($data)
     {
         foreach (FundingCycle::TIME_START_FIELDS as $field) {
-            $data[$field] = (new FrozenTime($data[$field], Application::LOCAL_TIMEZONE))
+            $data[$field] = (new \Cake\I18n\DateTime($data[$field], Application::LOCAL_TIMEZONE))
                 ->setTime(0, 0)
                 ->setTimezone('UTC');
         }
         foreach (FundingCycle::TIME_END_FIELDS as $field) {
-            $data[$field] = (new FrozenTime($data[$field], Application::LOCAL_TIMEZONE))
+            $data[$field] = (new \Cake\I18n\DateTime($data[$field], Application::LOCAL_TIMEZONE))
                 ->setTime(23, 59, 59)
                 ->setTimezone('UTC');
         }
@@ -97,9 +97,9 @@ class FundingCyclesController extends AdminController
             }
         } else {
             $fundingCycle = $this->FundingCycles->newEmptyEntity();
-            $start = new FrozenTime('12:00am', Application::LOCAL_TIMEZONE);
+            $start = new \Cake\I18n\DateTime('12:00am', Application::LOCAL_TIMEZONE);
             $start = $start->day(1);
-            $end = new FrozenTime('11:59pm', Application::LOCAL_TIMEZONE);
+            $end = new \Cake\I18n\DateTime('11:59pm', Application::LOCAL_TIMEZONE);
             $end = $end->lastOfMonth();
             $end = $end->setTime(23, 59, 59);
             $fundingCycle->application_begin = $start;
@@ -120,11 +120,11 @@ class FundingCyclesController extends AdminController
      * Converts a local time into UTC for storage
      *
      * @param string $time Time string
-     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\FrozenTime
+     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime
      */
-    public static function convertTimeToUtc($time): \Cake\Chronos\ChronosInterface|FrozenTime
+    public static function convertTimeToUtc($time): \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime
     {
-        return (new FrozenTime($time, Application::LOCAL_TIMEZONE))->setTimezone('UTC');
+        return (new \Cake\I18n\DateTime($time, Application::LOCAL_TIMEZONE))->setTimezone('UTC');
     }
 
     /**

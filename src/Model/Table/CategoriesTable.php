@@ -75,7 +75,7 @@ class CategoriesTable extends Table
             ->where(function (QueryExpression $exp) {
                 return $exp->notLike('name', '%other%');
             })
-            ->orderAsc('name')
+            ->orderByAsc('name')
             ->toArray();
 
         return $categories + $this
@@ -83,7 +83,7 @@ class CategoriesTable extends Table
             ->where(function (QueryExpression $exp) {
                 return $exp->like('name', '%other%');
             })
-            ->orderAsc('name')
+            ->orderByAsc('name')
             ->toArray();
     }
 }

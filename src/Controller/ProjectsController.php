@@ -45,14 +45,14 @@ class ProjectsController extends AppController
     /**
      * Sets the $fromNow viewVar
      *
-     * @param FrozenTime $deadline
+     * @param \Cake\I18n\DateTime $deadline
      */
     protected function setFromNow($deadline)
     {
         // Set times to 00:00 to make "days from now" math easier
         $deadline = $deadline->setTime(0, 0, 0, 0);
         $tz = \App\Application::LOCAL_TIMEZONE;
-        $today = (FrozenTime::now($tz))->setTime(0, 0, 0, 0);
+        $today = (\Cake\I18n\DateTime::now($tz))->setTime(0, 0, 0, 0);
         $days = $deadline->diffInDays($today);
         switch ($days) {
             case 0:
@@ -106,7 +106,7 @@ class ProjectsController extends AppController
             ->find('notDeleted')
             ->select(['id'])
             ->where(['user_id' => $user->id])
-            ->orderDesc('created')
+            ->orderByDesc('created')
             ->all()
             ->count() > 1;
         $this->set(compact('hasPastProjects'));
@@ -131,7 +131,7 @@ class ProjectsController extends AppController
             // Start with previous project as a template
             $reapplyProjectId = $this->getRequest()->getQuery('reapply');
             if ($reapplyProjectId) {
-                $pastProject = $this->Projects->get($reapplyProjectId, ['contain' => ['Answers', 'Images']]);
+                $pastProject = $this->Projects->get($reapplyProjectId, contain: ['Answers', 'Images']);
                 if ($pastProject->user_id != $user->id) {
                     $this->Flash->error('Project not found.');
                     return $this->redirect(['action' => 'reapply']);
@@ -400,7 +400,7 @@ class ProjectsController extends AppController
     {
         $fundingCycles = $this->FundingCycles
             ->find()
-            ->orderDesc('FundingCycles.application_end')
+            ->orderByDesc('FundingCycles.application_end')
             ->contain([
                 'Projects' => [
                     'queryBuilder' => function (Query $q) {
@@ -415,7 +415,7 @@ class ProjectsController extends AppController
                                     ]
                                 );
                             })
-                            ->orderAsc('title');
+                            ->orderByAsc('title');
                     },
                     'Transactions' => [
                         'queryBuilder' => function (Query $q) {
@@ -431,7 +431,7 @@ class ProjectsController extends AppController
                     ],
                     'Categories',
                     'Images' => function (Query $q) {
-                        return $q->orderAsc('weight');
+                        return $q->orderByAsc('weight');
                     },
                     'Users',
                     'FundingCycles',
@@ -494,7 +494,7 @@ class ProjectsController extends AppController
             ->find('notDeleted')
             ->select(['id', 'title', 'created'])
             ->where(['user_id' => $user->id])
-            ->orderDesc('created')
+            ->orderByDesc('created')
             ->toArray();
 
         $this->title('Resubmit a Past Application');

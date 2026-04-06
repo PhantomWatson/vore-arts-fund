@@ -157,7 +157,7 @@ class TransactionsTable extends Table
         $data = [
             'amount_gross' => $charge->amount_captured,
             'amount_net' => self::getNetAmount($charge->balance_transaction),
-            'date' => new FrozenTime(),
+            'date' => new \Cake\I18n\DateTime(),
             'type' => $transactionType,
             'project_id' => isset($charge->metadata['projectId']) ? (int)$charge->metadata['projectId'] : null,
             'meta' => json_encode($charge),
@@ -213,7 +213,7 @@ class TransactionsTable extends Table
         return $this
             ->find()
             ->where(['project_id' => $options['project_id']])
-            ->orderAsc('created');
+            ->orderByAsc('created');
     }
 
     private function sendNewTransactionAlert(Transaction $transaction): void
@@ -322,7 +322,7 @@ class TransactionsTable extends Table
                 'project_id' => $projectId,
                 'type' => Transaction::TYPE_LOAN_REPAYMENT,
             ])
-            ->order(['date' => 'DESC'])
+            ->orderBy(['date' => 'DESC'])
             ->all();
     }
 

@@ -14,8 +14,8 @@ use Cake\ORM\Entity;
  * @property int $project_id
  * @property int $funding_cycle_id
  * @property float $weight
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property \Cake\I18n\DateTime $created
+ * @property \Cake\I18n\DateTime $modified
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Project $project
@@ -32,7 +32,7 @@ class Vote extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'user_id' => true,
         'project_id' => true,
         'funding_cycle_id' => true,

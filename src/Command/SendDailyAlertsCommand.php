@@ -105,7 +105,7 @@ class SendDailyAlertsCommand extends Command
 
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
         $eligibleCount = $projectsTable
-            ->find('eligibleForVoting', ['funding_cycle_id' => $cycle->id])
+            ->find('eligibleForVoting', funding_cycle_id: $cycle->id)
             ->all()
             ->count();
 
@@ -146,7 +146,7 @@ class SendDailyAlertsCommand extends Command
 
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
         $eligibleCount = $projectsTable
-            ->find('eligibleForVoting', ['funding_cycle_id' => $cycle->id])
+            ->find('eligibleForVoting', funding_cycle_id: $cycle->id)
             ->all()
             ->count();
 

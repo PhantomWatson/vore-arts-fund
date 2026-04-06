@@ -58,7 +58,7 @@ class ProjectsController extends AdminController
 
         $this->set([
             'projects' => $projects,
-            'fundingCycles' => $fundingCyclesTable->find()->orderDesc('application_begin')->all(),
+            'fundingCycles' => $fundingCyclesTable->find()->orderByDesc('application_begin')->all(),
             'fundingCycleId' => $fundingCycleId,
         ]);
     }
@@ -82,7 +82,7 @@ class ProjectsController extends AdminController
         }
 
         $transactionsTable = $this->getTableLocator()->get('Transactions');
-        $transactions = $transactionsTable->find('forProject', ['project_id' => $project->id]);
+        $transactions = $transactionsTable->find('forProject', project_id: $project->id);
 
         if (!$this->request->is('get')) {
             $redirect = $this->processReview($project);
@@ -106,7 +106,7 @@ class ProjectsController extends AdminController
             ->find()
             ->where(['project_id' => $projectId])
             ->contain(['Users'])
-            ->orderDesc('Notes.created')
+            ->orderByDesc('Notes.created')
             ->all();
         $newNote = $notesTable->newEmptyEntity();
         $this->set(compact(
@@ -375,7 +375,7 @@ class ProjectsController extends AdminController
     public function getTin()
     {
         $projectId = $this->request->getParam('id');
-        $project = $this->Projects->get($projectId, ['contain' => ['FundingCycles']]);
+        $project = $this->Projects->get($projectId, contain: ['FundingCycles']);
         $decrypted = '';
         if (!$this->getRequest()->is('get')) {
             $secretKeyBase64 = $this->getRequest()->getData('secret');

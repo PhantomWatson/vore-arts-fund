@@ -13,7 +13,7 @@ use Cake\ORM\Entity;
  * @property int $project_id
  * @property string $body
  * @property bool $is_unread
- * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\DateTime $created
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Project $project
@@ -29,7 +29,7 @@ class Message extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'user_id' => true,
         'project_id' => true,
         'body' => true,

@@ -72,7 +72,7 @@ class LoansController extends \App\Controller\AppController
                 'Projects.user_id' => $userId,
                 'Projects.status_id' => Project::STATUS_AWARDED_AND_DISBURSED,
             ])
-            ->order(['Projects.created' => 'DESC'])
+            ->orderBy(['Projects.created' => 'DESC'])
             ->all();
 
         $this->title('My Loans');

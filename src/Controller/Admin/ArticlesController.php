@@ -76,9 +76,7 @@ class ArticlesController extends AdminController
      */
     public function edit($id = null)
     {
-        $article = $this->Articles->get($id, [
-            'contain' => [],
-        ]);
+        $article = $this->Articles->get($id, contain: []);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $article = $this->Articles->patchEntity($article, $this->request->getData());
             if ($this->Articles->save($article)) {

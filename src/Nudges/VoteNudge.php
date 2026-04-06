@@ -42,8 +42,8 @@ class VoteNudge implements NudgeInterface
         $fundingCycleId = $fundingCycle?->id;
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
         return $projectsTable
-            ->find('eligibleForVoting', ['funding_cycle_id' => $fundingCycleId ?: 0])
-            ->find('withoutNudge', ['nudgeType' => [Nudge::TYPE_VOTE_START]])
+            ->find('eligibleForVoting', funding_cycle_id: $fundingCycleId ?: 0)
+            ->find('withoutNudge', nudgeType: [Nudge::TYPE_VOTE_START])
             ->where(['funding_cycle_id' => $fundingCycleId])
             ->contain(['FundingCycles'])
             ->all();

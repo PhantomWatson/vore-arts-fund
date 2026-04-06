@@ -14,7 +14,7 @@ use Cake\ORM\Entity;
  * @property string $body
  * @property int $type
  * @property string $typeWithIcon
- * @property \Cake\I18n\FrozenTime $created
+ * @property \Cake\I18n\DateTime $created
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Project $project
@@ -36,7 +36,7 @@ class Note extends Entity
      *
      * @var array
      */
-    protected $_accessible = [
+    protected array $_accessible = [
         'user_id' => true,
         'project_id' => true,
         'body' => true,
