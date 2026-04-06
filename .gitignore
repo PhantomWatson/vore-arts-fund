@@ -1,13 +1,10 @@
 # CakePHP specific files #
 ##########################
+/config/app_local.php
 /config/.env
-/config/.env.development
-/config/.env.production
-/config/.env.staging
-/config/app_local.*
-/config/app_local_*
 /logs/*
 /tmp/*
+/vendor/*
 
 # OS generated files #
 ######################
@@ -16,13 +13,18 @@
 ._*
 .Spotlight-V100
 .Trashes
-Icon?
+# Icon must end with two \r
+Icon
+
 ehthumbs.db
 Thumbs.db
 .directory
 
 # Tool specific files #
 #######################
+# PHPUnit
+.phpunit.cache
+tests.sqlite
 # vim
 *~
 *.swp
@@ -40,31 +42,40 @@ Thumbs.db
 nbproject/*
 # Visual Studio Code
 .vscode
+# nova
+.nova
 # Sass preprocessor
 .sass-cache/
-config/.env.default
-bin/cake
+# node
+/node_modules/*
+# yarn
+yarn-debug.log
+yarn-error.log
 
 # Docker
 /database/*
 
-# Dependencies
-/vendor/*
-/node_modules/*
-/config/webpack/node_modules/*
+# Headshots
+/webroot/img/bios/*/*
+
+# Dist files for React projects
+/webroot/image-uploader/dist/*
+/webroot/review/dist/*
+/webroot/vote-app/dist/*
 
 # Project directories
 /webroot/img/projects
 
-# Headshots
-/webroot/img/bios/*/*
+# Config
+/config/.env.default
+/config/.env.development
+/config/.env.production
+/config/.env.staging
+/config/app_local.*
+/config/app_local_*
 
 # Other
-/webroot/sample
 /config/environment.php
+/config/webpack/node_modules/*
 /database_backups
-
-# Dist files for React projects
-/webroot/vote-app/dist/*
-/webroot/review/dist/*
-/webroot/image-uploader/dist/*
+/webroot/sample

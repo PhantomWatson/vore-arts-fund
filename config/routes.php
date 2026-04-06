@@ -24,7 +24,6 @@
 use App\BotCatcher;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
-use Cake\Utility\Inflector;
 
 function buildRoutes(RouteBuilder &$builder, array $controllers)
 {
@@ -45,164 +44,187 @@ function buildRoutes(RouteBuilder &$builder, array $controllers)
     }
 }
 
-/** @var \Cake\Routing\RouteBuilder $routes */
-$routes->setRouteClass(DashedRoute::class);
+return function (RouteBuilder $routes): void {
+    /*
+     * The default class to use for all routes
+     *
+     * The following route classes are supplied with CakePHP and are appropriate
+     * to set as the default:
+     *
+     * - Route
+     * - InflectedRoute
+     * - DashedRoute
+     *
+     * If no call is made to `Router::defaultRouteClass()`, the class used is
+     * `Route` (`Cake\Routing\Route\Route`)
+     *
+     * Note that `Route` does not do any inflections on URLs which will result in
+     * inconsistently cased URLs when used with `{plugin}`, `{controller}` and
+     * `{action}` markers.
+     */
+    $routes->setRouteClass(DashedRoute::class);
 
-$routes->scope('/', function (RouteBuilder $builder) {
-    $controllers = [
-        'Pages' => [
-            '/' => 'home',
-            '/about' => 'about',
-            '/contact' => 'contact',
-            '/privacy' => 'privacy',
-            '/terms' => 'terms',
-            '/maintenance' => 'maintenanceMode',
-            '/art-mart' => 'artMart',
-            '/partners' => 'partners',
-            '/discount-eligibility' => 'discountEligibility',
-            '/checks' => 'checks',
-            '/virtual-meetings' => 'virtualMeetings',
-        ],
-        'Projects' => [
-            '/project/{id}' => 'view',
-            '/apply' => 'apply',
-        ],
-        'Votes' => [
-            '/vote' => 'index',
-            '/vote/{id}' => 'index', // funding cycle ID
-        ],
-        'Users' => [
-            '/register' => 'register',
-            '/forgot-password' => 'forgotPassword',
-            '/login' => 'login',
-            '/logout' => 'logout',
-            '/account' => 'account',
-            '/account/update' => 'changeAccountInfo',
-            '/account/password' => 'updatePassword',
-            '/account/verify' => 'verify',
-            '/account/verify/resend' => 'verifyResend',
-        ],
-        'FundingCycles' => [
-            '/funding-cycles' => 'index',
-            '/funding-cycle/{id}' => 'view',
-        ],
-        'Reports' => [
-            '/report/{id}' => 'view',
-            '/reports/for-project/{id}' => 'project',
-        ],
-        'Articles' => [
-            '/news' => 'index',
-            '/news/{slug}' => 'view',
-        ],
-    ];
-    buildRoutes($builder, $controllers);
+    $routes->scope('/', function (RouteBuilder $builder): void {
+        /** @var \Cake\Routing\RouteBuilder $builder */
+        $builder->setRouteClass(DashedRoute::class);
 
-    BotCatcher::connectBotRoutes($builder);
+        $builder->scope('/', function (RouteBuilder $builder) {
+            $controllers = [
+                'Pages' => [
+                    '/' => 'home',
+                    '/about' => 'about',
+                    '/contact' => 'contact',
+                    '/privacy' => 'privacy',
+                    '/terms' => 'terms',
+                    '/maintenance' => 'maintenanceMode',
+                    '/art-mart' => 'artMart',
+                    '/partners' => 'partners',
+                    '/discount-eligibility' => 'discountEligibility',
+                    '/checks' => 'checks',
+                    '/virtual-meetings' => 'virtualMeetings',
+                ],
+                'Projects' => [
+                    '/project/{id}' => 'view',
+                    '/apply' => 'apply',
+                ],
+                'Votes' => [
+                    '/vote' => 'index',
+                    '/vote/{id}' => 'index', // funding cycle ID
+                ],
+                'Users' => [
+                    '/register' => 'register',
+                    '/forgot-password' => 'forgotPassword',
+                    '/login' => 'login',
+                    '/logout' => 'logout',
+                    '/account' => 'account',
+                    '/account/update' => 'changeAccountInfo',
+                    '/account/password' => 'updatePassword',
+                    '/account/verify' => 'verify',
+                    '/account/verify/resend' => 'verifyResend',
+                ],
+                'FundingCycles' => [
+                    '/funding-cycles' => 'index',
+                    '/funding-cycle/{id}' => 'view',
+                ],
+                'Reports' => [
+                    '/report/{id}' => 'view',
+                    '/reports/for-project/{id}' => 'project',
+                ],
+                'Articles' => [
+                    '/news' => 'index',
+                    '/news/{slug}' => 'view',
+                ],
+            ];
+            buildRoutes($builder, $controllers);
 
-    $builder->fallbacks(DashedRoute::class);
-});
+            BotCatcher::connectBotRoutes($builder);
 
-// "My Foo" routes
-$routes->prefix('my', function (RouteBuilder $builder) {
-    $controllers = [
-        'Projects' => [
-            '/projects'  => 'index',
-            '/projects/{id}' => 'view',
-            '/projects/messages/{id}' => 'messages',
-            '/projects/edit/{id}' => 'edit',
-            '/projects/delete/{id}' => 'delete',
-            '/projects/withdraw/{id}' => 'withdraw',
-            '/projects/send-message/{id}' => 'sendMessage',
-        ],
-        'Bios' => [
-            '/bio' => 'edit',
-        ],
-        'Loans' => [    // All {id}s are project IDs
-            '/loans/{id}' => 'view',
-            '/loans/{id}/payment' => 'payment',
-            '/loans/{id}/payment-process' => 'paymentProcess',
-            '/loans/loan-agreement/{id}' => 'loanAgreement',
-            '/loans/sign-loan-agreement/{id}' => 'signLoanAgreement',
-            '/loans/view-loan-agreement/{id}' => 'viewLoanAgreement',
-            '/loans/verify-check-details/{id}' => 'verifyCheckDetails',
-        ],
-        'Reports' => [
-            '/reports/submit/{id}' => 'submit', // project ID
-            '/reports/submit' => 'submit',
-            '/reports/edit/{id}' => 'edit',     // report ID
-            '/reports/delete/{id}' => 'delete', // report ID
-        ],
-    ];
-    buildRoutes($builder, $controllers);
+            $builder->fallbacks(DashedRoute::class);
+        });
 
-    // Redirect old loan agreement URL
-    $builder->redirect(
-        '/projects/loan-agreement/{id}',
-        ['controller' => 'Loans', 'action' => 'loanAgreement'],
-        [
-            'id' => '\d+',
-            'pass' => ['id'],
-            'persist' => ['id'],
-        ]
-    );
+        // "My Foo" routes
+        $builder->prefix('my', function (RouteBuilder $builder) {
+            $controllers = [
+                'Projects' => [
+                    '/projects'  => 'index',
+                    '/projects/{id}' => 'view',
+                    '/projects/messages/{id}' => 'messages',
+                    '/projects/edit/{id}' => 'edit',
+                    '/projects/delete/{id}' => 'delete',
+                    '/projects/withdraw/{id}' => 'withdraw',
+                    '/projects/send-message/{id}' => 'sendMessage',
+                ],
+                'Bios' => [
+                    '/bio' => 'edit',
+                ],
+                'Loans' => [    // All {id}s are project IDs
+                    '/loans/{id}' => 'view',
+                    '/loans/{id}/payment' => 'payment',
+                    '/loans/{id}/payment-process' => 'paymentProcess',
+                    '/loans/loan-agreement/{id}' => 'loanAgreement',
+                    '/loans/sign-loan-agreement/{id}' => 'signLoanAgreement',
+                    '/loans/view-loan-agreement/{id}' => 'viewLoanAgreement',
+                    '/loans/verify-check-details/{id}' => 'verifyCheckDetails',
+                ],
+                'Reports' => [
+                    '/reports/submit/{id}' => 'submit', // project ID
+                    '/reports/submit' => 'submit',
+                    '/reports/edit/{id}' => 'edit',     // report ID
+                    '/reports/delete/{id}' => 'delete', // report ID
+                ],
+            ];
+            buildRoutes($builder, $controllers);
 
-    $builder->fallbacks(DashedRoute::class);
-});
+            // Redirect old loan agreement URL
+            $builder->redirect(
+                '/projects/loan-agreement/{id}',
+                ['controller' => 'Loans', 'action' => 'loanAgreement'],
+                [
+                    'id' => '\d+',
+                    'pass' => ['id'],
+                    'persist' => ['id'],
+                ]
+            );
 
-// Admin routes
-$routes->prefix('admin', function (RouteBuilder $builder) {
-    $controllers = [
-        'Admin' => [
-            '/' => 'index',
-        ],
-        'FundingCycles' => [
-            '/funding-cycles' => 'index',
-            '/funding-cycles/add' => 'add',
-            '/funding-cycles/edit/{id}' => 'edit',
-        ],
-        'Projects' => [
-            '/projects/{id}' => 'index', // Funding cycle ID
-            '/projects' => 'index',
-            '/projects/review/{id}' => 'review',
-            '/projects/set-status/{id}' => 'setStatus',
-            '/projects/new-note/{id}' => 'newNote',
-            '/projects/get-tin/{id}' => 'getTin',
-        ],
-        'Questions' => [
-            '/questions/edit/{id}' => 'edit',
-            '/questions/delete/{id}' => 'delete',
-        ],
-        'Transactions' => [
-            '/transactions/{id}' => 'view',
-            '/transactions/edit/{id}' => 'edit',
-            '/transactions/delete/{id}' => 'delete',
-        ],
-        'Votes' => [
-            '/votes/{id}' => 'index',
-        ],
-    ];
-    buildRoutes($builder, $controllers);
+            $builder->fallbacks(DashedRoute::class);
+        });
 
-    $builder->fallbacks(DashedRoute::class);
-});
+        // Admin routes
+        $builder->prefix('admin', function (RouteBuilder $builder) {
+            $controllers = [
+                'Admin' => [
+                    '/' => 'index',
+                ],
+                'FundingCycles' => [
+                    '/funding-cycles' => 'index',
+                    '/funding-cycles/add' => 'add',
+                    '/funding-cycles/edit/{id}' => 'edit',
+                ],
+                'Projects' => [
+                    '/projects/{id}' => 'index', // Funding cycle ID
+                    '/projects' => 'index',
+                    '/projects/review/{id}' => 'review',
+                    '/projects/set-status/{id}' => 'setStatus',
+                    '/projects/new-note/{id}' => 'newNote',
+                    '/projects/get-tin/{id}' => 'getTin',
+                ],
+                'Questions' => [
+                    '/questions/edit/{id}' => 'edit',
+                    '/questions/delete/{id}' => 'delete',
+                ],
+                'Transactions' => [
+                    '/transactions/{id}' => 'view',
+                    '/transactions/edit/{id}' => 'edit',
+                    '/transactions/delete/{id}' => 'delete',
+                ],
+                'Votes' => [
+                    '/votes/{id}' => 'index',
+                ],
+            ];
+            buildRoutes($builder, $controllers);
 
-$routes->prefix('api', function (RouteBuilder $builder) {
-    $builder->connect('/projects/{action}', ['controller' => 'Projects']);
-    $builder->connect('/votes/{action}', ['controller' => 'Votes']);
-    $builder->connect('/stripe/{action}', ['controller' => 'Stripe']);
-    $builder
-        ->connect('/transactions', ['controller' => 'Transactions', 'action' => 'add'])
-        ->setMethods(['POST']);
-    $builder
-        ->connect('/transactions/{id}', ['controller' => 'Transactions', 'action' => 'edit'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id'])
-        ->setMethods(['PATCH']);
-    $builder
-        ->connect('/transactions/{id}', ['controller' => 'Transactions', 'action' => 'delete'])
-        ->setPatterns(['id' => '\d+'])
-        ->setPass(['id'])
-        ->setMethods(['DELETE']);
-    $builder->connect('/transactions/{action}', ['controller' => 'Transactions']);
-    $builder->fallbacks(DashedRoute::class);
-});
+            $builder->fallbacks(DashedRoute::class);
+        });
+
+        $builder->prefix('api', function (RouteBuilder $builder) {
+            $builder->connect('/projects/{action}', ['controller' => 'Projects']);
+            $builder->connect('/votes/{action}', ['controller' => 'Votes']);
+            $builder->connect('/stripe/{action}', ['controller' => 'Stripe']);
+            $builder
+                ->connect('/transactions', ['controller' => 'Transactions', 'action' => 'add'])
+                ->setMethods(['POST']);
+            $builder
+                ->connect('/transactions/{id}', ['controller' => 'Transactions', 'action' => 'edit'])
+                ->setPatterns(['id' => '\d+'])
+                ->setPass(['id'])
+                ->setMethods(['PATCH']);
+            $builder
+                ->connect('/transactions/{id}', ['controller' => 'Transactions', 'action' => 'delete'])
+                ->setPatterns(['id' => '\d+'])
+                ->setPass(['id'])
+                ->setMethods(['DELETE']);
+            $builder->connect('/transactions/{action}', ['controller' => 'Transactions']);
+            $builder->fallbacks(DashedRoute::class);
+        });
+    });
+};
