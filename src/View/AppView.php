@@ -45,14 +45,4 @@ class AppView extends View
         $this->addHelper('Image');
         $this->addHelper('Paginator', ['templates' => 'bootstrap_pagination']);
     }
-
-    /**
-     * Helper method for the 'title' element
-     *
-     * @return string
-     */
-    public function title(): string
-    {
-        return $this->element('title');
-    }
 }

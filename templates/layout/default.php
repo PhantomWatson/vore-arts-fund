@@ -49,7 +49,7 @@ $title = $title ?? $this->fetch('title');
     <main class="container clearfix">
         <?= $this->Flash->render() ?>
         <?= $this->element('breadcrumbs', compact('breadcrumbs', 'currentBreadcrumb', 'title')) ?>
-        <?= $this->title() ?>
+        <?= $this->element('title') ?>
         <?= $this->fetch('content') ?>
         <?= $this->element('footer') ?>
     </main>
