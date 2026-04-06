@@ -7,6 +7,12 @@
  * @var bool $hasReportableProjects
  * @var bool $hasLoans
  */
+$hasProjects ??= false;
+$isAdmin ??= false;
+$isLoggedIn ??= false;
+$hasReportableProjects ??= false;
+$hasLoans ??= false;
+
 $links = [
     [
         'Home',
