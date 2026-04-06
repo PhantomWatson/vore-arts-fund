@@ -45,7 +45,7 @@ class ReportsController extends AppController
      */
     public function index()
     {
-        $reports = $this->paginate($this->Reports);
+        $reports = $this->paginate($this->Reports->find()->contain(['Projects']));
 
         $this->title('Project Reports');
         $this->set(compact('reports'));
