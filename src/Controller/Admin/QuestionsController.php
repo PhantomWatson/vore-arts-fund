@@ -69,7 +69,9 @@ class QuestionsController extends AdminController
             $heaviestQuestion = $this
                 ->Questions
                 ->find('forProject')
-                ->last();
+                ->select(['weight'])
+                ->orderByDesc('weight')
+                ->first();
             $question->weight = $heaviestQuestion ? $heaviestQuestion->weight + 1 : 0;
         }
         $this->set(compact('question'));
