@@ -1,7 +1,7 @@
 <?php
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddTokenCreatedDateToUsers extends AbstractMigration
+class AddTokenCreatedDateToUsers extends BaseMigration
 {
     /**
      * Change Method.

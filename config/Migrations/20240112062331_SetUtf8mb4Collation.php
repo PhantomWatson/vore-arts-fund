@@ -2,10 +2,10 @@
 declare(strict_types=1);
 
 use Cake\Core\Configure;
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 use Phinx\Db\Table\Column;
 
-class SetUtf8mb4Collation extends AbstractMigration
+class SetUtf8mb4Collation extends BaseMigration
 {
     /**
      * Change Method.

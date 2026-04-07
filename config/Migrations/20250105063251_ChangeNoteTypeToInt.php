@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class ChangeNoteTypeToInt extends AbstractMigration
+class ChangeNoteTypeToInt extends BaseMigration
 {
     public function up(): void
     {

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddFilenameToImages extends AbstractMigration
+class AddFilenameToImages extends BaseMigration
 {
     /**
      * Change Method.

@@ -1,7 +1,7 @@
 <?php
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddResetPasswordTokenToUsers extends AbstractMigration
+class AddResetPasswordTokenToUsers extends BaseMigration
 {
     /**
      * Change Method.

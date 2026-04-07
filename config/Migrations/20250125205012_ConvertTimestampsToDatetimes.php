@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class ConvertTimestampsToDatetimes extends AbstractMigration
+class ConvertTimestampsToDatetimes extends BaseMigration
 {
     private $datetimeFields = [
         'projects' => [

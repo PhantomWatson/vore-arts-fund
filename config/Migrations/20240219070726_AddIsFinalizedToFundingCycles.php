@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddIsFinalizedToFundingCycles extends AbstractMigration
+class AddIsFinalizedToFundingCycles extends BaseMigration
 {
     /**
      * Change Method.
