@@ -327,6 +327,7 @@ class Project extends Entity
 
     /**
      * @return string
+     * @see \App\Model\Entity\Project::$status_name
      */
     protected function _getStatusName()
     {
@@ -359,6 +360,7 @@ class Project extends Entity
      * Returns the sum of all vote weights
      *
      * @return float|null
+     * @see \App\Model\Entity\Project::$voting_score
      */
     protected function _getVotingScore()
     {
@@ -375,6 +377,7 @@ class Project extends Entity
 
     /**
      * @return string
+     * @see \App\Model\Entity\Project::$amount_requested_formatted
      */
     protected function _getAmountRequestedFormatted()
     {
@@ -541,6 +544,7 @@ class Project extends Entity
 
     /**
      * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime|null
+     * @see \App\Model\Entity\Project::$loan_agreement_date_local
      */
     protected function _getLoanAgreementDateLocal()
     {
@@ -553,6 +557,7 @@ class Project extends Entity
      * Virtual field for ->requires_tin; returns TRUE if this project requires collection of a tax ID number
      *
      * @return bool
+     * @see \App\Model\Entity\Project::$requires_tin
      */
     protected function _getRequiresTin()
     {
@@ -628,6 +633,7 @@ class Project extends Entity
      * Only one date is expected, but it's possible that multiple disbursements have been made
      *
      * @return \Cake\I18n\DateTime[]
+     * @see \App\Model\Entity\Project::$disbursement_dates_local
      */
     protected function _getDisbursementDatesLocal(): array
     {

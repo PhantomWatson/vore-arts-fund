@@ -111,7 +111,7 @@ class ReportsTable extends Table
 
     /**
      * @param Event $event
-     * @param EntityInterface|Report $entity
+     * @param \App\Model\Entity\Report $entity
      * @param $options
      * @return void
      */

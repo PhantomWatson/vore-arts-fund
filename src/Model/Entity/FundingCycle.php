@@ -70,6 +70,7 @@ class FundingCycle extends Entity
      * which is assumed to take place a week after voting ends
      *
      * @return string
+     * @see \App\Model\Entity\FundingCycle::$name
      */
     public function _getName(): string
     {
@@ -78,6 +79,7 @@ class FundingCycle extends Entity
 
     /**
      * @return \Cake\I18n\DateTime|null
+     * @see \App\Model\Entity\FundingCycle::$application_begin_local
      */
     protected function _getApplicationBeginLocal(): ?\Cake\I18n\DateTime
     {
@@ -86,6 +88,7 @@ class FundingCycle extends Entity
 
     /**
      * @return \Cake\I18n\DateTime|null
+     * @see \App\Model\Entity\FundingCycle::$application_end_local
      */
     protected function _getApplicationEndLocal(): ?\Cake\I18n\DateTime
     {
@@ -94,6 +97,7 @@ class FundingCycle extends Entity
 
     /**
      * @return \Cake\I18n\DateTime|null
+     * @see \App\Model\Entity\FundingCycle::$resubmit_deadline_local
      */
     protected function _getResubmitDeadlineLocal(): ?\Cake\I18n\DateTime
     {
@@ -102,6 +106,7 @@ class FundingCycle extends Entity
 
     /**
      * @return \Cake\I18n\DateTime|null
+     * @see \App\Model\Entity\FundingCycle::$vote_begin_local
      */
     protected function _getVoteBeginLocal(): ?\Cake\I18n\DateTime
     {
@@ -110,6 +115,7 @@ class FundingCycle extends Entity
 
     /**
      * @return \Cake\I18n\DateTime|null
+     * @see \App\Model\Entity\FundingCycle::$vote_end_local
      */
     protected function _getVoteEndLocal(): ?\Cake\I18n\DateTime
     {
@@ -233,6 +239,7 @@ class FundingCycle extends Entity
 
     /**
      * @return string
+     * @see \App\Model\Entity\FundingCycle::$funding_available_formatted
      */
     protected function _getFundingAvailableFormatted(): string
     {

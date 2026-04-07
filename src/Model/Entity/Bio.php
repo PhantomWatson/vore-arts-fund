@@ -46,6 +46,7 @@ class Bio extends Entity
      * Returns the bio with added line/paragraph breaks + linked URLs and email addresses
      *
      * @return string
+     * @see \App\Model\Entity\Bio::$formatted_bio
      */
     protected function _getFormattedBio(): string
     {

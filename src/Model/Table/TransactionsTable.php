@@ -271,7 +271,7 @@ class TransactionsTable extends Table
 
     /**
      * @param Event $event
-     * @param EntityInterface|Transaction $entity
+     * @param \App\Model\Entity\Transaction $entity
      * @param $options
      * @return void
      */

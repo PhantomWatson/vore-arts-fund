@@ -44,6 +44,7 @@ class Question extends Entity
      * Returns TRUE if this question has associated answers
      *
      * @return bool
+     * @see \App\Model\Entity\Question::$has_answers
      */
     protected function _getHasAnswers(): bool
     {

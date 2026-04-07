@@ -76,6 +76,7 @@ class User extends Entity
      *
      * @param string $password Password
      * @return bool|string
+     * @see \App\Model\Entity\User::$password
      */
     protected function _setPassword(string $password)
     {

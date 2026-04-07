@@ -81,6 +81,7 @@ class Article extends Entity
      * Returns the article body with automatic linking of any URLs or email addresses that aren't already linked
      *
      * @return string
+     * @see \App\Model\Entity\Article::$formatted_body
      */
     protected function _getFormattedBody(): string
     {

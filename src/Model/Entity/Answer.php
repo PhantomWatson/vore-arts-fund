@@ -46,6 +46,7 @@ class Answer extends Entity
      * Returns the answer with stripped tags + added line/paragraph breaks + linked URLs and email addresses
      *
      * @return string
+     * @see \App\Model\Entity\Answer::$formatted_answer
      */
     protected function _getFormattedAnswer(): string
     {
