@@ -118,9 +118,9 @@ class FundingCyclesController extends AdminController
      * Converts a local time into UTC for storage
      *
      * @param string $time Time string
-     * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime
+     * @return \Cake\I18n\DateTime
      */
-    public static function convertTimeToUtc($time): \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime
+    public static function convertTimeToUtc($time): \Cake\I18n\DateTime
     {
         return (new \Cake\I18n\DateTime($time, Application::LOCAL_TIMEZONE))->setTimezone('UTC');
     }

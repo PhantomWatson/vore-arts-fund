@@ -8,8 +8,6 @@ use Cake\Http\Response;
 
 /**
  * MailingList Controller
- *
- * @method \App\Model\Entity\MailingList[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class MailingListController extends AppController
 {
