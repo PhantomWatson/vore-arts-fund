@@ -127,7 +127,7 @@ class VotesController extends AppController
                 ->count();
             $this->set(compact('projectsCount'));
         }
-        $this->viewBuilder()->setTemplate($template);
+        $this->viewBuilder()->setTemplate($template ?? 'index');
 
         return null;
     }
