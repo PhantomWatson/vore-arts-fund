@@ -136,7 +136,7 @@ class ProjectsController extends AdminController
         $this->setCurrentBreadcrumb($project->title);
     }
 
-    public function markAwarded($projectId)
+    public function markAwarded()
     {
         // Activate event listener
         $mailListener = new MailListener();
