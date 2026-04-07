@@ -13,7 +13,7 @@ use Cake\ORM\Entity;
  * @property int $user_id
  * @property int $project_id
  * @property int $funding_cycle_id
- * @property float $weight
+ * @property string $weight
  * @property \Cake\I18n\DateTime $created
  * @property \Cake\I18n\DateTime $modified
  *

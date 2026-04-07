@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ */
+?>
 <p>
     Donations and loan repayments by check are quite welcome and avoid the processing fees required for electronic payments.
 </p>

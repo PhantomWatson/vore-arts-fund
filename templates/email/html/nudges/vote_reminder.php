@@ -3,6 +3,7 @@
  * @var string $projectTitle
  * @var string $userName
  * @var string $deadline
+ * @var \App\View\AppView $this
  */
 ?>
 

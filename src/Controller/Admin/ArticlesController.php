@@ -10,7 +10,7 @@ use Cake\Utility\Text;
  * Articles Controller
  *
  * @property \App\Model\Table\ArticlesTable $Articles
- * @method \App\Model\Entity\Article[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\Article[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Article> paginate(\Cake\Datasource\RepositoryInterface|\Cake\Datasource\QueryInterface|string|null $object = null, array $settings = [])
  */
 class ArticlesController extends AdminController
 {

@@ -1,6 +1,7 @@
 <?php
 /**
- * @var \App\Model\Entity\Question[] $questions
+ * @var \App\Model\Entity\Question[]|\Cake\Collection\CollectionInterface $questions
+ * @var \App\View\AppView $this
  */
 ?>
 

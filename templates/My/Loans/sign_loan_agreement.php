@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\Model\Entity\Project $project
+ * @var \App\View\AppView $this
  */
 $dueDate = (new \DateTime(\App\Model\Entity\Project::DUE_DATE))->format('F j, Y');
 $amount = $project->amount_awarded_formatted;

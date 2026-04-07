@@ -18,6 +18,7 @@ use Cake\ORM\TableRegistry;
  * @property string|null $question
  *
  * @property \App\Model\Entity\Answer[] $answers
+ * @property bool $has_answers
  */
 class Question extends Entity
 {

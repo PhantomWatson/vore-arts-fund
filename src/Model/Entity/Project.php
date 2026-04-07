@@ -18,26 +18,26 @@ use Cake\ORM\TableRegistry;
  *
  * @property int $id
  * @property int $user_id
- * @property string $title
+ * @property string|null $title
  * @property int $category_id
- * @property string $description
+ * @property string|null $description
  * @property int $amount_requested In dollars
  * @property string $amount_requested_formatted e.g. $1,234
  * @property bool $accept_partial_payout
  * @property int $funding_cycle_id
- * @property string $check_name
+ * @property string|null $check_name
  * @property int $status_id
  * @property string $status_name
- * @property float $voting_score
+ * @property float|null $voting_score
  * @property int $amount_awarded In cents
  * @property string $amount_awarded_formatted e.g. $1,234
  * @property string $amount_awarded_formatted_cents e.g. $1,234.56
- * @property string $status_summary
- * @property \Cake\I18n\DateTime $loan_agreement_date
- * @property \Cake\I18n\DateTime $loan_agreement_date_local
- * @property \Cake\I18n\DateTime $loan_due_date
- * @property int $loan_agreement_version
- * @property string $tin
+ * @property mixed $status_summary
+ * @property \Cake\I18n\DateTime|null $loan_agreement_date
+ * @property \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime|null $loan_agreement_date_local
+ * @property \Cake\I18n\DateTime|null $loan_due_date
+ * @property int|null $loan_agreement_version
+ * @property string|null $tin
  * @property string $address
  * @property string $zipcode
  * @property bool $requires_tin
@@ -60,6 +60,7 @@ use Cake\ORM\TableRegistry;
  * @property \App\Model\Entity\Vote[] $votes
  * @property \App\Model\Entity\Report[] $reports
  * @property \App\Model\Entity\Transaction[] $transactions
+ * @property \App\Model\Entity\Nudge[] $nudges
  */
 class Project extends Entity
 {

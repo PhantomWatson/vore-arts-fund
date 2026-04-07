@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\Model\Entity\Project $project
+ * @var \App\View\AppView $this
  */
 ?>
 <p>

@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\Model\Entity\FundingCycle $fundingCycle
+ * @var \App\View\AppView $this
  */
 ?>
 

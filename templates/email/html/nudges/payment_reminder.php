@@ -5,6 +5,7 @@
  * @var string $repaymentUrl
  * @var string $supportEmail
  * @var string $balance
+ * @var \App\View\AppView $this
  */
 ?>
 

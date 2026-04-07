@@ -2,6 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Transaction $transaction
+ * @var array $_GET
+ * @var mixed $data
  */
 
 function isValidJson($data) {

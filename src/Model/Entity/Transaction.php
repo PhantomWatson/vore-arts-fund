@@ -24,12 +24,13 @@ use Cake\ORM\Entity;
  * @property float $dollar_amount_gross
  * @property string $dollar_amount_gross_formatted
  * @property string $processing_fee_formatted In dollars
- * @property \Cake\I18n\Date $date
+ * @property \Cake\I18n\DateTime $date
  * @property string $date_formatted
  * @property \Cake\I18n\DateTime $created
- * @property \Cake\I18n\DateTime $modified
+ * @property \Cake\I18n\DateTime|null $modified
  *
- * @property \App\Model\Entity\Project $project
+ * @property \App\Model\Entity\Project|null $project
+ * @property \App\Model\Entity\User|null $user
  */
 class Transaction extends Entity
 {

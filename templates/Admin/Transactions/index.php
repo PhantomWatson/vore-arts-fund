@@ -1,7 +1,8 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\Transaction> $transactions
+ * @var \App\Model\Entity\Transaction[]|\Cake\Collection\CollectionInterface $transactions
+ * @var array $_GET
  */
 ?>
 <?= $this->Html->link('Add transaction', ['action' => 'add'], ['class' => 'btn btn-primary']) ?>

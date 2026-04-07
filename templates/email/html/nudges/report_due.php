@@ -6,6 +6,7 @@
  * @var string $supportEmail
  * @var ?string $repaymentUrl Null if the loan is fully repaid
  * @var string $deadline
+ * @var \App\View\AppView $this
  */
 ?>
 

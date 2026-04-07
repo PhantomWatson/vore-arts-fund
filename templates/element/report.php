@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\Model\Entity\Report $report
+ * @var \App\View\AppView $this
  */
 ?>
 <article class="report bordered-section">

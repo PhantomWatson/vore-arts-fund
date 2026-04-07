@@ -13,13 +13,13 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property bool $is_admin
  * @property bool $is_verified
- * @property int $phone
- * @property string $address
- * @property string $email
- * @property string $name
- * @property string $password
- * @property string $zipcode
- * @property string|null $reset_password_token
+ * @property string|null $phone
+ * @property string|null $address
+ * @property string|null $email
+ * @property string|null $name
+ * @property string|null $password
+ * @property string|null $zipcode
+ * @property int|null $reset_password_token
  * @property \Cake\I18n\DateTime $created
  * @property \Cake\I18n\DateTime $modified
  * @property bool $is_super_admin
@@ -28,7 +28,9 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Message[] $messages
  * @property \App\Model\Entity\Note[] $notes
  * @property \App\Model\Entity\Vote[] $votes
- * @property \App\Model\Entity\Bio $bio
+ * @property \App\Model\Entity\Bio|null $bio
+ * @property int|null $verification_code
+ * @property \Cake\I18n\DateTime|null $token_created_date
  */
 class User extends Entity
 {

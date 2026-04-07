@@ -17,7 +17,7 @@ use Cake\Utility\Hash;
  * Transactions Controller
  *
  * @property \App\Model\Table\TransactionsTable $Transactions
- * @method Transaction[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\Transaction[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Transaction> paginate(\Cake\Datasource\RepositoryInterface|\Cake\Datasource\QueryInterface|string|null $object = null, array $settings = [])
  */
 class TransactionsController extends AdminController
 {

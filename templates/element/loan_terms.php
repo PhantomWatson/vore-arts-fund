@@ -3,6 +3,7 @@
  * @var string $amount
  * @var string $dueDate
  * @var int $version
+ * @var \App\View\AppView $this
  */
 
 use App\Model\Entity\Project;

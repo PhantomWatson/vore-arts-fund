@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \App\Model\Entity\FundingCycle[]|\Cake\ORM\ResultSet $fundingCycles
+ * @var \App\View\AppView $this
  */
 
 $dateFormat = 'MMM d, YYYY';

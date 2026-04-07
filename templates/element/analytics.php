@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var \App\View\AppView $this
+ */
 $googleAnalyticsId = \Cake\Core\Configure::read('googleAnalyticsId');
 ?>
 <?php if ($googleAnalyticsId): ?>

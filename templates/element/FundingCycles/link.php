@@ -2,6 +2,7 @@
 /**
  * @var \App\Model\Entity\FundingCycle $fundingCycle
  * @var ?string $append
+ * @var \App\View\AppView $this
  */
 ?>
 <?= $this->Html->link(

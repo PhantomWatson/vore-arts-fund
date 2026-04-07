@@ -1,8 +1,9 @@
 <?php
 /**
- * @var \App\Model\Entity\Project[]|\Cake\ORM\ResultSet $projects
+ * @var \App\Model\Entity\Project[]|\Cake\Collection\CollectionInterface $projects
  * @var \App\Model\Entity\FundingCycle[]|\Cake\ORM\ResultSet $fundingCycles
  * @var int $fundingCycleId
+ * @var \App\View\AppView $this
  */
 ?>
 <?php if ($fundingCycles): ?>

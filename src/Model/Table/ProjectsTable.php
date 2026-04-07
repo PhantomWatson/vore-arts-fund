@@ -29,16 +29,23 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\VotesTable&\Cake\ORM\Association\HasMany $Votes
  * @property \App\Model\Table\ReportsTable&\Cake\ORM\Association\HasMany $Reports
  * @property \App\Model\Table\TransactionsTable&\Cake\ORM\Association\HasMany $Transactions
- * @method Project get($primaryKey, $options = [])
- * @method Project newEntity(array $data, array $options = [])
- * @method Project[] newEntities(array $data, array $options = [])
- * @method Project|false save(EntityInterface $entity, $options = [])
- * @method Project saveOrFail(EntityInterface $entity, $options = [])
- * @method Project patchEntity(EntityInterface $entity, array $data, array $options = [])
- * @method Project[] patchEntities($entities, array $data, array $options = [])
- * @method Project findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Project get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\Project newEntity(array $data, array $options = [])
+ * @method \App\Model\Entity\Project[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Project|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\Project saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\Project patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Project[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Project findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
- * @method Project[]|ResultSetInterface|false saveMany($entities, $options = [])
+ * @method \App\Model\Entity\Project[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Project>|false saveMany(iterable $entities, array $options = [])
+ * @property \App\Model\Table\AnswersTable&\Cake\ORM\Association\HasMany $Answers
+ * @property \App\Model\Table\NudgesTable&\Cake\ORM\Association\HasMany $Nudges
+ * @method \App\Model\Entity\Project newEmptyEntity()
+ * @method \App\Model\Entity\Project[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Project> saveManyOrFail(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Project[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Project>|false deleteMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Project[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Project> deleteManyOrFail(iterable $entities, array $options = [])
+ * @extends \Cake\ORM\Table<array{Timestamp: \Cake\ORM\Behavior\TimestampBehavior}>
  */
 class ProjectsTable extends Table
 {

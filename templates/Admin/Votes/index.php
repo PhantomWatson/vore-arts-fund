@@ -4,6 +4,7 @@
  * @var Project[] $projects
  * @var \App\Model\Entity\FundingCycle|null $fundingCycle
  * @var \App\Model\Entity\FundingCycle[] $fundingCycles
+ * @var mixed $votingHasPassed
  */
 
 use App\Model\Entity\Project;

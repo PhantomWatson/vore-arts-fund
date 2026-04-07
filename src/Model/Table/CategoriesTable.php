@@ -11,15 +11,19 @@ use Cake\Validation\Validator;
  * Categories Model
  *
  * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\HasMany $Projects
- * @method \App\Model\Entity\Category get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Category get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \App\Model\Entity\Category newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Category[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Category|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Category saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Category|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\Category saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
  * @method \App\Model\Entity\Category patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Category[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Category findOrCreate($search, callable $callback = null, $options = [])
- * @method \App\Model\Entity\Category[]|\Cake\Datasource\ResultSetInterface|false saveMany($entities, $options = [])
+ * @method \App\Model\Entity\Category[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Category findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
+ * @method \App\Model\Entity\Category[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Category>|false saveMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Category newEmptyEntity()
+ * @method \App\Model\Entity\Category[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Category> saveManyOrFail(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Category[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Category>|false deleteMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Category[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Category> deleteManyOrFail(iterable $entities, array $options = [])
  */
 class CategoriesTable extends Table
 {

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\Report>|\Cake\ORM\ResultSet $reports
+ * @var \App\Model\Entity\Report[]|\Cake\Collection\CollectionInterface $reports
  */
 ?>
 <div class="reports">

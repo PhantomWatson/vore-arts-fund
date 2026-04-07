@@ -13,7 +13,7 @@ use Cake\View\View;
  * @property int $id
  * @property int $project_id
  * @property int $question_id
- * @property string $answer
+ * @property string|null $answer
  * @property string $formatted_answer
  * @property \Cake\I18n\DateTime $created
  * @property \Cake\I18n\DateTime $modified

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Project $project
+ */
 
 use App\Model\Entity\Project;
 

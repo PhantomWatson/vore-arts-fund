@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var Project[] $projects
+ * @var \App\Model\Entity\Project[]|\Cake\Collection\CollectionInterface $projects
  */
 
 use App\Model\Entity\Project;

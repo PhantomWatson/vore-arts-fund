@@ -9,7 +9,7 @@ use Cake\ORM\Entity;
  * Category Entity
  *
  * @property int $id
- * @property string $name
+ * @property string|null $name
  *
  * @property \App\Model\Entity\Project[] $projects
  */

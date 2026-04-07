@@ -1,7 +1,8 @@
 <?php
 /**
- * @var \Cake\ORM\ResultSet|\App\Model\Entity\Note[] $notes
+ * @var \App\Model\Entity\Note[]|\Cake\Collection\CollectionInterface $notes
  * @var \App\Model\Entity\Project $project
+ * @var \App\View\AppView $this
  */
 
 use App\Model\Entity\Project;

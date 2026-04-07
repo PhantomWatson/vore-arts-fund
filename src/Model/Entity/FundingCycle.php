@@ -10,11 +10,11 @@ use Cake\Routing\Router;
  * FundingCycle Entity
  *
  * @property int $id
- * @property \Cake\I18n\DateTime|null $application_begin
- * @property \Cake\I18n\DateTime|null $application_end
- * @property \Cake\I18n\DateTime|null $resubmit_deadline
- * @property \Cake\I18n\DateTime|null $vote_begin
- * @property \Cake\I18n\DateTime|null $vote_end
+ * @property \Cake\I18n\DateTime $application_begin
+ * @property \Cake\I18n\DateTime $application_end
+ * @property \Cake\I18n\DateTime $resubmit_deadline
+ * @property \Cake\I18n\DateTime $vote_begin
+ * @property \Cake\I18n\DateTime $vote_end
  * @property \Cake\I18n\DateTime|null $application_begin_local
  * @property \Cake\I18n\DateTime|null $application_end_local
  * @property \Cake\I18n\DateTime|null $resubmit_deadline_local

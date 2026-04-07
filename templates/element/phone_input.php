@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ */
+?>
 <div class="input-with-footnote">
     <?= $this->Form->control('phone', [
         'type' => 'tel',

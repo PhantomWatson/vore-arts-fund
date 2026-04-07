@@ -2,6 +2,7 @@
 /**
  * @var \App\Model\Entity\Project $project
  * @var \App\Model\Entity\Transaction[] $repayments
+ * @var \App\View\AppView $this
  */
 $balance = ($project->amount_awarded - $project->getTotalRepaid()) / 100;
 ?>

@@ -18,16 +18,21 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\HasMany $Projects
  * @property \App\Model\Table\VotesTable&\Cake\ORM\Association\HasMany $Votes
- * @method \App\Model\Entity\FundingCycle get($primaryKey, $options = [])
+ * @method \App\Model\Entity\FundingCycle get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \App\Model\Entity\FundingCycle newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\FundingCycle[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\FundingCycle|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\FundingCycle saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\FundingCycle|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\FundingCycle saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
  * @method \App\Model\Entity\FundingCycle patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\FundingCycle[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\FundingCycle findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\FundingCycle[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\FundingCycle findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
- * @method \App\Model\Entity\FundingCycle[]|\Cake\Datasource\ResultSetInterface|false saveMany($entities, $options = [])
+ * @method \App\Model\Entity\FundingCycle[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\FundingCycle>|false saveMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\FundingCycle newEmptyEntity()
+ * @method \App\Model\Entity\FundingCycle[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\FundingCycle> saveManyOrFail(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\FundingCycle[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\FundingCycle>|false deleteMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\FundingCycle[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\FundingCycle> deleteManyOrFail(iterable $entities, array $options = [])
+ * @extends \Cake\ORM\Table<array{Timestamp: \Cake\ORM\Behavior\TimestampBehavior}>
  */
 class FundingCyclesTable extends Table
 {

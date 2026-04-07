@@ -18,18 +18,19 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Bio newEmptyEntity()
  * @method \App\Model\Entity\Bio newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Bio[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Bio get($primaryKey, $options = [])
- * @method \App\Model\Entity\Bio findOrCreate($search, ?callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Bio get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\Bio findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
  * @method \App\Model\Entity\Bio patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Bio[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\Bio|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Bio saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Bio[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Bio[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\Bio[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Bio[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\Bio|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\Bio saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\Bio[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Bio>|false saveMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Bio[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Bio> saveManyOrFail(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Bio[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Bio>|false deleteMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Bio[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Bio> deleteManyOrFail(iterable $entities, array $options = [])
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @extends \Cake\ORM\Table<array{Timestamp: \Cake\ORM\Behavior\TimestampBehavior}>
  */
 class BiosTable extends Table
 {

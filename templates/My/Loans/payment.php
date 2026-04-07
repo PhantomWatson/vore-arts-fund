@@ -2,6 +2,7 @@
 /**
  * @var \App\Model\Entity\Project $project
  * @var Transaction[] $repayments
+ * @var \App\View\AppView $this
  */
 
 use App\Model\Entity\Transaction;

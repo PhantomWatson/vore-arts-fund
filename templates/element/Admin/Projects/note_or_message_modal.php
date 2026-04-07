@@ -2,6 +2,7 @@
 /**
  * @var \App\Model\Entity\Project $project
  * @var string $noteType
+ * @var \App\View\AppView $this
  */
 
 use App\Model\Entity\Note;

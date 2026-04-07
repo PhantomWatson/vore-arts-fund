@@ -5,6 +5,7 @@
  * @var string $reportUrl
  * @var string $supportEmail
  * @var string $repaymentUrl
+ * @var \App\View\AppView $this
  */
 ?>
 <?= $userName ?>,

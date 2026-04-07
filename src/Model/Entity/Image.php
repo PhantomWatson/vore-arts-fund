@@ -10,9 +10,9 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $project_id
- * @property string $filename
+ * @property string|null $filename
  * @property int $weight
- * @property string $caption
+ * @property string|null $caption
  * @property \Cake\I18n\DateTime $created
  *
  * @property \App\Model\Entity\Project $project

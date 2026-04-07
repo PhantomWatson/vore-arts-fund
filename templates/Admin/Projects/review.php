@@ -1,4 +1,12 @@
 <?php
+/**
+ * @var \App\View\AppView $this
+ * @var array $statusActions
+ * @var mixed $validStatusIds
+ * @var \App\Model\Entity\Transaction[]|\Cake\Collection\CollectionInterface $transactions
+ * @var \App\Model\Entity\Note[]|\Cake\Collection\CollectionInterface $notes
+ * @var \App\Model\Entity\Project $project
+ */
 
 use App\Model\Entity\Note;
 use App\Model\Entity\Project;

@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \Cake\ORM\ResultSet|\App\Model\Entity\FundingCycle[] $cyclesCurrentlyVoting
+ * @var \App\View\AppView $this
  */
 ?>
 

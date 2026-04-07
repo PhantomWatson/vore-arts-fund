@@ -19,6 +19,7 @@ use Cake\Http\Response;
  * @property \App\Model\Table\CategoriesTable $Categories
  * @property \App\Model\Table\ImagesTable $Images
  * @link https://book.cakephp.org/3.0/en/controllers/pages-controller.html
+ * @property \App\Model\Table\VotesTable $Votes
  */
 
 class VotesController extends AdminController

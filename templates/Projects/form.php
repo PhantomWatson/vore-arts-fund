@@ -1,6 +1,6 @@
 <?php
 /**
- * @var Project $project
+ * @var \App\Model\Entity\Project $project
  * @var \App\Model\Entity\FundingCycle $fundingCycle
  * @var \App\Model\Entity\Question[] $questions
  * @var \App\Model\Entity\User $user
@@ -9,6 +9,7 @@
  * @var string $fromNow
  * @var string[] $categories
  * @var Project[] $hasPastProjects
+ * @var mixed $key
  */
 
 use App\Model\Entity\Image;

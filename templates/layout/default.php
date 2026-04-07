@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var array $breadcrumbs
  * @var string $currentBreadcrumb
+ * @var mixed $title
  */
 
 $title ??= $this->fetch('title');

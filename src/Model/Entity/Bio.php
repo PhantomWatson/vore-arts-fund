@@ -15,8 +15,8 @@ use Cake\View\View;
  * @property string $title
  * @property string $bio
  * @property string $formatted_bio
- * @property string|false $image_url
- * @property string|null $image
+ * @property string $image_url
+ * @property string $image
  * @property \Cake\I18n\DateTime $created
  * @property \Cake\I18n\DateTime $modified
  *

@@ -28,6 +28,10 @@ use Exception;
  */
 class ProjectsController extends AppController
 {
+    private \App\Model\Table\FundingCyclesTable|Component\FundingCyclesComponent|\FundingCycles|\Cake\Controller\Component\FundingCyclesComponent|\Cake\ORM\Table $FundingCycles;
+    private \App\Model\Table\CategoriesTable|\Categories|\Cake\Controller\Component\CategoriesComponent|\Cake\ORM\Table|Component\CategoriesComponent $Categories;
+    private \App\Model\Table\ImagesTable|\Cake\ORM\Table|\Cake\Controller\Component\ImagesComponent|Component\ImagesComponent|\Images $Images;
+
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);

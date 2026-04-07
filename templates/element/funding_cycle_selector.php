@@ -3,6 +3,7 @@
  * @var array|string $url
  * @var \App\Model\Entity\FundingCycle[]|\Cake\ORM\ResultSet $fundingCycles
  * @var int $fundingCycleId
+ * @var \App\View\AppView $this
  */
 $groupedCycles = \App\Model\Table\FundingCyclesTable::groupCycles($fundingCycles);
 ?>

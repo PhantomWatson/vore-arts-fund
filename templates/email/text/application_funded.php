@@ -6,6 +6,12 @@
  * * @var string $userName
  * * @var string $loanAgreementUrl
  * * @var string $replyUrl
+ *
+ * @var \App\View\AppView $this
+ * @var string $loanAgreementUrl
+ * @var string $replyUrl
+ * @var string $userName
+ * @var \App\Model\Entity\FundingCycle $fundingCycle
  */
 ?>
 Congratulations, <?= $userName ?>!

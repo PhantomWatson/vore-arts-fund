@@ -11,13 +11,14 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $user_id
  * @property int $project_id
- * @property string $body
+ * @property string|null $body
  * @property int $type
  * @property string $typeWithIcon
  * @property \Cake\I18n\DateTime $created
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Project $project
+ * @property string $type_with_icon
  */
 class Note extends Entity
 {

@@ -4,6 +4,9 @@ namespace App\Controller\Api;
 
 use Cake\Event\EventInterface;
 
+/**
+ * @property \App\Model\Table\UsersTable $Users
+ */
 class UsersController extends ApiController
 {
     /**

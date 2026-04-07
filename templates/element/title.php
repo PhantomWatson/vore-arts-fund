@@ -1,5 +1,8 @@
 <?php
-/** @var string $title */
+/**
+ * @var \App\View\AppView $this
+ * @var string $title
+ */
 ?>
 <?php if ($title ?? false): ?>
     <div class="pb-2 mb-2 border-bottom">

@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\ORM\ResultSet|\App\Model\Entity\FundingCycle[] $fundingCycles
+ * @var \App\Model\Entity\FundingCycle[]|\Cake\Collection\CollectionInterface $fundingCycles
  * @var \Cake\ORM\ResultSet|Project[] $projects
  * @var bool $hasProjects
  */

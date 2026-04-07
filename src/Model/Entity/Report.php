@@ -9,15 +9,15 @@ use Cake\ORM\Entity;
  * Report Entity
  *
  * @property int $id
- * @property string $body
- * @property int $user_id
- * @property int $project_id
+ * @property string|null $body
+ * @property int|null $user_id
+ * @property int|null $project_id
  * @property bool $is_final
  * @property \Cake\I18n\DateTime $created
  * @property \Cake\I18n\DateTime $modified
  *
- * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Project $project
+ * @property \App\Model\Entity\User|null $user
+ * @property \App\Model\Entity\Project|null $project
  */
 class Report extends Entity
 {

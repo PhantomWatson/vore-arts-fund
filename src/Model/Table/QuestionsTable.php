@@ -16,20 +16,21 @@ use Cake\Validation\Validator;
  * Questions Model
  *
  * @property \App\Model\Table\AnswersTable&\Cake\ORM\Association\HasMany $Answers
- * @method Question newEmptyEntity()
- * @method Question newEntity(array $data, array $options = [])
- * @method Question[] newEntities(array $data, array $options = [])
- * @method Question get($primaryKey, $options = [])
- * @method Question findOrCreate($search, ?callable $callback = null, $options = [])
- * @method Question patchEntity(EntityInterface $entity, array $data, array $options = [])
- * @method Question[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method Question|false save(EntityInterface $entity, $options = [])
- * @method Question saveOrFail(EntityInterface $entity, $options = [])
- * @method Question[]|ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method Question[]|ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method Question[]|ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method Question[]|ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @method \App\Model\Entity\Question newEmptyEntity()
+ * @method \App\Model\Entity\Question newEntity(array $data, array $options = [])
+ * @method \App\Model\Entity\Question[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Question get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
+ * @method \App\Model\Entity\Question findOrCreate(\Cake\ORM\Query\SelectQuery|callable|array $search, ?callable $callback = null, array $options = [])
+ * @method \App\Model\Entity\Question patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Question[] patchEntities(iterable $entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Question|false save(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\Question saveOrFail(\Cake\Datasource\EntityInterface $entity, array $options = [])
+ * @method \App\Model\Entity\Question[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Question>|false saveMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Question[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Question> saveManyOrFail(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Question[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Question>|false deleteMany(iterable $entities, array $options = [])
+ * @method \App\Model\Entity\Question[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Question> deleteManyOrFail(iterable $entities, array $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @extends \Cake\ORM\Table<array{Timestamp: \Cake\ORM\Behavior\TimestampBehavior}>
  */
 class QuestionsTable extends Table
 {

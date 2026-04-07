@@ -6,6 +6,7 @@
  * @var bool $isLoggedIn
  * @var bool $hasReportableProjects
  * @var bool $hasLoans
+ * @var object $appView
  */
 $hasProjects ??= false;
 $isAdmin ??= false;

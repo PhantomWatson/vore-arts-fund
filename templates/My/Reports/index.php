@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var iterable<\App\Model\Entity\Project>|\Cake\ORM\ResultSet $projects
+ * @var \App\Model\Entity\Project[]|\Cake\Collection\CollectionInterface $projects
  */
 ?>
 
