@@ -3,14 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Event\MailListener;
-use App\Model\Entity\Note;
 use App\Model\Entity\Project;
 use App\Model\Table\FundingCyclesTable;
-use App\Model\Table\NotesTable;
-use Cake\Event\Event;
 use Cake\Event\EventInterface;
-use Cake\Http\Response;
 
 /**
  * VotesController

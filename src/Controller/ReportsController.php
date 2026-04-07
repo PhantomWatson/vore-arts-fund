@@ -3,11 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Model\Entity\Project;
 use Cake\Event\EventInterface;
-use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
-use Cake\Routing\Router;
 
 /**
  * Reports Controller

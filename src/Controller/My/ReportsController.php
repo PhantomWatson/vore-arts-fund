@@ -6,7 +6,6 @@ namespace App\Controller\My;
 use App\Controller\AppController;
 use App\Model\Entity\Project;
 use Cake\Event\EventInterface;
-use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;

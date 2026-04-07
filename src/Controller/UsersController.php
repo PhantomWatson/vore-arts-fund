@@ -10,7 +10,6 @@ use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Response;
-use Cake\I18n\FrozenTime;
 use Cake\Mailer\Mailer;
 use Cake\Routing\Router;
 use ReCaptcha\ReCaptcha;

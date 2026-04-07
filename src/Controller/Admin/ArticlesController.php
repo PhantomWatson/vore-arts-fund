@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use Cake\Event\EventInterface;
-use Cake\Utility\Text;
 
 /**
  * Articles Controller

@@ -6,9 +6,7 @@ namespace App\Controller\Admin;
 use App\Application;
 use App\Model\Entity\FundingCycle;
 use Cake\Event\EventInterface;
-use Cake\I18n\FrozenTime;
 use Cake\ORM\Query;
-use Cake\ORM\TableRegistry;
 
 /**
  * FundingCyclesController
