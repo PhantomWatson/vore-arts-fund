@@ -91,7 +91,7 @@ class ReportsController extends AppController
                 ->Projects
                 ->find('reportableForUser', ['userId' => $user->id])
                 ->select(['id', 'title'])
-                ->orderAsc('title')
+                ->orderByAsc('title')
                 ->all();
             if (count($projects) == 1) {
                 $projectId = $projects->first()->id;

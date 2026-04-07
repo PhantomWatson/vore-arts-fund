@@ -143,7 +143,7 @@ class TransactionsController extends AdminController
                     return $query->select(['Users.id', 'Users.name']);
                 }
             ])
-            ->orderAsc('title')
+            ->orderByAsc('title')
             ->toArray();
         $projects = Hash::combine($projects, '{n}.id', '{n}');
         $prefixedProjects = array_map(function (Project $project) {
