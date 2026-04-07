@@ -22,7 +22,7 @@ use Cake\Log\Log;
  */
 class TransactionsController extends ApiController
 {
-    const ACCESSIBLE_FIELDS = ['date', 'type', 'name', 'amount_net', 'amount_gross', 'meta', 'project_id'];
+    const array ACCESSIBLE_FIELDS = ['date', 'type', 'name', 'amount_net', 'amount_gross', 'meta', 'project_id'];
 
     /**
      * beforeFilter callback method
