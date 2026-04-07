@@ -23,6 +23,8 @@ use Cake\Routing\Router;
  */
 class LoansController extends \App\Controller\AppController
 {
+    private \App\Model\Table\ProjectsTable $Projects;
+
     /**
      * @param EventInterface $event
      * @return Response|null

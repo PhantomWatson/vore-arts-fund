@@ -23,6 +23,8 @@ use Cake\ORM\TableRegistry;
  */
 class ProjectsController extends BaseProjectsController
 {
+    private \App\Model\Table\ProjectsTable $Projects;
+
     /**
      * @param EventInterface $event
      * @return Response|null
