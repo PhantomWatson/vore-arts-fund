@@ -12,6 +12,7 @@ use Cake\Database\Expression\QueryExpression;
 use Cake\Database\Query;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Security;
 use Exception;
@@ -420,7 +421,7 @@ class ProjectsController extends AppController
                             ->orderByAsc('title');
                     },
                     'Transactions' => [
-                        'queryBuilder' => function (Query $q) {
+                        'queryBuilder' => function (SelectQuery $q) {
                             return $q
                                 ->select([
                                     'Transactions.id',

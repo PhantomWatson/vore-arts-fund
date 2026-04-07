@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Application;
+use App\Model\Entity\FundingCycle;
 use App\Model\Entity\Project;
 use Cake\Event\EventInterface;
 use Cake\ORM\Query;
@@ -90,6 +91,7 @@ class TransactionsController extends AdminController
             ->orderByDesc('application_begin')
             ->toArray();
         $cyclesRetval = [];
+        /** @var FundingCycle $cycle */
         foreach ($cycles as $cycle) {
             $cyclesRetval[$cycle['id']] = ['name' => $cycle->name];
         }
@@ -108,9 +110,10 @@ class TransactionsController extends AdminController
             ->contain([
                 'Users' => function (Query $query) {
                     return $query->select(['Users.id', 'Users.name']);
-                }
+                },
             ])
             ->orderByAsc('Projects.title');
+        /** @var Project $project */
         foreach ($projects as $project) {
             $cyclesRetval[$project->funding_cycle_id]['projects'][] = [
                 'id' => $project->id,
@@ -133,12 +136,12 @@ class TransactionsController extends AdminController
             ->find('notFinalized')
             ->select([
                 'Projects.id',
-                'Projects.title'
+                'Projects.title',
             ])
             ->contain([
                 'Users' => function (Query $query) {
                     return $query->select(['Users.id', 'Users.name']);
-                }
+                },
             ])
             ->orderByAsc('title')
             ->toArray();
