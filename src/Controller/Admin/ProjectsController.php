@@ -23,8 +23,6 @@ use Cake\Http\Response;
 
 class ProjectsController extends AdminController
 {
-    /** @var bool Helps keep track of whether a "message sent" message should be shown */
-    private $messageSent = false;
 
     public function beforeFilter(EventInterface $event): void
     {
