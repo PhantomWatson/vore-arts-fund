@@ -71,10 +71,11 @@ class Piiano implements SecretServiceInterface
     /**
      * We're only using write-only access. Retrieving TINs will require logging in to Piiano and using their interface.
      *
-     * @param string $secretId
+     * @param string $projectId
+     * @param string $secretKey
      * @return string|false
      */
-    public function getTin($secretId): string|false
+    public function getTin($projectId, $secretKey): string|false
     {
         return false;
     }
