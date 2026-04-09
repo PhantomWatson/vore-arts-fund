@@ -224,8 +224,8 @@ class MailListener implements EventListenerInterface
             [
                 'email' => $email,
                 'subject' => $emailOptions['subject'],
-                'template' => $emailOptions['template'],
                 'viewVars' => $viewVars,
+                'template' => $emailOptions['template'],
             ]
         ));
     }
