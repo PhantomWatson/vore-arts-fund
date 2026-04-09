@@ -13,7 +13,6 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
-use EmailQueue\EmailQueue;
 
 class ImageCleanupCommand extends Command
 {

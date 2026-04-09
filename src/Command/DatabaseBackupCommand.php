@@ -5,13 +5,15 @@ namespace App\Command;
 
 use App\Alert\Alert;
 use App\Alert\ErrorAlert;
+use App\Mailer\SystemMailer;
 use Aws\S3\S3Client;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\Configure;
-use EmailQueue\EmailQueue;
+use Cake\ORM\TableRegistry;
+use Queue\Model\Table\QueuedJobsTable;
 
 /**
  * DatabaseBackup command.
@@ -41,6 +43,8 @@ class DatabaseBackupCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
+        $this->emailError('foo'); exit;
+
         // Load config file and consume DB credentials
         if (file_exists(CONFIG . 'environment.php')) {
             include(CONFIG . 'environment.php');
@@ -89,33 +93,15 @@ class DatabaseBackupCommand extends Command
         }
     }
 
-    private function emailDatabaseBackup($filepath): void
+    private function emailError($msg): void
     {
-        EmailQueue::enqueue(
-            Configure::read('supportEmail'),
-            ['content' => 'Database backup attached'],
-            [
-                'subject' => 'Vore Arts Fund database backup (' . getEnvironment() . ')',
-                'template' => 'default',
-                'from_name' => 'Vore Arts Fund',
-                'from_email' => 'noreply@voreartsfund.org',
-                'attachments' => [$filepath]
-            ],
-        );
-    }
-
-    private function emailError($msg)
-    {
-        EmailQueue::enqueue(
-            Configure::read('supportEmail'),
-            ['content' => $msg],
-            [
-                'subject' => 'Vore Arts Fund database backup failed (' . getEnvironment() . ')',
-                'template' => 'default',
-                'from_name' => 'Vore Arts Fund',
-                'from_email' => 'noreply@voreartsfund.org',
-            ],
-        );
+        /** @var QueuedJobsTable $jobsTable */
+        $jobsTable = TableRegistry::getTableLocator()->get('Queue.QueuedJobs');
+        $jobsTable->createJob('Queue.Mailer', [
+            'action' => 'databaseBackupError',
+            'class' => SystemMailer::class,
+            'vars' => [$msg],
+        ]);
     }
 
     private function uploadFileToS3($filepath)

@@ -3,6 +3,7 @@
 namespace App\Event;
 
 use App\Email\MailConfig;
+use App\Mailer\ProjectMailer;
 use App\Model\Entity\Project;
 use App\Model\Entity\User;
 use App\Model\Table\FundingCyclesTable;
@@ -14,7 +15,7 @@ use Cake\Http\Exception\InternalErrorException;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
-use EmailQueue\EmailQueue;
+use Queue\Model\Table\QueuedJobsTable;
 
 class MailListener implements EventListenerInterface
 {
@@ -49,10 +50,10 @@ class MailListener implements EventListenerInterface
     {
         return [
             'Project.accepted' => 'mailProjectAccepted',
-            'Project.revisionRequested' => 'mailProjectRevisionRequested',
-            'Project.rejected' => 'mailProjectRejected',
             'Project.funded' => 'mailProjectFunded',
             'Project.notFunded' => 'mailProjectNotFunded',
+            'Project.rejected' => 'mailProjectRejected',
+            'Project.revisionRequested' => 'mailProjectRevisionRequested',
             'Note.messageSent' => 'mailMessage',
         ];
     }
@@ -66,19 +67,21 @@ class MailListener implements EventListenerInterface
     public function mailProjectAccepted(Event $event, Project $project): void
     {
         [$email, $name] = $this->getRecipientFromProject($project);
+        $fundingCycle = $this->fundingCyclesTable->get($project->funding_cycle_id);
         $this->enqueueEmailAndDispatchEvent(
             $email,
             [
+                'fundingCycle' => $fundingCycle,
                 'project' => $project,
-                'fundingCycle' => $this->fundingCyclesTable->get($project->funding_cycle_id),
                 'userName' => $name,
             ],
             [
                 'subject' => $this->mailConfig->subjectPrefix . 'Application Accepted',
                 'template' => 'application_accepted',
-                'from_name' => $this->mailConfig->fromName,
-                'from_email' => $this->mailConfig->fromEmail,
-            ]
+            ],
+            ProjectMailer::class,
+            'accepted',
+            [$project->id],
         );
     }
 
@@ -92,12 +95,13 @@ class MailListener implements EventListenerInterface
     public function mailProjectRevisionRequested(Event $event, Project $project, string $note): void
     {
         [$email, $name] = $this->getRecipientFromProject($project);
+        $fundingCycle = $this->fundingCyclesTable->get($project->funding_cycle_id);
         $this->enqueueEmailAndDispatchEvent(
             $email,
             [
-                'project' => $project,
-                'fundingCycle' => $this->fundingCyclesTable->get($project->funding_cycle_id),
+                'fundingCycle' => $fundingCycle,
                 'note' => $note,
+                'project' => $project,
                 'url' => Router::url([
                     'prefix' => 'My',
                     'controller' => 'Projects',
@@ -109,9 +113,10 @@ class MailListener implements EventListenerInterface
             [
                 'subject' => $this->mailConfig->subjectPrefix . 'Revision Requested',
                 'template' => 'application_revision_requested',
-                'from_name' => $this->mailConfig->fromName,
-                'from_email' => $this->mailConfig->fromEmail,
             ],
+            ProjectMailer::class,
+            'revisionRequested',
+            [$project->id, $note],
         );
     }
 
@@ -128,69 +133,84 @@ class MailListener implements EventListenerInterface
         $this->enqueueEmailAndDispatchEvent(
             $email,
             [
-                'project' => $project,
                 'fundingCycle' => $this->fundingCyclesTable->find('nextApplying')->first(),
                 'note' => $note,
+                'project' => $project,
                 'userName' => $name,
             ],
             [
                 'subject' => $this->mailConfig->subjectPrefix . 'Application Not Accepted',
                 'template' => 'application_rejected',
-                'from_name' => $this->mailConfig->fromName,
-                'from_email' => $this->mailConfig->fromEmail,
             ],
+            ProjectMailer::class,
+            'rejected',
+            [$project->id, $note],
         );
     }
 
     /**
      * @param Event $event
      * @param Project $project
-     * @param int $amount
      * @return void
      * @throws InternalErrorException
      */
     public function mailProjectFunded(Event $event, Project $project): void
     {
         [$email, $name] = $this->getRecipientFromProject($project);
+        $fundingCycle = $this->fundingCyclesTable->get($project->funding_cycle_id);
         $this->enqueueEmailAndDispatchEvent(
             $email,
             [
-                'project' => $project,
-                'fundingCycle' => $this->fundingCyclesTable->get($project->funding_cycle_id),
+                'fundingCycle' => $fundingCycle,
                 'loanAgreementUrl' => Router::url([
                     'prefix' => 'My',
                     'controller' => 'Loans',
                     'action' => 'loanAgreement',
                     'id' => $project->id,
                 ], true),
-                'userName' => $name,
+                'project' => $project,
                 'replyUrl' => $this->getReplyUrl($project),
+                'userName' => $name,
             ],
             [
                 'subject' => $this->mailConfig->subjectPrefix . 'Application Funded',
                 'template' => 'application_funded',
-                'from_name' => $this->mailConfig->fromName,
-                'from_email' => $this->mailConfig->fromEmail,
-            ]
+            ],
+            ProjectMailer::class,
+            'funded',
+            [$project->id],
         );
     }
 
     /**
-     * Enqueues message and dispatches event
+     * Enqueues a mailer job and dispatches an alert event
      *
-     * @param string $email Recipient email address
-     * @param array $viewVars View vars to pass to email template
-     * @param array $emailOptions
+     * @param string $email Recipient email address (used for alerting only)
+     * @param array $viewVars View vars to pass to the alert template renderer
+     * @param array $emailOptions Must include 'subject' and 'template' keys (used for alerting only)
+     * @param string $mailerClass Fully-qualified Mailer class name
+     * @param string $mailerAction Method name on the Mailer class
+     * @param array $mailerVars Arguments to pass to the Mailer method
      * @param string $event Event name to dispatch
      * @return void
      */
-    private function enqueueEmailAndDispatchEvent($email, $viewVars, $emailOptions, $event = 'Mail.messageSentToApplicant'): void
-    {
-        EmailQueue::enqueue(
-            $email,
-            $viewVars,
-            $emailOptions
-        );
+    private function enqueueEmailAndDispatchEvent(
+        string $email,
+        array $viewVars,
+        array $emailOptions,
+        string $mailerClass,
+        string $mailerAction,
+        array $mailerVars,
+        string $event = 'Mail.messageSentToApplicant'
+    ): void {
+        /** @var QueuedJobsTable $jobsTable */
+        $jobsTable = TableRegistry::getTableLocator()->get('Queue.QueuedJobs');
+        $jobsTable->createJob('Queue.Mailer', [
+            'action' => $mailerAction,
+            'class' => $mailerClass,
+            'vars' => $mailerVars,
+        ]);
+
         $eventManager = EventManager::instance();
 
         // Only register the listener if it hasn't been registered yet
@@ -204,8 +224,8 @@ class MailListener implements EventListenerInterface
             [
                 'email' => $email,
                 'subject' => $emailOptions['subject'],
-                'viewVars' => $viewVars,
                 'template' => $emailOptions['template'],
+                'viewVars' => $viewVars,
             ]
         ));
     }
@@ -223,21 +243,22 @@ class MailListener implements EventListenerInterface
         $this->enqueueEmailAndDispatchEvent(
             $email,
             [
-                'project' => $project,
                 'currentApplyingFundingCycle' => $this->fundingCyclesTable->find('currentApplying')->first(),
-                'userName' => $name,
+                'project' => $project,
                 'reapplyUrl' => Router::url([
                     'controller' => 'Projects',
                     'action' => 'apply',
-                    '?' => ['reapply' => $project->id]
+                    '?' => ['reapply' => $project->id],
                 ], true),
+                'userName' => $name,
             ],
             [
                 'subject' => $this->mailConfig->subjectPrefix . 'Application Not Funded',
                 'template' => 'application_not_funded',
-                'from_name' => $this->mailConfig->fromName,
-                'from_email' => $this->mailConfig->fromEmail,
             ],
+            ProjectMailer::class,
+            'notFunded',
+            [$project->id],
         );
     }
 
@@ -254,22 +275,13 @@ class MailListener implements EventListenerInterface
      */
     public function mailMessage(Event $event, Project $project, string $message): void
     {
-        [$email, $name] = $this->getRecipientFromProject($project);
-        EmailQueue::enqueue(
-            $email,
-            [
-                'project' => $project,
-                'userName' => $name,
-                'message' => $message,
-                'replyUrl' => $this->getReplyUrl($project),
-            ],
-            [
-                'subject' => $this->mailConfig->subjectPrefix . 'Message from review committee',
-                'template' => 'message',
-                'from_name' => $this->mailConfig->fromName,
-                'from_email' => $this->mailConfig->fromEmail,
-            ],
-        );
+        /** @var QueuedJobsTable $jobsTable */
+        $jobsTable = TableRegistry::getTableLocator()->get('Queue.QueuedJobs');
+        $jobsTable->createJob('Queue.Mailer', [
+            'action' => 'message',
+            'class' => ProjectMailer::class,
+            'vars' => [$project->id, $message],
+        ]);
     }
 
     private function getReplyUrl(Project $project): string
@@ -279,7 +291,7 @@ class MailListener implements EventListenerInterface
                 'prefix' => 'My',
                 'controller' => 'Projects',
                 'action' => 'messages',
-                'id' => $project->id
+                'id' => $project->id,
             ],
             true
         );
@@ -291,21 +303,22 @@ class MailListener implements EventListenerInterface
         $this->enqueueEmailAndDispatchEvent(
             $email,
             [
-                'project' => $project,
                 'myReportsUrl' => Router::url([
                     'prefix' => 'My',
                     'controller' => 'Reports',
-                    'action' => 'index'
+                    'action' => 'index',
                 ], true),
-                'userName' => $name,
+                'project' => $project,
                 'replyUrl' => $this->getReplyUrl($project),
+                'userName' => $name,
             ],
             [
                 'subject' => $this->mailConfig->subjectPrefix . 'Your check is on its way',
                 'template' => 'funding_disbursed',
-                'from_name' => $this->mailConfig->fromName,
-                'from_email' => $this->mailConfig->fromEmail,
             ],
+            ProjectMailer::class,
+            'fundingDisbursed',
+            [$project->id],
         );
     }
 }

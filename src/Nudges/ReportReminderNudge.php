@@ -14,7 +14,8 @@ use Cake\I18n\FrozenDate;
 use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
-use EmailQueue\EmailQueue;
+use App\Mailer\NudgeMailer;
+use Queue\Model\Table\QueuedJobsTable;
 
 class ReportReminderNudge implements NudgeInterface
 {
@@ -87,10 +88,14 @@ class ReportReminderNudge implements NudgeInterface
             $mailOptions = [
                 'subject' => $mailConfig->subjectPrefix . 'Report Reminder',
                 'template' => 'nudges/report_reminder',
-                'from_name' => $mailConfig->fromName,
-                'from_email' => $mailConfig->fromEmail,
             ];
-            EmailQueue::enqueue($user->email, $viewVars, $mailOptions);
+            /** @var QueuedJobsTable $jobsTable */
+            $jobsTable = TableRegistry::getTableLocator()->get('Queue.QueuedJobs');
+            $jobsTable->createJob('Queue.Mailer', [
+                'action' => 'reportReminder',
+                'class' => NudgeMailer::class,
+                'vars' => [$project->id],
+            ]);
             AlertEmitter::emitMessageSentEvent($user->email, $mailOptions['subject'], $viewVars, $mailOptions['template']);
         } catch (\Exception $e) {
             $msg = "Error processing report reminder nudge for project #{$project->id}: " . $e->getMessage();

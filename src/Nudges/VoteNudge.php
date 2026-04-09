@@ -12,7 +12,8 @@ use Cake\Collection\Collection;
 use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
-use EmailQueue\EmailQueue;
+use App\Mailer\NudgeMailer;
+use Queue\Model\Table\QueuedJobsTable;
 
 /**
  * Sends nudges to applicants to alert them to a voting period beginning
@@ -64,10 +65,14 @@ class VoteNudge implements NudgeInterface
             $mailOptions = [
                 'subject' => $mailConfig->subjectPrefix . 'Voting has begun!',
                 'template' => 'nudges/vote_reminder',
-                'from_name' => $mailConfig->fromName,
-                'from_email' => $mailConfig->fromEmail,
             ];
-            EmailQueue::enqueue($user->email, $viewVars, $mailOptions);
+            /** @var QueuedJobsTable $jobsTable */
+            $jobsTable = TableRegistry::getTableLocator()->get('Queue.QueuedJobs');
+            $jobsTable->createJob('Queue.Mailer', [
+                'action' => 'voteReminder',
+                'class' => NudgeMailer::class,
+                'vars' => [$project->id],
+            ]);
             AlertEmitter::emitMessageSentEvent($user->email, $mailOptions['subject'], $viewVars, $mailOptions['template']);
         } catch (\Exception $e) {
             $msg = "Error processing voting nudge for project #{$project->id}: " . $e->getMessage();

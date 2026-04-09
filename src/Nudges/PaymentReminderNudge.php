@@ -18,7 +18,8 @@ use Cake\I18n\FrozenDate;
 use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
-use EmailQueue\EmailQueue;
+use App\Mailer\NudgeMailer;
+use Queue\Model\Table\QueuedJobsTable;
 
 class PaymentReminderNudge implements NudgeInterface
 {
@@ -91,10 +92,14 @@ class PaymentReminderNudge implements NudgeInterface
             $mailOptions = [
                 'subject' => $mailConfig->subjectPrefix . 'Payment Reminder',
                 'template' => 'nudges/payment_reminder',
-                'from_name' => $mailConfig->fromName,
-                'from_email' => $mailConfig->fromEmail,
             ];
-            EmailQueue::enqueue($user->email, $viewVars, $mailOptions);
+            /** @var QueuedJobsTable $jobsTable */
+            $jobsTable = TableRegistry::getTableLocator()->get('Queue.QueuedJobs');
+            $jobsTable->createJob('Queue.Mailer', [
+                'action' => 'paymentReminder',
+                'class' => NudgeMailer::class,
+                'vars' => [$project->id],
+            ]);
             AlertEmitter::emitMessageSentEvent($user->email, $mailOptions['subject'], $viewVars, $mailOptions['template']);
         } catch (\Exception $e) {
             $msg = "Error processing payment nudge for project #{$project->id}: " . $e->getMessage();
