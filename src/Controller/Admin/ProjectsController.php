@@ -80,7 +80,7 @@ class ProjectsController extends AdminController
         }
 
         $transactionsTable = $this->getTableLocator()->get('Transactions');
-        $transactions = $transactionsTable->find('forProject', project_id: $project->id);
+        $transactions = $transactionsTable->find('forProject', project_id: $project->id)->all();
 
         if (!$this->request->is('get')) {
             $redirect = $this->processReview($project);
