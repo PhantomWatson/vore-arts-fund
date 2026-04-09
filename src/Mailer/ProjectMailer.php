@@ -13,6 +13,7 @@ class ProjectMailer extends Mailer
     {
         $mailConfig = new MailConfig();
         $this
+            ->setEmailFormat('both')
             ->setFrom([$mailConfig->fromEmail => $mailConfig->fromName])
             ->setSubject($mailConfig->subjectPrefix . $subject)
             ->setTo($toEmail)
