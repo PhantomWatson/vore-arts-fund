@@ -15,7 +15,6 @@ use Cake\ORM\TableRegistry;
 class ReportsController extends AppController
 {
     public array $paginate = [
-        'contain' => ['Users', 'Projects'],
         'limit' => 10,
         'order' => ['Reports.created' => 'desc'],
     ];
@@ -42,7 +41,8 @@ class ReportsController extends AppController
      */
     public function index()
     {
-        $reports = $this->paginate($this->Reports->find()->contain(['Projects']));
+        $query = $this->Reports->find()->contain(['Users', 'Projects']);
+        $reports = $this->paginate($query);
 
         $this->title('Project Reports');
         $this->set(compact('reports'));
