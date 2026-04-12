@@ -222,7 +222,12 @@ class AlertListener implements EventListenerInterface
     {
         $listeners = $eventManager->listeners($eventName);
         foreach ($listeners as $listener) {
-            if ($listener['callable'][0] instanceof AlertListener) {
+            try {
+                $reflectionClosure = new \ReflectionFunction($listener['callable']);
+            } catch (\ReflectionException $e) {
+                return false;
+            }
+            if ($reflectionClosure->getClosureScopeClass()->getName() == AlertListener::class) {
                 return true;
             }
         }
