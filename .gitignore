@@ -79,3 +79,4 @@ yarn-error.log
 /config/webpack/node_modules/*
 /database_backups
 /webroot/sample
+/src/Command/TestCommand.php
