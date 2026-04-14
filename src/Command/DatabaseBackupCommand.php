@@ -43,8 +43,6 @@ class DatabaseBackupCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $this->emailError('foo'); exit;
-
         // Load config file and consume DB credentials
         if (file_exists(CONFIG . 'environment.php')) {
             include(CONFIG . 'environment.php');
