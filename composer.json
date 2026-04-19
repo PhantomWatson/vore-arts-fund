@@ -24,7 +24,7 @@
         "mobiledetect/mobiledetectlib": "^2.8",
         "stripe/stripe-php": "^8.0",
         "twbs/bootstrap": "^5.0",
-        "twilio/sdk": "^7.4"
+        "twilio/sdk": "^8.11"
     },
     "require-dev": {
         "cakephp/bake": "^3.6",
