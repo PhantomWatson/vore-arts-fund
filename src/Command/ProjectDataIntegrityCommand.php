@@ -33,7 +33,7 @@ class ProjectDataIntegrityCommand extends Command
     }
 
     /**
-     * Creates a DB backup and emails it to the support email address
+     * Checks for data integrity issues related to project awarded amounts and sends alerts for any errors found
      *
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io
@@ -83,7 +83,9 @@ class ProjectDataIntegrityCommand extends Command
         }
         $io->out('- Done', 2);
 
-        // Check for project amount_awarded values that don't match the sum of LOAN-type transactions
+        // Check for project amount_awarded values that don't match the sum of LOAN-type transactions,
+        // but ignore any project in a funding cycle that ended recently (because we may be waiting for a disbursement
+        // to go out)
         $io->out('Looking for project awarded amounts that don\'t match transaction records...');
         $projects = $projectsTable
             ->find()
@@ -93,6 +95,9 @@ class ProjectDataIntegrityCommand extends Command
                     return $q->where(['Transactions.type' => Transaction::TYPE_LOAN]);
                 }
             ])
+            ->notMatching('FundingCycles', function (SelectQuery $q) {
+                return $q->where(['FundingCycles.vote_end >=' => date('Y-m-d', strtotime('-1 month'))]);
+            })
             ->all();
         foreach ($projects as $project) {
             $transactionTotal = array_reduce($project->transactions, function ($sum, $transaction) {
