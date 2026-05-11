@@ -624,7 +624,7 @@ class Project extends Entity
 
     protected function _getLoanAwardedDateFormatted(): string
     {
-        return $this->loan_awarded_date ? $this->loan_awarded_date->setTimezone(\App\Application::LOCAL_TIMEZONE)->format('F j, Y') : '';
+        return $this->loan_awarded_date ? $this->loan_awarded_date->format('F j, Y') : '';
     }
 
     /**
