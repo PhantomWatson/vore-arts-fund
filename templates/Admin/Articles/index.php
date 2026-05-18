@@ -35,7 +35,7 @@
                             <?= $article->dated->format('F j, Y') ?>
                         </td>
                         <td>
-                            <?= $article->user->name ?>
+                            <?= $article->user?->name ?? 'Unknown' ?>
                         </td>
                         <td>
                             <?= $article->is_published ? '✔' : '❌' ?>
