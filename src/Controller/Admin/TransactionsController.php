@@ -33,11 +33,11 @@ class TransactionsController extends AdminController
     public function index()
     {
         $this->title('Transactions');
-        $this->paginate = [
-            'contain' => ['Projects'],
-            'order' => ['Transactions.date DESC'],
-        ];
-        $transactions = $this->paginate($this->Transactions);
+        $query = $this->Transactions
+            ->find()
+            ->contain(['Projects'])
+            ->orderByDesc('Transactions.dated');
+        $transactions = $this->paginate($query);
 
         $this->set(compact('transactions'));
     }

@@ -26,11 +26,11 @@ class ArticlesController extends AdminController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Users'],
-            'order' => ['Articles.dated' => 'DESC'],
-        ];
-        $articles = $this->paginate($this->Articles);
+        $query = $this->Articles
+            ->find()
+            ->contain(['Users'])
+            ->orderByDesc('Articles.dated');
+        $articles = $this->paginate($query);
 
         $this->set(compact('articles'));
         $this->title('Articles');
