@@ -12,6 +12,7 @@ use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
+use Cake\I18n\Date;
 use Cake\I18n\FrozenTime;
 use Cake\Log\Log;
 use Cake\ORM\Query\SelectQuery;
@@ -282,7 +283,11 @@ class TransactionsTable extends Table
         // If this is a loan disbursement, update the project's awarded date and status
         if ($entity->type == Transaction::TYPE_LOAN) {
             $projectsTable = TableRegistry::getTableLocator()->get('Projects');
-            $projectsTable->setProjectAwardedDate($entity->project_id, $entity->date);
+
+            // Convert from DateTime to Date
+            $awardedDate = new Date($entity->date->format('Y-m-d'));
+
+            $projectsTable->setProjectAwardedDate($entity->project_id, $awardedDate);
             $projectsTable->updateStatus($entity->project_id, Project::STATUS_AWARDED_AND_DISBURSED);
         }
 
