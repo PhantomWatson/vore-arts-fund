@@ -197,8 +197,6 @@ class ImageProcessor
         if (!$saveResult) {
             throw new InternalErrorException('There was an error with your image (imagegif() failed)');
         }
-
-        imagedestroy($tmpImage);
     }
 
     /**
@@ -221,8 +219,6 @@ class ImageProcessor
         if (!$saveResult) {
             throw new InternalErrorException('There was an error with your image (imagejpeg() failed)');
         }
-
-        imagedestroy($tmpImage);
     }
 
     /**
@@ -248,8 +244,6 @@ class ImageProcessor
         if (!$saveResult) {
             throw new InternalErrorException('There was an error with your image (imagepng() failed)');
         }
-
-        imagedestroy($tmpImage);
     }
 
     /**
@@ -272,8 +266,6 @@ class ImageProcessor
         if (!$saveResult) {
             throw new InternalErrorException('There was an error with your image (imagegif() failed)');
         }
-
-        imagedestroy($tmpImage);
     }
 
     /**
