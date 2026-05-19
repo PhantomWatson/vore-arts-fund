@@ -34,7 +34,7 @@
                 </td>
                 <td>
                     <?=
-                        $transaction->has('project')
+                        $transaction->project
                             ? $this->Html->link(
                                 $transaction->project->title,
                                 [
