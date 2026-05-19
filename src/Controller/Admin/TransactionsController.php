@@ -36,7 +36,7 @@ class TransactionsController extends AdminController
         $query = $this->Transactions
             ->find()
             ->contain(['Projects'])
-            ->orderByDesc('Transactions.dated');
+            ->orderByDesc('Transactions.date');
         $transactions = $this->paginate($query);
 
         $this->set(compact('transactions'));
