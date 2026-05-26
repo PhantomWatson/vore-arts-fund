@@ -314,7 +314,7 @@ class TransactionsTable extends Table
     private function sendLoanRepaidAlert(Project $project): void
     {
         $alert = new Alert();
-        $alert->addLine('The loan for ' . $project->title . ' has been fully repaid 🎉');
+        $alert->addLine("The loan for $project->title has been fully repaid 🎉");
         $alert->send(Alert::TYPE_TRANSACTIONS);
     }
 
