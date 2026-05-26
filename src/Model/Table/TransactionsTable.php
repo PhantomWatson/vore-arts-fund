@@ -13,7 +13,6 @@ use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
 use Cake\I18n\Date;
-use Cake\I18n\FrozenTime;
 use Cake\Log\Log;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
