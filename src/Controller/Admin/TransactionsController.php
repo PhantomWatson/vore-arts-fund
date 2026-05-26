@@ -28,7 +28,7 @@ class TransactionsController extends AdminController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      */
     public function index()
     {
@@ -45,7 +45,7 @@ class TransactionsController extends AdminController
     /**
      * View method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view()
