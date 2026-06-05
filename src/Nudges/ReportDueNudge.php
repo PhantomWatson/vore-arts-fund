@@ -53,6 +53,16 @@ class ReportDueNudge implements NudgeInterface
 
     public static function send(Project $project): bool|string
     {
+        $reportsTable = TableRegistry::getTableLocator()->get('Reports');
+        $deadline = $reportsTable->getDeadlineForNextReport($project);
+        $now = new \DateTimeImmutable();
+        if ($deadline < $now) {
+            // If the deadline has already passed, we shouldn't be sending a nudge about it being due
+            $msg = "The system attempted to send a \"report due\" nudge for project #$project->id despite that deadline having already passed";
+            new ErrorAlert()->send($msg);
+            return $msg;
+        }
+
         $usersTable = TableRegistry::getTableLocator()->get('Users');
         $mailConfig = new MailConfig();
 
@@ -84,7 +94,7 @@ class ReportDueNudge implements NudgeInterface
                         ],
                         true
                     ),
-                'deadline' => $project->loan_awarded_date->addYears(1)->format('F j, Y'),
+                'deadline' => $deadline->format('F j, Y'),
             ];
             $mailOptions = [
                 'subject' => $mailConfig->subjectPrefix . 'Report Due',
@@ -100,7 +110,7 @@ class ReportDueNudge implements NudgeInterface
             AlertEmitter::emitMessageSentEvent($user->email, $mailOptions['subject'], $viewVars, $mailOptions['template']);
         } catch (\Exception $e) {
             $msg = "Error processing report due nudge for project #{$project->id}: " . $e->getMessage();
-            (new ErrorAlert())->send($msg);
+            new ErrorAlert()->send($msg);
             return $msg;
         }
 

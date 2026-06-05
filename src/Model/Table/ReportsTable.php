@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Project;
 use App\Model\Entity\Report;
 use App\Model\Entity\Transaction;
 use Cake\Datasource\EntityInterface;
@@ -121,5 +122,32 @@ class ReportsTable extends Table
             $projectsTable = TableRegistry::getTableLocator()->get('Projects');
             $projectsTable->setProjectAsFinalized($entity->project_id);
         }
+    }
+
+    /**
+     * Returns a DateTimeImmutable object representing the deadline for this project's next report
+     *
+     * If this deadline is passed without the project owner having submitted a report, then this deadline
+     * will be in the past. So if it's passed, then it's past. Yeah.
+     *
+     * @param Project $project
+     * @return \DateTimeImmutable
+     */
+    public function getDeadlineForNextReport(Project $project): \DateTimeImmutable
+    {
+        $initialDeadline = $project->loan_awarded_date->addYears(1)->toNative();
+
+        /** @var Report|null $lastReport */
+        $lastReport = $this->find()
+            ->select(['created'])
+            ->where(['project_id' => $project->id])
+            ->orderByDesc('created')
+            ->first();
+
+        $oneYearFromLastReport = $lastReport?->created->addYears(1)->toNative();
+
+        return $oneYearFromLastReport
+            ? max($oneYearFromLastReport, $initialDeadline)
+            : $initialDeadline;
     }
 }
