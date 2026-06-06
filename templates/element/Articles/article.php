@@ -9,7 +9,14 @@
 <article class="article">
     <?php if ($isLatest ?? false): ?>
         <p>
-            <span class="badge text-bg-secondary article__latest">Latest news</span>
+            <?= $this->Html->link(
+                'Latest news',
+                [
+                    'controller' => 'Articles',
+                    'action' => 'index',
+                ],
+                ['class' => 'badge text-bg-secondary article__latest']
+            ) ?>
         </p>
     <?php endif; ?>
     <h2 <?= $this->getRequest()->getParam('action') == 'view' ? 'class="visually-hidden"' : '' ?>>
