@@ -386,12 +386,7 @@ class ProjectsTable extends Table
      */
     public function findNotFinalized(Query $query)
     {
-        return $query
-            ->notMatching('Reports', function (Query $q) {
-                return $q->where([
-                    'Reports.is_final' => true
-                ]);
-            });
+        return $query->where(['is_finalized' => false]);
     }
 
     /**
