@@ -9,9 +9,8 @@ use ArrayObject;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
-use Cake\Datasource\ResultSetInterface;
 use Cake\Event\Event;
-use Cake\I18n\FrozenDate;
+use Cake\I18n\Date;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -470,7 +469,7 @@ class ProjectsTable extends Table
         return $query->where(['Projects.status_id !=' => Project::STATUS_DELETED]);
     }
 
-    public function setProjectAwardedDate(int $projectId, \Cake\I18n\Date $date): void
+    public function setProjectAwardedDate(int $projectId, Date $date): void
     {
         $project = $this->get($projectId);
 
@@ -491,7 +490,7 @@ class ProjectsTable extends Table
         }
 
         // Otherwise, set the date
-        $project->loan_awarded_date = new \Cake\I18n\Date($date);
+        $project->loan_awarded_date = new Date($date);
         if (!$this->save($project)) {
             $alert = new ErrorAlert();
             $alert->send(sprintf(
@@ -611,7 +610,7 @@ class ProjectsTable extends Table
             ->notMatching('Nudges', function (Query $q) use ($nudgeTypes, $threshold) {
                 return $q->where([
                     'Nudges.type IN' => $nudgeTypes,
-                    'Nudges.created >' => new \Cake\I18n\Date($threshold),
+                    'Nudges.created >' => new Date($threshold),
                 ]);
             });
     }
@@ -669,7 +668,7 @@ class ProjectsTable extends Table
         return $query
             ->notMatching('Reports', function (Query $q) use ($threshold) {
                 return $q->where([
-                    'Reports.created >' => new \Cake\I18n\Date($threshold),
+                    'Reports.created >' => new Date($threshold),
                 ]);
             });
     }
