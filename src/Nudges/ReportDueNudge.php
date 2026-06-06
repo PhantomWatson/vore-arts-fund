@@ -10,7 +10,6 @@ use App\Model\Entity\Project;
 use App\Model\Table\NudgesTable;
 use Cake\Core\Configure;
 use Cake\Datasource\ResultSetInterface;
-use Cake\I18n\FrozenDate;
 use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
@@ -20,34 +19,22 @@ use Queue\Model\Table\QueuedJobsTable;
 class ReportDueNudge implements NudgeInterface
 {
     /**
-     * Non-finalized projects that have received a loan more than 11 months ago and haven't received a nudge in the
+     * Non-repaid projects that have received a loan more than 11 months ago and haven't received a nudge in the
      * last week or submitted a report in the last 11 months
      *
      * @return ResultSet<Project>|null
      */
     public static function getProjects(): ?ResultSetInterface
     {
-        $projectsTable = TableRegistry::getTableLocator()->get('Projects');
-
-        $nudgeThreshold = '-1 week';
-        $sinceLoanAwardedThreshold = '-11 months';
-        $sinceLastReportThreshold = '-11 months';
-
-        /** @var Project[] $projects */
-        return $projectsTable
-            ->find('loanRecipients')
-            ->find('notDeleted')
-            ->find('notFinalized')
+        return TableRegistry::getTableLocator()
+            ->get('Projects')
+            ->find('withOutstandingLoan')
             ->find(
                 'withoutRecentNudge',
                 nudgeType: [Nudge::TYPE_REPORT_DUE],
-                threshold: $nudgeThreshold,
+                threshold: '-1 week',
             )
-            ->find('withoutRecentReports', threshold: $sinceLastReportThreshold)
-            ->where([
-                'Projects.loan_awarded_date IS NOT' => null,
-                'Projects.loan_awarded_date <' => new \Cake\I18n\Date($sinceLoanAwardedThreshold)
-            ])
+            ->find('withReportAlmostDue')
             ->all();
     }
 

@@ -672,4 +672,21 @@ class ProjectsTable extends Table
                 ]);
             });
     }
+
+    /**
+     * Modifies a query to find projects who are close to their next deadline for submitting a report
+     * (have an 11+ month old loan and have not submitted a report in 11 months)
+     *
+     * @param Query $query
+     * @param array $options
+     * @return Query
+     */
+    public function findWithReportAlmostDue(Query $query, array $options): Query
+    {
+        $threshold = '-11 months';
+
+        return $query
+            ->find('withoutRecentReports', ['threshold' => $threshold])
+            ->where(['Projects.loan_awarded_date <' => new Date($threshold)]);
+    }
 }
