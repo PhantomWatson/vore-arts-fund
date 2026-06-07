@@ -41,15 +41,16 @@ class SendDailyAlertsCommand extends Command
      *
      * @param \Cake\Console\Arguments $args The command arguments.
      * @param \Cake\Console\ConsoleIo $io The console io
-     * @return null|void|int The exit code or null for success
+     * @return void
      * @throws ApiErrorException
      */
-    public function execute(Arguments $args, ConsoleIo $io)
+    public function execute(Arguments $args, ConsoleIo $io): void
     {
         $this->fundingCyclesTable = TableRegistry::getTableLocator()->get('FundingCycles');
         $this->alertApplicationPeriodEnded();
         $this->alertVotingPeriodStarted();
         $this->alertVotingPeriodEnded();
+        $this->alertNoUpcomingCycle();
 
         echo 'Done' . PHP_EOL;
     }
@@ -89,7 +90,7 @@ class SendDailyAlertsCommand extends Command
         }
     }
 
-    private function alertVotingPeriodStarted()
+    private function alertVotingPeriodStarted(): void
     {
         echo 'Checking for cycle with voting period that started in the last 24 hours' . PHP_EOL;
 
@@ -125,7 +126,7 @@ class SendDailyAlertsCommand extends Command
         $alert->send(Alert::TYPE_ADMIN);
     }
 
-    private function alertVotingPeriodEnded()
+    private function alertVotingPeriodEnded(): void
     {
         echo 'Checking for cycle with voting period that ended in the last 24 hours' . PHP_EOL;
 
@@ -171,5 +172,39 @@ class SendDailyAlertsCommand extends Command
             ),
         );
         $alert->send(Alert::TYPE_ADMIN);
+    }
+
+    private function alertNoUpcomingCycle(): void
+    {
+        echo 'Checking for a cycle with an application period ending in a week with no subsequent cycle' . PHP_EOL;
+
+        // Look for a funding cycle whose application_end is in seven days
+        $cycle = $this->fundingCyclesTable
+            ->find()
+            ->where(function (QueryExpression $exp) {
+                return $exp
+                    ->lt('application_end', date('Y-m-d H:i:s', strtotime('+8 days')))
+                    ->gt('application_end', date('Y-m-d H:i:s', strtotime('+7 days')));
+            })
+            ->first();
+
+        if ($cycle) {
+            echo '- Found cycle, sending alert' . PHP_EOL;
+            $alert = new Alert();
+            $alert->addLine(
+                sprintf(
+                    'An application period will be ending soon, and there\'s no following application period. <%s|Add a funding cycle>',
+                    Router::url([
+                        'prefix' => 'Admin',
+                        'controller' => 'FundingCycles',
+                        'action' => 'add',
+                        'id' => $cycle->id
+                    ], true),
+                ),
+            );
+            $alert->send(Alert::TYPE_ADMIN);
+        } else {
+            echo '- No cycles found' . PHP_EOL;
+        }
     }
 }
