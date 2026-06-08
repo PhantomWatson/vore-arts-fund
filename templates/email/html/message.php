@@ -18,7 +18,7 @@
 </p>
 
 <blockquote>
-    <?= $message ?>
+    <?= $this->Text->autoLink($message) ?>
 </blockquote>
 
 <p>

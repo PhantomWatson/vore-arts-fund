@@ -18,7 +18,7 @@
 </p>
 
 <blockquote>
-    <?= nl2br($note) ?>
+    <?= nl2br($this->Text->autoLink($note)) ?>
 </blockquote>
 
 <p>
