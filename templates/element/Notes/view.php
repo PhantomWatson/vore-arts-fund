@@ -23,6 +23,6 @@ $isAdmin = $this->getRequest()->getParam('prefix') == 'Admin';
         </p>
     </header>
     <p>
-        <?= nl2br($note->body) ?>
+        <?= nl2br($this->Text->autoLink($note->body)) ?>
     </p>
 </article>
