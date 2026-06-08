@@ -172,20 +172,17 @@ class UsersTable extends Table
         return $rules;
     }
 
-    public function findForDiscountEligibility(Query $query, array $options)
+    public function findForDiscountEligibility(Query $query): Query
     {
-        return $query->select(['id', 'name'])
+        return $query
+            ->select(['id', 'name'])
+            ->distinct(['id'])
             ->matching('Projects', function (\Cake\Database\Query $query) {
-                return $query->where(['status_id' => Project::STATUS_AWARDED_AND_DISBURSED]);
+                return $query
+                    ->select(['id', 'title', 'amount_awarded', 'loan_agreement_date', 'user_id'])
+                    ->where(['status_id' => Project::STATUS_AWARDED_AND_DISBURSED])
+                    ->orderByDesc('loan_agreement_date');
             })
-            ->contain([
-                'Projects' => function (Query $query) {
-                    return $query
-                        ->select(['id', 'title', 'amount_awarded', 'loan_agreement_date', 'user_id'])
-                        ->where(['status_id' => Project::STATUS_AWARDED_AND_DISBURSED])
-                        ->orderByDesc('loan_agreement_date');
-                }
-            ])
             ->orderByAsc('name');
     }
 
