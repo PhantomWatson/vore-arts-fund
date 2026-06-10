@@ -1,11 +1,11 @@
 <?php
 /**
- * @var \App\Model\Entity\User[]|\Cake\Collection\CollectionInterface $users
+ * @var \App\Model\Entity\User[] $users
  * @var \App\View\AppView $this
  */
 ?>
 
-<?php if (count($users)): ?>
+<?php if ($users): ?>
     <table class="table">
         <thead>
             <tr>
@@ -26,7 +26,7 @@
         <tbody>
             <?php foreach ($users as $user): ?>
                 <tr>
-                    <td rowspan="<?= count($user->projects) ?>">
+                    <td>
                         <strong>
                             <?= $user->name ?>
                         </strong>

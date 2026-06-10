@@ -238,7 +238,7 @@ class PagesController extends AppController
     {
         $users = $this->fetchTable('Users')
             ->find('forDiscountEligibility')
-            ->all();
+            ->toArray();
 
         $this->set(compact('users'));
         $this->title('Funding recipients eligible for partner discounts');

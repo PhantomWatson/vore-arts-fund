@@ -188,7 +188,8 @@ class UsersTable extends Table
                         'Projects.user_id',
                     ])
                     ->where(['Projects.status_id' => Project::STATUS_AWARDED_AND_DISBURSED])
-                    ->orderByDesc('Projects.loan_agreement_date');
+                    ->orderByDesc('Projects.loan_agreement_date')
+                    ->limit(1);
             })
             ->orderByAsc('Users.name');
     }
