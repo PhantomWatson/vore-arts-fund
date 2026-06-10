@@ -44,22 +44,25 @@
                         <?= $user->projects[0]->loan_agreement_date_local->format('F j, Y') ?>
                     </td>
                 </tr>
-                <?php foreach (array_slice($user->projects, 1) as $project): ?>
-                    <tr>
-                        <td>
-                            <?= $this->Html->link(
-                                $project->title,
-                                ['prefix' => false, 'controller' => 'Projects', 'action' => 'view', 'id' => $user->projects[0]->id]
-                            ) ?>
-                        </td>
-                        <td>
-                            <?= $project->amount_awarded_formatted ?>
-                        </td>
-                        <td>
-                            <?= $project->loan_agreement_date_local->format('F j, Y') ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+                <tr>
+                    <td>
+                        <?= $this->Html->link(
+                            $user->projects[0]->title,
+                            [
+                                'prefix' => false,
+                                'controller' => 'Projects',
+                                'action' => 'view',
+                                'id' => $user->projects[0]->id,
+                            ]
+                        ) ?>
+                    </td>
+                    <td>
+                        <?= $user->projects[0]->amount_awarded_formatted ?>
+                    </td>
+                    <td>
+                        <?= $user->projects[0]->loan_agreement_date_local->format('F j, Y') ?>
+                    </td>
+                </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
