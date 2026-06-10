@@ -6,6 +6,7 @@ namespace App\Model\Table;
 use App\Model\Entity\Project;
 use App\Model\Entity\User;
 use Cake\Core\Configure;
+use Cake\Database\Query\SelectQuery;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -175,15 +176,21 @@ class UsersTable extends Table
     public function findForDiscountEligibility(Query $query): Query
     {
         return $query
-            ->select(['id', 'name'])
-            ->distinct(['id'])
-            ->matching('Projects', function (\Cake\Database\Query $query) {
+            ->select(['Users.id', 'Users.name'])
+            ->distinct(['Users.id'])
+            ->matching('Projects', function (SelectQuery $query) {
                 return $query
-                    ->select(['id', 'title', 'amount_awarded', 'loan_agreement_date', 'user_id'])
-                    ->where(['status_id' => Project::STATUS_AWARDED_AND_DISBURSED])
-                    ->orderByDesc('loan_agreement_date');
+                    ->select([
+                        'Projects.id',
+                        'Projects.amount_awarded',
+                        'Projects.loan_agreement_date',
+                        'Projects.title',
+                        'Projects.user_id',
+                    ])
+                    ->where(['Projects.status_id' => Project::STATUS_AWARDED_AND_DISBURSED])
+                    ->orderByDesc('Projects.loan_agreement_date');
             })
-            ->orderByAsc('name');
+            ->orderByAsc('Users.name');
     }
 
     public function getBoardMembers()
