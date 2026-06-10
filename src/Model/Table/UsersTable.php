@@ -178,17 +178,21 @@ class UsersTable extends Table
         return $query
             ->select(['Users.id', 'Users.name'])
             ->distinct(['Users.id'])
+            ->contain([
+                'Projects' => function (SelectQuery $query) {
+                    return $query
+                        ->select([
+                            'Projects.id',
+                            'Projects.amount_awarded',
+                            'Projects.loan_agreement_date',
+                            'Projects.title',
+                            'Projects.user_id',
+                        ])
+                        ->orderByDesc('Projects.loan_agreement_date');
+                }
+            ])
             ->matching('Projects', function (SelectQuery $query) {
-                return $query
-                    ->select([
-                        'Projects.id',
-                        'Projects.amount_awarded',
-                        'Projects.loan_agreement_date',
-                        'Projects.title',
-                        'Projects.user_id',
-                    ])
-                    ->where(['Projects.status_id' => Project::STATUS_AWARDED_AND_DISBURSED])
-                    ->orderByDesc('Projects.loan_agreement_date');
+                return $query->where(['Projects.status_id' => Project::STATUS_AWARDED_AND_DISBURSED]);
             })
             ->orderByAsc('Users.name');
     }
