@@ -178,6 +178,7 @@ class UsersTable extends Table
         return $query
             ->select(['Users.id', 'Users.name'])
             ->distinct(['Users.id'])
+            ->contain(['Projects'])
             ->matching('Projects', function (SelectQuery $query) {
                 return $query
                     ->select([
