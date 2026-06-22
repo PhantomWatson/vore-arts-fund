@@ -2,7 +2,6 @@
 
 namespace App\Error;
 
-use App\Alert\Alert;
 use App\Alert\ErrorAlert;
 use Cake\Error\ErrorLoggerInterface;
 use Cake\Error\PhpError;
