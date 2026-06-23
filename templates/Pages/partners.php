@@ -54,7 +54,7 @@
             <a href="https://www.tribune-showprint.com">Tribune Showprint</a>
         </td>
         <td>
-            Letterpress poster printing, digital printing, and graphic design for a variety of printing needs
+            Letterpress poster printing, screen printing, digital printing, and graphic design for a variety of printing needs
         </td>
         <td>
             20% discount
