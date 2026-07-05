@@ -91,6 +91,8 @@ class Project extends Entity
     /** @var int Maximum amount that can be requested (in dollars) */
     const MAXIMUM_ALLOWED_REQUEST = 1000000; // One million dollars
 
+    const IRS_REPORTING_THRESHOLD = 60000; // $600 in cents
+
     const VIEWABLE_STATUSES = [
         Project::STATUS_ACCEPTED,
         Project::STATUS_AWARDED_NOT_YET_DISBURSED,
@@ -561,7 +563,7 @@ class Project extends Entity
      */
     protected function _getRequiresTin()
     {
-        return $this->amount_awarded >= 60000; // $600
+        return $this->amount_awarded >= self::IRS_REPORTING_THRESHOLD; // $600
     }
 
     public function readyForReportReminder()

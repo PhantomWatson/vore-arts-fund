@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Alert\Alert;
+use App\Model\Entity\Project;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -51,6 +52,7 @@ class SendDailyAlertsCommand extends Command
         $this->alertVotingPeriodStarted();
         $this->alertVotingPeriodEnded();
         $this->alertNoUpcomingCycle();
+        $this->alertAnnualTasks();
 
         echo 'Done' . PHP_EOL;
     }
@@ -226,5 +228,24 @@ class SendDailyAlertsCommand extends Command
         } else {
             echo '- No cycles found' . PHP_EOL;
         }
+    }
+
+    private function alertAnnualTasks(): void
+    {
+        // Only run if this is New Year's Day
+        if (date('m-d') !== '01-01') {
+            return;
+        }
+
+        $alert = new Alert();
+        $amount = '$' . number_format(Project::IRS_REPORTING_THRESHOLD / 100);
+        $alert->addLine(
+            "Happy New Year! Be sure to..."
+        );
+        $alert->addList([
+            "Check with the IRS to confirm that the threshold for a forgiven loan needing to be reported as income is still $amount. If it isn't, update the value of `\App\Model\Entity\Project::IRS_REPORTING_THRESHOLD`.",
+            "Prepare for the annual meeting of the board of directors"
+        ]);
+        $alert->send(Alert::TYPE_ADMIN);
     }
 }
