@@ -69,24 +69,44 @@ class SendDailyAlertsCommand extends Command
             })
             ->first();
 
-        if ($cycle) {
-            echo '- Found cycle, sending alert' . PHP_EOL;
+        if (!$cycle) {
+            echo '- No cycles found' . PHP_EOL;
+            return;
+        }
+
+        echo '- Found cycle, sending "time to review" alert' . PHP_EOL;
+        $alert = new Alert();
+        $alert->addLine(
+            sprintf(
+                'Application period ended for the %s funding cycle. <%s|Time to review applications!>',
+                $cycle->name,
+                Router::url([
+                    'prefix' => 'Admin',
+                    'controller' => 'Projects',
+                    'action' => 'index',
+                    'id' => $cycle->id
+                ], true),
+            ),
+        );
+        $alert->send(Alert::TYPE_ADMIN);
+
+        $currentlyApplying = $this->fundingCyclesTable->find('currentApplying')->first();
+        if (!$currentlyApplying) {
             $alert = new Alert();
             $alert->addLine(
                 sprintf(
-                    'Application period ended for the %s funding cycle. <%s|Time to review applications!>',
-                    $cycle->name,
+                    'There\'s no funding cycle currently accepting applications. '
+                    . '<%s|Create a new funding cycle> or alert the Muncie Arts and Culture council that we\'re not '
+                    . 'currently accepting applications. (Otherwise, they\'ll continue implying that we\'re taking '
+                    . 'applications in their mailing list messages.)',
                     Router::url([
                         'prefix' => 'Admin',
-                        'controller' => 'Projects',
-                        'action' => 'index',
-                        'id' => $cycle->id
+                        'controller' => 'FundingCycles',
+                        'action' => 'add',
                     ], true),
                 ),
             );
             $alert->send(Alert::TYPE_ADMIN);
-        } else {
-            echo '- No cycles found' . PHP_EOL;
         }
     }
 
