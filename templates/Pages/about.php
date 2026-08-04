@@ -129,28 +129,32 @@
         <?php foreach ($boardMembers as $boardMember): ?>
             <div class="col-lg-6">
                 <article class="card">
-                    <?php if ($boardMember->bio?->image_url): ?>
-                        <?= $boardMember->bio->image
-                            ? $this->Html->image(
-                                $boardMember->bio->image_url,
-                                [
-                                    'alt' => "Headshot of $boardMember->name",
-                                    'class' => 'card-img-top',
-                                ]
-                            ) : null
-                        ?>
-                    <?php endif; ?>
                     <div class="card-body">
                         <h3 class="card-title">
                             <span class="name">
                                 <?= $boardMember->name ?>
                             </span>
                             <span class="title">
-                                <?= $boardMember->bio?->title ?? 'Director' ?>
+                                <?= ($boardMember->bio ?? false) ? $boardMember->bio->title : 'Director' ?>
                             </span>
                         </h3>
                         <div class="card-text">
-                            <?= $boardMember->bio?->formatted_bio ?? '<p>Bio coming soon!</p>' ?>
+                            <?php if ($boardMember->bio ?? false): ?>
+                                <?= $boardMember->bio->image
+                                    ? $this->Html->image(
+                                        $boardMember->bio->image_url,
+                                        [
+                                            'alt' => "Headshot of $boardMember->name",
+                                            'class' => 'bio-headshot float-md-end mb-4 mb-md-2 ms-md-2',
+                                        ]
+                                    ) : null
+                                ?>
+                                <?= $boardMember->bio->formatted_bio ?>
+                            <?php else: ?>
+                                <p>
+                                    Bio coming soon!
+                                </p>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </article>
