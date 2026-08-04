@@ -121,93 +121,47 @@
     </article>
 </div>
 
-<?php if ($boardMembers): ?>
-    <section id="meet-the-board">
-        <h2>
-            Meet Our Board of Directors
-        </h2>
-        <div class="row">
-            <?php foreach ($boardMembers as $boardMember): ?>
-                <div class="col-lg-6">
-                    <article class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">
-                                <span class="name">
-                                    <?= $boardMember->name ?>
-                                </span>
-                                <span class="title">
-                                    <?= ($boardMember->bio ?? false) ? $boardMember->bio->title : 'Director' ?>
-                                </span>
-                            </h3>
-                            <div class="card-text">
-                                <?php if ($boardMember->bio ?? false): ?>
-                                    <?= $boardMember->bio->image
-                                        ? $this->Html->image(
-                                            $boardMember->bio->image_url,
-                                            [
-                                                'alt' => "Headshot of $boardMember->name",
-                                                'class' => 'bio-headshot float-md-end mb-4 mb-md-2 ms-md-2',
-                                            ]
-                                        ) : null
-                                    ?>
-                                    <?= $boardMember->bio->formatted_bio ?>
-                                <?php else: ?>
-                                    <p>
-                                        Bio coming soon!
-                                    </p>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </section>
-<?php else: ?>
+<section id="meet-the-board">
+    <h2>
+        Meet Our Board of Directors
+    </h2>
     <div class="row">
-        <div class="col-sm-6">
-            <section class="credits">
-                <h2>
-                    Board of Directors
-                </h2>
-                <dl>
-                    <div>
-                        <dt>
-                            President
-                        </dt>
-                        <dd>
-                            Graham Watson <span class="pronoun">(he)</span>
-                        </dd>
+        <?php foreach ($boardMembers as $boardMember): ?>
+            <div class="col-lg-6">
+                <article class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            <span class="name">
+                                <?= $boardMember->name ?>
+                            </span>
+                            <span class="title">
+                                <?= ($boardMember->bio ?? false) ? $boardMember->bio->title : 'Director' ?>
+                            </span>
+                        </h3>
+                        <div class="card-text">
+                            <?php if ($boardMember->bio ?? false): ?>
+                                <?= $boardMember->bio->image
+                                    ? $this->Html->image(
+                                        $boardMember->bio->image_url,
+                                        [
+                                            'alt' => "Headshot of $boardMember->name",
+                                            'class' => 'bio-headshot float-md-end mb-4 mb-md-2 ms-md-2',
+                                        ]
+                                    ) : null
+                                ?>
+                                <?= $boardMember->bio->formatted_bio ?>
+                            <?php else: ?>
+                                <p>
+                                    Bio coming soon!
+                                </p>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                    <div>
-                        <dt>
-                            Vice President
-                        </dt>
-                        <dd>
-                            Natalie Phillips <span class="pronoun">(she)</span>
-                        </dd>
-                    </div>
-                    <div>
-                        <dt>
-                            Treasurer
-                        </dt>
-                        <dd>
-                            Beth McCollum <span class="pronoun">(they/she)</span>
-                        </dd>
-                    </div>
-                    <div>
-                        <dt>
-                            Secretary
-                        </dt>
-                        <dd>
-                            Katy Wolfe <span class="pronoun">(she)</span>
-                        </dd>
-                    </div>
-                </dl>
-            </section>
-        </div>
+                </article>
+            </div>
+        <?php endforeach; ?>
     </div>
-<?php endif; ?>
+</section>
 
 <div class="row">
     <div class="col-lg-6">
