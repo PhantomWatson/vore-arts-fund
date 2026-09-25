@@ -55,8 +55,8 @@ form.addEventListener('submit', (event) => {
   }
 
   setDateTime(applicationBegin, applicationBeginMonth, year, 'start');
-  setDateTime(applicationEnd, applicationBeginMonth, year, 'end');
-  setDateTime(resubmitDeadline, applicationBeginMonth + 1, year, 'end of first half');
-  setDateTime(voteBegin, applicationBeginMonth + 1, year, 'start of second half');
-  setDateTime(voteEnd, applicationBeginMonth + 1, year, 'end');
+  setDateTime(applicationEnd, applicationBeginMonth + 1, year, 'end');
+  setDateTime(resubmitDeadline, applicationBeginMonth + 2, year, 'end of first half');
+  setDateTime(voteBegin, applicationBeginMonth + 2, year, 'start of second half');
+  setDateTime(voteEnd, applicationBeginMonth + 2, year, 'end');
 });
