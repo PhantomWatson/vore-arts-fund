@@ -23,4 +23,8 @@
         does not promote violence, harassment, or hatred against people based on protected characteristics, such
         as ethnicity, nationality, sexual orientation, sex, gender, religion, age, or disability
     </li>
+    <li>
+        does not make substantial use of generative AI in the project's outcomes, such as generated images, videos,
+        music, speech, or text
+    </li>
 </ul>
