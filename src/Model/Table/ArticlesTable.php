@@ -53,7 +53,7 @@ class ArticlesTable extends Table
             'joinType' => 'INNER',
         ]);
         $this->belongsToMany('Images', [
-            'joinTable' => 'images_projects',
+            'joinTable' => 'images_articles',
             'sort' => ['Images.weight' => 'ASC'],
         ]);
     }
