@@ -18,6 +18,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\User|null $user
  * @property \App\Model\Entity\Project|null $project
+ * @property \App\Model\Entity\Image[] $images
  */
 class Report extends Entity
 {

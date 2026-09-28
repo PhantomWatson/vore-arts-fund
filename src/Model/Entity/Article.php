@@ -24,6 +24,7 @@ use Cake\View\View;
  * @property string $formatted_body
  *
  * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\Image[] $images
  */
 class Article extends Entity
 {

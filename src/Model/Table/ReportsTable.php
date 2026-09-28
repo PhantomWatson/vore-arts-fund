@@ -63,6 +63,10 @@ class ReportsTable extends Table
             'foreignKey' => 'project_id',
             'joinType' => 'INNER',
         ]);
+        $this->belongsToMany('Images', [
+            'joinTable' => 'images_projects',
+            'sort' => ['Images.weight' => 'ASC'],
+        ]);
     }
 
     /**
