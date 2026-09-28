@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Vore Arts Fund is a not-for-profit arts funding website ([voreartsfund.org](https://voreartsfund.org)) built with CakePHP 4 (PHP 8.1) and React. Artists apply for funding, the community votes on projects, and the fund manages loan repayments and financial tracking.
+Vore Arts Fund is a not-for-profit arts funding website ([voreartsfund.org](https://voreartsfund.org)) built with CakePHP 4 (PHP 8.5) and React. Artists apply for funding, the community votes on projects, and the fund manages loan repayments and financial tracking.
 
 ## Common Commands
 
