@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Application;
 use App\Event\AlertListener;
+use Cake\Chronos\ChronosInterface;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
-use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 
@@ -64,36 +65,36 @@ use Cake\ORM\TableRegistry;
  */
 class Project extends Entity
 {
-    const STATUS_DRAFT = 0;
-    const STATUS_UNDER_REVIEW = 1;
-    const STATUS_ACCEPTED = 2;
-    const STATUS_REJECTED = 3;
-    const STATUS_REVISION_REQUESTED = 4;
-    const STATUS_AWARDED_NOT_YET_DISBURSED = 5;
-    const STATUS_AWARDED_AND_DISBURSED = 6;
-    const STATUS_NOT_AWARDED = 7;
-    const STATUS_WITHDRAWN = 8;
-    const STATUS_DELETED = 9;
+    public const STATUS_DRAFT = 0;
+    public const STATUS_UNDER_REVIEW = 1;
+    public const STATUS_ACCEPTED = 2;
+    public const STATUS_REJECTED = 3;
+    public const STATUS_REVISION_REQUESTED = 4;
+    public const STATUS_AWARDED_NOT_YET_DISBURSED = 5;
+    public const STATUS_AWARDED_AND_DISBURSED = 6;
+    public const STATUS_NOT_AWARDED = 7;
+    public const STATUS_WITHDRAWN = 8;
+    public const STATUS_DELETED = 9;
 
-    const ICON_ACCEPTED = '<i class="fa-solid fa-thumbs-up"></i>';
-    const ICON_REJECTED = '<i class="fa-solid fa-heart-crack"></i>';
-    const ICON_REVISION_REQUESTED = '<i class="fa-solid fa-rotate-left"></i>';
-    const ICON_MESSAGE = '<i class="fa-solid fa-message"></i>';
-    const ICON_NOTE = '<i class="fa-solid fa-file-lines"></i>';
-    const ICON_FUND = '<i class="fa-solid fa-sack-dollar"></i>';
-    const ICON_UNKNOWN = '<i class="fa-solid fa-question"></i>';
-    const ICON_SAVE = '<i class="fa-solid fa-floppy-disk"></i>';
-    const ICON_SUBMIT = '<i class="fa-solid fa-share-from-square"></i>';
-    const ICON_WITHDRAW = '<i class="fa-solid fa-ban"></i>';
-    const ICON_REPORT = '<i class="fa-solid fa-file-lines"></i>';
-    const ICON_DELETE = '<i class="fa-solid fa-trash"></i>';
+    public const ICON_ACCEPTED = '<i class="fa-solid fa-thumbs-up"></i>';
+    public const ICON_REJECTED = '<i class="fa-solid fa-heart-crack"></i>';
+    public const ICON_REVISION_REQUESTED = '<i class="fa-solid fa-rotate-left"></i>';
+    public const ICON_MESSAGE = '<i class="fa-solid fa-message"></i>';
+    public const ICON_NOTE = '<i class="fa-solid fa-file-lines"></i>';
+    public const ICON_FUND = '<i class="fa-solid fa-sack-dollar"></i>';
+    public const ICON_UNKNOWN = '<i class="fa-solid fa-question"></i>';
+    public const ICON_SAVE = '<i class="fa-solid fa-floppy-disk"></i>';
+    public const ICON_SUBMIT = '<i class="fa-solid fa-share-from-square"></i>';
+    public const ICON_WITHDRAW = '<i class="fa-solid fa-ban"></i>';
+    public const ICON_REPORT = '<i class="fa-solid fa-file-lines"></i>';
+    public const ICON_DELETE = '<i class="fa-solid fa-trash"></i>';
 
     /** @var int Maximum amount that can be requested (in dollars) */
-    const MAXIMUM_ALLOWED_REQUEST = 1000000; // One million dollars
+    public const MAXIMUM_ALLOWED_REQUEST = 1000000; // One million dollars
 
-    const IRS_REPORTING_THRESHOLD = 60000; // $600 in cents
+    public const IRS_REPORTING_THRESHOLD = 60000; // $600 in cents
 
-    const VIEWABLE_STATUSES = [
+    public const VIEWABLE_STATUSES = [
         Project::STATUS_ACCEPTED,
         Project::STATUS_AWARDED_NOT_YET_DISBURSED,
         Project::STATUS_AWARDED_AND_DISBURSED,
@@ -101,9 +102,9 @@ class Project extends Entity
     ];
 
     // When, starting from the signing of the loan agreement, the loan is automatically considered canceled
-    const DUE_DATE = '5 years';
+    public const DUE_DATE = '5 years';
 
-    const ZIPCODE_REGEX = '^\d{5}([ \-]\d{4})?$';
+    public const ZIPCODE_REGEX = '^\d{5}([ \-]\d{4})?$';
 
     /**
      * Returns TRUE if this project can be viewed by the public
@@ -141,7 +142,7 @@ class Project extends Entity
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function getStatuses(): array
     {
@@ -160,7 +161,7 @@ class Project extends Entity
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public static function getStatusActions(): array
     {
@@ -225,9 +226,9 @@ class Project extends Entity
      * Takes a current status and returns an array of valid statuses that this project can be changed to
      *
      * @param int $currentStatusId
-     * @return int[]
+     * @return array<int>
      */
-    public static function getValidStatusOptions(int $currentStatusId)
+    public static function getValidStatusOptions(int $currentStatusId): array
     {
         switch ($currentStatusId) {
             case self::STATUS_DRAFT:
@@ -276,6 +277,7 @@ class Project extends Entity
     public function canTransitionTo($statusId)
     {
         $options = self::getValidStatusOptions($statusId);
+
         return key_exists($statusId, $options);
     }
 
@@ -331,7 +333,7 @@ class Project extends Entity
      * @return string
      * @see \App\Model\Entity\Project::$status_name
      */
-    protected function _getStatusName()
+    protected function _getStatusName(): string
     {
         return self::getStatus($this->status_id);
     }
@@ -346,7 +348,7 @@ class Project extends Entity
      * @return \Cake\I18n\DateTime
      * @throws \Cake\Http\Exception\BadRequestException
      */
-    public function getSubmitDeadline(): \Cake\I18n\DateTime
+    public function getSubmitDeadline(): DateTime
     {
         switch ($this->status_id) {
             case Project::STATUS_DRAFT:
@@ -364,7 +366,7 @@ class Project extends Entity
      * @return float|null
      * @see \App\Model\Entity\Project::$voting_score
      */
-    protected function _getVotingScore()
+    protected function _getVotingScore(): ?float
     {
         if (!isset($this->votes) || empty($this->votes)) {
             return null;
@@ -374,6 +376,7 @@ class Project extends Entity
         foreach ($this->votes as $vote) {
             $total += $vote->weight;
         }
+
         return $total;
     }
 
@@ -381,7 +384,7 @@ class Project extends Entity
      * @return string
      * @see \App\Model\Entity\Project::$amount_requested_formatted
      */
-    protected function _getAmountRequestedFormatted()
+    protected function _getAmountRequestedFormatted(): string
     {
         return ($this->accept_partial_payout ? 'Up to ' : '') . '$' . number_format($this->amount_requested);
     }
@@ -406,6 +409,7 @@ class Project extends Entity
             $retval .= $this->funding_cycle->votingHasPassed() ? 'requested ' : 'is requesting ';
             $retval .= strtolower($this->amount_requested_formatted);
         }
+
         return $retval;
     }
 
@@ -426,7 +430,7 @@ class Project extends Entity
      *
      * @return int
      */
-    public static function getLatestTermsVersion()
+    public static function getLatestTermsVersion(): int
     {
         $templateDir = APP . 'LoanTerms';
         $files = array_diff(scandir($templateDir), ['.', '..']);
@@ -437,8 +441,9 @@ class Project extends Entity
             function ($file) {
                 return (int)str_replace(['loan_terms_', '.php'], '', $file);
             },
-            $files
+            $files,
         );
+
         return $versionNumbers ? max($versionNumbers) : 0;
     }
 
@@ -454,7 +459,7 @@ class Project extends Entity
             [
                 self::STATUS_AWARDED_NOT_YET_DISBURSED,
                 self::STATUS_AWARDED_AND_DISBURSED,
-            ]
+            ],
         );
     }
 
@@ -463,7 +468,7 @@ class Project extends Entity
         return $this->status_id == self::STATUS_AWARDED_AND_DISBURSED;
     }
 
-    public function dispatchSubmittedEvent()
+    public function dispatchSubmittedEvent(): void
     {
         $eventManager = EventManager::instance();
         $eventName = 'Project.submitted';
@@ -481,11 +486,11 @@ class Project extends Entity
         $eventManager->dispatch(new Event(
             $eventName,
             $this,
-            ['project' => $this]
+            ['project' => $this],
         ));
     }
 
-    public function dispatchWithdrawnEvent()
+    public function dispatchWithdrawnEvent(): void
     {
         $eventManager = EventManager::instance();
         $eventName = 'Project.withdrawn';
@@ -498,11 +503,11 @@ class Project extends Entity
         $eventManager->dispatch(new Event(
             $eventName,
             $this,
-            ['project' => $this]
+            ['project' => $this],
         ));
     }
 
-    public function dispatchMarkedDeletedEvent()
+    public function dispatchMarkedDeletedEvent(): void
     {
         $eventManager = EventManager::instance();
         $eventName = 'Project.markedDeleted';
@@ -515,7 +520,7 @@ class Project extends Entity
         $eventManager->dispatch(new Event(
             $eventName,
             $this,
-            ['project' => $this]
+            ['project' => $this],
         ));
     }
 
@@ -523,6 +528,7 @@ class Project extends Entity
     {
         $wasnt = $this->getOriginal('status_id') != $status;
         $is = $this->status_id == $status;
+
         return $wasnt && $is;
     }
 
@@ -548,10 +554,10 @@ class Project extends Entity
      * @return \Cake\Chronos\ChronosInterface|\Cake\I18n\DateTime|null
      * @see \App\Model\Entity\Project::$loan_agreement_date_local
      */
-    protected function _getLoanAgreementDateLocal()
+    protected function _getLoanAgreementDateLocal(): ChronosInterface|DateTime|null
     {
         return $this->loan_agreement_date
-            ? $this->loan_agreement_date->setTimezone(\App\Application::LOCAL_TIMEZONE)
+            ? $this->loan_agreement_date->setTimezone(Application::LOCAL_TIMEZONE)
             : null;
     }
 
@@ -561,7 +567,7 @@ class Project extends Entity
      * @return bool
      * @see \App\Model\Entity\Project::$requires_tin
      */
-    protected function _getRequiresTin()
+    protected function _getRequiresTin(): bool
     {
         return $this->amount_awarded >= self::IRS_REPORTING_THRESHOLD; // $600
     }
@@ -570,8 +576,10 @@ class Project extends Entity
     {
         if ($this->isDisbursed()) {
             $reportDueDate = $this->loan_agreement_date->addMonths(6);
+
             return $reportDueDate->isToday();
         }
+
         return false;
     }
 
@@ -579,8 +587,10 @@ class Project extends Entity
     {
         if ($this->isDisbursed()) {
             $reportDueDate = $this->loan_agreement_date->addMonths(6);
+
             return $reportDueDate->isPast();
         }
+
         return false;
     }
 
@@ -634,7 +644,7 @@ class Project extends Entity
      *
      * Only one date is expected, but it's possible that multiple disbursements have been made
      *
-     * @return \Cake\I18n\DateTime[]
+     * @return array<\Cake\I18n\DateTime>
      * @see \App\Model\Entity\Project::$disbursement_dates_local
      */
     protected function _getDisbursementDatesLocal(): array
@@ -648,8 +658,9 @@ class Project extends Entity
             ])
             ->orderBy(['created' => 'DESC'])
             ->toArray();
+
         return array_map(function (Transaction $transaction) {
-            return $transaction->date->setTimezone(\App\Application::LOCAL_TIMEZONE);
+            return $transaction->date->setTimezone(Application::LOCAL_TIMEZONE);
         }, $transactions);
     }
 
@@ -658,7 +669,7 @@ class Project extends Entity
      *
      * @return float|int
      */
-    public function getLoanBalance()
+    public function getLoanBalance(): float|int
     {
         if (!$this->amount_awarded) {
             return 0;
