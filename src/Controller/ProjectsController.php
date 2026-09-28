@@ -3,19 +3,23 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Application;
 use App\ImageProcessor;
 use App\Model\Entity\Project;
-use App\Model\Entity\FundingCycle;
-use App\Model\Entity\Image;
 use App\Model\Entity\Transaction;
+use App\Model\Table\CategoriesTable;
+use App\Model\Table\FundingCyclesTable;
+use App\Model\Table\ImagesTable;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Database\Query;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
+use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Security;
 use Exception;
+use Laminas\Diactoros\UploadedFile;
 
 /**
  * ProjectsController
@@ -27,9 +31,9 @@ use Exception;
  */
 class ProjectsController extends AppController
 {
-    private \App\Model\Table\FundingCyclesTable $FundingCycles;
-    private \App\Model\Table\CategoriesTable $Categories;
-    private \App\Model\Table\ImagesTable $Images;
+    private FundingCyclesTable $FundingCycles;
+    private CategoriesTable $Categories;
+    private ImagesTable $Images;
 
     public function beforeFilter(EventInterface $event)
     {
@@ -50,12 +54,12 @@ class ProjectsController extends AppController
      *
      * @param \Cake\I18n\DateTime $deadline
      */
-    protected function setFromNow($deadline)
+    protected function setFromNow(DateTime $deadline)
     {
         // Set times to 00:00 to make "days from now" math easier
         $deadline = $deadline->setTime(0, 0, 0, 0);
-        $tz = \App\Application::LOCAL_TIMEZONE;
-        $today = (\Cake\I18n\DateTime::now($tz))->setTime(0, 0, 0, 0);
+        $tz = Application::LOCAL_TIMEZONE;
+        $today = DateTime::now($tz)->setTime(0, 0, 0, 0);
         $days = $deadline->diffInDays($today);
         switch ($days) {
             case 0:
@@ -82,7 +86,7 @@ class ProjectsController extends AppController
         $this->title('Apply for Funding');
 
         // Check if applications can be accepted
-        /** @var FundingCycle $fundingCycle */
+        /** @var \App\Model\Entity\FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->find('current')->first();
         if (is_null($fundingCycle)) {
             $nextFundingCycle = $this->FundingCycles->find('nextApplying')->first();
@@ -96,6 +100,7 @@ class ProjectsController extends AppController
         $identity = $this->Authentication->getIdentity();
         if (!$identity) {
             $this->Flash->error('You\'ll need to register an account or log in before applying.');
+
             return $this->redirectToLogin();
         }
 
@@ -124,11 +129,11 @@ class ProjectsController extends AppController
                 return $this->redirect([
                     'prefix' => 'My',
                     'controller' => 'Projects',
-                    'action' => 'index'
+                    'action' => 'index',
                 ]);
             }
         } else {
-            /** @var Project $project */
+            /** @var \App\Model\Entity\Project $project */
             $project = $this->Projects->newEmptyEntity();
 
             // Start with previous project as a template
@@ -137,6 +142,7 @@ class ProjectsController extends AppController
                 $pastProject = $this->Projects->get($reapplyProjectId, contain: ['Answers', 'Images']);
                 if ($pastProject->user_id != $user->id) {
                     $this->Flash->error('Project not found.');
+
                     return $this->redirect(['action' => 'reapply']);
                 }
                 $project = $this->Projects->patchEntity($project, $pastProject->toArray(), ['associated' => ['Answers']]);
@@ -183,8 +189,9 @@ class ProjectsController extends AppController
             $this->Flash->error(
                 'There was an error saving your address. Please correct any errors, try again, '
                 . 'and <a href="/contact">contact us</a> if you need assistance.',
-                ['escape' => false]
+                ['escape' => false],
             );
+
             return false;
         }
         $this->Authentication->setIdentity($user);
@@ -193,11 +200,11 @@ class ProjectsController extends AppController
     }
 
     /**
-     * @param Project $project
+     * @param \App\Model\Entity\Project $project
      * @param array $data
      * @return bool
      */
-    protected function processProject($project, $data): bool
+    protected function processProject(Project $project, array $data): bool
     {
         if (!$this->validateAgreements()) {
             return false;
@@ -222,7 +229,7 @@ class ProjectsController extends AppController
         } else {
             $this->Flash->error(
                 "Your application could not be $verb. " . $this->errorTryAgainContactMsg,
-                ['escape' => false]
+                ['escape' => false],
             );
             $hasErrors = true;
         }
@@ -234,10 +241,10 @@ class ProjectsController extends AppController
 
     /**
      * @param array $data Request data
-     * @param Project $project
+     * @param \App\Model\Entity\Project $project
      * @return void
      */
-    protected function processImages($data, $project): void
+    protected function processImages(array $data, Project $project): void
     {
         foreach ($data['images'] ?? [] as $key => $data) {
             $weight = $key + 1;
@@ -252,12 +259,12 @@ class ProjectsController extends AppController
                     $this->Flash->error(
                         "The image $filename is not associated with project {$project->id}"
                         . $this->errorTryAgainContactMsg,
-                        ['escape' => false]
+                        ['escape' => false],
                     );
                     continue;
                 }
             } else {
-                /** @var Image $image */
+                /** @var \App\Model\Entity\Image $image */
                 $image = $this->Images->newEmptyEntity();
                 $image->project_id = $project->id;
                 $image->filename = $filename;
@@ -270,7 +277,7 @@ class ProjectsController extends AppController
                 $this->Flash->error(
                     'There was an error saving an image. Details: Record could not be added to database. '
                     . $this->errorTryAgainContactMsg,
-                    ['escape' => false]
+                    ['escape' => false],
                 );
             }
         }
@@ -282,7 +289,7 @@ class ProjectsController extends AppController
      * @param string $caption
      * @return \App\Model\Entity\Image|false|null
      */
-    private function processImageUpload($rawImage, $projectId, $caption)
+    private function processImageUpload(UploadedFile $rawImage, int $projectId, string $caption)
     {
         /** @var \App\Model\Entity\Image $image */
         $image = $this->Images->newEmptyEntity();
@@ -294,7 +301,7 @@ class ProjectsController extends AppController
             '%s-%s.%s',
             $projectId,
             Security::randomString(10),
-            end($filenameSplit)
+            end($filenameSplit),
         );
         $path = WWW_ROOT . 'img' . DS . 'projects' . DS . $image->filename;
         try {
@@ -303,8 +310,9 @@ class ProjectsController extends AppController
             $this->Flash->error(
                 'Unfortunately, there was an error uploading that image. Details: ' . $e->getMessage() . ' '
                 . $this->errorTryAgainContactMsg,
-                ['escape' => false]
+                ['escape' => false],
             );
+
             return null;
         }
 
@@ -319,7 +327,7 @@ class ProjectsController extends AppController
     public function view(): ?Response
     {
         $id = $this->request->getParam('id');
-        /** @var Project $project */
+        /** @var \App\Model\Entity\Project $project */
         $project = $this->Projects
             ->find('notDeleted')
             ->where(['id' => $id])
@@ -329,11 +337,13 @@ class ProjectsController extends AppController
         if (!$project) {
             $this->Flash->error('Project not found');
             $this->setResponse($this->getResponse()->withStatus(404));
+
             return $this->redirect('/');
         }
 
         if (!$project->isViewable()) {
             $this->Flash->error('Sorry, but that application is not available to view');
+
             return $this->redirect('/');
         }
 
@@ -351,12 +361,13 @@ class ProjectsController extends AppController
         $projectId = $this->request->getParam('id');
         $exists = $this->Projects->exists([
             'Projects.id' => $projectId,
-            'Projects.status_id != ' => Project::STATUS_DELETED
+            'Projects.status_id != ' => Project::STATUS_DELETED,
         ]);
         if (!$exists) {
             $this->Flash->error('Sorry, but that application was not found');
+
             return $this->redirect([
-                'action' => 'index'
+                'action' => 'index',
             ]);
         }
 
@@ -382,7 +393,7 @@ class ProjectsController extends AppController
      */
     protected function setProjectVars()
     {
-        /** @var FundingCycle $fundingCycle */
+        /** @var \App\Model\Entity\FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->find('current')->first();
         $categories = $this->Categories->getOrdered();
         $deadline = $fundingCycle?->application_end_local->format('F j, Y');
@@ -396,6 +407,7 @@ class ProjectsController extends AppController
         foreach ($data['answers'] as $i => $answer) {
             $data['answers'][$i]['project_id'] = $projectId;
         }
+
         return $data;
     }
 
@@ -415,7 +427,7 @@ class ProjectsController extends AppController
                                         Project::STATUS_ACCEPTED,
                                         Project::STATUS_AWARDED_NOT_YET_DISBURSED,
                                         Project::STATUS_AWARDED_AND_DISBURSED,
-                                    ]
+                                    ],
                                 );
                             })
                             ->orderByAsc('title');
@@ -438,7 +450,7 @@ class ProjectsController extends AppController
                     },
                     'Users',
                     'FundingCycles',
-                ]
+                ],
             ])
             ->all();
 
@@ -463,6 +475,7 @@ class ProjectsController extends AppController
         foreach ($agreements as $agreement) {
             if (!(isset($data[$agreement]) && $data[$agreement])) {
                 $this->Flash->error('You must agree to all terms in order to apply for funding.');
+
                 return false;
             }
         }
@@ -473,7 +486,7 @@ class ProjectsController extends AppController
     public function reapply()
     {
         // Check if applications can be accepted
-        /** @var FundingCycle $fundingCycle */
+        /** @var \App\Model\Entity\FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->find('current')->first();
         if (is_null($fundingCycle)) {
             $nextFundingCycle = $this->FundingCycles->find('nextApplying')->first();
@@ -488,7 +501,7 @@ class ProjectsController extends AppController
             return $this->redirect([
                 'controller' => 'Projects',
                 'action' => 'apply',
-                '?' => ['reapply' => $id]
+                '?' => ['reapply' => $id],
             ]);
         }
 
