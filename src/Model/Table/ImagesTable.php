@@ -13,7 +13,6 @@ use Cake\Validation\Validator;
 /**
  * Images Model
  *
- * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\BelongsTo $Projects
  * @method \App\Model\Entity\Image get(mixed $primaryKey, array|string $finder = 'all', \Psr\SimpleCache\CacheInterface|string|null $cache = null, \Closure|string|null $cacheKey = null, mixed ...$args)
  * @method \App\Model\Entity\Image newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Image[] newEntities(array $data, array $options = [])
@@ -30,7 +29,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Image[]|\Cake\Datasource\ResultSetInterface<\App\Model\Entity\Image> deleteManyOrFail(iterable $entities, array $options = [])
  * @extends \Cake\ORM\Table<array{Timestamp: \Cake\ORM\Behavior\TimestampBehavior}>
  */
-class ImagesTable extends Table
+abstract class ImagesTable extends Table
 {
     /**
      * Initialize method
@@ -48,9 +47,14 @@ class ImagesTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Projects', [
-            'foreignKey' => 'project_id',
-            'joinType' => 'INNER',
+        $this->belongsToMany('Projects', [
+            'joinTable' => 'images_projects',
+        ]);
+        $this->belongsToMany('Reports', [
+            'joinTable' => 'images_reports',
+        ]);
+        $this->belongsToMany('Articles', [
+            'joinTable' => 'images_articles',
         ]);
     }
 

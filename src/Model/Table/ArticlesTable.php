@@ -52,9 +52,8 @@ class ArticlesTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsToMany('Images', [
-            'joinTable' => 'images_articles',
-            'sort' => ['Images.weight' => 'ASC'],
+        $this->hasMany('ArticleImages', [
+            'sort' => ['ArticleImages.weight' => 'ASC'],
         ]);
     }
 

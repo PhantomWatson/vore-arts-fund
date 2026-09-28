@@ -76,9 +76,8 @@ class ProjectsTable extends Table
             'foreignKey' => 'funding_cycle_id',
             'joinType' => 'INNER',
         ]);
-        $this->belongsToMany('Images', [
-            'joinTable' => 'images_projects',
-            'sort' => ['Images.weight' => 'ASC'],
+        $this->hasMany('ProjectImages', [
+            'sort' => ['ProjectImages.weight' => 'ASC'],
         ]);
         $this->hasMany('Messages', [
             'foreignKey' => 'project_id',
