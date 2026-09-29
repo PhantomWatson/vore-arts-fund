@@ -118,7 +118,7 @@ abstract class ImagesTable extends Table
      * @param string $filename
      * @return Image|null
      */
-    public function getByFilename($filename)
+    public function getByFilename(string $filename): ?Image
     {
         /** @var Image|null $image */
         $image = $this
