@@ -6,10 +6,11 @@ namespace App\Controller;
 use App\Application;
 use App\ImageProcessor;
 use App\Model\Entity\Project;
+use App\Model\Entity\ProjectImage;
 use App\Model\Entity\Transaction;
 use App\Model\Table\CategoriesTable;
 use App\Model\Table\FundingCyclesTable;
-use App\Model\Table\ImagesTable;
+use App\Model\Table\ProjectImagesTable;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Database\Query;
 use Cake\Event\EventInterface;
@@ -33,14 +34,14 @@ class ProjectsController extends AppController
 {
     private FundingCyclesTable $FundingCycles;
     private CategoriesTable $Categories;
-    private ImagesTable $Images;
+    private ProjectImagesTable $ProjectImages;
 
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
         $this->FundingCycles = $this->fetchTable('FundingCycles');
         $this->Categories = $this->fetchTable('Categories');
-        $this->Images = $this->fetchTable('ProjectImages');
+        $this->ProjectImages = $this->fetchTable('ProjectImages');
 
         $this->Authentication->allowUnauthenticated([
             'apply',
@@ -252,7 +253,8 @@ class ProjectsController extends AppController
             $caption = $data['caption'] ?? '';
 
             // Find or create image
-            $image = $this->Images->getByFilename($filename);
+            /** @var ProjectImage|null $image */
+            $image = $this->ProjectImages->getByFilename($filename);
             if ($image) {
                 // Validate to prevent the user from manipulating someone else's image
                 if ($image->project_id != $project->id) {
@@ -264,8 +266,8 @@ class ProjectsController extends AppController
                     continue;
                 }
             } else {
-                /** @var \App\Model\Entity\Image $image */
-                $image = $this->Images->newEmptyEntity();
+                /** @var \App\Model\Entity\ProjectImage $image */
+                $image = $this->ProjectImages->newEmptyEntity();
                 $image->project_id = $project->id;
                 $image->filename = $filename;
             }
@@ -273,7 +275,7 @@ class ProjectsController extends AppController
             // Set new weight and caption
             $image->weight = $weight;
             $image->caption = $caption;
-            if (!$this->Images->save($image)) {
+            if (!$this->ProjectImages->save($image)) {
                 $this->Flash->error(
                     'There was an error saving an image. Details: Record could not be added to database. '
                     . $this->errorTryAgainContactMsg,
@@ -292,7 +294,7 @@ class ProjectsController extends AppController
     private function processImageUpload(UploadedFile $rawImage, int $projectId, string $caption)
     {
         /** @var \App\Model\Entity\Image $image */
-        $image = $this->Images->newEmptyEntity();
+        $image = $this->ProjectImages->newEmptyEntity();
         $image->project_id = $projectId;
         $image->weight = 0;
         $image->caption = $caption;
@@ -316,7 +318,7 @@ class ProjectsController extends AppController
             return null;
         }
 
-        return $this->Images->save($image);
+        return $this->ProjectImages->save($image);
     }
 
     /**
