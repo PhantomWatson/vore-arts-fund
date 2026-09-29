@@ -18,7 +18,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\User|null $user
  * @property \App\Model\Entity\Project|null $project
- * @property \App\Model\Entity\Image[] $images
+ * @property \App\Model\Entity\ReportImage[] $images
  */
 class Report extends Entity
 {
@@ -40,5 +40,6 @@ class Report extends Entity
         'modified' => true,
         'user' => true,
         'project' => true,
+        'images' => true,
     ];
 }

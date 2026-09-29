@@ -322,7 +322,7 @@ class Project extends Entity
         'accept_partial_payout' => true,
         'category' => true,
         'answers' => true,
-        'images' => true,
+        'images' => false,
         'check_name' => true,
         'address' => true,
         'zipcode' => true,

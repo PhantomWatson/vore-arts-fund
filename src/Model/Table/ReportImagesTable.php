@@ -7,5 +7,16 @@ namespace App\Model\Table;
  */
 class ReportImagesTable extends ImagesTable
 {
+    /**
+     * @param array $config
+     * @return void
+     */
+    public function initialize(array $config): void
+    {
+        parent::initialize($config);
 
+        $this->setTable('report_images');
+
+        $this->belongsTo('Reports');
+    }
 }

@@ -76,7 +76,8 @@ class ProjectsTable extends Table
             'foreignKey' => 'funding_cycle_id',
             'joinType' => 'INNER',
         ]);
-        $this->hasMany('ProjectImages', [
+        $this->hasMany('Images', [
+            'className' => 'ProjectImages',
             'sort' => ['ProjectImages.weight' => 'ASC'],
         ]);
         $this->hasMany('Messages', [
@@ -86,7 +87,7 @@ class ProjectsTable extends Table
             'foreignKey' => 'project_id',
         ]);
         $this->hasMany('Votes', [
-            'foreignKey' => 'project_id'
+            'foreignKey' => 'project_id',
         ]);
         $this->hasMany('Answers', [
             'foreignKey' => 'project_id',

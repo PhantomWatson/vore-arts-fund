@@ -7,5 +7,12 @@ namespace App\Model\Table;
  */
 class ProjectImagesTable extends ImagesTable
 {
+    public function initialize(array $config): void
+    {
+        parent::initialize($config);
 
+        $this->setTable('project_images');
+
+        $this->belongsTo('Projects');
+    }
 }

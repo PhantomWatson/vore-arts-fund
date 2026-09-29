@@ -46,16 +46,6 @@ abstract class ImagesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
-
-        $this->belongsToMany('Projects', [
-            'joinTable' => 'images_projects',
-        ]);
-        $this->belongsToMany('Reports', [
-            'joinTable' => 'images_reports',
-        ]);
-        $this->belongsToMany('Articles', [
-            'joinTable' => 'images_articles',
-        ]);
     }
 
     /**

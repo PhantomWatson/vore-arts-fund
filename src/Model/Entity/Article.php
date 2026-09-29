@@ -24,7 +24,7 @@ use Cake\View\View;
  * @property string $formatted_body
  *
  * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Image[] $images
+ * @property \App\Model\Entity\ArticleImage[] $images
  */
 class Article extends Entity
 {
@@ -49,6 +49,7 @@ class Article extends Entity
         'created' => false,
         'modified' => false,
         'user' => true,
+        'images' => false,
     ];
 
     public function generateUniqueSlug()

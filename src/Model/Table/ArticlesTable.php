@@ -52,7 +52,8 @@ class ArticlesTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
-        $this->hasMany('ArticleImages', [
+        $this->hasMany('Images', [
+            'className' => 'ArticleImages',
             'sort' => ['ArticleImages.weight' => 'ASC'],
         ]);
     }

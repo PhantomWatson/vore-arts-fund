@@ -19,7 +19,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\ProjectsTable&\Cake\ORM\Association\BelongsTo $Projects
- *
  * @method \App\Model\Entity\Report newEmptyEntity()
  * @method \App\Model\Entity\Report newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Report[] newEntities(array $data, array $options = [])
@@ -63,7 +62,8 @@ class ReportsTable extends Table
             'foreignKey' => 'project_id',
             'joinType' => 'INNER',
         ]);
-        $this->hasMany('ReportImages', [
+        $this->hasMany('Images', [
+            'className' => 'ReportImages',
             'sort' => ['ReportImages.weight' => 'ASC'],
         ]);
     }

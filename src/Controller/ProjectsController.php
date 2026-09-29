@@ -40,7 +40,7 @@ class ProjectsController extends AppController
         parent::beforeFilter($event);
         $this->FundingCycles = $this->fetchTable('FundingCycles');
         $this->Categories = $this->fetchTable('Categories');
-        $this->Images = $this->fetchTable('Images');
+        $this->Images = $this->fetchTable('ProjectImages');
 
         $this->Authentication->allowUnauthenticated([
             'apply',
