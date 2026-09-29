@@ -2,28 +2,28 @@
 /**
  * @var \App\Model\Entity\Project $project
  * @var \App\Model\Entity\FundingCycle $fundingCycle
- * @var \App\Model\Entity\Question[] $questions
+ * @var array<\App\Model\Entity\Question> $questions
  * @var \App\Model\Entity\User $user
  * @var \App\View\AppView $this
  * @var string $deadline
  * @var string $fromNow
- * @var string[] $categories
- * @var Project[] $hasPastProjects
+ * @var array<string> $categories
+ * @var array<\App\Model\Entity\Project> $hasPastProjects
  * @var mixed $key
  */
 
-use App\Model\Entity\Image;
 use App\Model\Entity\Project;
+use App\Model\Entity\ProjectImage;
 
 $formId = 'project-form';
 $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 $this->Html->script('/viewerjs/viewer.min.js', ['block' => true]);
-$defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
+$defaultFormTemplate = include CONFIG . 'bootstrap_form.php';
 $data = $this->getRequest()->getData();
 $saveMode = $data['save-mode'] ?? null;
 
 // After a failed submission, re-populate with the submitted images rather than the saved ones
-$preloadImageData = array_map(function (Image|array $image) {
+$preloadImageData = array_map(function (ProjectImage|array $image) {
     return [
         'caption' => $image['caption'] ?? '',
         'filename' => $image['filename'] ?? null,
@@ -32,19 +32,21 @@ $preloadImageData = array_map(function (Image|array $image) {
     ];
 }, $data['images'] ?? $project->images ?? []);
 
-function getAgreementCheckedValue($key, $data, $project) {
+function getAgreementCheckedValue($key, $data, $project)
+{
     if (isset($data[$key])) {
         return $data[$key] ? 'checked="checked"' : '';
     }
+
     return $project->isNew() ? '' : 'checked="checked"';
 }
 ?>
 
 <div class="apply row">
-    <?php if ($project->isNew() && $hasPastProjects && $this->getRequest()->is('get')): ?>
+    <?php if ($project->isNew() && $hasPastProjects && $this->getRequest()->is('get')) : ?>
         <div class="col">
             <fieldset>
-                <?php if ($this->getRequest()->getQuery('reapply')): ?>
+                <?php if ($this->getRequest()->getQuery('reapply')) : ?>
                     <legend>
                         Resubmitting
                     </legend>
@@ -60,10 +62,10 @@ function getAgreementCheckedValue($key, $data, $project) {
                                 'prefix' => false,
                                 'controller' => 'Projects',
                                 'action' => 'reapply',
-                            ]
+                            ],
                         ) ?>.
                     </p>
-                <?php else: ?>
+                <?php else : ?>
                     <legend>
                         Resubmit a past application?
                     </legend>
@@ -75,7 +77,7 @@ function getAgreementCheckedValue($key, $data, $project) {
                                 'prefix' => false,
                                 'controller' => 'Projects',
                                 'action' => 'reapply',
-                            ]
+                            ],
                         ) ?>.
                     </p>
                 <?php endif; ?>
@@ -88,7 +90,7 @@ function getAgreementCheckedValue($key, $data, $project) {
             <legend>
                 Deadline
             </legend>
-            <?php if ($project->status_id == Project::STATUS_REVISION_REQUESTED): ?>
+            <?php if ($project->status_id == Project::STATUS_REVISION_REQUESTED) : ?>
                 <p>
                     <i class="fa-solid fa-circle-exclamation"></i>
                     <strong>We'll need this project to be revised before we can accept it.</strong>
@@ -100,7 +102,7 @@ function getAgreementCheckedValue($key, $data, $project) {
                             'controller' => 'Projects',
                             'action' => 'messages',
                             'id' => $project->id,
-                        ]
+                        ],
                     ) ?>
                 </p>
                 <p>
@@ -109,7 +111,7 @@ function getAgreementCheckedValue($key, $data, $project) {
                     update it. If it hasn't been revised and accepted by that date, then it won't be eligible for funding in
                     this funding cycle.
                 </p>
-            <?php else: ?>
+            <?php else : ?>
                 <p>
                     The deadline to submit an application in the current funding cycle is
                     <strong><?= $deadline ?></strong> (<?= $fromNow ?>).
@@ -120,7 +122,7 @@ function getAgreementCheckedValue($key, $data, $project) {
                             'prefix' => false,
                             'controller' => 'FundingCycles',
                             'action' => 'index',
-                        ]
+                        ],
                     ) ?> page.
                 </p>
             <?php endif; ?>
@@ -240,7 +242,7 @@ function getAgreementCheckedValue($key, $data, $project) {
                             'type' => 'number',
                             'step' => 1,
                             'max' => Project::MAXIMUM_ALLOWED_REQUEST,
-                        ]
+                        ],
                     ) ?>
                     <span class="input-group-text">.00</span>
                 </div>
@@ -281,14 +283,14 @@ function getAgreementCheckedValue($key, $data, $project) {
             'required' => true,
             'label' => 'The title of your project',
             'templateVars' => [
-                'footnote' => 'This could be the actual title that your finished work will have or just a description of what you\'re trying to pay for, like "Canvases and paint" or "Fix theater sound system"'
+                'footnote' => 'This could be the actual title that your finished work will have or just a description of what you\'re trying to pay for, like "Canvases and paint" or "Fix theater sound system"',
             ],
-            'type' => 'inputWithFootnote'
+            'type' => 'inputWithFootnote',
         ]) ?>
 
         <?= $this->Form->control(
             'category_id',
-            ['empty' => true, 'required' => true]
+            ['empty' => true, 'required' => true],
         ) ?>
 
         <div class="form-group select required">
@@ -301,11 +303,11 @@ function getAgreementCheckedValue($key, $data, $project) {
                     'id' => 'description',
                     'required' => true,
                     'type' => 'textarea',
-                ]
+                ],
             ) ?>
         </div>
 
-        <?php foreach ($questions as $i => $question): ?>
+        <?php foreach ($questions as $i => $question) : ?>
             <div class="form-group select required">
                 <label for="<?= "question-$i" ?>">
                     <?= $question->question ?>
@@ -317,7 +319,7 @@ function getAgreementCheckedValue($key, $data, $project) {
                         'id' => "question-$i",
                         'required' => true,
                         'type' => 'textarea',
-                    ]
+                    ],
                 ) ?>
             </div>
         <?php endforeach; ?>
@@ -345,10 +347,10 @@ function getAgreementCheckedValue($key, $data, $project) {
             Mailing address
         </legend>
         <p>
-            <?php if ($project->address && $project->zipcode): ?>
+            <?php if ($project->address && $project->zipcode) : ?>
                 Please confirm that your mailing address is still correct, and update it if needed.
                 Note that this must be a Muncie address.
-            <?php else: ?>
+            <?php else : ?>
                 Before you apply for funding, we need to know your mailing address so we'll know where to send your
                 check. Note that this must be a Muncie address.
             <?php endif; ?>
@@ -368,7 +370,7 @@ function getAgreementCheckedValue($key, $data, $project) {
                     [
                         'placeholder' => '123 N. Example Blvd.',
                         'required' => true,
-                    ]
+                    ],
                 ) ?>
                 <span class="input-group-text" id="address-postfix">, Muncie, IN</span>
             </div>
@@ -404,7 +406,7 @@ function getAgreementCheckedValue($key, $data, $project) {
         [
             'type' => 'submit',
             'class' => 'btn btn-primary',
-        ]
+        ],
     ) ?>
     <?= $this->Form->end() ?>
 </div>
