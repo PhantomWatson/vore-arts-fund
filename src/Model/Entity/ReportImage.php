@@ -3,6 +3,7 @@
 namespace App\Model\Entity;
 
 /**
+ * @property int $report_id
  * @property \App\Model\Entity\Report $report
  */
 class ReportImage extends Image

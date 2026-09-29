@@ -3,7 +3,8 @@
 namespace App\Model\Entity;
 
 /**
- * @property \App\Model\Entity\Project $project
+ * @property int $project_id
+ * @property \App\Model\Entity\Project $project *
  */
 class ProjectImage extends Image
 {

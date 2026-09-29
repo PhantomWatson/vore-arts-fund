@@ -19,7 +19,7 @@ use Cake\ORM\TableRegistry;
  * @property \App\Model\Table\ProjectsTable $Projects
  * @property \App\Model\Table\CategoriesTable $Categories
  * @property \App\Model\Table\FundingCyclesTable $FundingCycles
- * @property \App\Model\Table\ImagesTable $Images
+ * @property \App\Model\Table\ImagesTable $ProjectImages
  */
 class ProjectsController extends BaseProjectsController
 {

@@ -3,6 +3,7 @@
 namespace App\Model\Entity;
 
 /**
+ * @property int $article_id
  * @property \App\Model\Entity\Article $article
  */
 class ArticleImage extends Image
