@@ -78,7 +78,7 @@ class ProjectsTable extends Table
         ]);
         $this->hasMany('Images', [
             'className' => 'ProjectImages',
-            'sort' => ['ProjectImages.weight' => 'ASC'],
+            'sort' => ['Images.weight' => 'ASC'],
         ]);
         $this->hasMany('Messages', [
             'foreignKey' => 'project_id',

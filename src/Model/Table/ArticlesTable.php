@@ -54,7 +54,7 @@ class ArticlesTable extends Table
         ]);
         $this->hasMany('Images', [
             'className' => 'ArticleImages',
-            'sort' => ['ArticleImages.weight' => 'ASC'],
+            'sort' => ['Images.weight' => 'ASC'],
         ]);
     }
 
