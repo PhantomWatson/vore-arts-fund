@@ -18,6 +18,7 @@ abstract class Image extends Entity
 {
     public const THUMB_PREFIX = 'thumb_';
     public const PROJECT_IMAGES_DIR = WWW_ROOT . 'img' . DS . 'projects';
-
     public const BIO_HEADSHOTS_DIR = WWW_ROOT . 'img' . DS . 'bios';
+    public const REPORT_IMAGES_DIR = WWW_ROOT . 'img' . DS . 'reports';
+    public const ARTICLE_IMAGES_DIR = WWW_ROOT . 'img' . DS . 'articles';
 }
