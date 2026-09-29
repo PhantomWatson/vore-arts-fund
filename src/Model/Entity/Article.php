@@ -28,7 +28,7 @@ use Cake\View\View;
  */
 class Article extends Entity
 {
-    const MAX_SLUG_LENGTH = 100;
+    public const int MAX_SLUG_LENGTH = 100;
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
