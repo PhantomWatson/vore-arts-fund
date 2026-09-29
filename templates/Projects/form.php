@@ -21,14 +21,16 @@ $this->Html->script('/viewerjs/viewer.min.js', ['block' => true]);
 $defaultFormTemplate = include(CONFIG . 'bootstrap_form.php');
 $data = $this->getRequest()->getData();
 $saveMode = $data['save-mode'] ?? null;
-$preloadImageData = array_map(function (Image $image) {
+
+// After a failed submission, re-populate with the submitted images rather than the saved ones
+$preloadImageData = array_map(function (Image|array $image) {
     return [
-        'id' => $image->id,
-        'filename' => $image->filename,
-        'weight' => $image->weight,
-        'caption' => $image->caption,
+        'caption' => $image['caption'] ?? '',
+        'filename' => $image['filename'] ?? null,
+        'id' => $image['id'] ?? null,
+        'weight' => $image['weight'] ?? null,
     ];
-}, $project->images ?? []);
+}, $data['images'] ?? $project->images ?? []);
 
 function getAgreementCheckedValue($key, $data, $project) {
     if (isset($data[$key])) {
