@@ -1,4 +1,3 @@
-const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -7,6 +6,9 @@ const loadPreset = require("./presets/loadPreset");
 
 module.exports = function (env, paths) {
   const { mode = "production" } = env || {};
+
+  // Use the app's own webpack instance so that built-in plugins match the compiler run by webpack-cli
+  const webpack = require(require.resolve("webpack", { paths: [paths.nodeModulesPath] }));
   return merge(
     {
       mode,
