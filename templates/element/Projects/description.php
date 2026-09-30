@@ -16,7 +16,7 @@ use Cake\Utility\Hash;
         </h3>
         <div class="image-gallery">
             <?php foreach ($project->images as $image): ?>
-                <?= $this->Image->thumb($image) ?>
+                <?= $this->Image->thumb($image, 'projects') ?>
             <?php endforeach; ?>
         </div>
     </section>

@@ -28,4 +28,9 @@
     <div class="body">
         <?= $article->formatted_body ?>
     </div>
+    <div class="image-gallery">
+        <?php foreach ($article->images as $image): ?>
+            <?= $this->Image->thumb($image, 'articles') ?>
+        <?php endforeach; ?>
+    </div>
 </article>

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\Article;
 use Cake\Event\EventInterface;
 
 /**
@@ -40,6 +41,7 @@ class ArticlesController extends AppController
     {
         $query = $this->Articles
             ->find()
+            ->contain(['Images'])
             ->where(['is_published' => true])
             ->orderBy(['Articles.dated' => 'DESC']);
         $articles = $this->paginate($query);
@@ -59,8 +61,10 @@ class ArticlesController extends AppController
     public function view()
     {
         $slug = $this->request->getParam('slug');
+        /** @var Article $article */
         $article = $this->Articles
             ->find()
+            ->contain(['Images'])
             ->where(['slug' => $slug, 'is_published' => true])
             ->firstOrFail();
 
