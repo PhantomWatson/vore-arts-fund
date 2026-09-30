@@ -31,4 +31,10 @@ class ProjectImagesTable extends ImagesTable
 
         $this->belongsTo('Projects');
     }
+
+    public function isOwnedBy(int $imageId, int $userId): bool
+    {
+        $image = $this->get($imageId);
+        return $this->Projects->exists(['id' => $image->project_id, 'user_id' => $userId]);
+    }
 }

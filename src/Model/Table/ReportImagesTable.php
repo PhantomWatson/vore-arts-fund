@@ -35,4 +35,10 @@ class ReportImagesTable extends ImagesTable
 
         $this->belongsTo('Reports');
     }
+
+    public function isOwnedBy(int $imageId, int $userId): bool
+    {
+        $image = $this->get($imageId);
+        return $this->Reports->exists(['id' => $image->report_id, 'user_id' => $userId]);
+    }
 }

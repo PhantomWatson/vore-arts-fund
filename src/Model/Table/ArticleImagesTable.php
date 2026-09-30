@@ -35,4 +35,10 @@ class ArticleImagesTable extends ImagesTable
 
         $this->belongsTo('Articles');
     }
+
+    public function isOwnedBy(int $imageId, int $userId): bool
+    {
+        $image = $this->get($imageId);
+        return $this->Articles->exists(['id' => $image->article_id, 'user_id' => $userId]);
+    }
 }
