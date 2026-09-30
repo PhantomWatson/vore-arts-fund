@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Model\Entity\Article;
+use App\Model\Entity\ArticleImage;
 use Cake\Event\EventInterface;
 
 /**
@@ -46,11 +48,13 @@ class ArticlesController extends AdminController
         $article = $this->Articles->newEmptyEntity();
 
         if ($this->request->is('post')) {
-            $article = $this->Articles->patchEntity($article, $this->request->getData());
+            $requestData = (array)$this->request->getData();
+            $article = $this->Articles->patchEntity($article, $requestData);
             $article->title = trim($article->title);
             $article->user_id = $this->getAuthUser()->id;
             $article->slug = $article->generateUniqueSlug();
             if ($this->Articles->save($article)) {
+                $this->processImages($requestData, $article);
                 $this->Flash->success(__('The article has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -64,6 +68,7 @@ class ArticlesController extends AdminController
         $this->viewBuilder()->setTemplate('form');
         $this->title('Add article');
         $this->setRichTextEditorFilePaths();
+        $this->set('toLoad', $this->getAppFiles('image-uploader/dist', 'image-uploader/dist/styles'));
     }
 
     /**
@@ -75,10 +80,12 @@ class ArticlesController extends AdminController
      */
     public function edit($id = null)
     {
-        $article = $this->Articles->get($id, contain: []);
+        $article = $this->Articles->get($id, contain: ['Images']);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $article = $this->Articles->patchEntity($article, $this->request->getData());
+            $requestData = (array)$this->request->getData();
+            $article = $this->Articles->patchEntity($article, $requestData);
             if ($this->Articles->save($article)) {
+                $this->processImages($requestData, $article);
                 $this->Flash->success(__('The article has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -90,6 +97,7 @@ class ArticlesController extends AdminController
         $this->viewBuilder()->setTemplate('form');
         $this->title('Edit article');
         $this->setRichTextEditorFilePaths();
+        $this->set('toLoad', $this->getAppFiles('image-uploader/dist', 'image-uploader/dist/styles'));
     }
 
     /**
@@ -110,5 +118,50 @@ class ArticlesController extends AdminController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * @param array $data Request data
+     * @param \App\Model\Entity\Article $article
+     * @return void
+     */
+    protected function processImages(array $data, Article $article): void
+    {
+        $imagesTable = $this->fetchTable('ArticleImages');
+        foreach ($data['images'] ?? [] as $key => $data) {
+            $weight = $key + 1;
+            $filename = $data['filename'] ?? null;
+            $caption = $data['caption'] ?? '';
+
+            // Find or create image
+            /** @var ArticleImage|null $image */
+            $image = $imagesTable->getByFilename($filename);
+            if ($image) {
+                if ($image->article_id != $article->id) {
+                    $this->Flash->error(
+                        "The image $filename is not associated with article $article->id"
+                        . $this->errorTryAgainContactMsg,
+                        ['escape' => false],
+                    );
+                    continue;
+                }
+            } else {
+                /** @var \App\Model\Entity\ArticleImage $image */
+                $image = $imagesTable->newEmptyEntity();
+                $image->article_id = $article->id;
+                $image->filename = $filename;
+            }
+
+            // Set new weight and caption
+            $image->weight = $weight;
+            $image->caption = $caption;
+            if (!$imagesTable->save($image)) {
+                $this->Flash->error(
+                    'There was an error saving an image. Details: Record could not be added to database. '
+                    . $this->errorTryAgainContactMsg,
+                    ['escape' => false],
+                );
+            }
+        }
     }
 }
