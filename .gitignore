@@ -82,3 +82,4 @@ yarn-error.log
 /database_backups
 /webroot/sample
 /src/Command/TestCommand.php
+/config/Migrations/schema-dump-default.lock
