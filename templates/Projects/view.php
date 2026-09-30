@@ -7,7 +7,6 @@
  */
 $back = $back ?? null;
 
-$this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 $isOwner = $this->getRequest()->getParam('prefix') == 'My';
 ?>
 
@@ -28,8 +27,6 @@ $isOwner = $this->getRequest()->getParam('prefix') == 'My';
 </p>
 
 <?= $this->element('Projects/description') ?>
-
-<?= $this->Image->initViewer() ?>
 
 <?php if ($project->isDisbursed()): ?>
     <section class="card">

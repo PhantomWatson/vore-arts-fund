@@ -19,8 +19,6 @@
 <?php endif; ?>
 
 <?php if ($canVote): ?>
-    <?php $this->Html->script('/viewerjs/viewer.min.js', ['block' => 'script']); ?>
-    <?php $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]); ?>
     <div id="root"></div>
     <?= $this->element('load_app_files') ?>
 <?php endif; ?>

@@ -43,12 +43,4 @@ class ImageHelper extends Helper
             $image->filename,
         );
     }
-
-    /**
-     * @return string
-     */
-    public function initViewer(): string
-    {
-        return '<script src="/viewerjs/viewer.min.js"></script><script src="/js/image-viewer.js"></script>';
-    }
 }

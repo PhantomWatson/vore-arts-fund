@@ -9,9 +9,6 @@ if ($rteJsPath) {
     $this->Html->script($rteJsPath, ['block' => true, 'type' => 'module']);
 }
 
-$this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
-$this->Html->script('/viewerjs/viewer.min.js', ['block' => true]);
-
 // After a failed submission, re-populate with the submitted images rather than the saved ones
 $preloadImageData = array_map(function (\App\Model\Entity\ArticleImage|array $image) {
     return [

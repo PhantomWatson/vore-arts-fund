@@ -30,6 +30,9 @@ $currentBreadcrumb ??= '';
     <meta name="msapplication-TileColor" content="#00a300" />
     <meta name="theme-color" content="#E4E6C3" />
 
+    <?php $this->Html->css('/viewerjs/viewer.min.css', ['block' => true]); ?>
+    <?php $this->Html->script('/viewerjs/viewer.min.js', ['block' => true]); ?>
+
     <?= $this->Html->css('style.css') ?>
     <?= $this->Html->script('main') ?>
 
@@ -45,6 +48,7 @@ $currentBreadcrumb ??= '';
 
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="/js/image-viewer.js"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet" />
 </head>

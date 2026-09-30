@@ -16,8 +16,6 @@ use App\Model\Entity\Project;
 use App\Model\Entity\ProjectImage;
 
 $formId = 'project-form';
-$this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
-$this->Html->script('/viewerjs/viewer.min.js', ['block' => true]);
 $defaultFormTemplate = include CONFIG . 'bootstrap_form.php';
 $data = $this->getRequest()->getData();
 $saveMode = $data['save-mode'] ?? null;

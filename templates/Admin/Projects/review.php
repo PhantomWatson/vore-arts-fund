@@ -30,7 +30,6 @@ $tabs = [
     'Notes & Messages' => 'notes'
 ];
 
-$this->Html->css('/viewerjs/viewer.min.css', ['block' => true]);
 $alertIcon = '<i class="fa-solid fa-circle-exclamation" style="color: red;"></i>';
 ?>
 
@@ -365,8 +364,6 @@ $alertIcon = '<i class="fa-solid fa-circle-exclamation" style="color: red;"></i>
 <?php foreach ([Note::TYPE_NOTE, Note::TYPE_MESSAGE_TO_APPLICANT] as $noteType): ?>
     <?= $this->element('Admin/Projects/note_or_message_modal', compact('project', 'noteType')) ?>
 <?php endforeach; ?>
-
-<?= $this->Image->initViewer() ?>
 
 <?php if ($this->getRequest()->getQuery('amountAwarded')): ?>
     <script>
