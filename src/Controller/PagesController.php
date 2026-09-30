@@ -197,6 +197,7 @@ class PagesController extends AppController
         $articlesTable = $this->fetchTable('Articles');
         $article = $articlesTable
             ->find()
+            ->contain(['Images'])
             ->where(['Articles.is_published' => true])
             ->orderByDesc('Articles.dated')
             ->first();
