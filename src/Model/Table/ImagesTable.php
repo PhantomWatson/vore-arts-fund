@@ -114,4 +114,6 @@ abstract class ImagesTable extends Table
 
         return $image;
     }
+
+    abstract public function isOwnedBy(int $imageId, int $userId): bool;
 }
