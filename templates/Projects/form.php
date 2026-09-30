@@ -339,6 +339,7 @@ function getAgreementCheckedValue($key, $data, $project)
         </p>
         <script>
             window.preloadImages = <?= json_encode($preloadImageData) ?>;
+            window.imageUploaderConfig = {type: 'projects'};
         </script>
     </fieldset>
 

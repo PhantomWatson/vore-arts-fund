@@ -27,6 +27,29 @@ class ImageProcessor
     public string $filename;
     private string $sourceFilePath;
 
+    public const array VALID_IMAGE_TABLES = ['articles', 'projects', 'reports'];
+
+    public function __construct(private readonly string $imageTable)
+    {
+        if (!in_array($this->imageTable, self::VALID_IMAGE_TABLES)) {
+            throw new BadRequestException("Invalid image table: $this->imageTable");
+        }
+    }
+
+    /**
+     * @return string
+     * @throws BadRequestException
+     */
+    private function getUploadDirectory(): string
+    {
+        return match ($this->imageTable) {
+            'articles' => Image::ARTICLE_IMAGES_DIR,
+            'projects' => Image::PROJECT_IMAGES_DIR,
+            'reports' => Image::REPORT_IMAGES_DIR,
+            default => throw new BadRequestException("Invalid image table: $this->imageTable"),
+        };
+    }
+
     /**
      * @param string[] $sourceFile
      * @return void
@@ -44,11 +67,11 @@ class ImageProcessor
         $this->filename = $this->generateRandomFilename($this->extension);
 
         // Resize and save thumbnail
-        $destination = Image::PROJECT_IMAGES_DIR . DS . Image::THUMB_PREFIX . $this->filename;
+        $destination = $this->getUploadDirectory() . DS . Image::THUMB_PREFIX . $this->filename;
         $this->resizeThumb($destination);
 
         // Resize and save fullsize image
-        $destination = Image::PROJECT_IMAGES_DIR . DS . $this->filename;
+        $destination = $this->getUploadDirectory() . DS . $this->filename;
         $this->resizeOriginal($destination);
     }
 
@@ -126,7 +149,7 @@ class ImageProcessor
      */
     private function resizeOriginal($destination): void
     {
-        list($width, $height) = $this->getOriginalDimensions();
+        [$width, $height] = $this->getOriginalDimensions();
         [$newWidth, $newHeight] = $this->getScaledDimensions(
             $width,
             $height,
@@ -138,7 +161,7 @@ class ImageProcessor
 
     private function resizeThumb($destination): void
     {
-        list($width, $height) = $this->getOriginalDimensions();
+        [$width, $height] = $this->getOriginalDimensions();
         [$newWidth, $newHeight] = $this->getScaledDimensions(
             $width,
             $height,
@@ -160,7 +183,7 @@ class ImageProcessor
      */
     public function makeResizedCopy(string $outputFile, ?int $newWidth, ?int $newHeight, int $quality = 100): void
     {
-        list($originalWidth, $originalHeight) = $this->getOriginalDimensions();
+        [$originalWidth, $originalHeight] = $this->getOriginalDimensions();
 
         if (!$newWidth && !$newHeight) {
             $newWidth = $originalWidth;
@@ -313,7 +336,7 @@ class ImageProcessor
      */
     private function resizeImg($tmpImage, $sourceImage, $scaledWidth, $scaledHeight): void
     {
-        list($width, $height) = getimagesize($this->sourceFilePath);
+        [$width, $height] = getimagesize($this->sourceFilePath);
         $resizeResult = imagecopyresampled(
             $tmpImage,
             $sourceImage,
@@ -385,16 +408,16 @@ class ImageProcessor
         $newFilename = $this->generateRandomFilename($extension);
 
         // Copy thumbnail
-        $sourceFile = Image::PROJECT_IMAGES_DIR . DS . Image::THUMB_PREFIX . $oldFilename;
-        $destinationFile = Image::PROJECT_IMAGES_DIR . DS . Image::THUMB_PREFIX . $newFilename;
+        $sourceFile = $this->getUploadDirectory() . DS . Image::THUMB_PREFIX . $oldFilename;
+        $destinationFile = $this->getUploadDirectory() . DS . Image::THUMB_PREFIX . $newFilename;
         if (!copy($sourceFile, $destinationFile)) {
             Log::error('Failed to copy file from ' . $sourceFile . ' to ' . $destinationFile);
             throw new InternalErrorException('Failed to copy file');
         }
 
         // Copy fullsize image
-        $sourceFile = Image::PROJECT_IMAGES_DIR . DS . $oldFilename;
-        $destinationFile = Image::PROJECT_IMAGES_DIR . DS . $newFilename;
+        $sourceFile = $this->getUploadDirectory() . DS . $oldFilename;
+        $destinationFile = $this->getUploadDirectory() . DS . $newFilename;
         if (!copy($sourceFile, $destinationFile)) {
             Log::error('Failed to copy file from ' . $sourceFile . ' to ' . $destinationFile);
             throw new InternalErrorException('Failed to copy file');

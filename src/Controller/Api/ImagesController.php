@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\ImageProcessor;
-use App\Model\Entity\Image;
+use App\Model\Table\ImagesTable;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
@@ -12,9 +12,6 @@ use Cake\ORM\TableRegistry;
 
 /**
  * Images Controller
- *
- * @property \App\Model\Table\ImagesTable $Images
- * @method Image[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class ImagesController extends ApiController
 {
@@ -25,8 +22,12 @@ class ImagesController extends ApiController
      * @throws BadRequestException
      * @throws InternalErrorException
      */
-    public function upload()
+    public function upload(string $imageTable): void
     {
+        if (!in_array($imageTable, ImageProcessor::VALID_IMAGE_TABLES)) {
+            throw new BadRequestException("Invalid image table: $imageTable");
+        }
+
         $this->viewBuilder()
             ->setClassName('Json')
             ->setOption('jsonOptions', JSON_FORCE_OBJECT);
@@ -36,7 +37,7 @@ class ImagesController extends ApiController
             throw new BadRequestException();
         }
 
-        $imageProcessor = new ImageProcessor();
+        $imageProcessor = new ImageProcessor($imageTable);
         $imageProcessor->processUpload($_FILES['file']);
         $filename = $imageProcessor->filename;
 
@@ -46,39 +47,52 @@ class ImagesController extends ApiController
     }
 
     /**
+     * Returns the child class of ImagesTable corresponding to the given image table name
+     *
+     * @param string $imageTable The shorthand name of the image table
+     * @return ImagesTable
+     * @throws BadRequestException if the image table name is invalid
+     */
+    private function getImagesTable(string $imageTable): ImagesTable
+    {
+        return match ($imageTable) {
+            'projects' => TableRegistry::getTableLocator()->get('ProjectImages'),
+            'reports' => TableRegistry::getTableLocator()->get('ReportImages'),
+            'articles' => TableRegistry::getTableLocator()->get('ArticleImages'),
+            default => throw new BadRequestException("Invalid image table: $imageTable"),
+        };
+    }
+
+    /**
      * @return void
      * @throws ForbiddenException
      * @throws InternalErrorException
      */
-    public function remove(): void
+    public function remove(string $imageTable): void
     {
         $this->viewBuilder()->setClassName('Json');
         $this->getRequest()->allowMethod('delete');
 
         // Get image
         $filename = $this->getRequest()->getData('filename');
-        $image = $this->Images->getByFilename($filename);
+        $imagesTable = $this->getImagesTable($imageTable);
+        $image = $imagesTable->getByFilename($filename);
 
         if ($image) {
-            // Auth check
-            $projectsTable = TableRegistry::getTableLocator()->get('Projects');
             $user = $this->getAuthUser();
-            $isOwner = $projectsTable->exists([
-                'id' => $image->project_id,
-                'user_id' => $user->id,
-            ]);
-            if (!$isOwner) {
+
+            if (!$imagesTable->isOwnedBy($image->id, $user->id)) {
                 throw new ForbiddenException();
             }
 
             // Delete image
-            if (!$this->Images->delete($image)) {
+            if (!$imagesTable->delete($image)) {
                 throw new InternalErrorException();
             }
 
-        // Image was uploaded but has no DB record because the project form had never been submitted
+        // Image was uploaded but has no DB record because the respective form had never been submitted
         } else {
-            $this->Images->deleteImageFiles($filename);
+            $imagesTable->deleteImageFiles($filename);
         }
 
         $this->setResponse($this->getResponse()->withStatus(204));

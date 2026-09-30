@@ -42,6 +42,18 @@ function App(props) {
     alert(msg);
   };
 
+  const config = window.imageUploaderConfig;
+  const imageTable = config.type;
+  if (!imageTable) {
+    handleError('Image table is not defined');
+    return;
+  }
+  const validTypes = ['articles', 'projects', 'reports'];
+  if (!validTypes.includes(imageTable)) {
+    handleError('Image table is not valid');
+    return;
+  }
+
   const handleUpload = async () => {
     const fileUpload = document.getElementById('file-upload');
 
@@ -59,7 +71,7 @@ function App(props) {
     const formData = new FormData();
     formData.append('file', file);
     try {
-      const response = await fetch('/api/images/upload', {
+      const response = await fetch(`/api/images/upload/${imageTable}`, {
         method: 'POST',
         body: formData
       });
@@ -90,7 +102,7 @@ function App(props) {
     setRemovingImageKey(key);
     const image = images[key];
     try {
-      const response = await fetch('/api/images/remove', {
+      const response = await fetch(`/api/images/remove/${imageTable}`, {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({filename: image.filename}),
@@ -179,8 +191,11 @@ function App(props) {
               }
             </div>
             <div className="col-10">
-              <img src={'/img/projects/thumb_' + image.filename} data-full={'/img/projects/' + image.filename}
-                   title="Click to view full-size" />
+              <img
+                src={`/img/${imageTable}/thumb_${image.filename}`}
+                data-full={`/img/${imageTable}/${image.filename}`}
+                title="Click to view full-size"
+              />
               {/*}
               <br/>
               <input aria-label="Caption" type="text" name={'images[' + key + '][caption]'} value={image.caption}
