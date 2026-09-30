@@ -1,7 +1,7 @@
-if (document.querySelector('.image-gallery')) {
-  window.addEventListener('DOMContentLoaded', (event) => {
+window.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('.image-gallery').forEach((gallery) => {
     new Viewer(
-      document.querySelector('.image-gallery'),
+      gallery,
       {
         url: 'data-full',
         toolbar: {
@@ -20,4 +20,4 @@ if (document.querySelector('.image-gallery')) {
       }
     );
   });
-}
+});
