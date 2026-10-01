@@ -150,8 +150,8 @@ class ProjectsController extends AppController
 
                 $project->images = [];
                 try {
-                    $imageProcessor = new ImageProcessor();
-                    $imagesTable = TableRegistry::getTableLocator()->get('Images');
+                    $imageProcessor = new ImageProcessor('projects');
+                    $imagesTable = TableRegistry::getTableLocator()->get('ProjectImages');
                     foreach ($pastProject->images as $k => $image) {
                         $project->images[] = $imagesTable->newEntity([
                             'filename' => $imageProcessor->makeCopy($image->filename),
