@@ -303,6 +303,7 @@ function getAgreementCheckedValue($key, $data, $project)
                     'type' => 'textarea',
                 ],
             ) ?>
+            <?= $this->Form->error('description') ?>
         </div>
 
         <?php foreach ($questions as $i => $question) : ?>
@@ -319,6 +320,7 @@ function getAgreementCheckedValue($key, $data, $project)
                         'type' => 'textarea',
                     ],
                 ) ?>
+                <?= $this->Form->error("answers.$i.answer") ?>
             </div>
         <?php endforeach; ?>
     </fieldset>
