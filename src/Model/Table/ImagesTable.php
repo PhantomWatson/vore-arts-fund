@@ -41,7 +41,6 @@ abstract class ImagesTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('images');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
