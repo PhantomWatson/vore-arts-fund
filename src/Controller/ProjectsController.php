@@ -127,7 +127,8 @@ class ProjectsController extends AppController
             $project = $this->Projects->newEntity($data, ['associated' => ['Answers']]);
             $project->user_id = $user->id;
             $project->funding_cycle_id = $fundingCycle->id;
-            if ($this->processProject($project, $data)) {
+            $project = $this->processProject($project, $data);
+            if (!$project->hasErrors()) {
                 return $this->redirect([
                     'prefix' => 'My',
                     'controller' => 'Projects',
@@ -204,17 +205,17 @@ class ProjectsController extends AppController
     /**
      * @param \App\Model\Entity\Project $project
      * @param array $data
-     * @return bool
+     * @return \App\Model\Entity\Project
      */
-    protected function processProject(Project $project, array $data): bool
+    protected function processProject(Project $project, array $data): Project
     {
         if (!$this->validateAgreements()) {
-            return false;
+            return $project;
         }
 
         $addressData = ['address' => $data['address'], 'zipcode' => $data['zipcode']];
         if (!$this->processAddressUpdate($addressData)) {
-            return false;
+            return $project;
         }
 
         if ($project->id) {
@@ -224,7 +225,6 @@ class ProjectsController extends AppController
         $submittingForReview = ($data['save-mode'] ?? null) == 'submit';
         $project->status_id = $submittingForReview ? Project::STATUS_UNDER_REVIEW : Project::STATUS_DRAFT;
         $verb = $submittingForReview ? 'submitted' : 'saved';
-        $hasErrors = false;
         $project = $this->Projects->patchEntity($project, $data, ['associated' => ['Answers']]);
         if ($this->Projects->save($project)) {
             $this->Flash->success("Your application has been $verb.");
@@ -233,12 +233,11 @@ class ProjectsController extends AppController
                 "Your application could not be $verb. " . $this->errorTryAgainContactMsg,
                 ['escape' => false],
             );
-            $hasErrors = true;
         }
 
         $this->processImages($data, $project);
 
-        return !$hasErrors;
+        return $project;
     }
 
     /**

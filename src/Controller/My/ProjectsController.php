@@ -113,7 +113,8 @@ class ProjectsController extends BaseProjectsController
                 $project->status_id = Project::STATUS_UNDER_REVIEW;
             }
 
-            if ($this->processProject($project, $data)) {
+            $project = $this->processProject($project, $data);
+            if (!$project->hasErrors()) {
                 return $this->redirectToIndex();
             }
         } else {
