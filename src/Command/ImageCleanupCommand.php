@@ -41,54 +41,64 @@ class ImageCleanupCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $imagesTable = TableRegistry::getTableLocator()->get('Images');
-        $images = $imagesTable
-            ->find()
-            ->select(['filename'])
-            ->all()
-            ->toArray();
-        $goodFilenames = array_map(function (Image $image) {
-            return $image->filename;
-        }, $images);
+        $sets = [
+            'ArticleImages' => Image::ARTICLE_IMAGES_DIR,
+            'ProjectImages' => Image::PROJECT_IMAGES_DIR,
+            'ReportImages' => Image::REPORT_IMAGES_DIR,
+        ];
 
-        $files = scandir(Image::PROJECT_IMAGES_DIR);
-        if ($files === false) {
-            $msg = "Failed to read directory: " . Image::PROJECT_IMAGES_DIR;
-            $io->err($msg);
-            ErrorAlert::send($msg);
-            return;
-        }
+        foreach ($sets as $tableName => $dir) {
+            $imagesTable = TableRegistry::getTableLocator()->get($tableName);
+            $images = $imagesTable
+                ->find()
+                ->select(['filename'])
+                ->all()
+                ->toArray();
+            $goodFilenames = array_map(function (Image $image) {
+                return $image->filename;
+            }, $images);
 
-        $filesToDelete = [];
-        foreach ($files as $file) {
-            if ($file === '.' || $file === '..') {
-                continue;
+            $files = scandir($dir);
+            if ($files === false) {
+                $msg = "Failed to read directory: " . $dir;
+                $io->err($msg);
+                ErrorAlert::send($msg);
+                return;
             }
 
-            $checkFilename = str_contains($file, Image::THUMB_PREFIX)
-                ? str_replace(Image::THUMB_PREFIX, '', $file)
-                : $file;
-            if (!in_array($checkFilename, $goodFilenames, true)) {
-                $filesToDelete[] = $file;
+            $filesToDelete = [];
+            foreach ($files as $file) {
+                if ($file === '.' || $file === '..') {
+                    continue;
+                }
+
+                $checkFilename = str_contains($file, Image::THUMB_PREFIX)
+                    ? str_replace(Image::THUMB_PREFIX, '', $file)
+                    : $file;
+                if (!in_array($checkFilename, $goodFilenames, true)) {
+                    $filesToDelete[] = $file;
+                }
+            }
+
+            if (empty($filesToDelete)) {
+                $io->out('No files to delete.');
+                return;
+            }
+
+            $io->out('Files to delete: ' . print_r($filesToDelete, true));
+
+            foreach ($filesToDelete as $filename) {
+                $filepath = $dir . DS . $filename;
+                if (unlink($filepath)) {
+                    $io->success("[+] $filename deleted");
+                } else {
+                    $msg = "Failed to delete $filename";
+                    $io->err("[-] {$msg}");
+                    ErrorAlert::send("ImageCleanupCommand: $msg");
+                }
             }
         }
 
-        if (empty($filesToDelete)) {
-            $io->out('No files to delete.');
-            return;
-        }
 
-        $io->out('Files to delete: ' . print_r($filesToDelete, true));
-
-        foreach ($filesToDelete as $filename) {
-            $filepath = Image::PROJECT_IMAGES_DIR . DS . $filename;
-            if (unlink($filepath)) {
-                $io->success("[+] $filename deleted");
-            } else {
-                $msg = "Failed to delete $filename";
-                $io->err("[-] {$msg}");
-                ErrorAlert::send("ImageCleanupCommand: $msg");
-            }
-        }
     }
 }
