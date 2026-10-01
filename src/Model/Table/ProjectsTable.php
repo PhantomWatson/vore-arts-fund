@@ -414,6 +414,23 @@ class ProjectsTable extends Table
         });
     }
 
+    /**
+     * Normalizes line breaks so that string lengths match what the browser enforced with `maxlength`
+     *
+     * Browsers count a textarea line break as one character but submit it as CRLF (two characters)
+     *
+     * @param \Cake\Event\Event $event Event
+     * @param \ArrayObject $data Request data
+     * @param \ArrayObject $options Options
+     * @return void
+     */
+    public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options): void
+    {
+        if (isset($data['description']) && is_string($data['description'])) {
+            $data['description'] = str_replace("\r\n", "\n", $data['description']);
+        }
+    }
+
     public function afterSave(Event $event, EntityInterface $entity, ArrayObject $options): void
     {
         /** @var Project $entity */

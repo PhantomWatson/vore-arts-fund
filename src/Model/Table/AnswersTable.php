@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use ArrayObject;
+use Cake\Event\Event;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -82,6 +84,23 @@ class AnswersTable extends Table
             ->notEmptyString('answer');
 
         return $validator;
+    }
+
+    /**
+     * Normalizes line breaks so that string lengths match what the browser enforced with `maxlength`
+     *
+     * Browsers count a textarea line break as one character but submit it as CRLF (two characters)
+     *
+     * @param \Cake\Event\Event $event Event
+     * @param \ArrayObject $data Request data
+     * @param \ArrayObject $options Options
+     * @return void
+     */
+    public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options): void
+    {
+        if (isset($data['answer']) && is_string($data['answer'])) {
+            $data['answer'] = str_replace("\r\n", "\n", $data['answer']);
+        }
     }
 
     /**
