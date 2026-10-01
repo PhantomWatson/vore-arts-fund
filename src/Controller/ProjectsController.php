@@ -16,6 +16,7 @@ use Cake\Database\Query;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\I18n\DateTime;
+use Cake\Log\Log;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Security;
@@ -258,6 +259,11 @@ class ProjectsController extends AppController
             if ($image) {
                 // Validate to prevent the user from manipulating someone else's image
                 if ($image->project_id != $project->id) {
+                    Log::error(
+                        'User ' . $this->getAuthUser()->id . ' attempted to update image ' . $filename
+                        . ' for project ' . $project->id . ', but that image belongs to project '
+                        . $image->project_id,
+                    );
                     $this->Flash->error(
                         "The image $filename is not associated with project {$project->id}"
                         . $this->errorTryAgainContactMsg,
@@ -276,6 +282,9 @@ class ProjectsController extends AppController
             $image->weight = $weight;
             $image->caption = $caption;
             if (!$this->ProjectImages->save($image)) {
+                Log::error(
+                    'Error saving image for project ' . $project->id . ': ' . json_encode($image->getErrors()),
+                );
                 $this->Flash->error(
                     'There was an error saving an image. Details: Record could not be added to database. '
                     . $this->errorTryAgainContactMsg,
