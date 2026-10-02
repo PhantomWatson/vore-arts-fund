@@ -25,20 +25,23 @@ use App\BotCatcher;
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 
-function buildRoutes(RouteBuilder &$builder, array $controllers)
-{
-    foreach ($controllers as $controller => $actions) {
-        foreach ($actions as $path => $action) {
-            if (str_contains($path, '{id}')) {
-                $builder->connect($path, ['controller' => $controller, 'action' => $action])
-                    ->setPatterns(['id' => '\d+'])
-                    ->setPass(['id']);
-            } elseif (str_contains($path, '{slug}')) {
-                $builder->connect($path, ['controller' => $controller, 'action' => $action])
-                    ->setPatterns(['slug' => '[a-z0-9-]+'])
-                    ->setPass(['slug']);
-            } else {
-                $builder->connect($path, ['controller' => $controller, 'action' => $action]);
+// Guarded because this file is loaded more than once per process in integration tests
+if (!function_exists('buildRoutes')) {
+    function buildRoutes(RouteBuilder &$builder, array $controllers)
+    {
+        foreach ($controllers as $controller => $actions) {
+            foreach ($actions as $path => $action) {
+                if (str_contains($path, '{id}')) {
+                    $builder->connect($path, ['controller' => $controller, 'action' => $action])
+                        ->setPatterns(['id' => '\d+'])
+                        ->setPass(['id']);
+                } elseif (str_contains($path, '{slug}')) {
+                    $builder->connect($path, ['controller' => $controller, 'action' => $action])
+                        ->setPatterns(['slug' => '[a-z0-9-]+'])
+                        ->setPass(['slug']);
+                } else {
+                    $builder->connect($path, ['controller' => $controller, 'action' => $action]);
+                }
             }
         }
     }
