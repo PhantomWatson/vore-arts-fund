@@ -23,10 +23,12 @@ class AnswersTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
         'app.Answers',
-        'app.Applications',
+        'app.Categories',
+        'app.Projects',
         'app.Questions',
+        'app.Users',
     ];
 
     /**

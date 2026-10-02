@@ -21,9 +21,11 @@ class FundingCyclesControllerTest extends TestCase
      *
      * @var array
      */
-    protected $fixtures = [
+    protected array $fixtures = [
+        'app.Categories',
         'app.FundingCycles',
         'app.Projects',
+        'app.Users',
         'app.Votes',
     ];
 

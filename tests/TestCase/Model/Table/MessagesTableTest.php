@@ -24,10 +24,11 @@ class MessagesTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
+        'app.Categories',
         'app.Messages',
-        'app.Users',
         'app.Projects',
+        'app.Users',
     ];
 
     /**

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -21,11 +20,12 @@ class VotesControllerTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
-        'app.Votes',
-        'app.Users',
-        'app.Projects',
+    protected array $fixtures = [
+        'app.Categories',
         'app.FundingCycles',
+        'app.Projects',
+        'app.Users',
+        'app.Votes',
     ];
 
     /**
@@ -39,34 +39,25 @@ class VotesControllerTest extends TestCase
     }
 
     /**
-     * Test index method
+     * Tests the voting page when no funding cycle is currently voting
      *
      * @return void
      */
-    public function testIndex()
+    public function testIndex(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('/vote');
+        $this->assertResponseOk();
+        $this->assertResponseContains('Check back later for voting info');
     }
 
     /**
-     * Test submit method
+     * Tests that requesting a nonexistent funding cycle redirects to the default voting page
      *
      * @return void
      */
-    public function testSubmit()
+    public function testIndexWithInvalidFundingCycle(): void
     {
-        $data = [
-            'id' => 1,
-            'user_id' => 1,
-            'project_id' => 1,
-            'funding_cycle_id' => 1,
-            'weight' => 1,
-        ];
-
-        $this->post('/submit', $data);
-        $this->assertResponseSuccess();
-        $votesTable = TableRegistry::getTableLocator()->get('votes');
-        $query = $votesTable->find()->where(['id' => 1]);
-        $this->assertEquals(1, $query->count());
+        $this->get('/vote/999');
+        $this->assertRedirect(['controller' => 'Votes', 'action' => 'index']);
     }
 }

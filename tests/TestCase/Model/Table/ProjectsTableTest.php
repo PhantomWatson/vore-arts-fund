@@ -24,15 +24,14 @@ class ProjectsTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
-        'app.Projects',
-        'app.Users',
+    protected array $fixtures = [
         'app.Categories',
         'app.FundingCycles',
-        'app.Statuses',
-        'app.Images',
         'app.Messages',
         'app.Notes',
+        'app.ProjectImages',
+        'app.Projects',
+        'app.Users',
         'app.Votes',
     ];
 

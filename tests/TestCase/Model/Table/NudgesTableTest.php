@@ -23,10 +23,11 @@ class NudgesTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
+        'app.Categories',
         'app.Nudges',
-        'app.Users',
         'app.Projects',
+        'app.Users',
     ];
 
     /**

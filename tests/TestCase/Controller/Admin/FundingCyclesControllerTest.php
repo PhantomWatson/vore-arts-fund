@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller\Admin;
 
+use App\Test\TestCase\LoginTrait;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -15,36 +16,48 @@ use Cake\TestSuite\TestCase;
 class FundingCyclesControllerTest extends TestCase
 {
     use IntegrationTestTrait;
+    use LoginTrait;
 
     /**
      * Fixtures
      *
-     * @var array
+     * @var list<string>
      */
-    public $fixtures = [
+    protected array $fixtures = [
+        'app.Categories',
         'app.FundingCycles',
         'app.Projects',
+        'app.Users',
         'app.Votes',
     ];
+
+    /**
+     * Returns form data for a funding cycle, with dates in the local timezone as submitted by the form
+     *
+     * @return array<string, mixed>
+     */
+    private function getFormData(): array
+    {
+        return [
+            'application_begin' => '2030-01-01',
+            'application_end' => '2030-01-31',
+            'funding_available' => 100,
+            'resubmit_deadline' => '2030-02-07',
+            'vote_begin' => '2030-02-14',
+            'vote_end' => '2030-02-28',
+        ];
+    }
 
     /**
      * Test index method
      *
      * @return void
      */
-    public function testIndex()
+    public function testIndex(): void
     {
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 3,
-                    'is_admin' => 1,
-                    'is_verified' => 1,
-                ],
-            ],
-        ]);
+        $this->loginAs(3);
         $this->get('/admin/funding-cycles');
-        $this->assertResponseSuccess();
+        $this->assertResponseOk();
     }
 
     /**
@@ -52,29 +65,38 @@ class FundingCyclesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testAdd()
+    public function testAdd(): void
     {
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 3,
-                    'is_admin' => 1,
-                    'is_verified' => 1,
-                ],
-            ],
-        ]);
-        $data = [
-            'application_begin' => '2020-01-01 00:00:00',
-            'application_end' => '2020-01-01 00:00:01',
-            'vote_begin' => '2020-01-01 00:00:02',
-            'vote_end' => '2020-01-01 00:00:03',
-            'funding_available' => 100,
-        ];
+        $this->loginAs(3);
+        $this->post('/admin/funding-cycles/add', $this->getFormData());
+        $this->assertRedirect(['prefix' => 'Admin', 'controller' => 'FundingCycles', 'action' => 'index']);
+
+        $count = TableRegistry::getTableLocator()
+            ->get('FundingCycles')
+            ->find()
+            ->where(['funding_available' => 100])
+            ->count();
+        $this->assertSame(1, $count);
+    }
+
+    /**
+     * Tests that a funding cycle can't be saved with its application period ending before it begins
+     *
+     * @return void
+     */
+    public function testAddWithInvalidDates(): void
+    {
+        $this->loginAs(3);
+        $data = ['application_end' => '2029-12-01'] + $this->getFormData();
         $this->post('/admin/funding-cycles/add', $data);
-        $this->assertResponseSuccess();
-        $fundingCyclesTable = TableRegistry::getTableLocator()->get('fundingcycles');
-        $query = $fundingCyclesTable->find()->where(['application_begin' => '2020-01-01 00:00:00']);
-        $this->assertEquals(1, $query->count());
+        $this->assertNoRedirect();
+
+        $count = TableRegistry::getTableLocator()
+            ->get('FundingCycles')
+            ->find()
+            ->where(['funding_available' => 100])
+            ->count();
+        $this->assertSame(0, $count);
     }
 
     /**
@@ -82,25 +104,13 @@ class FundingCyclesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testEdit()
+    public function testEdit(): void
     {
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 3,
-                    'is_admin' => 1,
-                    'is_verified' => 1,
-                ],
-            ],
-        ]);
-        $data = [
-            'id' => 1,
-            'funding_available' => 100,
-        ];
-        $this->put('/admin/funding-cycles/edit/1', $data);
-        $this->assertResponseSuccess();
-        $fundingCyclesTable = TableRegistry::getTableLocator()->get('fundingcycles');
-        $query = $fundingCyclesTable->find()->where(['id' => 1, 'funding_available' => 100]);
-        $this->assertEquals(1, $query->count());
+        $this->loginAs(3);
+        $this->put('/admin/funding-cycles/edit/1', $this->getFormData());
+        $this->assertRedirect(['prefix' => 'Admin', 'controller' => 'FundingCycles', 'action' => 'index']);
+
+        $fundingCycle = TableRegistry::getTableLocator()->get('FundingCycles')->get(1);
+        $this->assertSame(100, $fundingCycle->funding_available);
     }
 }

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller\Admin;
 
+use App\Model\Entity\Project;
+use App\Test\TestCase\LoginTrait;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -15,21 +17,24 @@ use Cake\TestSuite\TestCase;
 class ProjectsControllerTest extends TestCase
 {
     use IntegrationTestTrait;
+    use LoginTrait;
 
     /**
      * Fixtures
      *
-     * @var array
+     * @var list<string>
      */
-    public $fixtures = [
-        'app.Projects',
-        'app.Users',
+    protected array $fixtures = [
+        'app.Answers',
         'app.Categories',
         'app.FundingCycles',
-        'app.Statuses',
-        'app.Images',
         'app.Messages',
         'app.Notes',
+        'app.ProjectImages',
+        'app.Projects',
+        'app.Questions',
+        'app.Transactions',
+        'app.Users',
         'app.Votes',
     ];
 
@@ -38,19 +43,23 @@ class ProjectsControllerTest extends TestCase
      *
      * @return void
      */
-    public function testIndex()
+    public function testIndex(): void
     {
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 3,
-                    'is_admin' => 1,
-                    'is_verified' => 1,
-                ],
-            ],
-        ]);
+        $this->loginAs(3);
         $this->get('/admin/projects');
-        $this->assertResponseSuccess();
+        $this->assertResponseOk();
+    }
+
+    /**
+     * Tests that non-admins can't access admin pages
+     *
+     * @return void
+     */
+    public function testIndexRequiresAdmin(): void
+    {
+        $this->loginAs(2);
+        $this->get('/admin/projects');
+        $this->assertResponseCode(403);
     }
 
     /**
@@ -58,43 +67,41 @@ class ProjectsControllerTest extends TestCase
      *
      * @return void
      */
-    public function testReview()
+    public function testReview(): void
     {
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 3,
-                    'is_admin' => 1,
-                    'is_verified' => 1,
-                ],
-            ],
-        ]);
+        $this->loginAs(3);
         $this->get('/admin/projects/review/1');
-        $this->assertResponseSuccess();
+        $this->assertResponseOk();
+        $this->assertResponseContains('Lorem ipsum dolor sit amet');
     }
 
     /**
-     * Test setStatus method
+     * Tests changing a project's status through the review page
      *
      * @return void
      */
-    public function testSetStatus()
+    public function testReviewSetStatus(): void
     {
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 3,
-                    'is_admin' => 1,
-                    'is_verified' => 1,
-                ],
-            ],
-        ]);
-        $data = [
-            'status_id' => 7,
-        ];
-        $this->post('/admin/projects/set-status/1', $data);
-        $projectsTable = TableRegistry::getTableLocator()->get('projects');
-        $query = $projectsTable->find()->where(['id' => 1, 'status_id' => 7]);
-        $this->assertEquals(1, $query->count());
+        $this->loginAs(3);
+        $this->post('/admin/projects/review/1', ['status_id' => Project::STATUS_ACCEPTED]);
+        $this->assertRedirect(['prefix' => 'Admin', 'controller' => 'Projects', 'action' => 'review', 'id' => 1]);
+
+        $project = TableRegistry::getTableLocator()->get('Projects')->get(1);
+        $this->assertSame(Project::STATUS_ACCEPTED, $project->status_id);
+    }
+
+    /**
+     * Tests that statuses that require a message to the applicant can't be set without one
+     *
+     * @return void
+     */
+    public function testReviewSetStatusRequiresMessage(): void
+    {
+        $this->loginAs(3);
+        $this->post('/admin/projects/review/1', ['message' => '', 'status_id' => Project::STATUS_REJECTED]);
+        $this->assertNoRedirect();
+
+        $project = TableRegistry::getTableLocator()->get('Projects')->get(1);
+        $this->assertSame(Project::STATUS_UNDER_REVIEW, $project->status_id);
     }
 }

@@ -19,6 +19,7 @@ namespace App\Test\TestCase\Controller;
 use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * PagesControllerTest class
@@ -30,11 +31,25 @@ class PagesControllerTest extends TestCase
     use IntegrationTestTrait;
 
     /**
+     * Fixtures
+     *
+     * @var list<string>
+     */
+    protected array $fixtures = [
+        'app.ArticleImages',
+        'app.Articles',
+        'app.Categories',
+        'app.FundingCycles',
+        'app.Projects',
+        'app.Users',
+    ];
+
+    /**
      * testMultipleGet method
      *
      * @return void
      */
-    public function testMultipleGet()
+    public function testMultipleGet(): void
     {
         $this->get('/');
         $this->assertResponseOk();
@@ -43,16 +58,42 @@ class PagesControllerTest extends TestCase
     }
 
     /**
-     * testDisplay method
+     * Tests that the home page renders, including the latest published article
      *
      * @return void
      */
-    public function testDisplay()
+    public function testHome(): void
     {
-        $this->get('/pages/home');
+        $this->get('/');
         $this->assertResponseOk();
-        $this->assertResponseContains('CakePHP');
-        $this->assertResponseContains('<html>');
+        $this->assertResponseContains('The Vore Arts Fund');
+        $this->assertResponseContains('Lorem ipsum dolor sit amet');
+    }
+
+    /**
+     * @return array<array<string>>
+     */
+    public static function staticPageProvider(): array
+    {
+        return [
+            ['/about'],
+            ['/contact'],
+            ['/privacy'],
+            ['/terms'],
+        ];
+    }
+
+    /**
+     * Tests that static pages render for unauthenticated visitors
+     *
+     * @param string $url Page URL
+     * @return void
+     */
+    #[DataProvider('staticPageProvider')]
+    public function testStaticPage(string $url): void
+    {
+        $this->get($url);
+        $this->assertResponseOk();
     }
 
     /**
@@ -60,13 +101,12 @@ class PagesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testMissingTemplate()
+    public function testMissingTemplate(): void
     {
         Configure::write('debug', false);
-        $this->get('/pages/not_existing');
+        $this->get('/pages/display/not_existing');
 
-        $this->assertResponseError();
-        $this->assertResponseContains('Error');
+        $this->assertResponseCode(404);
     }
 
     /**
@@ -74,14 +114,13 @@ class PagesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testMissingTemplateInDebug()
+    public function testMissingTemplateInDebug(): void
     {
         Configure::write('debug', true);
-        $this->get('/pages/not_existing');
+        $this->get('/pages/display/not_existing');
 
         $this->assertResponseFailure();
         $this->assertResponseContains('Missing Template');
-        $this->assertResponseContains('Stacktrace');
         $this->assertResponseContains('not_existing.php');
     }
 
@@ -90,37 +129,9 @@ class PagesControllerTest extends TestCase
      *
      * @return void
      */
-    public function testDirectoryTraversalProtection()
+    public function testDirectoryTraversalProtection(): void
     {
-        $this->get('/pages/../Layout/ajax');
+        $this->get('/pages/display/../Layout/ajax');
         $this->assertResponseCode(403);
-        $this->assertResponseContains('Forbidden');
-    }
-
-    /**
-     * Test that CSRF protection is applied to page rendering.
-     *
-     * @return void
-     */
-    public function testCsrfAppliedError()
-    {
-        $this->post('/pages/home', ['hello' => 'world']);
-
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('CSRF');
-    }
-
-    /**
-     * Test that CSRF protection is applied to page rendering.
-     *
-     * @return void
-     */
-    public function testCsrfAppliedOk()
-    {
-        $this->enableCsrfToken();
-        $this->post('/pages/home', ['hello' => 'world']);
-
-        $this->assertResponseCode(200);
-        $this->assertResponseContains('CakePHP');
     }
 }

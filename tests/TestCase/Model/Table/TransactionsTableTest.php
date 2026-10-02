@@ -23,9 +23,11 @@ class TransactionsTableTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
-        'app.Transactions',
+    protected array $fixtures = [
+        'app.Categories',
         'app.Projects',
+        'app.Transactions',
+        'app.Users',
     ];
 
     /**

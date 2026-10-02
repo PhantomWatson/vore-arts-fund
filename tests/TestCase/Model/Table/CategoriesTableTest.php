@@ -24,9 +24,10 @@ class CategoriesTableTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    protected array $fixtures = [
         'app.Categories',
         'app.Projects',
+        'app.Users',
     ];
 
     /**

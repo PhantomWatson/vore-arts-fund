@@ -21,10 +21,11 @@ class ReportsControllerTest extends TestCase
      *
      * @var array<string>
      */
-    protected $fixtures = [
+    protected array $fixtures = [
+        'app.Categories',
+        'app.Projects',
         'app.Reports',
         'app.Users',
-        'app.Projects',
     ];
 
     /**

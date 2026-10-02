@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
+use App\Model\Entity\Project;
+use App\Test\TestCase\LoginTrait;
+use Cake\I18n\DateTime;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
@@ -10,64 +13,185 @@ use Cake\TestSuite\TestCase;
 /**
  * App\Controller\ProjectsController Test Case
  *
+ * Also covers project actions in \App\Controller\My\ProjectsController
+ *
  * @uses \App\Controller\ProjectsController
+ * @uses \App\Controller\My\ProjectsController
  */
 class ProjectsControllerTest extends TestCase
 {
     use IntegrationTestTrait;
+    use LoginTrait;
 
     /**
      * Fixtures
      *
-     * @var array
+     * @var list<string>
      */
-    public $fixtures = [
-        'app.Projects',
-        'app.Users',
+    protected array $fixtures = [
+        'app.Answers',
         'app.Categories',
         'app.FundingCycles',
-        'app.Statuses',
-        'app.Images',
         'app.Messages',
         'app.Notes',
+        'app.ProjectImages',
+        'app.Projects',
+        'app.Questions',
+        'app.Users',
         'app.Votes',
     ];
+
+    /**
+     * Creates a funding cycle that is currently accepting applications
+     *
+     * @return void
+     */
+    private function createCurrentFundingCycle(): void
+    {
+        $fundingCyclesTable = TableRegistry::getTableLocator()->get('FundingCycles');
+        $fundingCycle = $fundingCyclesTable->newEntity([
+            'application_begin' => new DateTime('-1 day'),
+            'application_end' => new DateTime('+7 days'),
+            'resubmit_deadline' => new DateTime('+10 days'),
+            'vote_begin' => new DateTime('+14 days'),
+            'vote_end' => new DateTime('+21 days'),
+            'funding_available' => 1000000,
+        ]);
+        $fundingCyclesTable->saveOrFail($fundingCycle);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getApplicationData(): array
+    {
+        return [
+            'accept_partial_payout' => 0,
+            'address' => '123 Main St',
+            'amount_requested' => 500,
+            'answers' => [
+                ['answer' => 'An answer', 'question_id' => 1],
+            ],
+            'category_id' => 1,
+            'check_name' => 'Jimmy',
+            'description' => 'A description',
+            'eligibility-applicant-agree' => 1,
+            'eligibility-project-agree' => 1,
+            'loan-terms-agree' => 1,
+            'save-mode' => 'submit',
+            'title' => 'New project',
+            'zipcode' => '47306',
+        ];
+    }
+
+    /**
+     * Sets the status of the project in ProjectsFixture
+     *
+     * @param int $statusId Status ID
+     * @return void
+     */
+    private function setFixtureProjectStatus(int $statusId): void
+    {
+        TableRegistry::getTableLocator()->get('Projects')->updateAll(['status_id' => $statusId], ['id' => 1]);
+    }
+
+    /**
+     * Tests that unauthenticated users are sent to log in before applying
+     *
+     * @return void
+     */
+    public function testApplyRequiresLogin(): void
+    {
+        $this->createCurrentFundingCycle();
+        $this->get('/apply');
+        $this->assertRedirectContains('/login');
+    }
+
+    /**
+     * Tests the message shown when no funding cycle is accepting applications
+     *
+     * @return void
+     */
+    public function testApplyWithNoCurrentFundingCycle(): void
+    {
+        $this->loginAs(1);
+        $this->get('/apply');
+        $this->assertResponseOk();
+        $this->assertResponseContains('applications are not being accepted at the moment');
+    }
 
     /**
      * Test apply method
      *
      * @return void
      */
-    public function testApply()
+    public function testApply(): void
     {
-        $data = [
-            'id' => 32,
-            'title' => 'Test',
-            'description' => 'Praesent id massa id nisl venenatis
-            lacinia. Aenean sit amet justo. Morbi ut odio.
-            Cras mi pede, malesuada in, imperdiet et, commodo
-            vulputate, justo.',
-            'amount_requested' => 555555,
-            'accept_partial_payout' => 0,
-            'category_id' => 3,
-            'user_id' => 1,
-            'funding_cycle_id' => 1,
-            'status_id' => 9,
-        ];
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 1,
-                    'username' => 'testing',
-                    // other keys.
-                ],
-            ],
-        ]);
+        $this->createCurrentFundingCycle();
+        $this->loginAs(1);
+        $this->post('/apply', $this->getApplicationData());
+        $this->assertRedirect(['prefix' => 'My', 'controller' => 'Projects', 'action' => 'index']);
+
+        /** @var \App\Model\Entity\Project $project */
+        $project = TableRegistry::getTableLocator()
+            ->get('Projects')
+            ->find()
+            ->where(['title' => 'New project'])
+            ->contain(['Answers'])
+            ->firstOrFail();
+        $this->assertSame(1, $project->user_id);
+        $this->assertSame(Project::STATUS_UNDER_REVIEW, $project->status_id);
+        $this->assertCount(1, $project->answers);
+    }
+
+    /**
+     * Tests that applying fails unless all terms are agreed to
+     *
+     * @return void
+     */
+    public function testApplyRequiresAgreements(): void
+    {
+        $this->enableRetainFlashMessages();
+        $this->createCurrentFundingCycle();
+        $this->loginAs(1);
+        $data = $this->getApplicationData();
+        $data['loan-terms-agree'] = 0;
         $this->post('/apply', $data);
-        $this->assertResponseSuccess();
-        $projectsTable = TableRegistry::getTableLocator()->get('projects');
-        $query = $projectsTable->find()->where(['id' => 1]);
-        $this->assertEquals(1, $query->count());
+        $this->assertFlashMessage('You must agree to all terms in order to apply for funding.');
+
+        $count = TableRegistry::getTableLocator()->get('Projects')->find()->where(['title' => 'New project'])->count();
+        $this->assertSame(0, $count);
+    }
+
+    /**
+     * Tests that an answer over the length limit is rejected and its error is displayed
+     *
+     * @return void
+     */
+    public function testApplyWithAnswerTooLong(): void
+    {
+        $this->createCurrentFundingCycle();
+        $this->loginAs(1);
+        $data = $this->getApplicationData();
+        $data['answers'][0]['answer'] = str_repeat('a', 2001);
+        $this->post('/apply', $data);
+        $this->assertNoRedirect();
+        $this->assertResponseContains('The provided value must be at most `2000` characters long');
+    }
+
+    /**
+     * Tests that line breaks submitted as CRLF only count as one character toward the length limit
+     *
+     * @return void
+     */
+    public function testApplyCountsCrlfAsOneCharacter(): void
+    {
+        $this->createCurrentFundingCycle();
+        $this->loginAs(1);
+        $data = $this->getApplicationData();
+        $data['answers'][0]['answer'] = str_repeat(str_repeat('a', 199) . "\r\n", 10);
+        $this->post('/apply', $data);
+        $this->assertRedirect(['prefix' => 'My', 'controller' => 'Projects', 'action' => 'index']);
     }
 
     /**
@@ -75,19 +199,24 @@ class ProjectsControllerTest extends TestCase
      *
      * @return void
      */
-    public function testView()
+    public function testView(): void
     {
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 1,
-                    'username' => 'testing',
-                    // other keys.
-                ],
-            ],
-        ]);
-        $this->get('/view-project/1');
+        $this->setFixtureProjectStatus(Project::STATUS_ACCEPTED);
+        $this->get('/project/1');
         $this->assertResponseOk();
+        $this->assertResponseContains('Lorem ipsum dolor sit amet');
+    }
+
+    /**
+     * Tests that projects that haven't been accepted can't be viewed publicly
+     *
+     * @return void
+     */
+    public function testViewUnderReview(): void
+    {
+        $this->setFixtureProjectStatus(Project::STATUS_UNDER_REVIEW);
+        $this->get('/project/1');
+        $this->assertRedirect('/');
     }
 
     /**
@@ -95,85 +224,29 @@ class ProjectsControllerTest extends TestCase
      *
      * @return void
      */
-    public function testWithdraw()
+    public function testWithdraw(): void
     {
-        $data = [
-            'id' => 1,
-            'title' => 'Test',
-            'description' => 'Praesent id massa id nisl venenatis
-            lacinia. Aenean sit amet justo. Morbi ut odio.
-            Cras mi pede, malesuada in, imperdiet et, commodo
-            vulputate, justo.',
-            'amount_requested' => 555555,
-            'accept_partial_payout' => 0,
-            'category_id' => 3,
-            'user_id' => 1,
-            'funding_cycle_id' => 1,
-            'status_id' => 9,
-        ];
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 1,
-                    'username' => 'testing',
-                    // other keys.
-                ],
-            ],
-        ]);
-        $this->post('/apply', $data);
-        $this->assertResponseSuccess();
+        $this->loginAs(1);
+        $this->post('/my/projects/withdraw/1');
+        $this->assertRedirect(['prefix' => 'My', 'controller' => 'Projects', 'action' => 'index']);
 
-        $data = [
-            'status_id' => 8,
-        ];
-        $this->post('/withdraw/1', $data);
-        $this->assertResponseSuccess();
-        $projectsTable = TableRegistry::getTableLocator()->get('projects');
-        $query = $projectsTable->find()->where(['status_id' => 8, 'id' => 1]);
-        $this->assertEquals(1, $query->count());
+        $project = TableRegistry::getTableLocator()->get('Projects')->get(1);
+        $this->assertSame(Project::STATUS_WITHDRAWN, $project->status_id);
     }
 
     /**
-     * Test resubmit method
+     * Tests that users can't withdraw other users' projects
      *
      * @return void
      */
-    public function testResubmit()
+    public function testWithdrawOtherUsersProject(): void
     {
-        $data = [
-            'id' => 1,
-            'title' => 'Test',
-            'description' => 'Praesent id massa id nisl venenatis
-            lacinia. Aenean sit amet justo. Morbi ut odio.
-            Cras mi pede, malesuada in, imperdiet et, commodo
-            vulputate, justo.',
-            'amount_requested' => 555555,
-            'accept_partial_payout' => 0,
-            'category_id' => 3,
-            'user_id' => 1,
-            'funding_cycle_id' => 1,
-            'status_id' => 8,
-        ];
-        $this->session([
-            'Auth' => [
-                'User' => [
-                    'id' => 1,
-                    'username' => 'testing',
-                    // other keys.
-                ],
-            ],
-        ]);
-        $this->post('/apply', $data);
-        $this->assertResponseSuccess();
+        $this->loginAs(2);
+        $this->post('/my/projects/withdraw/1');
+        $this->assertRedirect('/');
 
-        $data = [
-            'status_id' => 9,
-        ];
-        $this->post('/resubmit/1', $data);
-        $this->assertResponseSuccess();
-        $projectsTable = TableRegistry::getTableLocator()->get('projects');
-        $query = $projectsTable->find()->where(['status_id' => 9, 'id' => 1]);
-        $this->assertEquals(1, $query->count());
+        $project = TableRegistry::getTableLocator()->get('Projects')->get(1);
+        $this->assertSame(Project::STATUS_UNDER_REVIEW, $project->status_id);
     }
 
     /**
@@ -181,8 +254,29 @@ class ProjectsControllerTest extends TestCase
      *
      * @return void
      */
-    public function testDelete()
+    public function testDelete(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->setFixtureProjectStatus(Project::STATUS_DRAFT);
+        $this->loginAs(1);
+        $this->post('/my/projects/delete/1');
+        $this->assertRedirect();
+
+        $project = TableRegistry::getTableLocator()->get('Projects')->get(1);
+        $this->assertSame(Project::STATUS_DELETED, $project->status_id);
+    }
+
+    /**
+     * Tests that applications under review can't be deleted (they must be withdrawn first)
+     *
+     * @return void
+     */
+    public function testDeleteUnderReview(): void
+    {
+        $this->setFixtureProjectStatus(Project::STATUS_UNDER_REVIEW);
+        $this->loginAs(1);
+        $this->post('/my/projects/delete/1');
+
+        $project = TableRegistry::getTableLocator()->get('Projects')->get(1);
+        $this->assertSame(Project::STATUS_UNDER_REVIEW, $project->status_id);
     }
 }
