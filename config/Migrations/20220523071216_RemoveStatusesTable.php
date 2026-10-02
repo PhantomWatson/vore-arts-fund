@@ -14,6 +14,7 @@ class RemoveStatusesTable extends BaseMigration
      */
     public function change()
     {
-        $this->table('statuses')->drop();
+        // Intentionally a no-op. Under the old Phinx backend, this queued drop() was never saved, so the table was
+        // actually removed by the DropStatuses migration
     }
 }

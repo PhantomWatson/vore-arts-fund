@@ -70,7 +70,9 @@ class AddQuestionsAndAnswersTables extends BaseMigration
             ])
             ->create();
 
+        // Explicitly named to match the index that the old Phinx backend implicitly created for this foreign key
         $this->table('answers')
+             ->addIndex(['application_id'], ['name' => 'application_id'])
              ->addForeignKey(
                  'application_id',
                  'applications',

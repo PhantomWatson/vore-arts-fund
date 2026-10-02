@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use Cake\Core\Configure;
 use Migrations\BaseMigration;
-use Phinx\Db\Table\Column;
+use Migrations\Db\Table\Column;
 
 class SetUtf8mb4Collation extends BaseMigration
 {
@@ -16,20 +15,8 @@ class SetUtf8mb4Collation extends BaseMigration
      */
     public function up(): void
     {
-        // Load config info
-        if (file_exists(CONFIG . 'environment.php')) {
-            include(CONFIG . 'environment.php');
-            $environment = getEnvironment();
-
-            if (file_exists(CONFIG . 'app_local_' . $environment . '.php')) {
-                Configure::load('app_local_' . $environment);
-            }
-        }
-
-        // Update database
-        $databaseConfig = Configure::read('Datasources');
-        $dbName = $databaseConfig['default']['database'];
-        $this->execute("ALTER DATABASE $dbName CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+        // Update the database being migrated (omitting the name uses the connection's current database)
+        $this->execute('ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
 
         // All tables with string columns
         $tables = [
@@ -46,6 +33,11 @@ class SetUtf8mb4Collation extends BaseMigration
             'users',
         ];
         foreach ($tables as $tableName) {
+            // Skip tables from plugins that are no longer installed
+            if (!$this->hasTable($tableName)) {
+                continue;
+            }
+
             // Update table
             $this->execute("ALTER TABLE $tableName CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
 

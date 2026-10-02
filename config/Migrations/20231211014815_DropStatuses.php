@@ -15,7 +15,10 @@ class DropStatuses extends BaseMigration
     public function change(): void
     {
         $this->table('projects')
-            //->removeIndex('status_id')
+            ->dropForeignKey('status_id')
+            ->save();
+        $this->table('projects')
+            ->removeIndex('status_id')
             ->save();
 
         $this->table('statuses')
