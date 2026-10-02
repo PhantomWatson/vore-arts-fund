@@ -23,8 +23,8 @@ class AnswersFixture extends TestFixture
                 'project_id' => 1,
                 'question_id' => 1,
                 'answer' => 'Lorem ipsum dolor sit amet',
-                'created' => 1654937339,
-                'modified' => 1654937339,
+                'created' => '2022-06-11 08:48:59',
+                'modified' => '2022-06-11 08:48:59',
             ],
         ];
         parent::init();

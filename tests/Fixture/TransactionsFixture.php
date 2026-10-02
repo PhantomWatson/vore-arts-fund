@@ -21,10 +21,15 @@ class TransactionsFixture extends TestFixture
             [
                 'id' => 1,
                 'type' => 1,
-                'amount' => 1,
+                'name' => 'Lorem ipsum dolor sit amet',
+                'amount_gross' => 100,
+                'amount_net' => 97,
                 'project_id' => 1,
-                'meta' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'created' => 1684474391,
+                'user_id' => 1,
+                'meta' => 'Lorem ipsum dolor sit amet',
+                'date' => '2023-05-19 05:33:11',
+                'created' => '2023-05-19 05:33:11',
+                'modified' => '2023-05-19 05:33:11',
             ],
         ];
         parent::init();
