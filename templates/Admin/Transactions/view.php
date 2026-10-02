@@ -6,13 +6,13 @@
  * @var mixed $data
  */
 
-function isValidJson($data) {
+$isValidJson = function ($data) {
     if (is_string($data) && !empty($data)) {
         @json_decode($data);
         return (json_last_error() === JSON_ERROR_NONE);
     }
     return false;
-}
+};
 ?>
 
 <?= $this->Html->link(
@@ -70,7 +70,7 @@ function isValidJson($data) {
             Meta
         </th>
         <td>
-            <?php if (isValidJson($transaction->meta)): ?>
+            <?php if ($isValidJson($transaction->meta)): ?>
                 <pre><?= json_encode(json_decode($transaction->meta), JSON_PRETTY_PRINT) ?></pre>
             <?php else: ?>
                 <?= $this->Text->autoParagraph(h($transaction->meta)); ?>

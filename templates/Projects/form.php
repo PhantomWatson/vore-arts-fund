@@ -30,14 +30,14 @@ $preloadImageData = array_map(function (ProjectImage|array $image) {
     ];
 }, $data['images'] ?? $project->images ?? []);
 
-function getAgreementCheckedValue($key, $data, $project)
+$getAgreementCheckedValue = function ($key, $data, $project)
 {
     if (isset($data[$key])) {
         return $data[$key] ? 'checked="checked"' : '';
     }
 
     return $project->isNew() ? '' : 'checked="checked"';
-}
+};
 ?>
 
 <div class="apply row">
@@ -142,7 +142,7 @@ function getAgreementCheckedValue($key, $data, $project)
             <input type="hidden" name="eligibility-applicant-agree" value="0" />
             <input class="form-check-input" type="checkbox" value="1" id="eligibility-applicant-agree-checkbox"
                    required="required" name="eligibility-applicant-agree"
-                   <?= getAgreementCheckedValue('eligibility-applicant-agree', $data, $project) ?>
+                   <?= $getAgreementCheckedValue('eligibility-applicant-agree', $data, $project) ?>
             >
             <label class="form-check-label" for="eligibility-applicant-agree-checkbox">
                 I am eligible to apply
@@ -162,7 +162,7 @@ function getAgreementCheckedValue($key, $data, $project)
             <input type="hidden" value="0" name="eligibility-project-agree" />
             <input class="form-check-input" type="checkbox" value="1" id="eligibility-project-agree-checkbox"
                    required="required" name="eligibility-project-agree"
-                   <?= getAgreementCheckedValue('eligibility-project-agree', $data, $project) ?>
+                   <?= $getAgreementCheckedValue('eligibility-project-agree', $data, $project) ?>
             >
             <label class="form-check-label" for="eligibility-project-agree-checkbox">
                 This project qualifies for funding
@@ -198,7 +198,7 @@ function getAgreementCheckedValue($key, $data, $project)
             <input type="hidden" value="0" name="loan-terms-agree" />
             <input class="form-check-input" type="checkbox" value="1" id="loan-terms-agree-checkbox" required="required"
                    name="loan-terms-agree"
-                <?= getAgreementCheckedValue('loan-terms-agree', $data, $project) ?>
+                <?= $getAgreementCheckedValue('loan-terms-agree', $data, $project) ?>
             >
             <label class="form-check-label" for="loan-terms-agree-checkbox">
                 I agree to these terms

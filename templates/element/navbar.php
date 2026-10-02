@@ -171,11 +171,11 @@ $adminLinks = [
     ]
 ];
 
-function echoLinks(\Cake\View\View $appView, $links, $navbarItemClass = 'nav-item') {
+$echoLinks = function (\Cake\View\View $appView, $links, $navbarItemClass = 'nav-item') {
     foreach ($links as $link) {
         echo '<li class="' . $navbarItemClass . '">' . $appView->Html->link(...$link) . '</li>';
     }
-}
+};
 
 ?>
 <header id="header" class="fixed-top">
@@ -193,19 +193,19 @@ function echoLinks(\Cake\View\View $appView, $links, $navbarItemClass = 'nav-ite
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <?php echoLinks($this, $links); ?>
+                    <?php $echoLinks($this, $links); ?>
 
                     <li class="nav-item dropdown">
                         <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown">News</button>
                         <ul class="dropdown-menu">
-                            <?php echoLinks($this, $newsLinks, ''); ?>
+                            <?php $echoLinks($this, $newsLinks, ''); ?>
                         </ul>
                     </li>
 
                     <li class="nav-item dropdown">
                         <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown">About</button>
                         <ul class="dropdown-menu">
-                            <?php echoLinks($this, $aboutLinks, ''); ?>
+                            <?php $echoLinks($this, $aboutLinks, ''); ?>
                         </ul>
                     </li>
 
@@ -213,14 +213,14 @@ function echoLinks(\Cake\View\View $appView, $links, $navbarItemClass = 'nav-ite
                         <li class="nav-item dropdown">
                             <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Account</button>
                             <ul class="dropdown-menu">
-                                <?php echoLinks($this, $loggedInLinks, ''); ?>
+                                <?php $echoLinks($this, $loggedInLinks, ''); ?>
                             </ul>
                         </li>
                         <?php if ($isAdmin): ?>
                             <li class="nav-item dropdown">
                                 <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Admin</button>
                                 <ul class="dropdown-menu">
-                                    <?php echoLinks($this, $adminLinks, ''); ?>
+                                    <?php $echoLinks($this, $adminLinks, ''); ?>
                                 </ul>
                             </li>
                         <?php endif; ?>

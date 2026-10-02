@@ -12,7 +12,7 @@ use App\Model\Entity\Project;
 $budgeted = $fundingCycle?->funding_available ?? 0;
 $budgetRemaining = $budgeted;
 
-function getToAward(Project $project, $budgetRemaining, $votingHasPassed)
+$getToAward = function (Project $project, $budgetRemaining, $votingHasPassed)
 {
     // Nothing can be awarded to projects that receive no votes
     $receivedVotes = $project->voting_score != null;
@@ -64,7 +64,7 @@ function getToAward(Project $project, $budgetRemaining, $votingHasPassed)
     }
 
     return $amountDisplayed;
-}
+};
 
 ?>
 
@@ -135,7 +135,7 @@ function getToAward(Project $project, $budgetRemaining, $votingHasPassed)
                         ) ?>
                     </td>
                     <td>
-                        <?= getToAward($project, $budgetRemaining, $fundingCycle->votingHasPassed()); ?>
+                        <?= $getToAward($project, $budgetRemaining, $fundingCycle->votingHasPassed()); ?>
                     </td>
                 </tr>
                 <?php
