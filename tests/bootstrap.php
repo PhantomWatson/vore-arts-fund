@@ -30,6 +30,9 @@ require dirname(__DIR__) . '/config/bootstrap.php';
 
 $_SERVER['PHP_SELF'] = '/';
 
+// Checked by \App\Alert\Alert::send() to avoid sending Slack alerts during tests
+define('PHPUNIT_RUNNING', true);
+
 Configure::write('App.fullBaseUrl', 'http://localhost');
 
 // DebugKit skips settings these connection config if PHP SAPI is CLI / PHPDBG.
