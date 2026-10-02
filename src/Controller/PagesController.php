@@ -202,7 +202,7 @@ class PagesController extends AppController
             ->orderByDesc('Articles.dated')
             ->first();
 
-        $isStaging = str_contains($_SERVER['HTTP_HOST'], 'staging.');
+        $isStaging = str_contains((string)$this->getRequest()->host(), 'staging.');
 
         $this->set([
             'isStaging' => $isStaging,

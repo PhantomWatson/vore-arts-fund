@@ -69,7 +69,7 @@ class ProjectsController extends BaseProjectsController
     {
         $this->getRequest()->allowMethod('post');
         $id = $this->request->getParam('id');
-        if ($this->Projects->updateStatus($id, Project::STATUS_WITHDRAWN)) {
+        if ($this->Projects->updateStatus((int)$id, Project::STATUS_WITHDRAWN)) {
             $this->Flash->success('Application withdrawn.');
         } else {
             $this->Flash->error('There was an error withdrawing your application.');
