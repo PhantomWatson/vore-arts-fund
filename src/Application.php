@@ -31,12 +31,13 @@ use Cake\Event\EventManagerInterface;
 use Cake\Http\BaseApplication;
 use Cake\Http\MiddlewareQueue;
 use Cake\Http\Middleware\BodyParserMiddleware;
-use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\Routing\Router;
 use Psr\Http\Message\ServerRequestInterface;
+use ReCaptcha\ReCaptcha;
+use ReCaptcha\RequestMethod\CurlPost;
 
 /**
  * Application setup class.
@@ -136,6 +137,12 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
     {
         // Allow your Tables to be dependency injected
         //$container->delegate(new \Cake\ORM\Locator\TableContainer());
+
+        // Provided through the container so that tests can replace it with a stub
+        $container->add(
+            ReCaptcha::class,
+            fn() => new ReCaptcha(Configure::read('recaptcha.secretKey'), new CurlPost()),
+        );
     }
 
     /**
