@@ -13,7 +13,6 @@ use Cake\Http\Response;
 use Cake\Mailer\Mailer;
 use Cake\Routing\Router;
 use ReCaptcha\ReCaptcha;
-use ReCaptcha\RequestMethod\CurlPost;
 use Twilio\Exceptions\TwilioException;
 use Twilio\Rest\Client;
 
@@ -97,15 +96,12 @@ class UsersController extends AppController
     /**
      * Checks the reCAPTCHA response, returns a boolean, and displays an error message on failure
      *
+     * @param \ReCaptcha\ReCaptcha $recaptcha reCAPTCHA client
      * @return bool
      */
-    public function recaptchaResponseIsValid(): bool
+    public function recaptchaResponseIsValid(ReCaptcha $recaptcha): bool
     {
-        $captchaResponse = $_POST['g-recaptcha-response'] ?? null;
-        $recaptcha = new ReCaptcha(
-            Configure::read('recaptcha.secretKey'),
-            new CurlPost(),
-        );
+        $captchaResponse = $this->getRequest()->getData('g-recaptcha-response');
 
         $resp = $recaptcha->verify($captchaResponse, $this->getRequest()->clientIp());
         if ($resp->isSuccess()) {
@@ -123,14 +119,15 @@ class UsersController extends AppController
     /**
      * User registration page
      *
+     * @param \ReCaptcha\ReCaptcha $recaptcha reCAPTCHA client
      * @return \Cake\Http\Response|null
      * @throws \Twilio\Exceptions\TwilioException
      */
-    public function register(): ?Response
+    public function register(ReCaptcha $recaptcha): ?Response
     {
         $user = $this->Users->newEmptyEntity();
 
-        if ($this->request->is('post') && $this->recaptchaResponseIsValid()) {
+        if ($this->request->is('post') && $this->recaptchaResponseIsValid($recaptcha)) {
             $data = $this->request->getData();
             $data['email'] = $data['registerEmail'] ?? '';
             $data['password'] = $data['registerPassword'] ?? '';
