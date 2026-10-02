@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
+use Migrations\TestSuite\Migrator;
 
 /**
  * Test runner bootstrap.
@@ -48,6 +49,24 @@ ConnectionManager::setConfig('test_debug_kit', [
 ]);
 
 ConnectionManager::alias('test_debug_kit', 'debug_kit');
+
+// Fixtures truncate tables, so refuse to run against the application's own database
+$defaultDbConfig = ConnectionManager::getConfig('default');
+$testDbConfig = ConnectionManager::getConfig('test');
+if (
+    ($testDbConfig['host'] ?? null) === ($defaultDbConfig['host'] ?? null)
+    && ($testDbConfig['database'] ?? null) === ($defaultDbConfig['database'] ?? null)
+) {
+    throw new RuntimeException(
+        'The `test` datasource points to the same database as `default`. Configure a separate test database.',
+    );
+}
+
+// Build the test database schema from the app's and plugins' migrations
+new Migrator()->runMany([
+    ['connection' => 'test'],
+    ['connection' => 'test', 'plugin' => 'Queue'],
+]);
 
 // Fixate sessionid early on, as php7.2+
 // does not allow the sessionid to be set after stdout
