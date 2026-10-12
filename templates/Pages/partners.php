@@ -51,6 +51,17 @@
     </tr>
     <tr>
         <td>
+            <a href="https://purplesnailstudios.com/">Purple Snail Studios</a>
+        </td>
+        <td>
+            Professional audio recording
+        </td>
+        <td>
+            25% discount on recording services <em>or</em> free mixing and mastering (whichever is higher)
+        </td>
+    </tr>
+    <tr>
+        <td>
             <a href="https://www.tribune-showprint.com">Tribune Showprint</a>
         </td>
         <td>
