@@ -37,7 +37,7 @@ class ProjectsController extends AppController
     private CategoriesTable $Categories;
     private ProjectImagesTable $ProjectImages;
 
-    public function beforeFilter(EventInterface $event)
+    public function beforeFilter(EventInterface $event): void
     {
         parent::beforeFilter($event);
         $this->FundingCycles = $this->fetchTable('FundingCycles');
@@ -56,7 +56,7 @@ class ProjectsController extends AppController
      *
      * @param \Cake\I18n\DateTime $deadline
      */
-    protected function setFromNow(DateTime $deadline)
+    protected function setFromNow(DateTime $deadline): void
     {
         // Set times to 00:00 to make "days from now" math easier
         $deadline = $deadline->setTime(0, 0, 0, 0);
