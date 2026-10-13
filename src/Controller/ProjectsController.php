@@ -519,5 +519,7 @@ class ProjectsController extends AppController
 
         $this->title('Resubmit a Past Application');
         $this->set(compact('pastProjects'));
+
+        return null;
     }
 }
