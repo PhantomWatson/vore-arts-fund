@@ -63,17 +63,11 @@ class ProjectsController extends AppController
         $tz = Application::LOCAL_TIMEZONE;
         $today = DateTime::now($tz)->setTime(0, 0, 0, 0);
         $days = $deadline->diffInDays($today);
-        switch ($days) {
-            case 0:
-                $fromNow = 'today';
-                break;
-            case 1:
-                $fromNow = 'tomorrow';
-                break;
-            default:
-                $fromNow = number_format($days) . ' days from now';
-                break;
-        }
+        $fromNow = match ($days) {
+            0 => 'today',
+            1 => 'tomorrow',
+            default => number_format($days) . ' days from now',
+        };
 
         $this->set(['fromNow' => $fromNow]);
     }
