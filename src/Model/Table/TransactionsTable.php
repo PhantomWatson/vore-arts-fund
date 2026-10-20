@@ -144,9 +144,10 @@ class TransactionsTable extends Table
      * TODO: Check metadata for project_id and update type and project_id as appropriate
      *
      * @param \Stripe\Charge $charge
+     * @param string|null $stripeEventId
      * @return Transaction|false
      */
-    public function addPayment(\Stripe\Charge $charge): Transaction|false
+    public function addPayment(\Stripe\Charge $charge, ?string $stripeEventId = null): Transaction|false
     {
         $transactionType = isset($charge->metadata['transactionType'])
             ? (int)$charge->metadata['transactionType']
@@ -173,6 +174,7 @@ class TransactionsTable extends Table
         ];
         $transaction = $this->newEntity($data);
         $transaction->user_id = isset($charge->metadata['userId']) ? (int)$charge->metadata['userId'] : null;
+        $transaction->stripe_event_id = $stripeEventId;
         if ($this->save($transaction)) {
             return $transaction;
         }
