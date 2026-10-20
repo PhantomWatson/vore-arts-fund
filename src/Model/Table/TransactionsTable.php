@@ -158,7 +158,7 @@ class TransactionsTable extends Table
 
         $data = [
             'amount_gross' => $charge->amount_captured,
-            'amount_net' => self::getNetAmount($charge->balance_transaction),
+            'amount_net' => self::getNetAmountFromCharge($charge),
             'date' => new \Cake\I18n\DateTime(),
             'type' => $transactionType,
             'project_id' => isset($charge->metadata['projectId']) ? (int)$charge->metadata['projectId'] : null,
@@ -178,12 +178,59 @@ class TransactionsTable extends Table
     }
 
     /**
+     * Returns the net amount of the specified charge, or NULL if it can't be determined
+     *
+     * The balance transaction is not always populated in the payload of a charge.succeeded webhook, so if it's missing,
+     * the charge is re-fetched from Stripe with the balance transaction expanded.
+     *
+     * @param \Stripe\Charge $charge
+     * @return int|null
+     */
+    public static function getNetAmountFromCharge(\Stripe\Charge $charge): ?int
+    {
+        $balanceTransaction = $charge->balance_transaction;
+
+        // If it's missing, fetch it
+        if (!$balanceTransaction) {
+            $stripe = new StripeClient(Configure::read('Stripe.secret_key'));
+            try {
+                $charge = $stripe->charges->retrieve($charge->id, ['expand' => ['balance_transaction']]);
+            } catch (ApiErrorException $e) {
+                self::logStripeError(sprintf(
+                    'Failed to re-fetch charge %s to find its balance transaction. Details: %s',
+                    $charge->id,
+                    $e->getMessage()
+                ));
+                return null;
+            }
+            $balanceTransaction = $charge->balance_transaction;
+        }
+
+        // If it's still missing, log an error and return null
+        if (!$balanceTransaction) {
+            self::logStripeError(sprintf(
+                'Charge %s has no balance transaction, so its net amount could not be determined.',
+                $charge->id
+            ));
+            return null;
+        }
+
+        // If it's an expanded object, return its net amount
+        if ($balanceTransaction instanceof \Stripe\BalanceTransaction) {
+            return $balanceTransaction->net;
+        }
+
+        // Otherwise, it's a balance transaction ID
+        return self::getNetAmountFromBalanceTransaction($balanceTransaction);
+    }
+
+    /**
      * Returns the net amount of the specified balance transaction, or NULL if there's an error
      *
      * @param string $balanceTransactionId
      * @return int|null
      */
-    public static function getNetAmount(string $balanceTransactionId): ?int
+    public static function getNetAmountFromBalanceTransaction(string $balanceTransactionId): ?int
     {
         $stripe = new StripeClient(Configure::read('Stripe.secret_key'));
         try {

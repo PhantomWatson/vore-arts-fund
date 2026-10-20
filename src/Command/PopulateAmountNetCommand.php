@@ -65,7 +65,7 @@ class PopulateAmountNetCommand extends Command
         foreach ($stripeTransactions as $stripeTransaction) {
             $meta = json_decode($stripeTransaction->meta);
             echo 'Fetching details for balance transaction ' . $meta->balance_transaction . PHP_EOL;
-            $netAmount = TransactionsTable::getNetAmount($meta->balance_transaction);
+            $netAmount = TransactionsTable::getNetAmountFromBalanceTransaction($meta->balance_transaction);
             if ($netAmount === null) {
                 echo '- Net amount cannot be fetched. ApiErrorException encountered. Log in to Stripe and check logs for details.' . PHP_EOL;
                 exit;
