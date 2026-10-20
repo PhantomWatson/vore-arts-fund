@@ -133,7 +133,7 @@ class AlertListener implements EventListenerInterface
                 'Amount: ' . (
                 $cents === false
                     ? 'Unknown'
-                    : ('$' . number_format(round($cents / 100, 2)))
+                    : ('$' . number_format(round($cents / 100, 2), 2))
                 ),
                 'Name: ' . ($name === false ? 'Unknown' : $name),
                 'Email: ' . ($email === false ? 'Unknown' : $email),
