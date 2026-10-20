@@ -83,8 +83,13 @@ class TransactionsController extends ApiController
             case 'charge.succeeded':
                 $charge = $event->data->object;
                 $this->writeToStripeLog('Charge: ' . print_r($charge, true));
+                if ($this->Transactions->exists(['stripe_event_id' => $event->id])) {
+                    $this->writeToStripeLog("Skipping event $event->id, which has already been recorded");
+                    $succeeded = true;
+                    break;
+                }
                 if (get_class($charge) == \Stripe\Charge::class) {
-                    $transaction = $this->Transactions->addPayment($charge);
+                    $transaction = $this->Transactions->addPayment($charge, $event->id);
                     $succeeded = $transaction !== false;
                 } else {
                     $this->writeToStripeLog('Cannot save charge: Not a \Stripe\Charge object', 'error');
