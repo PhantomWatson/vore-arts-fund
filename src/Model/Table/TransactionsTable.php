@@ -127,6 +127,12 @@ class TransactionsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn('project_id', 'Projects'), ['errorField' => 'project_id']);
+        $rules->add(
+            $rules->isUnique(
+                ['stripe_event_id'],
+                'A transaction matching this Stripe event ID has already been recorded'
+            )
+        );
 
         return $rules;
     }
