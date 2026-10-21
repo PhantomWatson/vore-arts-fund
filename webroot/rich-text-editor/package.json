@@ -17,7 +17,7 @@
     "@tiptap/starter-kit": "^2.11.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sanitize-html": "^2.18.0",
+    "sanitize-html": "^2.18.1",
     "tiptap-clean-paste": "^0.0.2"
   },
   "devDependencies": {
