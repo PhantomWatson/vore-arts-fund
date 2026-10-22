@@ -29,7 +29,9 @@ $isPaidOff = $balance <= 0;
             <section class="col">
                 <h3>Electronic payments</h3>
                 <p>
-                    Payments made electronically will incur a <strong>processing fee of <?= Transaction::STRIPE_FEE_DISPLAYED ?></strong>, which will not be applied to your loan balance.
+                    Payments made electronically will incur a <strong>processing fee of
+                    <?= Transaction::STRIPE_FEE_DISPLAYED ?></strong>, which goes to our payment processor and will
+                    not be applied to your loan balance.
                 </p>
             </section>
             <section class="col">
