@@ -100,6 +100,17 @@ class ProjectsController extends AppController
             return $this->redirectToLogin();
         }
 
+        // Throttling (requiring the user to wait a year before applying again)
+        $unpaidProject = $this
+            ->Projects
+            ->find('awardedInLastYearAndUnpaid')
+            ->first();
+        if ($unpaidProject) {
+            $this->set(['project' => $unpaidProject]);
+            $this->viewBuilder()->setTemplate('throttled');
+            return null;
+        }
+
         // Set up view vars
         $this->viewBuilder()->setTemplate('form');
         $this->setProjectVars();

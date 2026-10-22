@@ -706,4 +706,20 @@ class ProjectsTable extends Table
             ->find('withoutRecentReports', ['threshold' => $threshold])
             ->where(['Projects.loan_awarded_date <' => new Date($threshold)]);
     }
+
+    /**
+     * @param Query $query
+     * @return Query
+     */
+    public function findAwardedInLastYearAndUnpaid(Query $query): Query
+    {
+        return $query
+            ->find('notDeleted')
+            ->where([
+                'Projects.loan_awarded_date >=' => new Date('-12 months'),
+                'Projects.status_id' => Project::STATUS_AWARDED_AND_DISBURSED,
+                'Projects.is_repaid' => false,
+            ])
+            ->orderByDesc('Projects.loan_awarded_date');
+    }
 }
