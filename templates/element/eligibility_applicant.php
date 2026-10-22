@@ -10,6 +10,9 @@
         rules, nor is representing an organization that has been thus disqualified
     </li>
     <li>
+        has no unpaid balance on any loans issued by the VAF in the last twelve months
+    </li>
+    <li>
         has not contributed more than $5,000 to the VAF
     </li>
     <li>
