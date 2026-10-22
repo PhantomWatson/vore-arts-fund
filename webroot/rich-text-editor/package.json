@@ -17,7 +17,7 @@
     "@tiptap/starter-kit": "^2.11.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sanitize-html": "^2.17.5",
+    "sanitize-html": "^2.18.1",
     "tiptap-clean-paste": "^0.0.2"
   },
   "devDependencies": {
@@ -32,6 +32,6 @@
     "globals": "^15.14.0",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.22.0",
-    "vite": "^8.0.16"
+    "vite": "^8.3.4"
   }
 }
