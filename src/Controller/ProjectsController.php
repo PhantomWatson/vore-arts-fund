@@ -101,9 +101,11 @@ class ProjectsController extends AppController
         }
 
         // Throttling (requiring the user to wait a year before applying again)
+        $user = $this->getAuthUser();
         $unpaidProject = $this
             ->Projects
             ->find('awardedInLastYearAndUnpaid')
+            ->where(['user_id' => $user->id])
             ->first();
         if ($unpaidProject) {
             $this->set(['project' => $unpaidProject]);
@@ -116,7 +118,6 @@ class ProjectsController extends AppController
         $this->setProjectVars();
         $this->setFromNow($fundingCycle->application_end_local);
         $this->set('toLoad', $this->getAppFiles('image-uploader/dist', 'image-uploader/dist/styles'));
-        $user = $this->getAuthUser();
         $hasPastProjects = $this->Projects
             ->find('notDeleted')
             ->select(['id'])
