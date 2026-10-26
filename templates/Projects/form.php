@@ -239,13 +239,16 @@ $getAgreementCheckedValue = function ($key, $data, $project)
                             'required' => true,
                             'type' => 'number',
                             'step' => 1,
-                            'max' => Project::MAXIMUM_ALLOWED_REQUEST,
+                            'max' => $fundingCycle->funding_available,
                         ],
                     ) ?>
                     <span class="input-group-text">.00</span>
                 </div>
                 <p class="footnote">
-                    Please round to the nearest dollar
+                    Please round to the nearest dollar,
+                    <span id="maximum-allowed-request">
+                        maximum <?= $fundingCycle->funding_available_formatted ?>
+                    </span>
                 </p>
             </div>
             <?php $this->Form->setTemplates([
@@ -266,11 +269,6 @@ $getAgreementCheckedValue = function ($key, $data, $project)
                 </p>
             </div>
         </div>
-
-        <p class="alert alert-danger mt-2" style="display: none;" id="insufficient-budget-warning">
-            The funding cycle that you are applying in only has <?= $fundingCycle->funding_available_formatted ?> budgeted, so it cannot fully
-            fund your project.
-        </p>
     </fieldset>
 
     <fieldset>
@@ -416,22 +414,14 @@ $getAgreementCheckedValue = function ($key, $data, $project)
 <?= $this->element('expired_session_handler', compact('formId')) ?>
 
 <script>
-    const budget = <?= json_encode($fundingCycle->funding_available) ?>;
-    const budgetFormatted = <?= json_encode($fundingCycle->funding_available_formatted) ?>;
-    const radioButtons = document.querySelectorAll('input[name=accept_partial_payout]');
-    const budgetWarning = document.getElementById('insufficient-budget-warning');
     const amountRequested = document.querySelector('input[name=amount_requested]');
-    const refusePartialPayout = document.getElementById('accept-partial-payout-0');
-    const toggleWarning = () => {
-        budgetWarning.style.display = (amountRequested.value > budget && refusePartialPayout.checked)
-            ? 'block'
-            : 'none';
-    };
-    document.querySelectorAll('input[name=accept_partial_payout]').forEach(element => {
-        element.addEventListener('change', toggleWarning);
-    });
-    amountRequested.addEventListener('change', () => {
-        toggleWarning();
+    amountRequested.addEventListener('change', (event) => {
+        const input = event.target;
+        const max = parseInt(input.max);
+        if (input.value > max) {
+            input.value = max;
+            document.getElementById('maximum-allowed-request').style.fontWeight = 'bold';
+        }
     });
 
     const toggleSaveModeOptionHighlight = () => {
