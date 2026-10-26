@@ -20,8 +20,8 @@ use Cake\Routing\Router;
  * @property \Cake\I18n\DateTime|null $resubmit_deadline_local
  * @property \Cake\I18n\DateTime|null $vote_begin_local
  * @property \Cake\I18n\DateTime|null $vote_end_local
- * @property int $funding_available
- * @property string $funding_available_formatted
+ * @property int $funding_available In dollars
+ * @property string $funding_available_formatted e.g. $1,000
  * @property \Cake\I18n\DateTime $created
  * @property \Cake\I18n\DateTime $modified
  * @property string $name
