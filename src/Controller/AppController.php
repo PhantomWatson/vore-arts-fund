@@ -8,6 +8,7 @@ use App\Model\Entity\User;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\View\JsonView;
@@ -55,7 +56,7 @@ class AppController extends Controller
      * @param \Cake\Event\EventInterface $event Event object
      * @return \Cake\Http\Response|null
      */
-    public function beforeFilter(EventInterface $event)
+    public function beforeFilter(EventInterface $event): ?Response
     {
         parent::beforeFilter($event);
 

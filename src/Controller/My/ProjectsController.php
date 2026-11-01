@@ -29,7 +29,7 @@ class ProjectsController extends BaseProjectsController
      * @param EventInterface $event
      * @return Response|null
      */
-    public function beforeFilter(EventInterface $event)
+    public function beforeFilter(EventInterface $event): ?Response
     {
         parent::beforeFilter($event);
         if (!$this->getAuthUser()) {
