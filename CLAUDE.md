@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Vore Arts Fund is a not-for-profit arts funding website ([voreartsfund.org](https://voreartsfund.org)) built with CakePHP 4 (PHP 8.5) and React. Artists apply for funding, the community votes on projects, and the fund manages loan repayments and financial tracking.
+Vore Arts Fund is a not-for-profit arts funding website ([voreartsfund.org](https://voreartsfund.org)) built with CakePHP 5 (PHP 8.5) and React. Artists apply for funding, the community votes on projects, and the fund manages loan repayments and financial tracking.
 
 ## Common Commands
 
@@ -39,7 +39,7 @@ npm run lint  # ESLint
 
 ## Architecture
 
-### Backend: CakePHP 4 MVC
+### Backend: CakePHP 5 MVC
 
 - **`src/Controller/`** — Controllers grouped into `Admin/`, `Api/`, and `My/` (user account) subdirectories
 - **`src/Model/Table/`** — 15 database tables; key ones: `ProjectsTable`, `FundingCyclesTable`, `VotesTable`, `TransactionsTable`, `UsersTable`
