@@ -1,11 +1,13 @@
 import './App.css';
 import {useEffect, useRef, useState} from 'react';
 import Viewer from 'viewerjs';
+import ImageEditor from './ImageEditor';
 
 function App(props) {
   const [images, setImages] = useState(props.images);
-  const [isUploading, setIsUploading] = useState(false);
+  const [fileToEdit, setFileToEdit] = useState(null);
   const [removingImageKey, setRemovingImageKey] = useState(null);
+  const fileInput = useRef(null);
   let viewer = useRef(null);
 
   useEffect(() => {
@@ -54,20 +56,27 @@ function App(props) {
     return;
   }
 
-  const handleUpload = async () => {
-    const fileUpload = document.getElementById('file-upload');
+  const closeEditor = () => {
+    fileInput.current.value = null;
+    setFileToEdit(null);
+  };
 
-    const file = fileUpload.files[0];
+  const handleFileSelected = () => {
+    const file = fileInput.current.files[0];
     if (!file) {
       return;
     }
 
     if (!file.type.includes('image/')) {
       handleError('Only images can be uploaded');
+      fileInput.current.value = null;
       return;
     }
 
-    setIsUploading(true);
+    setFileToEdit(file);
+  };
+
+  const handleUpload = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
     try {
@@ -84,14 +93,13 @@ function App(props) {
       if (filename) {
         const newImages = [{filename}, ...images];
         setImages(newImages);
-        fileUpload.value = null;
+        closeEditor();
       } else {
         handleError('There was a problem uploading that file. Please try again.');
       }
     } catch (error) {
       handleError(error.message);
     }
-    setIsUploading(false);
   };
 
   const handleRemove = async (key) => {
@@ -145,12 +153,18 @@ function App(props) {
   return (
     <div className="image-upload">
       <div className="image-upload__input">
-        <input type="file" id="file-upload" accept="image/*" className="form-control" aria-label="Select an image to upload" />
-        <button type="button" id="upload-button" onClick={handleUpload} className="btn btn-secondary">
-          Upload
-          {isUploading && <i className="loading-indicator fa-solid fa-spinner fa-spin-pulse" title="Loading"></i>}
-        </button>
+        <input type="file" id="file-upload" accept="image/*" className="form-control" aria-label="Select an image to upload" onChange={handleFileSelected} ref={fileInput} />
       </div>
+      {fileToEdit &&
+        <ImageEditor
+          applyLabel="Upload"
+          file={fileToEdit}
+          key={fileToEdit.name + fileToEdit.lastModified}
+          onApply={handleUpload}
+          onCancel={closeEditor}
+          onError={handleError}
+        />
+      }
       <ul className="image-upload__images list-unstyled image-gallery">
         {images.map((image, key) =>
           <li key={key} className="row">

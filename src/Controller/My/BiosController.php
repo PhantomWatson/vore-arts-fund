@@ -54,6 +54,7 @@ class BiosController extends AppController
         }
 
         $this->setRichTextEditorFilePaths();
+        $this->set('toLoad', $this->getAppFiles('image-uploader/dist', 'image-uploader/dist/styles'));
         $this->title('Update Bio');
     }
 }

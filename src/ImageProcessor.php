@@ -29,9 +29,13 @@ class ImageProcessor
 
     public const array VALID_IMAGE_TABLES = ['articles', 'projects', 'reports'];
 
-    public function __construct(private readonly string $imageTable)
+    /**
+     * @param string|null $imageTable Required for all uploads except for headshots, which have no image table
+     * @throws BadRequestException
+     */
+    public function __construct(private readonly ?string $imageTable = null)
     {
-        if (!in_array($this->imageTable, self::VALID_IMAGE_TABLES)) {
+        if ($this->imageTable !== null && !in_array($this->imageTable, self::VALID_IMAGE_TABLES)) {
             throw new BadRequestException("Invalid image table: $this->imageTable");
         }
     }

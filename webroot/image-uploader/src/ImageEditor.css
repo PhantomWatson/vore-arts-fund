@@ -1,0 +1,53 @@
+.image-editor {
+  border: 0;
+  border-radius: 6px;
+  max-width: min(900px, 95vw);
+  padding: 1rem;
+  width: 100%;
+}
+
+.image-editor::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.image-editor__heading {
+  font-size: 1.25rem;
+  margin: 0 0 0.25rem;
+}
+
+.image-editor__instructions {
+  font-size: 0.875rem;
+  margin: 0 0 0.75rem;
+}
+
+.image-editor .loading-indicator {
+  margin-left: 1em;
+}
+
+.image-editor__stage {
+  height: min(60vh, 500px);
+}
+
+.image-editor__stage:focus-visible {
+  outline: 3px solid #0d6efd;
+  outline-offset: 2px;
+}
+
+.image-editor__stage img {
+  display: block;
+  max-width: 100%;
+}
+
+.image-editor__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+}
+
+.image-editor__tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}

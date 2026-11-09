@@ -31,7 +31,7 @@ if ($rteJsPath) {
     <div class="row">
         <div class="col-8">
             <div class="image-upload__input">
-                <input type="file" class="form-control" aria-label="Select an image to upload" name="image-file" />
+                <input type="file" accept="image/*" class="form-control" aria-label="Select an image to upload" name="image-file" data-image-editor-input />
             </div>
         </div>
         <div class="col-4">
@@ -44,4 +44,6 @@ if ($rteJsPath) {
 
 <?= $this->Form->submit('Submit', ['class' => 'btn btn-primary']) ?>
 <?= $this->Form->end() ?>
+
+<?= $this->element('load_app_files') ?>
 
