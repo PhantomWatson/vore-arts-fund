@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 use Cake\ORM\Query;
 
 /**
@@ -15,14 +16,15 @@ use Cake\ORM\Query;
  */
 class FundingCyclesController extends AppController
 {
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated([
             'index',
             'view',
         ]);
         $this->addControllerBreadcrumb('Funding Cycles');
+
+        return parent::beforeFilter($event);
     }
 
     /**

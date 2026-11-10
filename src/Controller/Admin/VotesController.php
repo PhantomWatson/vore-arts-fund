@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 use App\Model\Entity\Project;
 use App\Model\Table\FundingCyclesTable;
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 
 /**
  * VotesController
@@ -20,10 +21,8 @@ use Cake\Event\EventInterface;
 class VotesController extends AdminController
 {
 
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
-
         $this->addBreadcrumb(
             'Awarding',
             [
@@ -32,6 +31,8 @@ class VotesController extends AdminController
                 'action' => 'index'
             ]
         );
+
+        return parent::beforeFilter($event);
     }
 
     /**

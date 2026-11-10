@@ -39,7 +39,6 @@ class ProjectsController extends AppController
 
     public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->FundingCycles = $this->fetchTable('FundingCycles');
         $this->Categories = $this->fetchTable('Categories');
         $this->ProjectImages = $this->fetchTable('ProjectImages');
@@ -50,7 +49,7 @@ class ProjectsController extends AppController
             'view',
         ]);
 
-        return null;
+        return parent::beforeFilter($event);
     }
 
     /**

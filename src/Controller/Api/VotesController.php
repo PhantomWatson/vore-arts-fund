@@ -12,6 +12,7 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\MethodNotAllowedException;
+use Cake\Http\Response;
 
 /**
  * @property \App\Model\Table\VotesTable $Votes
@@ -28,16 +29,17 @@ class VotesController extends ApiController
      * beforeFilter callback method
      *
      * @param \Cake\Event\EventInterface $event Event object
-     * @return \Cake\Http\Response|void|null
+     * @return \Cake\Http\Response|null
      */
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         if ($this->testingMode) {
             $this->Authentication->allowUnauthenticated([
                 'index',
             ]);
         }
+
+        return parent::beforeFilter($event);
     }
 
     /**

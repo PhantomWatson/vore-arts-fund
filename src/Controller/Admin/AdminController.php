@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 use App\Controller\AppController;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\ForbiddenException;
+use Cake\Http\Response;
 
 class AdminController extends AppController
 {
@@ -22,11 +23,10 @@ class AdminController extends AppController
      * beforeFilter callback.
      *
      * @param \Cake\Event\EventInterface $event Event.
-     * @return \Cake\Http\Response|null|void
+     * @return Response|null
      */
-    public function beforeFilter(EventInterface $event)
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $user = $this->getAuthUser();
         if (!$user) {
             return $this->redirect('/login');
@@ -35,5 +35,7 @@ class AdminController extends AppController
             throw new ForbiddenException();
         }
         $this->addBreadcrumb('Admin', ['controller' => 'Admin', 'action' => 'index']);
+
+        return parent::beforeFilter($event);
     }
 }

@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 use App\Application;
 use App\Model\Entity\FundingCycle;
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 use Cake\ORM\Query;
 
 /**
@@ -17,10 +18,11 @@ use Cake\ORM\Query;
 
 class FundingCyclesController extends AdminController
 {
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->addControllerBreadcrumb('Funding Cycles');
+
+        return parent::beforeFilter($event);
     }
 
     /**
@@ -74,7 +76,7 @@ class FundingCyclesController extends AdminController
     /**
      * Page for adding a new funding cycle
      *
-     * @return \Cake\Http\Response|null
+     * @return Response|null
      */
     public function add()
     {
@@ -128,7 +130,7 @@ class FundingCyclesController extends AdminController
     /**
      * Page for updating a funding cycle
      *
-     * @return \Cake\Http\Response|null
+     * @return Response|null
      */
     public function edit()
     {

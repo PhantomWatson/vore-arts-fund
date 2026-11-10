@@ -21,7 +21,7 @@ use Cake\View\JsonView;
  */
 class AppController extends Controller
 {
-    protected array $breadcrumbs = [];
+    protected array $breadcrumbs = [['Home', '/']];
     protected string $currentBreadcrumb = '';
 
     protected string $errorContactMsg = 'Please <a href="/contact">contact us</a> if you need assistance.';
@@ -69,7 +69,6 @@ class AppController extends Controller
             ]);
         }
 
-        $this->addBreadcrumb('Home', '/');
         return null;
     }
 

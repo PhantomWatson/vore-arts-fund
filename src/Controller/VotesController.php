@@ -21,12 +21,13 @@ class VotesController extends AppController
 {
     /**
      * @param EventInterface $event
-     * @return void
+     * @return Response|null
      */
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated(['index', 'view']);
+
+        return parent::beforeFilter($event);
     }
 
     /**

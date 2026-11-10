@@ -10,6 +10,7 @@ use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\MethodNotAllowedException;
+use Cake\Http\Response;
 use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
@@ -24,14 +25,15 @@ class StripeController extends ApiController
      * beforeFilter callback method
      *
      * @param \Cake\Event\EventInterface $event Event object
-     * @return \Cake\Http\Response|void|null
+     * @return \Cake\Http\Response|null
      */
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated([
             'createPaymentIntent',
         ]);
+
+        return parent::beforeFilter($event);
     }
 
     /**

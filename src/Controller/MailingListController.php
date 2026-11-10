@@ -11,15 +11,16 @@ use Cake\Http\Response;
  */
 class MailingListController extends AppController
 {
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated([
             'index',
             'signup',
             'thanks',
         ]);
         $this->addControllerBreadcrumb('Mailing List');
+
+        return parent::beforeFilter($event);
     }
 
     /**

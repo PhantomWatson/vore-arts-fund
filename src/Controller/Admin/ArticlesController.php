@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 use App\Model\Entity\Article;
 use App\Model\Entity\ArticleImage;
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 
 /**
  * Articles Controller
@@ -15,10 +16,11 @@ use Cake\Event\EventInterface;
  */
 class ArticlesController extends AdminController
 {
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->addControllerBreadcrumb();
+
+        return parent::beforeFilter($event);
     }
 
     /**

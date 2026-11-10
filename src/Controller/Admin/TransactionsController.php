@@ -7,6 +7,7 @@ use App\Application;
 use App\Model\Entity\FundingCycle;
 use App\Model\Entity\Project;
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
@@ -19,10 +20,11 @@ use Cake\Utility\Hash;
  */
 class TransactionsController extends AdminController
 {
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->addControllerBreadcrumb();
+
+        return parent::beforeFilter($event);
     }
 
     /**

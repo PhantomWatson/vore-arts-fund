@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 
 /**
  * @property \App\Model\Table\UsersTable $Users
@@ -11,15 +12,16 @@ class UsersController extends ApiController
 {
     /**
      * @param \Cake\Event\EventInterface $event Event object
-     * @return \Cake\Http\Response|void|null
+     * @return \Cake\Http\Response|null
      */
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated([
             'hasSession',
             'login',
         ]);
+
+        return parent::beforeFilter($event);
     }
     public function hasSession()
     {

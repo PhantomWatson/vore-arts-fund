@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Model\Entity\Transaction;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Response;
 
 class DonateController extends AppController
 {
@@ -13,16 +14,17 @@ class DonateController extends AppController
      * beforeFilter callback method
      *
      * @param \Cake\Event\EventInterface $event Event object
-     * @return \Cake\Http\Response|void|null
+     * @return \Cake\Http\Response|null
      */
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated([
             'index',
             'payment',
             'complete',
         ]);
+
+        return parent::beforeFilter($event);
     }
 
     public function index()

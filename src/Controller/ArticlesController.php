@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Model\Entity\Article;
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 
 /**
  * Articles Controller
@@ -14,10 +15,8 @@ use Cake\Event\EventInterface;
  */
 class ArticlesController extends AppController
 {
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
-
         $this->Authentication->allowUnauthenticated([
             'index',
             'view',
@@ -30,12 +29,14 @@ class ArticlesController extends AppController
                 'action' => 'index'
             ]
         );
+
+        return parent::beforeFilter($event);
     }
 
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return Response|null|void Renders view
      */
     public function index()
     {
@@ -55,7 +56,7 @@ class ArticlesController extends AppController
      * View method
      *
      * @param string|null $id Article id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view()

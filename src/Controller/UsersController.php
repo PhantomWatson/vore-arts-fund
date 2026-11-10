@@ -34,11 +34,10 @@ class UsersController extends AppController
      * beforeFilter callback method
      *
      * @param \Cake\Event\EventInterface $event Event object
-     * @return \Cake\Http\Response|void|null
+     * @return \Cake\Http\Response|null
      */
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated([
             'forgotPassword',
             'login',
@@ -46,6 +45,8 @@ class UsersController extends AppController
             'register',
             'resetPasswordToken',
         ]);
+
+        return parent::beforeFilter($event);
     }
 
     /**

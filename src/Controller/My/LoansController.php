@@ -29,9 +29,8 @@ class LoansController extends \App\Controller\AppController
      * @param EventInterface $event
      * @return Response|null
      */
-    public function beforeFilter(EventInterface $event)
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         if (!$this->getAuthUser()) {
             return $this->redirect(\App\Application::LOGIN_URL);
         }
@@ -47,7 +46,7 @@ class LoansController extends \App\Controller\AppController
 
         $this->addControllerBreadcrumb('My Loans');
 
-        return null;
+        return parent::beforeFilter($event);
     }
 
     public function view()

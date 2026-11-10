@@ -31,9 +31,8 @@ class PagesController extends AppController
      * @param \Cake\Event\EventInterface $event Event object
      * @return \Cake\Http\Response|void|null
      */
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated([
             'about',
             'botCatcher',
@@ -46,6 +45,8 @@ class PagesController extends AppController
             'partners',
             'virtualMeetings',
         ]);
+
+        return parent::beforeFilter($event);
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 
 class MailingListController extends ApiController
 {
@@ -12,14 +13,15 @@ class MailingListController extends ApiController
      * beforeFilter callback method
      *
      * @param \Cake\Event\EventInterface $event Event object
-     * @return \Cake\Http\Response|void|null
+     * @return \Cake\Http\Response|null
      */
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated([
             'vr-callback',
         ]);
+
+        return parent::beforeFilter($event);
     }
 
     /**

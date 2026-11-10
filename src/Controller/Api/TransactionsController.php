@@ -15,6 +15,7 @@ use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Http\Exception\UnauthorizedException;
+use Cake\Http\Response;
 use Cake\Log\Log;
 
 /**
@@ -28,15 +29,16 @@ class TransactionsController extends ApiController
      * beforeFilter callback method
      *
      * @param \Cake\Event\EventInterface $event Event object
-     * @return \Cake\Http\Response|void|null
+     * @return \Cake\Http\Response|null
      */
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated([
             'chargeSucceeded',
         ]);
         $this->viewBuilder()->setClassName('Json');
+
+        return parent::beforeFilter($event);
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -23,15 +24,15 @@ class ReportsController extends AppController
      * @param EventInterface $event
      * @return void
      */
-    public function beforeFilter(EventInterface $event)
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
-
         $this->Authentication->allowUnauthenticated([
             'index',
             'project',
             'view',
         ]);
+
+        return parent::beforeFilter($event);
     }
 
     /**

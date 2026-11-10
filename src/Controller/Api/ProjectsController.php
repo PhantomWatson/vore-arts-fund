@@ -6,6 +6,7 @@ namespace App\Controller\Api;
 use App\Model\Table\FundingCyclesTable;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\MethodNotAllowedException;
+use Cake\Http\Response;
 
 /**
  * ProjectsController
@@ -18,14 +19,15 @@ class ProjectsController extends ApiController
      * beforeFilter callback method
      *
      * @param \Cake\Event\EventInterface $event Event object
-     * @return \Cake\Http\Response|void|null
+     * @return \Cake\Http\Response|null
      */
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->Authentication->allowUnauthenticated([
             'index',
         ]);
+
+        return parent::beforeFilter($event);
     }
 
     /**

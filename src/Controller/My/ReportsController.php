@@ -24,9 +24,8 @@ class ReportsController extends AppController
      * @param EventInterface $event
      * @return Response|null
      */
-    public function beforeFilter(EventInterface $event)
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         if (!$this->getAuthUser()) {
             return $this->redirect(\App\Application::LOGIN_URL);
         }
@@ -40,7 +39,7 @@ class ReportsController extends AppController
 
         $this->addControllerBreadcrumb('My Reports');
 
-        return null;
+        return parent::beforeFilter($event);
     }
 
     /**

@@ -24,10 +24,11 @@ use Cake\Http\Response;
 class ProjectsController extends AdminController
 {
 
-    public function beforeFilter(EventInterface $event): void
+    public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         $this->addControllerBreadcrumb();
+
+        return parent::beforeFilter($event);
     }
 
     /**

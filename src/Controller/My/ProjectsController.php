@@ -31,7 +31,6 @@ class ProjectsController extends BaseProjectsController
      */
     public function beforeFilter(EventInterface $event): ?Response
     {
-        parent::beforeFilter($event);
         if (!$this->getAuthUser()) {
             return $this->redirect(\App\Application::LOGIN_URL);
         }
@@ -47,7 +46,7 @@ class ProjectsController extends BaseProjectsController
 
         $this->addControllerBreadcrumb('My Projects');
 
-        return null;
+        return parent::beforeFilter($event);
     }
 
     /**
