@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 
 use App\Controller\Admin\FundingCyclesController;
 use App\Event\AlertListener;
+use App\Event\MailListener;
 use App\Model\Entity\Transaction;
 use Cake\Core\Configure;
 use Cake\Event\Event;
@@ -127,6 +128,40 @@ class TransactionsController extends ApiController
             $eventName,
             $this,
             compact('payload', 'transaction')
+        ));
+
+        if ($transaction && $transaction->type === Transaction::TYPE_DONATION) {
+            $this->dispatchDonationReceivedEvent($payload, $transaction);
+        }
+    }
+
+    /**
+     * Dispatches an event that triggers a donation acknowledgement email (and a Slack alert about it)
+     *
+     * @param string $payload Raw Stripe webhook payload, used to find the donor's email address
+     * @param \App\Model\Entity\Transaction $transaction
+     * @return void
+     */
+    private function dispatchDonationReceivedEvent(string $payload, Transaction $transaction): void
+    {
+        $data = \json_decode($payload, true);
+        $email = $data['data']['object']['billing_details']['email']
+            ?? $data['data']['object']['receipt_email']
+            ?? null;
+        if (!$email) {
+            $this->writeToStripeLog(
+                "Could not send acknowledgement for donation (transaction #$transaction->id): No email address found",
+                'warning'
+            );
+            return;
+        }
+
+        $eventManager = EventManager::instance();
+        $eventManager->on(new MailListener());
+        $eventManager->dispatch(new Event(
+            'Transaction.donationReceived',
+            $this,
+            compact('email', 'transaction')
         ));
     }
 

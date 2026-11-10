@@ -3,11 +3,14 @@
 namespace App\Event;
 
 use App\Email\MailConfig;
+use App\Mailer\DonationMailer;
 use App\Mailer\ProjectMailer;
 use App\Model\Entity\Project;
+use App\Model\Entity\Transaction;
 use App\Model\Entity\User;
 use App\Model\Table\FundingCyclesTable;
 use App\Model\Table\UsersTable;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
@@ -55,6 +58,7 @@ class MailListener implements EventListenerInterface
             'Project.rejected' => 'mailProjectRejected',
             'Project.revisionRequested' => 'mailProjectRevisionRequested',
             'Note.messageSent' => 'mailMessage',
+            'Transaction.donationReceived' => 'mailDonationAcknowledgement',
         ];
     }
 
@@ -179,6 +183,35 @@ class MailListener implements EventListenerInterface
             ProjectMailer::class,
             'funded',
             [$project->id],
+        );
+    }
+
+    /**
+     * Sends a donation acknowledgement email, including tax deduction information, to the donor
+     *
+     * @param Event $event
+     * @param string $email Donor's email address
+     * @param Transaction $transaction
+     * @return void
+     */
+    public function mailDonationAcknowledgement(Event $event, string $email, Transaction $transaction): void
+    {
+        $this->enqueueEmailAndDispatchEvent(
+            $email,
+            [
+                'amount' => $transaction->dollar_amount_gross_formatted,
+                'date' => $transaction->date_formatted,
+                'donorName' => $transaction->name,
+                'supportEmail' => Configure::read('supportEmail'),
+            ],
+            [
+                'subject' => $this->mailConfig->subjectPrefix . 'Thank you for your donation!',
+                'template' => 'donation_acknowledgement',
+            ],
+            DonationMailer::class,
+            'acknowledgement',
+            [$email, $transaction->id],
+            'Mail.donationAcknowledgementSent',
         );
     }
 

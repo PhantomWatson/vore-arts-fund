@@ -32,6 +32,7 @@ class AlertListener implements EventListenerInterface
             'Project.markedDeleted' => 'alertProjectMarkedDeleted',
             'Project.funded' => 'alertProjectFunded',
             'Stripe.chargeSucceeded' => 'alertStripeChargeSucceeded',
+            'Mail.donationAcknowledgementSent' => 'alertDonationAcknowledgementSent',
             'Mail.messageSentToApplicant' => 'alertMessageSentToApplicant',
             'Note.sentToApplicant' => 'alertNoteSentToApplicant',
             'Note.sentByApplicant' => 'alertNoteSentByApplicant',
@@ -155,6 +156,16 @@ class AlertListener implements EventListenerInterface
         $this->alert->addLine('> ' . str_replace("\n", "\n> ", $alertBody));
 
         $this->alert->send(Alert::TYPE_APPLICANT_COMMUNICATION);
+    }
+
+    public function alertDonationAcknowledgementSent(Event $event, $email, $subject, $viewVars, $template)
+    {
+        $alertBody = $this->getRenderedView($viewVars, $template);
+        $this->alert->addLine("*$subject*");
+        $this->alert->addLine('Sent to ' . Slack::encode($email));
+        $this->alert->addLine('> ' . str_replace("\n", "\n> ", $alertBody));
+
+        $this->alert->send(Alert::TYPE_TRANSACTIONS);
     }
 
     private function getRenderedView($viewVars, $template)
