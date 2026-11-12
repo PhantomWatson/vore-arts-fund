@@ -59,7 +59,7 @@ $isValidJson = function ($data) {
                 $transaction->has('project')
                     ? $this->Html->link(
                         $transaction->project->title,
-                        ['controller' => 'Projects', 'action' => 'view', $transaction->project->id]
+                        ['controller' => 'Projects', 'action' => 'review', $transaction->project->id]
                     )
                     : ''
             ?>
