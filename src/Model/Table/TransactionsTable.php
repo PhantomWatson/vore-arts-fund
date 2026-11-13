@@ -12,6 +12,7 @@ use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
+use Cake\Http\Exception\NotFoundException;
 use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
@@ -195,6 +196,51 @@ class TransactionsTable extends Table
         self::logStripeError(
             "Can't save charge.\nData: " . print_r($data, true)
             . "\nError details: " . print_r($transaction->getErrors(), true),
+        );
+        return false;
+    }
+
+    /**
+     * Fills in the missing net amount of a previously recorded transaction, using a charge.updated webhook's charge
+     *
+     * Stripe sends charge.updated when a charge's balance_transaction is populated after the charge.succeeded webhook
+     * has already been received. Transactions whose net amount is already finalized are left alone.
+     *
+     * @param \Stripe\Charge $charge
+     * @return bool True if there is nothing to do or the transaction was updated, false if an error occurred
+     * @throws NotFoundException If the charge has no matching transaction record
+     */
+    public function updateNetAmountFromCharge(\Stripe\Charge $charge): bool
+    {
+        /** @var \App\Model\Entity\Transaction|null $transaction */
+        $transaction = $this
+            ->find()
+            ->where(['stripe_charge_id' => $charge->id])
+            ->first();
+        if (!$transaction) {
+            $msg = "Charge $charge->id has no matching transaction record, so its net amount could not be updated.";
+            self::logStripeError($msg . ' Returning a 404 response to prompt Stripe to retry the webhook later.');
+            throw new NotFoundException($msg);
+        }
+
+        if ($transaction->finalized) {
+            return true;
+        }
+
+        $netAmount = self::getNetAmountFromCharge($charge);
+        if ($netAmount === null) {
+            return false;
+        }
+
+        $transaction->amount_net = $netAmount;
+        $transaction->finalized = true;
+        if ($this->save($transaction)) {
+            return true;
+        }
+
+        self::logStripeError(
+            "Can't update net amount for transaction #$transaction->id (charge $charge->id).\nError details: "
+            . print_r($transaction->getErrors(), true)
         );
         return false;
     }

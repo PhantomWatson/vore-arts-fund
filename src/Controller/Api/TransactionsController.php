@@ -37,6 +37,7 @@ class TransactionsController extends ApiController
     {
         $this->Authentication->allowUnauthenticated([
             'chargeSucceeded',
+            'chargeUpdated',
         ]);
         $this->viewBuilder()->setClassName('Json');
 
@@ -44,9 +45,11 @@ class TransactionsController extends ApiController
     }
 
     /**
+     * @param string $eventName Either 'chargeSucceeded' or 'chargeUpdated',
+     *                          matching config values in Stripe.webhook_signing_secret
      * @return array{event: \Stripe\Event, payload: string}
      */
-    private function getStripeEvent(): array
+    private function getStripeEvent(string $eventName): array
     {
         if (!$this->request->is(['post', 'options'])) {
             throw new MethodNotAllowedException(
@@ -55,11 +58,11 @@ class TransactionsController extends ApiController
         }
 
         // This is your Stripe CLI webhook secret for testing your endpoint locally.
-        $endpointSecret = Configure::read('Stripe.webhook_signing_secret');
+        $endpointSecret = Configure::read('Stripe.webhook_signing_secret.' . $eventName);
 
         $payload = @file_get_contents('php://input');
         $this->writeToStripeLog("Payload: $payload" ?: '(no payload)');
-        $sigHeader = $_SERVER['HTTP_STRIPE_SIGNATURE'];
+        $sigHeader = $_SERVER['HTTP_STRIPE_SIGNATURE'] ?? '';
 
         try {
             $event = \Stripe\Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
@@ -88,7 +91,7 @@ class TransactionsController extends ApiController
      */
     public function chargeSucceeded(): void
     {
-        $result = $this->getStripeEvent();
+        $result = $this->getStripeEvent('chargeSucceeded');
         $event = $result['event'];
         $payload = $result['payload'];
 
@@ -119,7 +122,31 @@ class TransactionsController extends ApiController
             default:
                 $msg = 'Received unknown event type ' . $event->type;
                 $this->writeToStripeLog($msg);
-                echo $msg;
+        }
+
+        $this->set(['result' => $succeeded]);
+        $this->viewBuilder()->setOption('serialize', ['result']);
+    }
+
+    public function chargeUpdated(): void
+    {
+        $result = $this->getStripeEvent('chargeUpdated');
+        $event = $result['event'];
+
+        // Handle the event
+        $succeeded = false;
+        switch ($event->type) {
+            case 'charge.updated':
+                $charge = $event->data->object;
+                if (get_class($charge) == Charge::class) {
+                    $succeeded = $this->Transactions->updateNetAmountFromCharge($charge);
+                } else {
+                    $this->writeToStripeLog('Cannot update charge: Not a \Stripe\Charge object', 'error');
+                }
+                break;
+            default:
+                $msg = 'Received unknown event type ' . $event->type;
+                $this->writeToStripeLog($msg);
         }
 
         $this->set(['result' => $succeeded]);
