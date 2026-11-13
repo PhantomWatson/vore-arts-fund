@@ -13,6 +13,7 @@ use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\Event;
 use Cake\I18n\Date;
+use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
@@ -169,18 +170,25 @@ class TransactionsTable extends Table
             $transactionType = Transaction::TYPE_DONATION;
         }
 
+        // Might be null if the balance transaction hasn't been processed yet, in which case a charge.updated webhook
+        // request will be sent later to update the net amount
+        $netAmount = self::getNetAmountFromCharge($charge);
+        $finalized = $netAmount !== null;
+
         $data = [
             'amount_gross' => $charge->amount_captured,
-            'amount_net' => self::getNetAmountFromCharge($charge),
-            'date' => new \Cake\I18n\DateTime(),
-            'type' => $transactionType,
-            'project_id' => isset($charge->metadata['projectId']) ? (int)$charge->metadata['projectId'] : null,
+            'amount_net' => $netAmount ?? $charge->amount_captured,
+            'date' => new DateTime(),
             'meta' => json_encode($charge),
             'name' => $charge->metadata['name'] ?? null,
+            'project_id' => isset($charge->metadata['projectId']) ? (int)$charge->metadata['projectId'] : null,
+            'type' => $transactionType,
         ];
         $transaction = $this->newEntity($data);
         $transaction->user_id = isset($charge->metadata['userId']) ? (int)$charge->metadata['userId'] : null;
         $transaction->stripe_event_id = $stripeEventId;
+        $transaction->stripe_charge_id = $charge->id;
+        $transaction->finalized = $finalized;
         if ($this->save($transaction)) {
             return $transaction;
         }

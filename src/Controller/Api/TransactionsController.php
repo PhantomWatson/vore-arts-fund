@@ -18,6 +18,7 @@ use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Http\Exception\UnauthorizedException;
 use Cake\Http\Response;
 use Cake\Log\Log;
+use Stripe\Charge;
 
 /**
  * @property \App\Model\Table\TransactionsTable $Transactions
@@ -43,15 +44,9 @@ class TransactionsController extends ApiController
     }
 
     /**
-     * POST /api/transactions/charge-succeeded endpoint
-     *
-     * @return void
-     * @throws BadRequestException
-     * @throws ForbiddenException
-     * @throws InternalErrorException
-     * @throws MethodNotAllowedException
+     * @return array{event: \Stripe\Event, payload: string}
      */
-    public function chargeSucceeded(): void
+    private function getStripeEvent(): array
     {
         if (!$this->request->is(['post', 'options'])) {
             throw new MethodNotAllowedException(
@@ -68,6 +63,7 @@ class TransactionsController extends ApiController
 
         try {
             $event = \Stripe\Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
+            return compact('event', 'payload');
         } catch (\UnexpectedValueException $e) {
             // Invalid payload
             http_response_code(400);
@@ -79,6 +75,22 @@ class TransactionsController extends ApiController
             $this->writeToStripeLog('Invalid signature');
             exit();
         }
+    }
+
+    /**
+     * POST /api/transactions/charge-succeeded endpoint
+     *
+     * @return void
+     * @throws BadRequestException
+     * @throws ForbiddenException
+     * @throws InternalErrorException
+     * @throws MethodNotAllowedException
+     */
+    public function chargeSucceeded(): void
+    {
+        $result = $this->getStripeEvent();
+        $event = $result['event'];
+        $payload = $result['payload'];
 
         // Handle the event
         $succeeded = false;
@@ -91,13 +103,18 @@ class TransactionsController extends ApiController
                     $succeeded = true;
                     break;
                 }
-                if (get_class($charge) == \Stripe\Charge::class) {
+                if (get_class($charge) == Charge::class) {
                     $transaction = $this->Transactions->addPayment($charge, $event->id);
                     $succeeded = $transaction !== false;
                 } else {
                     $this->writeToStripeLog('Cannot save charge: Not a \Stripe\Charge object', 'error');
                 }
-                $this->dispatchChargeSucceededEvent((string)$payload, $transaction ?? null);
+                if ($transaction ?? false) {
+                    $this->dispatchChargeSucceededEvent(
+                        (string)$payload,
+                        ($transaction ?? null) instanceof Transaction ? $transaction : null
+                    );
+                }
                 break;
             default:
                 $msg = 'Received unknown event type ' . $event->type;
