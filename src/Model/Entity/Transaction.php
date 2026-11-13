@@ -25,7 +25,10 @@ use Cake\ORM\Entity;
  * @property string $dollar_amount_gross_formatted
  * @property string $processing_fee_formatted In dollars
  * @property \Cake\I18n\DateTime $date
- * @property string|null $stripe_event_id
+ * @property string|null $stripe_event_id The ID of the Stripe event that created this transaction
+ *                                        (though other events may update it, and they're assumed to be idempotent)
+ * @property string|null $stripe_charge_id
+ * @property bool $finalized
  * @property string $date_formatted
  * @property \Cake\I18n\DateTime $created
  * @property \Cake\I18n\DateTime|null $modified

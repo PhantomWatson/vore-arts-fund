@@ -133,6 +133,12 @@ class TransactionsTable extends Table
                 'A transaction matching this Stripe event ID has already been recorded'
             )
         );
+        $rules->add(
+            $rules->isUnique(
+                ['stripe_charge_id'],
+                'A transaction matching this Stripe charge ID has already been recorded'
+            )
+        );
 
         return $rules;
     }
