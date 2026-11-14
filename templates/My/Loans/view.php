@@ -31,6 +31,12 @@ $balance = ($project->amount_awarded - $project->getTotalRepaid()) / 100;
                                 </td>
                                 <td>
                                     <?= $repayment->dollar_amount_net_formatted_with_fee ?>
+                                    <?php if (!$repayment->finalized): ?>
+                                        <span class="badge text-bg-warning" title="Balance may be temporarily incorrect until this transaction is finalized.">
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
+                                            Unfinalized
+                                        </span>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
