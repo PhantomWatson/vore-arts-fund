@@ -17,16 +17,24 @@ $balance = ($project->amount_awarded - $project->getTotalRepaid()) / 100;
             <th>Repayments</th>
             <td>
                 <table class="table repayments-table">
-                    <?php foreach ($repayments as $repayment): ?>
+                    <thead class="sr-only">
                         <tr>
-                            <td>
-                                <?= $repayment->date_formatted ?>
-                            </td>
-                            <td>
-                                <?= $repayment->dollar_amount_net_formatted_with_fee ?>
-                            </td>
+                            <th>Date</th>
+                            <th>Amount</th>
                         </tr>
-                    <?php endforeach; ?>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($repayments as $repayment): ?>
+                            <tr>
+                                <td>
+                                    <?= $repayment->date_formatted ?>
+                                </td>
+                                <td>
+                                    <?= $repayment->dollar_amount_net_formatted_with_fee ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
                 </table>
             </td>
         </tr>
