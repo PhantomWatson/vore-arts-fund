@@ -86,8 +86,11 @@ class LoansController extends \App\Controller\AppController
             ])
             ->toArray();
 
-        foreach ($projectsWithUnfinalizedRepayments as $project) {
-            $this->Flash->warning("Loan #$project->id has an unfinalized transaction, which may result in its balance being temporarily incorrect. Check back shortly for an updated balance. If you still see this warning after 24 hours, please <a href=\"/contact\">contact us</a> for assistance.");
+        foreach ($projectsWithUnfinalizedRepayments as $projectId) {
+            $this->Flash->warning(
+                "Loan #$projectId has an unfinalized transaction, which may result in its balance being temporarily incorrect. Check back shortly for an updated balance. If you still see this warning after 24 hours, please <a href=\"/contact\">contact us</a> for assistance.",
+                ['escape' => false]
+            );
         }
 
         $this->title('My Loans');
