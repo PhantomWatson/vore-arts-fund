@@ -76,6 +76,20 @@ class LoansController extends \App\Controller\AppController
             ->orderBy(['Projects.created' => 'DESC'])
             ->all();
 
+        $projectsWithUnfinalizedRepayments = TableRegistry::getTableLocator()
+            ->get('Transactions')
+            ->find('list', keyField: 'id', valueField: 'project_id')
+            ->where([
+                'project_id IN' => $projects->extract('id')->toList(),
+                'type' => Transaction::TYPE_LOAN_REPAYMENT,
+                'finalized' => false,
+            ])
+            ->toArray();
+
+        foreach ($projectsWithUnfinalizedRepayments as $project) {
+            $this->Flash->warning("Loan #$project->id has an unfinalized transaction, which may result in its balance being temporarily incorrect. Check back shortly for an updated balance. If you still see this warning after 24 hours, please <a href=\"/contact\">contact us</a> for assistance.");
+        }
+
         $this->title('My Loans');
         $this->set(compact('projects'));
     }
