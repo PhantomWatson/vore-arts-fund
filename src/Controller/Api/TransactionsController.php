@@ -25,7 +25,7 @@ use Stripe\Charge;
  */
 class TransactionsController extends ApiController
 {
-    const array ACCESSIBLE_FIELDS = ['date', 'type', 'name', 'amount_net', 'amount_gross', 'meta', 'project_id'];
+    const array ACCESSIBLE_FIELDS = ['date', 'type', 'name', 'amount_net', 'amount_gross', 'meta', 'project_id', 'finalized'];
 
     /**
      * beforeFilter callback method

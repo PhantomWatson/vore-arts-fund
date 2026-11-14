@@ -66,6 +66,7 @@ class Transaction extends Entity
         'project' => true,
         'date' => true,
         'name' => true,
+        'finalized' => true,
     ];
 
     public static function getTypes()
