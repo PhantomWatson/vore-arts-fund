@@ -78,6 +78,7 @@ class TransactionsController extends AdminController
         if (!$transaction->date) {
             $transaction->date = new \Cake\I18n\DateTime('now', Application::LOCAL_TIMEZONE);
         }
+        $transaction->finalized = true; // default to finalized for new transactions
 
         $this->title('Add Transaction');
         $this->viewBuilder()->setTemplate('form');
