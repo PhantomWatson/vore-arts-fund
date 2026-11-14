@@ -55,6 +55,10 @@ class TransactionsController extends AdminController
         $id = $this->request->getParam('id');
         $transaction = $this->Transactions->get($id, contain: ['Projects']);
 
+        if (!$transaction->finalized) {
+            $this->Flash->warning("This transaction is unfinalized, which may result in its net amount being temporarily incorrect.");
+        }
+
         $title = 'Transaction ' . $transaction->id;
         $this->title($title);
         $this->setCurrentBreadcrumb($title);
