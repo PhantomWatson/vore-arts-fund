@@ -31,6 +31,12 @@
                     <?php if ($transaction->amount_net && $transaction->amount_net != $transaction->amount_gross): ?>
                         (<?= $transaction->dollar_amount_net_formatted ?>)
                     <?php endif; ?>
+                    <?php if (!$transaction->finalized): ?>
+                        <span class="badge text-bg-warning" title="Net amount may be temporarily incorrect until this transaction is finalized.">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            Unfinalized
+                        </span>
+                    <?php endif; ?>
                 </td>
                 <td>
                     <?=
