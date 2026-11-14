@@ -150,6 +150,16 @@ class AppController extends Controller
     }
 
     /**
+     * @param string $title
+     * @param array|string|null $url
+     * @return void
+     */
+    protected function addBreadcrumbAfterHome(string $title, array|string|null $url = null): void
+    {
+        array_splice($this->breadcrumbs, 1, 0, [[$title, $url]]);
+    }
+
+    /**
      * Used for adding a breadcrumb to be applied to all pages under this controller
      *
      * @param $title

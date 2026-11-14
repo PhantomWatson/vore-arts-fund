@@ -34,7 +34,7 @@ class AdminController extends AppController
         if (!($user->is_admin ?? false)) {
             throw new ForbiddenException();
         }
-        $this->addBreadcrumb('Admin', ['controller' => 'Admin', 'action' => 'index']);
+        $this->addBreadcrumbAfterHome('Admin', ['controller' => 'Admin', 'action' => 'index']);
 
         return parent::beforeFilter($event);
     }
