@@ -3,15 +3,11 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Alert\ErrorAlert;
-use App\Model\Entity\Project;
-use App\Model\Entity\Transaction;
+use App\Alert\AdminAlert;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
-use Cake\I18n\DateTime;
-use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -57,7 +53,7 @@ class UnfinalizedTransactionsCommand extends Command
             foreach ($unfinalizedTransactions as $unfinalizedTransaction) {
                 $io->out('- #' . $unfinalizedTransaction->id);
                 $age = $unfinalizedTransaction->created->timeAgoInWords();
-                ErrorAlert::send("Transaction #$unfinalizedTransaction->id was created $age and is still unfinalized. Check to see if Stripe webhook requests for `charge.updated` are failing or need to be manually re-triggered. If necessary, set this transaction's `amount_net` manually and mark it finalized.");
+                AdminAlert::send("Transaction #$unfinalizedTransaction->id was created $age and is still unfinalized. Check to see if Stripe webhook requests for `charge.updated` are failing or need to be manually re-triggered. If necessary, set this transaction's `amount_net` manually and mark it finalized.");
             }
         } else {
             $io->out('No unfinalized transactions found.');
