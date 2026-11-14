@@ -235,6 +235,14 @@ const App = () => {
                     </p>
                   </div>
                 </div>
+
+                <div className="form-group checkbox">
+                  <label htmlFor="finalized">
+                    <Field type="checkbox" name="finalized" id="finalized" />
+                    {' '}
+                    Finalized
+                  </label>
+                </div>
               </fieldset>
               <button type="submit" className="btn btn-primary">
                 {action === 'add' ? 'Add' : 'Update'}
