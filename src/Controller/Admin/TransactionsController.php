@@ -176,6 +176,10 @@ class TransactionsController extends AdminController
         $id = $this->request->getParam('id');
         $transaction = $this->Transactions->get($id);
 
+        if (!$transaction->finalized) {
+            $this->Flash->warning("This transaction is unfinalized.");
+        }
+
         // Convert cents to dollars
         $transaction->amount_net /= 100;
         $transaction->amount_gross /= 100;
