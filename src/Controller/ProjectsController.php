@@ -301,42 +301,6 @@ class ProjectsController extends AppController
     }
 
     /**
-     * @param \Laminas\Diactoros\UploadedFile $rawImage
-     * @param int $projectId
-     * @param string $caption
-     * @return \App\Model\Entity\Image|false|null
-     */
-    private function processImageUpload(UploadedFile $rawImage, int $projectId, string $caption)
-    {
-        /** @var \App\Model\Entity\Image $image */
-        $image = $this->ProjectImages->newEmptyEntity();
-        $image->project_id = $projectId;
-        $image->weight = 0;
-        $image->caption = $caption;
-        $filenameSplit = explode('.', $rawImage->getClientFilename());
-        $image->filename = sprintf(
-            '%s-%s.%s',
-            $projectId,
-            Security::randomString(10),
-            end($filenameSplit),
-        );
-        $path = WWW_ROOT . 'img' . DS . 'projects' . DS . $image->filename;
-        try {
-            $rawImage->moveTo($path);
-        } catch (Exception $e) {
-            $this->Flash->error(
-                'Unfortunately, there was an error uploading that image. Details: ' . $e->getMessage() . ' '
-                . $this->errorTryAgainContactMsg,
-                ['escape' => false],
-            );
-
-            return null;
-        }
-
-        return $this->ProjectImages->save($image);
-    }
-
-    /**
      * Page for viewing an arbitrary application
      *
      * @return \Cake\Http\Response|null
