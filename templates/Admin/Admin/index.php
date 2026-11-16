@@ -3,50 +3,27 @@
  * @var \App\Model\Entity\Project[] $projects
  * @var \App\View\AppView $this
  */
+$controllers = [
+    'Articles' => 'News Articles',
+    'FundingCycles' => 'Funding Cycles',
+    'Loans' => 'Loans',
+    'Projects' => 'Projects',
+    'Questions' => 'Questions',
+    'Transactions' => 'Transactions',
+    'Votes' => 'Awarding',
+];
+asort($controllers);
 ?>
 
+<ul>
+    <?php foreach ($controllers as $controller => $label): ?>
+        <li>
+            <?= $this->Html->link($label, [
+                'prefix' => 'Admin',
+                'controller' => $controller,
+                'action' => 'index',
+            ]) ?>
+        </li>
+    <?php endforeach; ?>
+</ul>
 
-<p>
-    <?= $this->Html->link(
-        'Projects',
-        [
-            'prefix' => 'Admin',
-            'controller' => 'Projects',
-            'action' => 'index',
-        ],
-        ['class' => 'btn btn-secondary']
-    ) ?>
-</p>
-<p>
-    <?= $this->Html->link(
-        'Funding Cycles',
-        [
-            'prefix' => 'Admin',
-            'controller' => 'FundingCycles',
-            'action' => 'index',
-        ],
-        ['class' => 'btn btn-secondary']
-    ) ?>
-</p>
-<p>
-    <?= $this->Html->link(
-        'Questions',
-        [
-            'prefix' => 'Admin',
-            'controller' => 'Questions',
-            'action' => 'index',
-        ],
-        ['class' => 'btn btn-secondary']
-    ) ?>
-</p>
-<p>
-    <?= $this->Html->link(
-        'Transactions',
-        [
-            'prefix' => 'Admin',
-            'controller' => 'Transactions',
-            'action' => 'index',
-        ],
-        ['class' => 'btn btn-secondary']
-    ) ?>
-</p>
