@@ -116,10 +116,37 @@ $loggedInLinks[] = [
 
 $adminLinks = [
     [
+        'Articles',
+        [
+            'prefix' => 'Admin',
+            'controller' => 'Articles',
+            'action' => 'index',
+        ],
+        ['class' => 'dropdown-item']
+    ],
+    [
+        'Awarding',
+        [
+            'prefix' => 'Admin',
+            'controller' => 'Votes',
+            'action' => 'index',
+        ],
+        ['class' => 'dropdown-item']
+    ],
+    [
         'Funding Cycles',
         [
             'prefix' => 'Admin',
             'controller' => 'FundingCycles',
+            'action' => 'index',
+        ],
+        ['class' => 'dropdown-item']
+    ],
+    [
+        'Loans',
+        [
+            'prefix' => 'Admin',
+            'controller' => 'Loans',
             'action' => 'index',
         ],
         ['class' => 'dropdown-item']
@@ -151,24 +178,6 @@ $adminLinks = [
         ],
         ['class' => 'dropdown-item']
     ],
-    [
-        'Awarding',
-        [
-            'prefix' => 'Admin',
-            'controller' => 'Votes',
-            'action' => 'index',
-        ],
-        ['class' => 'dropdown-item']
-    ],
-    [
-        'Articles',
-        [
-            'prefix' => 'Admin',
-            'controller' => 'Articles',
-            'action' => 'index',
-        ],
-        ['class' => 'dropdown-item']
-    ]
 ];
 
 $echoLinks = function (\Cake\View\View $appView, $links, $navbarItemClass = 'nav-item') {
