@@ -60,9 +60,9 @@ class ProjectsController extends AppController
     protected function setFromNow(DateTime $deadline): void
     {
         // Set times to 00:00 to make "days from now" math easier
-        $deadline = $deadline->setTime(0, 0, 0, 0);
+        $deadline = $deadline->setTime(0, 0);
         $tz = Application::LOCAL_TIMEZONE;
-        $today = DateTime::now($tz)->setTime(0, 0, 0, 0);
+        $today = DateTime::now($tz)->setTime(0, 0);
         $days = $deadline->diffInDays($today);
         $fromNow = match ($days) {
             0 => 'today',
@@ -271,7 +271,7 @@ class ProjectsController extends AppController
                         . $image->project_id,
                     );
                     $this->Flash->error(
-                        "The image $filename is not associated with project {$project->id}"
+                        "The image $filename is not associated with project $project->id"
                         . $this->errorTryAgainContactMsg,
                         ['escape' => false],
                     );
