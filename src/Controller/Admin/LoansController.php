@@ -39,9 +39,17 @@ class LoansController extends AdminController
             ->orderByDesc('Projects.loan_awarded_date')
             ->all();
 
+        $totalAwarded = $projects->sumOf('amount_awarded');
+        $balances = [];
+        foreach ($projects as $project) {
+            $balances[$project->id] = $project->amount_awarded - $project->getTotalRepaid();
+        }
+
         $this->title('Loans');
         $this->set([
+            'balances' => $balances,
             'projects' => $projects,
+            'totalAwarded' => $totalAwarded,
         ]);
     }
 }

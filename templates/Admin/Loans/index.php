@@ -18,9 +18,9 @@
     <tbody>
         <?php foreach ($projects as $project): ?>
             <?php
-                $balance = ($project->amount_awarded - $project->getTotalRepaid()) / 100;
+                $balance = $balances[$project->id];
             ?>
-            <tr class="<?= $balance <= 0 ? 'table-success' : ($balance === 0 ? 'table-danger' : 'table-warning') ?>">
+            <tr class="<?= $balance <= 0 ? 'table-success' : ($balance === $project->amount_awarded ? 'table-danger' : 'table-warning') ?>">
                 <td>
                     <?= $project->user->name ?>
                 </td>
@@ -45,16 +45,23 @@
                     <?php if ($balance < 0): ?>
                         $0 <span class="text-success">
                             (fully paid + extra
-                            <?= '$' . number_format(-$balance, 2) ?>
+                            <?= '$' . number_format(-$balance / 100, 2) ?>
                             donation)
                         </span>
                     <?php elseif ($balance == 0): ?>
                         $0 <span class="text-success">(fully paid)</span>
                     <?php else: ?>
-                        $<?= number_format($balance, 2) ?>
+                        $<?= number_format($balance / 100, 2) ?>
                     <?php endif; ?>
                 </td>
             </tr>
         <?php endforeach; ?>
     </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="3" class="text-end">Total:</th>
+            <th><?= '$' . number_format($totalAwarded / 100, 2) ?></th>
+            <th><?= '$' . number_format(array_sum($balances) / 100, 2) ?></th>
+        </tr>
+    </tfoot>
 </table>
