@@ -129,7 +129,13 @@ function App(props) {
   };
 
   const handleMoveDown = (index) => {
+    if (images.length < 2) {
+      return;
+    }
+
+    // The bottommost image wraps around to the top
     if (index >= images.length - 1) {
+      setImages([images[index], ...images.slice(0, index)]);
       return;
     }
 
@@ -140,7 +146,13 @@ function App(props) {
   };
 
   const handleMoveUp = (index) => {
+    if (images.length < 2) {
+      return;
+    }
+
+    // The topmost image wraps around to the bottom
     if (index <= 0) {
+      setImages([...images.slice(1), images[index]]);
       return;
     }
 
@@ -182,7 +194,7 @@ function App(props) {
               </button>
             </div>
             <div className="col-1">
-              {key !== 0 &&
+              {images.length > 1 &&
                 <>
                   <button type="button" className="image-upload__move-image btn btn-link" title="Move up" aria-label="Move up"
                           onClick={() => {
@@ -193,7 +205,7 @@ function App(props) {
                   <br/>
                 </>
               }
-              {key !== images.length - 1 &&
+              {images.length > 1 &&
                 <>
                   <button type="button" className="image-upload__move-image btn btn-link" title="Move down" aria-label="Move down"
                           onClick={() => {
