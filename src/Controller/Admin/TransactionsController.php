@@ -20,6 +20,12 @@ use Cake\Utility\Hash;
  */
 class TransactionsController extends AdminController
 {
+    protected array $paginate = [
+        'order' => [
+            'Transactions.date' => 'desc',
+        ],
+    ];
+
     public function beforeFilter(EventInterface $event): ?Response
     {
         $this->addControllerBreadcrumb();
@@ -37,8 +43,7 @@ class TransactionsController extends AdminController
         $this->title('Transactions');
         $query = $this->Transactions
             ->find()
-            ->contain(['Projects'])
-            ->orderByDesc('Transactions.date');
+            ->contain(['Projects']);
         $transactions = $this->paginate($query);
 
         $this->set(compact('transactions'));
