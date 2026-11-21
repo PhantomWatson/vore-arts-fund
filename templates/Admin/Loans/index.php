@@ -1,9 +1,45 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\ORM\ResultSet<\App\Model\Entity\Project> $projects
+ * @var \Cake\ORM\ResultSet<Project> $projects
+ * @var array<int, int> $balances
+ * @var int $totalAwarded
  */
+
+use App\Model\Entity\Project;
+
+$getRowClass = function (Project $project, int $balance) {
+    // Paid off
+    if ($balance <= 0) {
+        return 'table-success';
+    }
+
+    // Too recent to show scary colors about
+    if ($project->loan_awarded_date->wasWithinLast('1 year')) {
+        return 'table-info';
+    }
+
+    // Not paid at all
+    if ($balance === $project->amount_awarded) {
+        return 'table-danger';
+    }
+
+    // Partially paid
+    return 'table-warning';
+};
 ?>
+
+<table class="table">
+    <tbody>
+        <tr>
+            <th>Color key:</th>
+            <td class="table-info text-center">Recent</td>
+            <td class="table-success text-center">Fully Paid</td>
+            <td class="table-warning text-center">Partially Paid</td>
+            <td class="table-danger text-center">Not Paid</td>
+        </tr>
+    </tbody>
+</table>
 
 <table class="table">
     <thead>
@@ -20,7 +56,7 @@
             <?php
                 $balance = $balances[$project->id];
             ?>
-            <tr class="<?= $balance <= 0 ? 'table-success' : ($balance === $project->amount_awarded ? 'table-danger' : 'table-warning') ?>">
+            <tr class="<?= $getRowClass($project, $balance) ?>">
                 <td>
                     <?= $project->user->name ?>
                 </td>
@@ -44,12 +80,10 @@
                 <td>
                     <?php if ($balance < 0): ?>
                         $0 <span class="text-success">
-                            (fully paid + extra
-                            <?= '$' . number_format(-$balance / 100, 2) ?>
-                            donation)
+                            (donated extra <?= '$' . number_format(-$balance / 100, 2) ?>)
                         </span>
                     <?php elseif ($balance == 0): ?>
-                        $0 <span class="text-success">(fully paid)</span>
+                        $0
                     <?php else: ?>
                         $<?= number_format($balance / 100, 2) ?>
                     <?php endif; ?>
