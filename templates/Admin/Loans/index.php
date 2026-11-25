@@ -15,7 +15,7 @@ $getRowClass = function (Project $project, int $balance) {
     }
 
     // Too recent to show scary colors about
-    if ($project->loan_awarded_date->wasWithinLast('1 year')) {
+    if (!$project->loan_awarded_date || $project->loan_awarded_date->wasWithinLast('1 year')) {
         return 'table-info';
     }
 
