@@ -8,9 +8,7 @@ use App\Event\AlertEmitter;
 use App\Model\Entity\Nudge;
 use App\Model\Entity\Project;
 use App\Model\Table\NudgesTable;
-use Cake\Collection\Collection;
-use Cake\Datasource\ResultSetInterface;
-use Cake\ORM\ResultSet;
+use Cake\Collection\CollectionInterface;
 use Cake\ORM\TableRegistry;
 use App\Mailer\NudgeMailer;
 use Queue\Model\Table\QueuedJobsTable;
@@ -26,9 +24,9 @@ class VoteNudge implements NudgeInterface
     /**
      * Projects that are approved and in the funding cycle whose voting period begins today
      *
-     * @return ResultSet<Project>|null
+     * @return CollectionInterface<Project>|null
      */
-    public static function getProjects(): ?ResultSetInterface
+    public static function getProjects(): ?CollectionInterface
     {
         $fundingCyclesTable = TableRegistry::getTableLocator()->get('FundingCycles');
         $fundingCycle = $fundingCyclesTable

@@ -5,17 +5,12 @@ namespace App\Nudges;
 use App\Alert\ErrorAlert;
 use App\Email\MailConfig;
 use App\Event\AlertEmitter;
-use App\Event\AlertListener;
 use App\Model\Entity\Nudge;
 use App\Model\Entity\Project;
 use App\Model\Entity\Transaction;
 use App\Model\Table\NudgesTable;
+use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
-use Cake\Datasource\ResultSetInterface;
-use Cake\Event\Event;
-use Cake\Event\EventManager;
-use Cake\I18n\FrozenDate;
-use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use App\Mailer\NudgeMailer;
@@ -26,9 +21,9 @@ class PaymentReminderNudge implements NudgeInterface
     /**
      * Projects with loans with positive balances
      *
-     * @return ResultSet<Project>|null
+     * @return CollectionInterface<Project>|null
      */
-    public static function getProjects(): ?ResultSetInterface
+    public static function getProjects(): ?CollectionInterface
     {
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
 

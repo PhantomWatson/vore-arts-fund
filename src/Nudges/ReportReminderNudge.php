@@ -8,10 +8,8 @@ use App\Event\AlertEmitter;
 use App\Model\Entity\Nudge;
 use App\Model\Entity\Project;
 use App\Model\Table\NudgesTable;
+use Cake\Collection\CollectionInterface;
 use Cake\Core\Configure;
-use Cake\Datasource\ResultSetInterface;
-use Cake\I18n\FrozenDate;
-use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use App\Mailer\NudgeMailer;
@@ -23,9 +21,9 @@ class ReportReminderNudge implements NudgeInterface
      * Non-finalized projects that have received a loan more than two months ago and haven't received a nudge in the
      * last month or submitted a report in the last six months
      *
-     * @return ResultSet<Project>|null
+     * @return CollectionInterface<Project>|null
      */
-    public static function getProjects(): ?ResultSetInterface
+    public static function getProjects(): ?CollectionInterface
     {
         $projectsTable = TableRegistry::getTableLocator()->get('Projects');
 

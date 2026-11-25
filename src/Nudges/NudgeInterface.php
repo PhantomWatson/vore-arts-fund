@@ -3,17 +3,16 @@
 namespace App\Nudges;
 
 use App\Model\Entity\Project;
-use Cake\Datasource\ResultSetInterface;
-use Cake\ORM\ResultSet;
+use Cake\Collection\CollectionInterface;
 
 interface NudgeInterface
 {
     /**
      * Fetches projects that need nudges
      *
-     * @return ResultSet<Project>|null
+     * @return CollectionInterface<Project>|null
      */
-    public static function getProjects(): ResultSetInterface|null;
+    public static function getProjects(): ?CollectionInterface;
 
     /**
      * Sends nudge messages and records them in the database
