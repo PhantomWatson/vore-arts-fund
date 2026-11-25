@@ -46,6 +46,7 @@ class ReportReminderNudge implements NudgeInterface
                 'Projects.loan_awarded_date IS NOT' => null,
                 'Projects.loan_awarded_date <' => new \Cake\I18n\Date($sinceLoanAwardedThreshold)
             ])
+            ->find('withActivityInLastTwoYears') // Stop nudging after two years
             ->all();
     }
 

@@ -722,4 +722,32 @@ class ProjectsTable extends Table
             ])
             ->orderByDesc('Projects.loan_awarded_date');
     }
+
+    /**
+     * Excludes projects whose loan award date and last report date are both at least two years old
+     *
+     * @param Query $query
+     * @return Query
+     */
+    public function findWithActivityInLastTwoYears(Query $query): Query
+    {
+        $threshold = new Date('-2 years');
+
+        $recentReports = $this->Reports
+            ->find()
+            ->select(['Reports.id'])
+            ->where(function (QueryExpression $exp) {
+                return $exp->equalFields('Reports.project_id', 'Projects.id');
+            })
+            ->where(['Reports.created >' => $threshold]);
+
+        return $query->where([
+            'OR' => [
+                'Projects.loan_awarded_date >' => $threshold,
+                function (QueryExpression $exp) use ($recentReports) {
+                    return $exp->exists($recentReports);
+                },
+            ],
+        ]);
+    }
 }

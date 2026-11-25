@@ -34,6 +34,7 @@ class ReportDueNudge implements NudgeInterface
                 threshold: '-1 week',
             )
             ->find('withReportAlmostDue')
+            ->find('withActivityInLastTwoYears') // Stop nudging after two years
             ->all();
     }
 
