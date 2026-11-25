@@ -10,6 +10,7 @@ use Cake\Event\Event;
 use Cake\Event\EventManager;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\I18n\Date;
 use Cake\I18n\DateTime;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
@@ -676,5 +677,60 @@ class Project extends Entity
         }
 
         return ($this->amount_awarded - $this->getTotalRepaid()) / 100;
+    }
+
+    /**
+     * Returns TRUE if this project is disqualified due to not submitting reports on time
+     *
+     * @return bool
+     */
+    public function isDisqualifiedDueToNotReporting(): bool
+    {
+        // Not disqualified if nothing was ever awarded
+        if (!$this->isDisbursed() || !$this->loan_awarded_date) {
+            return false;
+        }
+
+        // Not disqualified if not enough time has passed
+        if ($this->loan_awarded_date->wasWithinLast('366 days')) {
+            return false;
+        }
+
+        // Collect all dates that are relevant to determining whether the project is disqualified due to not reporting
+        $reportsTable = TableRegistry::getTableLocator()->get('Reports');
+        $dates = [$this->loan_awarded_date];
+        $reports = $reportsTable
+            ->find()
+            ->select(['created', 'is_final'])
+            ->where(['project_id' => $this->id])
+            ->orderByAsc('created')
+            ->all();
+        $hasFinalReport = false;
+        foreach ($reports as $report) {
+            $dates[] = new Date($report->created);
+            if ($report->is_final) {
+                $hasFinalReport = true;
+            }
+        }
+        if (!$hasFinalReport) {
+            $dates[] = new Date();
+        }
+
+        foreach ($dates as $key => $date) {
+            if (!isset($dates[$key + 1])) {
+                break;
+            }
+
+            // Is disqualified if more than a year passed
+            // - before the first report
+            // - between two reports
+            // - or since the last, non-final report
+            // (once a final report is submitted, it doesn't matter how long ago that was)
+            if ($date->diffInDays($dates[$key + 1]) > 366) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

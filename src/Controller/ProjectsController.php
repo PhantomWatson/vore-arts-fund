@@ -12,16 +12,13 @@ use App\Model\Table\CategoriesTable;
 use App\Model\Table\FundingCyclesTable;
 use App\Model\Table\ProjectImagesTable;
 use Cake\Database\Expression\QueryExpression;
-use Cake\Database\Query;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
 use Cake\I18n\DateTime;
 use Cake\Log\Log;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\TableRegistry;
-use Cake\Utility\Security;
 use Exception;
-use Laminas\Diactoros\UploadedFile;
 
 /**
  * ProjectsController
@@ -80,12 +77,11 @@ class ProjectsController extends AppController
      */
     public function apply(): ?Response
     {
-        $this->title('Apply for Funding');
-
         // Check if applications can be accepted
         /** @var \App\Model\Entity\FundingCycle $fundingCycle */
         $fundingCycle = $this->FundingCycles->find('current')->first();
         if (is_null($fundingCycle)) {
+            $this->title('Unable to Apply for Funding');
             $nextFundingCycle = $this->FundingCycles->find('nextApplying')->first();
             $this->set(compact('nextFundingCycle'));
             $this->viewBuilder()->setTemplate('applications_not_being_accepted');
@@ -109,10 +105,23 @@ class ProjectsController extends AppController
             ->where(['user_id' => $user->id])
             ->first();
         if ($unpaidProject) {
+            $this->title('Unable to Apply for Funding');
             $this->set(['project' => $unpaidProject]);
             $this->viewBuilder()->setTemplate('throttled');
             return null;
         }
+
+        // Handle disqualification due to lack of reporting
+        $disqualifiedProjects = $this->getProjectsDisqualifiedDueToNotReporting();
+        if (!empty($disqualifiedProjects)) {
+            $this->title('Unable to Apply for Funding');
+            $this->set(compact('disqualifiedProjects'));
+            $this->viewBuilder()->setTemplate('disqualified_due_to_not_reporting');
+            return null;
+        }
+
+        // Hey, checks passed!
+        $this->title('Apply for Funding');
 
         // Set up view vars
         $this->viewBuilder()->setTemplate('form');
@@ -183,6 +192,28 @@ class ProjectsController extends AppController
         $this->set(compact('project'));
 
         return null;
+    }
+
+    private function getProjectsDisqualifiedDueToNotReporting(): array
+    {
+        $user = $this->getAuthUser();
+        $projects = $this->Projects
+            ->find('notDeleted')
+            ->contain([
+                'Reports' => function (SelectQuery $query) {
+                    return $query->select(['id', 'project_id', 'created']);
+                }
+            ])
+            ->where(['user_id' => $user->id])
+            ->all();
+
+        $disqualifiedProjects = [];
+        foreach ($projects as $project) {
+            if ($project->isDisqualifiedDueToNotReporting()) {
+                $disqualifiedProjects[] = $project;
+            }
+        }
+        return $disqualifiedProjects;
     }
 
     /**
@@ -399,7 +430,7 @@ class ProjectsController extends AppController
             ->orderByDesc('FundingCycles.application_end')
             ->contain([
                 'Projects' => [
-                    'queryBuilder' => function (Query $q) {
+                    'queryBuilder' => function (SelectQuery $q) {
                         return $q
                             ->where(function (QueryExpression $exp) {
                                 return $exp->in(
@@ -426,7 +457,7 @@ class ProjectsController extends AppController
                         },
                     ],
                     'Categories',
-                    'Images' => function (Query $q) {
+                    'Images' => function (SelectQuery $q) {
                         return $q->orderByAsc('weight');
                     },
                     'Users',
