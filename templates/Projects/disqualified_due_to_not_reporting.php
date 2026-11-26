@@ -50,9 +50,10 @@
                 <td>
                     <?php
                         if ($project->reports) {
-                            $reportDates = $project->reports->map(function ($report) {
-                                return $report->created->format('F j, Y');
-                            })->toArray();
+                            $reportDates = [];
+                            foreach ($project->reports as $report) {
+                                $reportDates[] = $report->created->format('F j, Y');
+                            }
                             echo implode('<br />', $reportDates);
                         } else {
                             echo '(none)';
