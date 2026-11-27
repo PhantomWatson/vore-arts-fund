@@ -9,8 +9,6 @@
  *  } $fundingCycles
  */
 
-$needsAwarding = !$fundingCycles['needsAwarding']->isEmpty();
-
 $nextVotingEndCycle = match (true) {
     !$fundingCycles['voting']->isEmpty() => $fundingCycles['voting']->first(),
     !$fundingCycles['takingApplications']->isEmpty() => $fundingCycles['takingApplications']->first(),
@@ -29,9 +27,6 @@ $cycleForAwarding = $fundingCycles['needsAwarding']->first();
     <div class="card-header">
         <h2>
             Awarding
-            <?php if ($needsAwarding): ?>
-                <i class="fa-solid fa-circle-exclamation" style="color: red;"></i>
-            <?php endif; ?>
         </h2>
         <ul class="links">
             <li>

@@ -28,6 +28,8 @@ $tabs = [
     'Transactions' => 'transactions',
     'Articles' => 'articles',
 ];
+
+$needsAwarding = !$fundingCycles['needsAwarding']->isEmpty();
 ?>
 
 <ul class="nav nav-pills" id="myTab" role="tablist">
@@ -42,7 +44,10 @@ $tabs = [
                 aria-controls="<?= $id ?>-tab-pane"
                 aria-selected="<?= $id === 'funding-cycles' ? 'true' : 'false' ?>"
             >
-                <?= h($label) ?>
+                <?= $label ?>
+                <?php if ($label == 'Awarding' && $needsAwarding): ?>
+                    <i class="fa-solid fa-circle-exclamation" style="color: red;"></i>
+                <?php endif; ?>
             </button>
         </li>
     <?php endforeach; ?>
