@@ -28,7 +28,7 @@ $tabs = [
 ];
 ?>
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
+<ul class="nav nav-pills" id="myTab" role="tablist">
     <?php foreach ($tabs as $label => $id): ?>
         <li class="nav-item" role="presentation">
             <button
