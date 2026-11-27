@@ -8,6 +8,7 @@ use App\Model\Entity\FundingCycle;
 use App\Model\Entity\Project;
 use Cake\Event\EventInterface;
 use Cake\Http\Response;
+use Cake\I18n\DateTime;
 use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
@@ -80,9 +81,7 @@ class TransactionsController extends AdminController
     public function add(): void
     {
         $transaction = $this->Transactions->newEmptyEntity();
-        if (!$transaction->date) {
-            $transaction->date = new \Cake\I18n\DateTime('now', Application::LOCAL_TIMEZONE);
-        }
+        $transaction->date = new DateTime('now', Application::LOCAL_TIMEZONE);
         $transaction->finalized = true; // default to finalized for new transactions
 
         $this->title('Add Transaction');
