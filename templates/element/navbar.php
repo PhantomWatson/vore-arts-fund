@@ -114,78 +114,11 @@ $loggedInLinks[] = [
     ['class' => 'dropdown-item']
 ];
 
-$adminLinks = [
-    [
-        'Articles',
-        [
-            'prefix' => 'Admin',
-            'controller' => 'Articles',
-            'action' => 'index',
-        ],
-        ['class' => 'dropdown-item']
-    ],
-    [
-        'Awarding',
-        [
-            'prefix' => 'Admin',
-            'controller' => 'Votes',
-            'action' => 'index',
-        ],
-        ['class' => 'dropdown-item']
-    ],
-    [
-        'Funding Cycles',
-        [
-            'prefix' => 'Admin',
-            'controller' => 'FundingCycles',
-            'action' => 'index',
-        ],
-        ['class' => 'dropdown-item']
-    ],
-    [
-        'Loans',
-        [
-            'prefix' => 'Admin',
-            'controller' => 'Loans',
-            'action' => 'index',
-        ],
-        ['class' => 'dropdown-item']
-    ],
-    [
-        'Projects',
-        [
-            'prefix' => 'Admin',
-            'controller' => 'Projects',
-            'action' => 'index',
-        ],
-        ['class' => 'dropdown-item']
-    ],
-    [
-        'Questions',
-        [
-            'prefix' => 'Admin',
-            'controller' => 'Questions',
-            'action' => 'index',
-        ],
-        ['class' => 'dropdown-item']
-    ],
-    [
-        'Transactions',
-        [
-            'prefix' => 'Admin',
-            'controller' => 'Transactions',
-            'action' => 'index',
-        ],
-        ['class' => 'dropdown-item']
-    ],
-];
-
 $echoLinks = function (\Cake\View\View $appView, $links, $navbarItemClass = 'nav-item') {
     foreach ($links as $link) {
         echo '<li class="' . $navbarItemClass . '">' . $appView->Html->link(...$link) . '</li>';
     }
 };
-
 ?>
 <header id="header" class="fixed-top">
     <nav class="navbar navbar-expand-lg">
@@ -226,12 +159,21 @@ $echoLinks = function (\Cake\View\View $appView, $links, $navbarItemClass = 'nav
                             </ul>
                         </li>
                         <?php if ($isAdmin): ?>
-                            <li class="nav-item dropdown">
-                                <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Admin</button>
-                                <ul class="dropdown-menu">
-                                    <?php $echoLinks($this, $adminLinks, ''); ?>
-                                </ul>
-                            </li>
+                            <?php $echoLinks(
+                                $this,
+                                [
+                                    [
+                                        'Admin',
+                                        [
+                                            'prefix' => 'Admin',
+                                            'controller' => 'Admin',
+                                            'action' => 'index',
+                                        ],
+                                        ['class' => 'nav-link']
+                                    ]
+                                ],
+                                ''
+                            ); ?>
                         <?php endif; ?>
                     <?php else: ?>
                         <li>
