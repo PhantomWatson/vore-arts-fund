@@ -33,7 +33,10 @@ class AdminController extends AppController
                 ->find('needsAwarding')
                 ->find('orderedDesc')
                 ->all(),
-            'nextTakingApplications' => $fundingCyclesTable->find('nextApplying')->first(),
+            'nextTakingApplications' => $fundingCyclesTable
+                ->find('future')
+                ->find('nextApplying')
+                ->first(),
         ];
 
         // Applications
