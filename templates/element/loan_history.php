@@ -11,8 +11,7 @@ $this->Html->script('https://www.gstatic.com/charts/loader.js', ['block' => true
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-            //['Genre', 'Fantasy & Sci Fi', 'Romance', 'Mystery/Crime', 'General', 'Western', 'Literature', { role: 'annotation' } ],
+        const data = google.visualization.arrayToDataTable([
             ['Date', 'Repaid loans', 'Outstanding loans'],
             <?php foreach ($loanHistory as $bar): ?>
             [
@@ -23,7 +22,7 @@ $this->Html->script('https://www.gstatic.com/charts/loader.js', ['block' => true
             <?php endforeach; ?>
         ]);
 
-        var options = {
+        const options = {
             width: '100%',
             height: 300,
             legend: { position: 'bottom' },
