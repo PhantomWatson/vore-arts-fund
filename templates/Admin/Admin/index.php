@@ -36,6 +36,11 @@ $needsAwarding = !$fundingCycles['needsAwarding']->isEmpty();
 $needsReviewing = $applications->some(function (Project $application) {
     return $application->status_id == Project::STATUS_UNDER_REVIEW;
 });
+$fundingCycleWarning = $fundingCycles['takingApplications']->count() > 1
+    || $fundingCycles['voting']->count() > 1
+    || $fundingCycles['needsAwarding']->count() > 1;
+$fundingCycleAlert = $fundingCycles['takingApplications']->isEmpty()
+    || !$fundingCycles['nextTakingApplications'];
 ?>
 
 <ul class="nav nav-pills" id="myTab" role="tablist">
@@ -51,10 +56,19 @@ $needsReviewing = $applications->some(function (Project $application) {
                 aria-selected="<?= $id === 'funding-cycles' ? 'true' : 'false' ?>"
             >
                 <?= $label ?>
+
                 <?php if (
                     ($label == 'Awarding' && $needsAwarding)
                     || ($label == 'Applications' && $needsReviewing)
                 ): ?>
+                    <i class="fa-solid fa-circle-exclamation" style="color: red;"></i>
+                <?php endif; ?>
+
+                <?php if ($label == 'Funding Cycles' && $fundingCycleWarning): ?>
+                    <i class="fa-solid fa-triangle-exclamation" style="color: orange;"></i>
+                <?php endif; ?>
+
+                <?php if ($label == 'Funding Cycles' && $fundingCycleAlert): ?>
                     <i class="fa-solid fa-circle-exclamation" style="color: red;"></i>
                 <?php endif; ?>
             </button>

@@ -64,7 +64,11 @@
                 </tr>
             </thead>
             <tbody>
-                <?php if (!$fundingCycles['takingApplications']->isEmpty()): ?>
+                <?php if ($fundingCycles['takingApplications']->isEmpty()): ?>
+                    <p class="alert alert-error">
+                        Not currently taking applications
+                    </p>
+                <?php else: ?>
                     <?php foreach ($fundingCycles['takingApplications'] as $fundingCycle): ?>
                         <tr>
                             <td>
