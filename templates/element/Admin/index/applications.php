@@ -1,11 +1,14 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \Cake\ORM\ResultSet<\App\Model\Entity\Project> $applications
+ * @var \Cake\ORM\ResultSet<Project> $applications
  * @var array{
  *      takingApplications: \Cake\ORM\ResultSet<\App\Model\Entity\FundingCycle>
  *  } $fundingCycles
  */
+
+use App\Model\Entity\Project;
+
 ?>
 
 <div class="card">
@@ -62,6 +65,11 @@
                                         'id' => $application->id,
                                     ],
                                 ) ?>
+                                <?php if ($application->status_id == Project::STATUS_UNDER_REVIEW): ?>
+                                    <span class="badge text-bg-danger">
+                                        Review
+                                    </span>
+                                <?php endif; ?>
                             </td>
                             <td>
                                 <?= h($application->user->name) ?>

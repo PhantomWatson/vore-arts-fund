@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \Cake\ORM\ResultSet<\App\Model\Entity\Project> $applications
+ * @var \Cake\ORM\ResultSet<Project> $applications
  * @var \App\View\AppView $this
  * @var array{
  *     takingApplications: \Cake\ORM\ResultSet<\App\Model\Entity\FundingCycle>,
@@ -8,12 +8,15 @@
  *     nextTakingApplications: \App\Model\Entity\FundingCycle|null,
  *     needsAwarding: \Cake\ORM\ResultSet<\App\Model\Entity\FundingCycle>,
  * } $fundingCycles
- * @var \Cake\ORM\ResultSet<\App\Model\Entity\Project> $recentOutstandingLoans
+ * @var \Cake\ORM\ResultSet<Project> $recentOutstandingLoans
  * @var int $outstandingLoanCount
  * @var \Cake\ORM\ResultSet<\App\Model\Entity\Report> $recentReports
  * @var \App\Model\Entity\Article|null $article
  * @var \Cake\ORM\ResultSet<\App\Model\Entity\Transaction> $recentTransactions
  */
+
+use App\Model\Entity\Project;
+
 $controllers = [
     'Articles' => 'News articles',
     'Transactions' => 'Transactions',
@@ -30,6 +33,9 @@ $tabs = [
 ];
 
 $needsAwarding = !$fundingCycles['needsAwarding']->isEmpty();
+$needsReviewing = $applications->some(function (Project $application) {
+    return $application->status_id == Project::STATUS_UNDER_REVIEW;
+});
 ?>
 
 <ul class="nav nav-pills" id="myTab" role="tablist">
@@ -45,7 +51,10 @@ $needsAwarding = !$fundingCycles['needsAwarding']->isEmpty();
                 aria-selected="<?= $id === 'funding-cycles' ? 'true' : 'false' ?>"
             >
                 <?= $label ?>
-                <?php if ($label == 'Awarding' && $needsAwarding): ?>
+                <?php if (
+                    ($label == 'Awarding' && $needsAwarding)
+                    || ($label == 'Applications' && $needsReviewing)
+                ): ?>
                     <i class="fa-solid fa-circle-exclamation" style="color: red;"></i>
                 <?php endif; ?>
             </button>
