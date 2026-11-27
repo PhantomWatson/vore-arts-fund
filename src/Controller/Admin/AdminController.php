@@ -23,15 +23,15 @@ class AdminController extends AppController
         $fundingCycles = [
             'takingApplications' => $fundingCyclesTable
                 ->find('currentApplying')
-                ->find('orderedAsc')
+                ->find('orderedDesc')
                 ->all(),
             'voting' => $fundingCyclesTable
                 ->find('currentVoting')
-                ->find('orderedAsc')
+                ->find('orderedDesc')
                 ->all(),
             'needsAwarding' => $fundingCyclesTable
                 ->find('needsAwarding')
-                ->find('orderedAsc')
+                ->find('orderedDesc')
                 ->all(),
             'nextTakingApplications' => $fundingCyclesTable->find('nextApplying')->first(),
         ];
