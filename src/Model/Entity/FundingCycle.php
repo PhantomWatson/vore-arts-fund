@@ -280,4 +280,19 @@ class FundingCycle extends Entity
 
         return 'Unknown';
     }
+
+    public function getVotingDispositionDescription(): string
+    {
+        $voteEnd = $this->vote_end_local->i18nFormat('MMM d, YYYY');
+        if ($this->vote_end->isPast()) {
+            return "Voting ended on $voteEnd";
+        }
+
+        if ($this->vote_begin->isPast()) {
+            return "Voting is underway and will end on $voteEnd";
+        }
+
+        $voteBegin = $this->vote_begin_local->i18nFormat('MMM d, YYYY');
+        return "Voting will begin on $voteBegin and end on $voteEnd";
+    }
 }
