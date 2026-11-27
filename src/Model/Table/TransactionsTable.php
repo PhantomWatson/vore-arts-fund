@@ -450,7 +450,7 @@ class TransactionsTable extends Table
     /**
      * Returns data to populate the loan history bar chart
      *
-     * @return array
+     * @return array<array{date: \Cake\I18n\DateTime, loansOutstanding: float, loansRepaid: float}>
      */
     public function getLoanHistory()
     {
