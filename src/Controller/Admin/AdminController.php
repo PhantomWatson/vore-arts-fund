@@ -63,12 +63,30 @@ class AdminController extends AppController
             ->limit(10)
             ->all();
 
+        // Transactions
+        $recentTransactions = $this->fetchTable('Transactions')
+            ->find()
+            ->contain(['Users'])
+            ->orderByDesc('Transactions.created')
+            ->limit(5)
+            ->all();
+
+        // Articles
+        $article = $this->fetchTable('Articles')
+            ->find()
+            ->contain(['Images'])
+            ->where(['is_published' => true])
+            ->orderByDesc('dated')
+            ->first();
+
         $this->set(compact(
             'applications',
+            'article',
             'fundingCycles',
             'outstandingLoanCount',
             'recentOutstandingLoans',
             'recentReports',
+            'recentTransactions',
         ));
     }
 

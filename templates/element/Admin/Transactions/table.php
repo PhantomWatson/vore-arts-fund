@@ -3,17 +3,35 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Transaction[]|\Cake\Collection\CollectionInterface $transactions
  */
+
+use Cake\Core\Exception\CakeException;
+
+try {
+    $this->Paginator->hasPage();
+    $isPaginated = true;
+} catch (CakeException $e) {
+    $isPaginated = false;
+}
 ?>
 
 <table class="table">
     <thead>
         <tr>
-            <th><?= $this->Paginator->sort('date', 'Date') ?></th>
-            <th><?= $this->Paginator->sort('type') ?></th>
-            <th><?= $this->Paginator->sort('name') ?></th>
-            <th><?= $this->Paginator->sort('amount_gross', 'Amount (net)') ?></th>
-            <th><?= $this->Paginator->sort('project_id', 'Project') ?></th>
-            <th class="actions"><?= __('Actions') ?></th>
+            <?php if ($isPaginated): ?>
+                <th><?= $this->Paginator->sort('date', 'Date') ?></th>
+                <th><?= $this->Paginator->sort('type') ?></th>
+                <th><?= $this->Paginator->sort('name') ?></th>
+                <th><?= $this->Paginator->sort('amount_gross', 'Amount (net)') ?></th>
+                <th><?= $this->Paginator->sort('project_id', 'Project') ?></th>
+                <th class="actions"><?= __('Actions') ?></th>
+            <?php else: ?>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Amount (net)</th>
+                <th>Project</th>
+                <th class="actions">Actions</th>
+            <?php endif; ?>
         </tr>
     </thead>
     <tbody>

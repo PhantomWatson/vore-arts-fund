@@ -11,6 +11,8 @@
  * @var \Cake\ORM\ResultSet<\App\Model\Entity\Project> $recentOutstandingLoans
  * @var int $outstandingLoanCount
  * @var \Cake\ORM\ResultSet<\App\Model\Entity\Report> $recentReports
+ * @var \App\Model\Entity\Article|null $article
+ * @var \Cake\ORM\ResultSet<\App\Model\Entity\Transaction> $recentTransactions
  */
 $controllers = [
     'Articles' => 'News articles',
@@ -23,8 +25,8 @@ $tabs = [
     'Awarding' => 'awarding',
     'Loans' => 'loans',
     'Reports' => 'reports',
-    //'Transactions' => 'transactions',
-    //'News' => 'news',
+    'Transactions' => 'transactions',
+    'Articles' => 'articles',
 ];
 ?>
 
