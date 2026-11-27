@@ -20,6 +20,7 @@
         <?= $this->Html->link(
             'Go to project',
             [
+                'prefix' => false,
                 'controller' => 'Projects',
                 'action' => 'view',
                 'id' => $report->project->id,
