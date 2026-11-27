@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Application;
+use Cake\I18n\DateTime;
 use Cake\ORM\Entity;
 
 /**
@@ -13,8 +15,9 @@ use Cake\ORM\Entity;
  * @property int|null $user_id
  * @property int|null $project_id
  * @property bool $is_final
- * @property \Cake\I18n\DateTime $created
- * @property \Cake\I18n\DateTime $modified
+ * @property DateTime $created
+ * @property DateTime $modified
+ * @property DateTime $date_local
  *
  * @property \App\Model\Entity\User|null $user
  * @property \App\Model\Entity\Project|null $project
@@ -42,4 +45,13 @@ class Report extends Entity
         'project' => true,
         'images' => true,
     ];
+
+    /**
+     * @return DateTime|null
+     * @see \App\Model\Entity\Report::$date_local
+     */
+    protected function _getDateLocal(): ?DateTime
+    {
+        return $this->created->setTimezone(Application::LOCAL_TIMEZONE);
+    }
 }
