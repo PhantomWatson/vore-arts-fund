@@ -354,8 +354,8 @@ class FundingCyclesTable extends Table
         $now = date('Y-m-d H:i:s');
 
         return $query
-            ->where(['FundingCycles.application_end >' => $now])
-            ->orderByAsc('FundingCycles.application_end');
+            ->find('orderedAsc')
+            ->where(['FundingCycles.application_end >' => $now]);
     }
 
     public function getCurrentVotingInfo()
