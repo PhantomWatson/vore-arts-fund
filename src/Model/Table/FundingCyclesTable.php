@@ -446,4 +446,19 @@ class FundingCyclesTable extends Table
                     ->gt('vote_begin', date('Y-m-d H:i:s', strtotime('-1 day')));
             });
     }
+
+    /**
+     * Alters a query to return funding cycles that have not yet been finalized and whose voting period has ended
+     *
+     * @param Query $query
+     * @return Query
+     */
+    public function findNeedsAwarding(Query $query): Query
+    {
+        return $query
+            ->where(['is_finalized' => false])
+            ->where(function (QueryExpression $exp) {
+                return $exp->lt('vote_end', date('Y-m-d H:i:s'));
+            });
+    }
 }

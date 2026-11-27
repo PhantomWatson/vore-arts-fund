@@ -17,6 +17,59 @@ class AdminController extends AppController
     {
         $this->title('Admin Dashboard');
         $this->setCurrentBreadcrumb('Admin');
+
+        // Funding cycles
+        $fundingCyclesTable = $this->fetchTable('FundingCycles');
+        $fundingCycles = [
+            'takingApplications' => $fundingCyclesTable
+                ->find('currentApplying')
+                ->find('orderedAsc')
+                ->all(),
+            'voting' => $fundingCyclesTable
+                ->find('currentVoting')
+                ->find('orderedAsc')
+                ->all(),
+            'needsAwarding' => $fundingCyclesTable
+                ->find('needsAwarding')
+                ->find('orderedAsc')
+                ->all(),
+            'nextTakingApplications' => $fundingCyclesTable->find('nextApplying')->first(),
+        ];
+
+        // Applications
+        /** @var \App\Model\Entity\FundingCycle|null $fundingCycle */
+        $applications = [];
+        $projectsTable = $this->fetchTable('Projects');
+        if ($fundingCycles['takingApplications']->first()) {
+            $applications = $projectsTable
+                ->find('notDeleted')
+                ->where(['Projects.funding_cycle_id' => $fundingCycles['takingApplications']->first()->id])
+                ->contain(['Users'])
+                ->all();
+        }
+
+        // Loans
+        $totalOutstandingLoansQuery = $projectsTable
+            ->find('withOutstandingLoan')
+            ->orderByDesc('loan_awarded_date');
+        $recentOutstandingLoans = $totalOutstandingLoansQuery->limit(10)->all();
+        $outstandingLoanCount = $totalOutstandingLoansQuery->count();
+
+        // Reports
+        $recentReports = $this->fetchTable('Reports')
+            ->find()
+            ->contain(['Projects'])
+            ->orderByDesc('Reports.created')
+            ->limit(10)
+            ->all();
+
+        $this->set(compact(
+            'applications',
+            'fundingCycles',
+            'outstandingLoanCount',
+            'recentOutstandingLoans',
+            'recentReports',
+        ));
     }
 
     /**
