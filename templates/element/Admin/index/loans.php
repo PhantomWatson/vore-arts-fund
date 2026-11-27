@@ -30,10 +30,13 @@ $moreCount = $outstandingLoanCount - $recentOutstandingLoans->count();
                 No outstanding loans
             </p>
         <?php else: ?>
+            <h3>
+                Recent
+            </h3>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Recently awarded loan</th>
+                        <th>Project</th>
                         <th>Awarded date</th>
                         <th>Outstanding balance</th>
                     </tr>

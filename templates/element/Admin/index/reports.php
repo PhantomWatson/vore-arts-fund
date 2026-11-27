@@ -26,6 +26,9 @@
                 No reports have been submitted recently.
             </p>
         <?php else: ?>
+            <h3>
+                Latest
+            </h3>
             <?= $this->element('report', ['report' => $recentReports->first()]) ?>
 
             <table class="table">
